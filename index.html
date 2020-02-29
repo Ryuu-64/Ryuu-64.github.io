@@ -174,8 +174,10 @@
       
         <h1 id="我的博客搭建详细步骤"><a href="#我的博客搭建详细步骤" class="headerlink" title="我的博客搭建详细步骤"></a>我的博客搭建详细步骤</h1><h2 id="事前准备"><a href="#事前准备" class="headerlink" title="事前准备"></a>事前准备</h2><h3 id="1-安装-Node-js"><a href="#1-安装-Node-js" class="headerlink" title="1.安装 Node.js"></a>1.安装 Node.js</h3><p>下载 LTS 版本应该会比较好 (Long Term Support | 长期支持)<br>是JavaScript 的运行环境<br>安装比较简单,从官网上下载安装包，然后跟着提示进行操作即可<br>下载网址: <a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a><br>下载完毕后可以进入控制台<br>输入 node -v 查看 node 版本<br>输入 npm -v 查看 npm 版本 (node package manager | node包管理器)</p>
 <h3 id="2-安装-git"><a href="#2-安装-git" class="headerlink" title="2.安装 git"></a>2.安装 git</h3><p>git 是一个开源的分布式版本控制系统,我们要使用 github 发布网站所以必须要有git<br>(下载有点糟心,记得翻墙下载,要不然下载速度实在是太感人了)<br>安装也比较简单,从官网上下载安装包，然后跟着提示进行操作即可，只不过步骤很多,记得看一下说明,确定自己该点哪个<br>下载网址: <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">https://git-scm.com/downloads</a><br>下载完毕后可以进入控制台<br>输入 git –version 查看 git 版本</p>
-<h3 id="3-安装一个淘宝镜像"><a href="#3-安装一个淘宝镜像" class="headerlink" title="3.安装一个淘宝镜像"></a>3.安装一个淘宝镜像</h3><p>(要不然 hexo init 执行的下载速度会非常感人)<br>进入控制台输入如下命令即可<br>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a><br>指令执行后使用 cnpm 来代替 npm 指令</p>
-<h2 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h2>
+<h3 id="3-安装一个淘宝镜像"><a href="#3-安装一个淘宝镜像" class="headerlink" title="3.安装一个淘宝镜像"></a>3.安装一个淘宝镜像</h3><p>(要不然之后执行命令下载的速度会非常感人)<br>进入控制台输入如下命令即可<br>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a><br>指令执行后使用 cnpm 来代替 npm 指令</p>
+<h2 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h2><h3 id="1-下载-Hexo"><a href="#1-下载-Hexo" class="headerlink" title="1.下载 Hexo"></a>1.下载 Hexo</h3><p>在控制台输入<br>cnpm install -g hexo-cli<br>下载 Hexo<br>下载完毕后可以进入控制台<br>输入 hexo -v 查看 hexo 版本</p>
+<h3 id="2-在本地创建文件夹并在此下生成博客"><a href="#2-在本地创建文件夹并在此下生成博客" class="headerlink" title="2.在本地创建文件夹并在此下生成博客"></a>2.在本地创建文件夹并在此下生成博客</h3><p>在控制台中转至该文件夹并输入<br>hexo init<br>指令完成后会在该文件夹内生成博客的各种文件<br>之后输入 hexo s 命令<br>在本地4000端口启动博客<br>之后访问 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 就可以看见你的博客了 (默认创建一篇叫 Hello World 的文章)<br>(npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a> 就是为了这一步速度快点)</p>
+
       
 
       
