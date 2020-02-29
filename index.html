@@ -180,6 +180,10 @@
 <h3 id="3-创建一个-github-仓库"><a href="#3-创建一个-github-仓库" class="headerlink" title="3.创建一个 github 仓库"></a>3.创建一个 github 仓库</h3><p>登录 Github<br>新建一个 repsoitory (新建一个仓库存放你的博客,就像在本地生成博客一样)<br>仓库名称必须要和 github 的用户名一致<br>例: username.github.io</p>
 <h3 id="4-安装博客的-git-部署插件"><a href="#4-安装博客的-git-部署插件" class="headerlink" title="4.安装博客的 git 部署插件"></a>4.安装博客的 git 部署插件</h3><p>指令: cnpm install –save hexo-deployer-git<br>如果在控制台操作失败了可以在 Git Bash 中输入该指令</p>
 <h3 id="5-在-config-yml中修改部署信息"><a href="#5-在-config-yml中修改部署信息" class="headerlink" title="5.在_config.yml中修改部署信息"></a>5.在_config.yml中修改部署信息</h3><p>为了让博客部署到 github 上,我们需要修改配置信息<br>直接用文本文档方式打开就行<br>在该文件的末尾<br>(# Deployment<br>(## Docs: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">https://hexo.io/docs/deployment.html</a><br>的下面添加如下文字<br>deploy:<br>  type: git<br>  repo: (这里填写你创建的仓库的地址)<br>  branch: master<br>(注意 “:” 后需要打一个空格)</p>
+<h3 id="6-将博客部署至-github-仓库"><a href="#6-将博客部署至-github-仓库" class="headerlink" title="6.将博客部署至 github 仓库"></a>6.将博客部署至 github 仓库</h3><p>输入 hexo d 指令 以进行部署 ()<br>当然部署到你的仓库会需要验证你的 github 账户<br>当出现如下信息时<br>Username for ‘<a href="https://github.com&#39;" target="_blank" rel="noopener">https://github.com&#39;</a>: username<br>Password for ‘username’: password<br>输入你的 github 用户名和密码就行<br>注意在输入密码时 Password 的那一行是不会有密码显示的 * 的提示也没有<br>注意别输错了</p>
+<h4 id="如果该步骤出现错误"><a href="#如果该步骤出现错误" class="headerlink" title="如果该步骤出现错误"></a>如果该步骤出现错误</h4><p>请打开 Git Bash 输入<br>git config –global user.name “username”<br>git config –global user.email “user email”<br>设置自己的名称和电子邮箱<br>(因为 git 是分布式的版本控制系统,所以需要有名称和地址)</p>
+<h3 id="7-访问个人博客"><a href="#7-访问个人博客" class="headerlink" title="7.访问个人博客"></a>7.访问个人博客</h3><p>部署完成后查看 github 的博客仓库<br>会发现多了一堆文件<br>这时博客就已部署至 github 仓库<br><strong>直接访问该 github 仓库的名称</strong><br>就能看见你的个人博客了<br>当然,采用这种办法,将博客部署到github的方法是完全免费的</p>
+<p><strong>现在你已经搭建好你的博客了,可以开始编辑了</strong></p>
 
       
 
