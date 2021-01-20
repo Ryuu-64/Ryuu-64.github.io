@@ -265,6 +265,149 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF/" itemprop="url">Hexo 小姿势</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-20T22:54:43+08:00">
+                2021-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Hexo-小姿势"><a href="#Hexo-小姿势" class="headerlink" title="Hexo 小姿势"></a>Hexo 小姿势</h2><p>在本地启动 hexo (ctrl + c 停止)</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>创建新的博客文章</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n "文章名称"</span><br></pre></td></tr></table></figure>
+
+<p> 生成文件并部署至仓库</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>部署的信息在 _config.yml 文件最下的 deploy</p>
+<p>//  _config.yml 示例 (记得冒号后要有空格)</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Deployment</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Docs: https://hexo.io/docs/deployment.html</span></span></span><br><span class="line">deploy:</span><br><span class="line">  type: git </span><br><span class="line">  repo: https://github.com/Ryuu-64/Ryuu-64.github.io</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="hexo-小问题"><a href="#hexo-小问题" class="headerlink" title="hexo  小问题"></a>hexo  小问题</h2><p>当node 版本过高时会产生以下 Warning</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(node:<span class="number">13888</span>) Warning: Accessing non-existent property <span class="string">'lineno'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(Use <span class="string">`node --trace-warnings ...`</span> to show where the warning was created)</span><br><span class="line">(node:<span class="number">13888</span>) Warning: Accessing non-existent property <span class="string">'column'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">13888</span>) Warning: Accessing non-existent property <span class="string">'filename'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">13888</span>) Warning: Accessing non-existent property <span class="string">'lineno'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">13888</span>) Warning: Accessing non-existent property <span class="string">'column'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">13888</span>) Warning: Accessing non-existent property <span class="string">'filename'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">10816</span>) Warning: Accessing non-existent property <span class="string">'column'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">10816</span>) Warning: Accessing non-existent property <span class="string">'filename'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">10816</span>) Warning: Accessing non-existent property <span class="string">'lineno'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">10816</span>) Warning: Accessing non-existent property <span class="string">'column'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">10816</span>) Warning: Accessing non-existent property <span class="string">'filename'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br><span class="line">(node:<span class="number">10816</span>) Warning: Accessing non-existent property <span class="string">'lineno'</span> <span class="keyword">of</span> <span class="built_in">module</span> exports inside circular dependency</span><br></pre></td></tr></table></figure>
+
+<p>官方的 issues <a href="https://github.com/stylus/stylus/issues/2534" target="_blank" rel="noopener">https://github.com/stylus/stylus/issues/2534</a></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>不用改变node的版本</p>
+<p>找到项目中的此文件: \node_modules\stylus\lib\nodes\index.js 在最前处添加如下代码即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exports.lineno = <span class="literal">null</span>;</span><br><span class="line">exports.column = <span class="literal">null</span>;</span><br><span class="line">exports.filename = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="后续问题"><a href="#后续问题" class="headerlink" title="后续问题"></a>后续问题</h3><p>结果还是有问题</p>
+<p>博客部署出错了 详情如下</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FATAL Something's wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span><br><span class="line">TypeError [ERR_INVALID_ARG_TYPE]: The "mode" argument must be integer. Received an instance of Object</span><br><span class="line">    at copyFile (fs.js:1972:10)</span><br><span class="line">    at tryCatcher (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at ret (eval at makeNodePromisifiedEval (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promisify.js:184:12), &lt;anonymous&gt;:13:39)</span><br><span class="line">    at F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\hexo-fs\lib\fs.js:144:39</span><br><span class="line">    at tryCatcher (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at Promise._settlePromiseFromHandler (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:547:31)</span><br><span class="line">    at Promise._settlePromise (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:604:18)</span><br><span class="line">    at Promise._settlePromise0 (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:649:10)</span><br><span class="line">    at Promise._settlePromises (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:729:18)</span><br><span class="line">    at Promise._fulfill (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:673:18)</span><br><span class="line">    at Promise._resolveCallback (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:466:57)</span><br><span class="line">    at Promise._settlePromiseFromHandler (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:559:17)</span><br><span class="line">    at Promise._settlePromise (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:604:18)</span><br><span class="line">    at Promise._settlePromise0 (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:649:10)</span><br><span class="line">    at Promise._settlePromises (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:729:18)</span><br><span class="line">    at Promise._fulfill (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:673:18)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -575,7 +718,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
