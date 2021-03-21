@@ -1,22 +1,31 @@
+---
+title: Hexo 小姿势
+date: 2021-01-20 22:54:43
+tags:
+    - 网页
+categories: 前端
+---
+
 ## Hexo 小姿势
 
-在本地启动 hexo (ctrl + c 停止)
+在本地启动 hexo start
+
+(ctrl + c 停止) 
 
 ``` console
 hexo s
 ```
 
-创建新的博客文章
+创建新的博客文章 new blog
 ``` console
 hexo n "文章名称"
 ```
 
- 生成文件并部署至仓库
+ 生成文件并部署至仓库 deploy
 ``` console
 hexo d
 ```
 
-------
 部署的信息在 _config.yml 文件最下的 deploy
 
 //  _config.yml 示例 (记得冒号后要有空格)
@@ -29,7 +38,6 @@ deploy:
   repo: https://github.com/Ryuu-64/Ryuu-64.github.io
   branch: master
 ```
-------
 
 ## hexo  小问题
 
