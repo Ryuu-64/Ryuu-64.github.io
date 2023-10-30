@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-fill-left.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Unity,UnityEngine,Unity null check," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="详情Unity 对象的空检测UnityEngine.Object 有其自定义的空检测方法。 因此 UnityEngine.Object 有两种空检测：  检测 Unity 原生对象是否被销毁 (使用 UnityEngine.Object 自定义空检测) 检测 Unity 对象是否初始化与正确引用  (使用 object.ReferenceEquals(monoBehaviour, null))">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-UnityEngine.Object的自定义比较">
+<meta property="og:url" content="http://yoursite.com/Unity-UnityEngine.Object%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AF%94%E8%BE%83/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="详情Unity 对象的空检测UnityEngine.Object 有其自定义的空检测方法。 因此 UnityEngine.Object 有两种空检测：  检测 Unity 原生对象是否被销毁 (使用 UnityEngine.Object 自定义空检测) 检测 Unity 对象是否初始化与正确引用  (使用 object.ReferenceEquals(monoBehaviour, null))">
+<meta property="article:published_time" content="2021-08-28T09:24:51.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.580Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="UnityEngine">
+<meta property="article:tag" content="Unity null check">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Unity-UnityEngine.Object的自定义比较/"/>
+
+
+
+
+
+  <title>Unity-UnityEngine.Object的自定义比较 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ryuu 的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个计算机初学者</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Unity-UnityEngine.Object%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity-UnityEngine.Object的自定义比较</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-28T17:24:51+08:00">
+                2021-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Unity-UnityEngine.Object%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AF%94%E8%BE%83/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Unity-UnityEngine.Object%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AF%94%E8%BE%83/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,066 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h2><h3 id="Unity-对象的空检测"><a href="#Unity-对象的空检测" class="headerlink" title="Unity 对象的空检测"></a>Unity 对象的空检测</h3><p><strong>UnityEngine.Object 有其自定义的空检测方法</strong>。</p>
+<p>因此 UnityEngine.Object 有两种空检测：</p>
+<ol>
+<li>检测 Unity 原生对象是否被销毁 (使用 UnityEngine.Object 自定义空检测)</li>
+<li>检测 Unity 对象是否初始化与正确引用  (使用 object.ReferenceEquals(monoBehaviour, null))</li>
+</ol>
+<h3 id="Unity-对象的生与死"><a href="#Unity-对象的生与死" class="headerlink" title="Unity 对象的生与死"></a>Unity 对象的生与死</h3><h4 id="原生对象与包装对象："><a href="#原生对象与包装对象：" class="headerlink" title="原生对象与包装对象："></a>原生对象与包装对象：</h4><p>Unity 是基于 C/C++ 的引擎，GameObject 的所有实际信息 (name、component list、HideFlags 等等) 都存储在 C++ 对象中。此类对象被称为<strong>“原生对象” (native object)</strong>。</p>
+<p>C# GameObject 所有的仅是指向原生对象的指针 (pointer)。此类对象被称为<strong>“包装对象” (wrapper object)</strong>。</p>
+<p>C# 与 C++ 有不同的内存管理方式，这意味着<strong>包装对象与其包裹的原生对象有着不同的生命周期</strong>。</p>
+<p>当原生对象已被销毁，包装对象依然存在时，将包装对象其与 null 比较，<strong>UnityEngine 的 == 运算符严格执行 Unity object 底层的生命周期检查，返回 “true”</strong>。</p>
+<h4 id="Real-null-与-Fake-null："><a href="#Real-null-与-Fake-null：" class="headerlink" title="Real null 与 Fake null："></a>Real null 与 Fake null：</h4><p><strong>在 Editor only 时，MonoBehaviour 不是 “real null” 而是 “fake null”</strong>。[1]</p>
+<p>Unity 在 fake null object 中存储信息。当执行其方法 (method)，或访问其属性 (property) 时，可提供更多的上下文信息：</p>
+<p>在 fake null object 中存储信息，Unity 能够在检视窗口 (Inspector) 中高亮该 GameObject，并给出更多指引。如:”looks like you are accessing a non initialized field in this MonoBehaviour over here, use the inspector to make the field point to something” (看来您试图访问此 MonoBehaviour 的未实例化字段，请在检视窗口使其指向实例)。</p>
+<p>若不在 fake null object 中存储信息，只能得到 NullReferenceException 与堆栈跟踪。并不知道具体是哪个带有 MonoBehaviour 的 GameObject 有字段为 null。</p>
+<p><strong>UnityEngine 的 == 运算符能够检测是否存在 fake null object</strong>。</p>
+<h3 id="Unity-相关代码"><a href="#Unity-相关代码" class="headerlink" title="Unity 相关代码"></a>Unity 相关代码</h3><p>反编译获得，不是源码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; UnityEngine.Object</span><br><span class="line">public static bool operator &#x3D;&#x3D;(Object x, Object y) &#x3D;&gt; Object.CompareBaseObjects(x, y);</span><br><span class="line"></span><br><span class="line">public static bool operator !&#x3D;(Object x, Object y) &#x3D;&gt; !Object.CompareBaseObjects(x, y);</span><br><span class="line"></span><br><span class="line">public static implicit operator bool(Object exists) &#x3D;&gt; !Object.CompareBaseObjects(exists, (Object) null);</span><br><span class="line"></span><br><span class="line">public override bool Equals(object other)</span><br><span class="line">&#123;</span><br><span class="line">    Object rhs &#x3D; other as Object;</span><br><span class="line">    return (!(rhs &#x3D;&#x3D; (Object) null) || other &#x3D;&#x3D; null || other is Object) &amp;&amp; Object.CompareBaseObjects(this, rhs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static bool CompareBaseObjects(Object lhs, Object rhs)</span><br><span class="line">&#123;</span><br><span class="line">  bool flag1 &#x3D; (object) lhs &#x3D;&#x3D; null;</span><br><span class="line">  bool flag2 &#x3D; (object) rhs &#x3D;&#x3D; null;</span><br><span class="line">  if (flag2 &amp; flag1)</span><br><span class="line">    return true;</span><br><span class="line">  if (flag2)</span><br><span class="line">    return !Object.IsNativeObjectAlive(lhs);</span><br><span class="line">  return flag1 ? !Object.IsNativeObjectAlive(rhs) : lhs.m_InstanceID &#x3D;&#x3D; rhs.m_InstanceID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static bool IsNativeObjectAlive(Object o)</span><br><span class="line">&#123;</span><br><span class="line">  if (o.GetCachedPtr() !&#x3D; IntPtr.Zero)</span><br><span class="line">    return true;</span><br><span class="line">  return !(o is MonoBehaviour) &amp;&amp; !(o is ScriptableObject) &amp;&amp; Object.DoesObjectWithInstanceIDExist(o.GetInstanceID());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F;   &lt;para&gt;Returns the instance id of the object.&lt;&#x2F;para&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">[SecuritySafeCritical]</span><br><span class="line">public int GetInstanceID()</span><br><span class="line">&#123;</span><br><span class="line">  this.EnsureRunningOnMainThread();</span><br><span class="line">  return this.m_InstanceID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void EnsureRunningOnMainThread()</span><br><span class="line">&#123;</span><br><span class="line">  if (!Object.CurrentThreadIsMainThread())</span><br><span class="line">    throw new InvalidOperationException(&quot;EnsureRunningOnMainThread can only be called from the main thread&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private IntPtr GetCachedPtr() &#x3D;&gt; this.m_CachedPtr;</span><br><span class="line"></span><br><span class="line">[NativeMethod(IsFreeFunction &#x3D; true, IsThreadSafe &#x3D; true, Name &#x3D; &quot;UnityEngineObjectBindings::DoesObjectWithInstanceIDExist&quot;)]</span><br><span class="line">[MethodImpl(MethodImplOptions.InternalCall)]</span><br><span class="line">internal static extern bool DoesObjectWithInstanceIDExist(int instanceID);</span><br><span class="line"></span><br><span class="line">[NativeMethod(IsFreeFunction &#x3D; true, IsThreadSafe &#x3D; true, Name &#x3D; &quot;CurrentThreadIsMainThread&quot;)]</span><br><span class="line">[MethodImpl(MethodImplOptions.InternalCall)]</span><br><span class="line">private static extern bool CurrentThreadIsMainThread();</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，Unity 实现了自己的空判断，并将其应用于重载的 != 运算符、== 运算符、隐式 bool 转换运算符及重写的 System.Object 的 Equals(object obj) 中。</p>
+<p>其中涉及许多的逻辑，如确保方法调用于主线程，指定实例 id 的 UnityEngine.Object 是否存在，缓存的指针是否为 IntPtr.Zero，比较的两 UnityEngine.Object 的 实例 id 是否相同。及其他的外部方法调用。因此，<strong>相比于 object.ReferenceEquals() 的调用会被编译器优化为简单的空检查，Unity的自定义比较需要执行许多逻辑，速度较慢</strong>。</p>
+<h2 id="编写规范"><a href="#编写规范" class="headerlink" title="编写规范"></a>编写规范</h2><p>上文提到了 Unity 对象的两种 null 检测，<strong>编写代码时，一定要明确表意，确定为其中的一种</strong>。</p>
+<p>特别的，C# 的空合并运算符与空条件运算符将会绕过 Unity 的生命周期检查，导致表意不明：[2]</p>
+<h3 id="空合并运算符"><a href="#空合并运算符" class="headerlink" title="空合并运算符"></a>空合并运算符</h3><p>以下示例的表意不明确：是检查 gameObject 是否正确引用，还是检查原生 Unity 引擎对象是否已销毁？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; DON&#39;T DO THIS!</span><br><span class="line">var go &#x3D; gameObject ?? CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>若目的是检查底层引擎对象的生命周期，则此代码不正确，因为生命周期检查被绕过。</p>
+<p>使用显式 null 或 boolean 比较修复代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var go &#x3D; gameObject !&#x3D; null ? gameObject : CreateNewGameObject();</span><br><span class="line">&#x2F;&#x2F; 也可使用隐式的 bool 转换运算符进行同样的检测</span><br><span class="line">go &#x3D; gameObject ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>若目的是确保 gameObject 变量已被初始化并分配了有效的 C# 引用，推荐使用 object.ReferenceEquals()：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return !object.ReferenceEquals(gameObject, null) ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>虽然稍显冗长，但表意十分明确。</p>
+<h3 id="空条件运算符"><a href="#空条件运算符" class="headerlink" title="空条件运算符"></a>空条件运算符</h3><p>以下示例的表意同样不明确：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; DON&#39;T DO THIS!</span><br><span class="line">monoBehaviour?.Invoke(&quot;Attack&quot;, 1.0f);</span><br></pre></td></tr></table></figure>
+
+<p>同样的，若目的是简单地检查 monoBehaviour 变量是否已正确初始化与引用，推荐使用 object.ReferenceEquals()：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if (!object.ReferenceEquals(monoBehaviour, null))</span><br><span class="line">  monoBehaviour.Invoke(&quot;Attack&quot;, 1.0f);</span><br></pre></td></tr></table></figure>
+
+<p>若目的是检查底层引擎对象的生命周期，推荐使用显式的 null 或 boolean 比较：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (monoBehaviour !&#x3D; null)</span><br><span class="line">  monoBehaviour.Invoke(&quot;Attack&quot;, 1.0f);</span><br><span class="line">&#x2F;&#x2F; 也可使用隐式的 bool 转换运算符</span><br><span class="line">if (otherBehaviour)</span><br><span class="line">  otherBehaviour.Invoke(&quot;Attack&quot;, 1.0f);</span><br></pre></td></tr></table></figure>
+
+<h2 id="个人解决方案"><a href="#个人解决方案" class="headerlink" title="个人解决方案"></a>个人解决方案</h2><p>如果只是想检测 GameObject 是否初始化与正确引用，可以考虑使用 unity 平台宏 以及 C# 扩展方法对 ReferenceEquals 进行封装。[3]</p>
+<p>这样避免了在 editor 时 fake null object 引发的 ReferenceEquals 判断错误的问题，也提高了代码的可读性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static bool IsSet(this GameObject gameObject)</span><br><span class="line">&#123;</span><br><span class="line">#if UNITY_EDITOR</span><br><span class="line">	return gameObject;</span><br><span class="line">#else</span><br><span class="line">	return !ReferenceEquals(gameObject, null);</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="个人思考"><a href="#个人思考" class="headerlink" title="个人思考"></a>个人思考</h2><p>Unity 在与 null 进行比较时判断原生对象是否存活，而是不是检测 C# 对象。这种设计是反直觉的，大多数用户未注意到这种自定义比较。<a href="https://blog.unity.com/technology/custom-operator-should-we-keep-it" target="_blank" rel="noopener">Custom == operator, should we keep it? | Unity Blog</a> Unity 自己的开发者都忘记了。</p>
+<p>C# 的引用类型，若不是”值类” (Value class)，应采用默认的比较逻辑 (直接对引用进行比较)，不应重载的 !=、== 及隐式 bool 转换运算符，不应重写 System.Object 的 Equals(object obj) 方法。</p>
+<p>UnityEngine.Object 的比较逻辑有把自己的本职工作做好 (直接对引用进行比较)，又做了其他的工作 (判断原生对象是否存活)，这不符合单一职责原则。导致了两种空判断的存在，造成了可能的语义不明，与潜在的性能下降。这样增添的逻辑也导致其表现与 C# 的空合并运算符和空条件运算符不一致。导致在使用 UnityEngine.Object 没法很好的使用这两种运算符。若使用，则表意不明确，若不使用，则降低了代码的可读性 (见编写规范)。</p>
+<p>更好的方法可能是在 UnityEngine.Object 中加入 destroyed 这样的字段标识原生对象的存活情况。当用户想到知道时进行调用。[4]</p>
+<h2 id="参阅"><a href="#参阅" class="headerlink" title="参阅"></a>参阅</h2><p>Unity 的说明 <a href="https://blog.unity.com/technology/custom-operator-should-we-keep-it" target="_blank" rel="noopener">Custom == operator, should we keep it? | Unity Blog</a></p>
+<p>译文 <a href="/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/" title="Unity-自定义&#x3D;&#x3D;运算符，我们应该保留它吗">Unity-自定义&#x3D;&#x3D;运算符，我们应该保留它吗</a></p>
+<p>Resharper-unity 的说明 <a href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object" target="_blank" rel="noopener">Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains/resharper-unity Wiki</a></p>
+<p>译文 <a href="/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" title="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/null-coalescing-operator" target="_blank" rel="noopener">?? 和 ??= 运算符 - C# 参考 | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-" target="_blank" rel="noopener">成员访问运算符和表达式 Null 条件运算符 ?. 和 ?[] - C# 参考</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener">扩展方法 - C# 编程指南 | Microsoft Docs</a></p>
+<p>Real null 与 Fake null 的测试可见我的 github 仓库：<a href="https://github.com/Ryuu-64/UnityEngineObjectNullCheck" target="_blank" rel="noopener">UnityEngineObjectNullCheck</a> (分别打包运行与编辑器运行对比区别)</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[1] 仅在编辑器中有这种情况。这也是为什么调用GetComponent() 查询不存在的组件时，有 C# 内存分配产生，因为此时 fake null object 中正在生成自定义警告字符串。</p>
+<p>这也是为什么测试游戏需要打包测试，而不是在编辑器测试。为了给用户提供便利，编辑器中做了很多额外的工作 (用例、安全检查等)，但是牺牲了性能。</p>
+<p>[2] 空合并运算符与空条件运算符是无法重载的，可能是因为这点，Unity 无法令其进行自定义的空检查</p>
+<p>[3] <a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener">扩展方法 - C# 编程指南 | Microsoft Docs</a></p>
+<p>[4] Unity 最终选择了不对其修改，而是修复由此带来的种种问题。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/UnityEngine/" rel="tag"># UnityEngine</a>
+          
+            <a href="/tags/Unity-null-check/" rel="tag"># Unity null check</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" rel="next" title="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">
+                <i class="fa fa-chevron-left"></i> Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Hexo-%E5%BC%95%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%87%E7%AB%A0/" rel="prev" title="Hexo-引用自己的文章">
+                Hexo-引用自己的文章 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Ryuu" />
+            
+              <p class="site-author-name" itemprop="name">Ryuu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Ryuu-64" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tomoto.top/" title="小龙宫" target="_blank">小龙宫</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.moyk.top/" title="影子" target="_blank">影子</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://m-studio-m.github.io/" title="Michael" target="_blank">Michael</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zerg73.github.io/" title="白白可乐" target="_blank">白白可乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://luff.cloud/" title="TheLong" target="_blank">TheLong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wzp0718.top/" title="wzp" target="_blank">wzp</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#详情"><span class="nav-text">详情</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-对象的空检测"><span class="nav-text">Unity 对象的空检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-对象的生与死"><span class="nav-text">Unity 对象的生与死</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原生对象与包装对象："><span class="nav-text">原生对象与包装对象：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Real-null-与-Fake-null："><span class="nav-text">Real null 与 Fake null：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-相关代码"><span class="nav-text">Unity 相关代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写规范"><span class="nav-text">编写规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#空合并运算符"><span class="nav-text">空合并运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空条件运算符"><span class="nav-text">空条件运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#个人解决方案"><span class="nav-text">个人解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#个人思考"><span class="nav-text">个人思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参阅"><span class="nav-text">参阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-text">注释</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ryuu</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'UJf4GAElRibXyJ7NxUTFrGg6-gzGzoHsz',
+        appKey: 'O5i7CbWgK0enbp5nUvqlRANY',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'12' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":30,"vOffset":0},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>

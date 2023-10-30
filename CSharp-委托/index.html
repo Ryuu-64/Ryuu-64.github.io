@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-fill-left.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C#,delegate," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="委托是类委托是类，C# 提供了 delegate 关键字，使得用户能简单的声明委托。编译器及 CLR 做了大量的工作来隐藏委托的复杂性。[1] 1internal delegate void FeedBack(int value);  编译器为如上的委托声明定义一个完整的类： 123456789101112internal class FeedBack : System.MulticastDele">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSharp-委托">
+<meta property="og:url" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="委托是类委托是类，C# 提供了 delegate 关键字，使得用户能简单的声明委托。编译器及 CLR 做了大量的工作来隐藏委托的复杂性。[1] 1internal delegate void FeedBack(int value);  编译器为如上的委托声明定义一个完整的类： 123456789101112internal class FeedBack : System.MulticastDele">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/delegate.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/%E6%9C%AA%E6%98%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%A7%94%E6%89%98.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/%E6%98%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%A7%94%E6%89%98.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/code.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/+=.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/combine.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/-=.png">
+<meta property="og:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/remove.png">
+<meta property="article:published_time" content="2021-09-02T12:45:44.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.561Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="delegate">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/delegate.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/CSharp-委托/"/>
+
+
+
+
+
+  <title>CSharp-委托 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ryuu 的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个计算机初学者</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/CSharp-%E5%A7%94%E6%89%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSharp-委托</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-02T20:45:44+08:00">
+                2021-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/CSharp-%E5%A7%94%E6%89%98/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/CSharp-%E5%A7%94%E6%89%98/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,847 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="委托是类"><a href="#委托是类" class="headerlink" title="委托是类"></a>委托是类</h2><p><strong>委托是类，C# 提供了 delegate 关键字，使得用户能简单的声明委托</strong>。编译器及 CLR 做了大量的工作来隐藏委托的复杂性。[1]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">internal delegate void FeedBack(int value);</span><br></pre></td></tr></table></figure>
+
+<p>编译器为如上的委托声明定义一个完整的类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">internal class FeedBack : System.MulticastDelegate</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 构造器(Constructor)</span><br><span class="line">    public FeedBack(object @object, IntPtr method);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 委托调用 [2]</span><br><span class="line">    public virtual void Invoke(int value);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 委托异步调用</span><br><span class="line">    public virtual IAsyncResult BeginInvoke(int value, AsyncCallback asyncCallback, object @object);</span><br><span class="line">    public virtual void EndInvoke(IAsyncResult result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可使用 ILDasm.exe 打开生成的程序集，查看这个自动生成的类。</p>
+<img src="/CSharp-%E5%A7%94%E6%89%98/delegate.png" class="" title="delegate">
+
+<p>编译器定义了 FeedBack 类，其派生自 FCL (Framework Class Library) 中的 System.MulticastDelegate 类 (所有的委托都派生自 MulticastDelegate，MulticastDelegate 派生自 Delegate)。</p>
+<h2 id="MulticastDelegate"><a href="#MulticastDelegate" class="headerlink" title="MulticastDelegate"></a>MulticastDelegate</h2><p>所有的委托都派生自 MulticastDelegate，所以它们继承了 MulticastDelegate 的字段、属性与方法。在这些成员中，有三个非公共字段是最重要的：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>_target (Delegate 类的字段)</td>
+<td>System.Object</td>
+<td>若委托对象包装静态方法时，此字段为 null<br />若委托对象包装实例方法时，此字段引用回调方法需要操作的对象 (实例方法所在的对象)</td>
+</tr>
+<tr>
+<td>_methodPtr (Delegate 类的字段)</td>
+<td>System.IntPtr</td>
+<td>根据平台而定的整数类型 (所以上文 ILDasm 中的显示是 native int)，CLR 使用它标记需要回调的方法</td>
+</tr>
+<tr>
+<td>_invocationList</td>
+<td>System.Object</td>
+<td>此字段通常为 null。构造委托链时，引用一个委托数组</td>
+</tr>
+</tbody></table>
+<p>委托的构造器有两个参数，一个是对象引用 (System.Object)，另一个则是根据平台而定的整型 (System.IntPtr)。C# 编译器构造委托时，会分析源码以确定引用的对象及方法。对象引用被传给构造器的 object 参数，标识方法的特殊 IntPtr 值 (从 MethodDef 或 MemberRef 元数据 token 获得) 被传给构造器的 method 参数。对于静态方法，为 object 参数传递 null。构造器将这两个实参分别保存于 _target 及 _methodPtr。此外，构造器将 _invocationList 设为 null。</p>
+<h2 id="委托链-多播"><a href="#委托链-多播" class="headerlink" title="委托链/多播"></a>委托链/多播</h2><p><strong>委托链是委托对象的集合</strong>。</p>
+<h3 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h3><p>调用 Delegate.Combine(Delegate a, Delegate b) 方法对两个委托进行合并。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fbChain &#x3D; (Feedback)Delegate.Combine(fbChain, fb1);</span><br></pre></td></tr></table></figure>
+
+<h3 id="移除"><a href="#移除" class="headerlink" title="移除"></a>移除</h3><p>调用 Delegate.Remove(Delegate source, Delegate value) 方法对两个委托进行合并。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fbChain &#x3D; (Feedback)Delegate.Remove(fbChain, fb1);</span><br></pre></td></tr></table></figure>
+
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>详情请参阅 <a href="https://referencesource.microsoft.com/" target="_blank" rel="noopener">Reference Source</a>。</p>
+<h4 id="Combine"><a href="#Combine" class="headerlink" title="Combine"></a>Combine</h4><ul>
+<li><p>若一个委托为 null</p>
+<p>返回非 null 委托</p>
+</li>
+<li><p>若两个委托为 null</p>
+<p>返回 Combine 的第二个参数 (当然返回的也是 null)</p>
+</li>
+<li><p>若都不为 null</p>
+<p>进行委托合并</p>
+<ol>
+<li>判断两委托类型是否相同，不同则抛出 ArgumentException</li>
+<li>合并两个委托对象中的委托 (包括委托链中的委托) (Object[] : resultList) (使用 for 遍历实现)</li>
+<li>统计两个委托对象中的委托数 (int: invocationCount) (委托链不为空则统计委托链中的委托)</li>
+<li>根据 resultList 及 invocationCount 构建新的委托对象并返回</li>
+</ol>
+</li>
+</ul>
+<h4 id="Remove"><a href="#Remove" class="headerlink" title="Remove"></a>Remove</h4><p>注意，若 Remove 的目标为委托链，则该委托链需为当前操作委托对象委托链的连续子列表。[3]</p>
+<ul>
+<li>若指定需要去除的委托<strong>为空</strong>，直接返回当前委托</li>
+<li>若指定需要去除的委托<strong>不为空</strong>，在当前委托及其委托链中寻找目标委托或目标委托链，剔除并返回<ul>
+<li>结果是委托链则构建新委托并返回</li>
+<li>结果是单一委托则直接返回该委托</li>
+</ul>
+</li>
+</ul>
+<h2 id="不要定义过多的委托"><a href="#不要定义过多的委托" class="headerlink" title="不要定义过多的委托"></a>不要定义过多的委托</h2><p>Microsoft 在刚开始开发 .NET Framework 的时候引入了委托的概念。开发人员在 FCL 中添加类时，凡是有回调方法的地方都定义了新的委托类型。随时间的推移，他们定义的委托越来越多。仅在 MSCorLib.dll 中，就有接近 50 个委托类型，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public delegate void TryCode(Object userData);</span><br><span class="line">public delegate void WaitCallback(Object state);</span><br><span class="line">public delegate void TimerCallback(Object state);</span><br><span class="line">public delegate void ContextCallback(Object state);</span><br><span class="line">public delegate void SendOrPostCallback(Object state);</span><br><span class="line">public delegate void ParameterizedThreadStart(Object obj);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>以上的示例委托，实际上都是一样的：这些委托引用的方法都是获取一个 Object 返回 void。没有必要定义这么多委托，定义一个就够了。</p>
+<p>现在的 .NET Framework 支持泛型 (C# 2.0 版本引入)，只需要几个泛型委托，就能表示多达16个参数的方法：</p>
+<ul>
+<li><p>从无参，到至多16个参数，返回值为 void 的 Action 委托：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public delegate void Action(); &#x2F;&#x2F; (这个不是泛型委托)</span><br><span class="line">public delegate void Action&lt;in T&gt;(T obj);</span><br><span class="line">public delegate void Action&lt;in T1, in T2&gt;(T1 arg1, T2 arg2);</span><br><span class="line">...</span><br><span class="line">public delegate void Action&lt;in T1, ... , in T16&gt;(T1 arg1, ... , T16 arg16);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从无参，到至多16个参数，返回值为 TResult 的 Func 委托：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public delegate TResult Func&lt;out TResult&gt;();</span><br><span class="line">public delegate TResult Func&lt;in T, out TResult&gt;(T arg);</span><br><span class="line">...</span><br><span class="line">public delegate TResult Func&lt;in T1, ... , in T16, out TResult&gt;(T1 arg1, ... , T16 arg16);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>建议尽量使用以上的委托类型，而不是定义更多的委托类型。这样能减少系统中的类型数量，简化代码。</p>
+<p>但若需使用 ref 或 out 关键字以传递引用的方式传递参数，可能不得自定义委托：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delegate void Foo(ref int bar);</span><br></pre></td></tr></table></figure>
+
+<h2 id="event-关键字"><a href="#event-关键字" class="headerlink" title="event 关键字"></a>event 关键字</h2><p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/event" target="_blank" rel="noopener">event</a> 关键字用于在发布类 (publisher class) 中声明事件。这是一种特殊的多播委托，<strong>仅能从声明事件的类或结构（发布类）中对其进行调用</strong>，否则产生编译器：event 的委托仅能作为 += 或 -= 的左值 (除非在其声明的类或结构中)。 如果其他类或结构订阅该事件，则在发布类引发该事件时，将调用其事件处理程序方法。 有关详细信息和代码示例，请参阅<a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/events/" target="_blank" rel="noopener">事件</a>和<a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/delegates/" target="_blank" rel="noopener">委托</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public event Action action;</span><br></pre></td></tr></table></figure>
+
+<h2 id="EventHandler"><a href="#EventHandler" class="headerlink" title="EventHandler"></a>EventHandler</h2><p><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler?view=net-5.0" target="_blank" rel="noopener">EventHandler</a> 委托是一个预定义的委托，专门表示不生成数据的事件的事件处理程序方法。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public delegate void EventHandler(object? sender, EventArgs e);</span><br></pre></td></tr></table></figure>
+
+<p>如果事件生成数据，则必须使用泛型 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler-1?view=net-5.0" target="_blank" rel="noopener">EventHandler<TEventArgs></a> 委托类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public delegate void EventHandler&lt;TEventArgs&gt;(object? sender, TEventArgs e);</span><br></pre></td></tr></table></figure>
+
+<h2 id="委托的简化语法"><a href="#委托的简化语法" class="headerlink" title="委托的简化语法"></a>委托的简化语法</h2><h3 id="Combine-与-Remove-的简化"><a href="#Combine-与-Remove-的简化" class="headerlink" title="Combine 与 Remove  的简化"></a>Combine 与 Remove  的简化</h3><p>C# 为委托重载 += 调用 Combine ，重载 -= 调用 Remove ，简化了委托链的构造。[4]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">action1 &#x3D; (Action) Delegate.Combine(action1, action2);</span><br><span class="line">action1 +&#x3D; action2;</span><br><span class="line">Delegate.Remove(action1, action2);</span><br><span class="line">action1 -&#x3D; action2;</span><br></pre></td></tr></table></figure>
+
+<h3 id="不需要显式构造委托对象"><a href="#不需要显式构造委托对象" class="headerlink" title="不需要显式构造委托对象"></a>不需要显式构造委托对象</h3><p>仅仅是为了指定委托地址就构建一个对象显得有些奇怪，实际上构建委托对象是 CLR 的要求，该对象是包装器，可保证被包装的方法只能以类型安全的方式调用。C# 简化了委托的构建过程，不需要用户显示的使用 new 关键字进行委托的构造。</p>
+<ul>
+<li><p>未显式构造委托对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static void Main(string[] args)</span><br><span class="line">&#123;</span><br><span class="line">    Action action &#x3D; PrintAction;</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void PrintAction()</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(&quot;Action&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/CSharp-%E5%A7%94%E6%89%98/%E6%9C%AA%E6%98%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%A7%94%E6%89%98.png" class="" title="未显式构造委托">
+</li>
+<li><p>显式构造委托对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; DON&#39;T DO THIS</span><br><span class="line">public static void Main(string[] args)</span><br><span class="line">&#123;</span><br><span class="line">    Action action &#x3D; new Action(PrintAction);</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void PrintAction()</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(&quot;Action&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/CSharp-%E5%A7%94%E6%89%98/%E6%98%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%A7%94%E6%89%98.png" class="" title="显式构造委托">
+
+</li>
+</ul>
+<p>对比显式构造与非显式构造的 IL code，他们都会构造一个 Action 委托实例。</p>
+<h3 id="不需要定义回调方法-使用-lamdba-表达式"><a href="#不需要定义回调方法-使用-lamdba-表达式" class="headerlink" title="不需要定义回调方法 (使用 lamdba 表达式)"></a>不需要定义回调方法 (使用 lamdba 表达式)</h3><p>不需要因构造委托而定义一个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static void Main(string[] args)</span><br><span class="line">&#123;</span><br><span class="line">    Action action &#x3D; PrintAction;</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; NOT NEED</span><br><span class="line">private static void PrintAction()</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(&quot;Action&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 lamdba 表达式简化回调：[5]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static void Main(string[] args)</span><br><span class="line">&#123;</span><br><span class="line">    Action action &#x3D; () &#x3D;&gt; Console.WriteLine(&quot;Action&quot;);</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="局部变量不需要手动包装到类中即可传递给回调方法"><a href="#局部变量不需要手动包装到类中即可传递给回调方法" class="headerlink" title="局部变量不需要手动包装到类中即可传递给回调方法"></a>局部变量不需要手动包装到类中即可传递给回调方法</h3><p>有时可能希望回调代码引用类中定义的其他成员或方法中的局部参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">internal class Program</span><br><span class="line">&#123;</span><br><span class="line">    private static int bar &#x3D; 21;</span><br><span class="line"></span><br><span class="line">    public static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        int foo &#x3D; 21;</span><br><span class="line">        Action action &#x3D; () &#x3D;&gt; Console.WriteLine(foo + bar); &#x2F;&#x2F; Closure allocation: &#39;foo&#39; variable</span><br><span class="line">        action.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实际上 lamdba 表达式主体的代码在一个单独的方法中 (CLR 的要求)。C# 通过自动辅助类实现闭包 (closure) [6]。在辅助类中，为需要传递给回调的每个值都定义一个字段。将回调方法定义为其实例方法。</p>
+<p>构建回调方法实际上也构造了辅助类实例，使用方法中的局部变量的值初始化该实例中的字段，最后构造委托对象并绑定到该辅助对象的实例方法。</p>
+<h2 id="委托与反射"><a href="#委托与反射" class="headerlink" title="委托与反射"></a>委托与反射</h2><p>开发者可以在不知道回调方法的原型时使用回调。使用 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.methodinfo.createdelegate?view=net-5.0" target="_blank" rel="noopener">MethodInfo.CreateDelegate</a>，可在编译期不知道委托的所有必要信息的情况下创建委托：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 构造包含静态方法的委托</span><br><span class="line">public virtual Delegate CreateDelegate (Type delegateType);</span><br><span class="line">&#x2F;&#x2F; 构造包含实例方法的委托 (target 引用 this 实参)</span><br><span class="line">public virtual Delegate CreateDelegate (Type delegateType, object? target);</span><br></pre></td></tr></table></figure>
+
+<p>创建完成后可用 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.delegate.dynamicinvoke?view=net-5.0" target="_blank" rel="noopener">Delegate.DynamicInvoke(Object[])</a> 调用它们：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 调用委托并传递参数</span><br><span class="line">public object? DynamicInvoke (params object?[]? args);</span><br></pre></td></tr></table></figure>
+
+<p>使用反射 API 获取引用了回调方法的 MethodInfo 对象，调用 CreateDelegate 构造委托 (如果是实例方法则需要传递 target 参数，指定其 this 参数)。</p>
+<p>使用 DynamicInvoke 方法对委托对象的回调方法进行调用。DynamicInvoke 可传递一组参数，其在内部保证传递的参数与回调方法期望的参数兼容，兼容则调用回调方法，否则抛出 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.argumentexception?view=net-5.0" target="_blank" rel="noopener">ArgumentException</a>。若参数数不匹配，则抛出 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.targetparametercountexception?view=net-5.0" target="_blank" rel="noopener">TargetParameterCountException</a>。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">internal class Foo</span><br><span class="line">&#123;</span><br><span class="line">    public static void StaticMethod() &#x3D;&gt; Console.WriteLine(42);</span><br><span class="line"></span><br><span class="line">    public void NonStaticMethod() &#x3D;&gt; Console.WriteLine(42);</span><br><span class="line"></span><br><span class="line">    public static void MethodWithPara(int num) &#x3D;&gt; Console.WriteLine(num);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">internal class Program</span><br><span class="line">&#123;</span><br><span class="line">    public static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        Foo delegateReflectionTest &#x3D; new Foo();</span><br><span class="line">        MethodInfo nonStaticMethodInfo &#x3D; delegateReflectionTest.GetType().GetMethod(&quot;NonStaticMethod&quot;);</span><br><span class="line">        Delegate delegate1 &#x3D; nonStaticMethodInfo?.CreateDelegate(typeof(Action), delegateReflectionTest);</span><br><span class="line">        delegate1?.DynamicInvoke();</span><br><span class="line">        MethodInfo staticMethodInfo &#x3D; delegateReflectionTest.GetType().GetMethod(&quot;StaticMethod&quot;);</span><br><span class="line">        Delegate delegate2 &#x3D; staticMethodInfo?.CreateDelegate(typeof(Action));</span><br><span class="line">        delegate2?.DynamicInvoke();</span><br><span class="line">        MethodInfo methodInfoWithPara &#x3D; delegateReflectionTest.GetType().GetMethod(&quot;MethodWithPara&quot;);</span><br><span class="line">        Delegate delegate3 &#x3D; methodInfoWithPara?.CreateDelegate(typeof(Action&lt;int&gt;));</span><br><span class="line">        delegate3?.DynamicInvoke(42);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参阅"><a href="#参阅" class="headerlink" title="参阅"></a>参阅</h2><p><a href="https://docs.microsoft.com/zh-cn/dotnet/framework/tools/ildasm-exe-il-disassembler" target="_blank" rel="noopener">Ildasm.exe(IL 反汇编程序)</a></p>
+<p>一般，该工具位于 NETFX 4.7.2 Tools 中</p>
+<p>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\x64\ildasm.exe</p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/delegates/how-to-combine-delegates-multicast-delegates" target="_blank" rel="noopener">如何合并委托（多播委托）- C# 编程指南 | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal" target="_blank" rel="noopener">- - 和 -= 运算符 - C# 参考 | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/addition-operator#delegate-combination" target="_blank" rel="noopener">+ 和 += 运算符 - C# 参考 | Microsoft Docs</a></p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[1] 因此，可以定义类的地方，就可以定义委托。</p>
+<p>[2] 这里把 Invoke 翻译为调用。但是要清楚 Invoke 和 Call 的区别，执行委托方法不是直接执行目标方法，而是从委托处援引 (Invoke) 目标方法执行。</p>
+<p>[3] 实现细节请参阅 <a href="https://referencesource.microsoft.com/#mscorlib/system/multicastdelegate.cs,89414467eca8bd75,references" target="_blank" rel="noopener">Reference Source Multicastdelegate</a> ，算法为移除目标数组中的连续子序列</p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal" target="_blank" rel="noopener">- - 和 -= 运算符 - C# 参考 | Microsoft Docs (委托删除)</a> 中的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Action a &#x3D; () &#x3D;&gt; Console.Write(&quot;a&quot;);</span><br><span class="line">Action b &#x3D; () &#x3D;&gt; Console.Write(&quot;b&quot;);</span><br><span class="line"></span><br><span class="line">var abbaab &#x3D; a + b + b + a + a + b;</span><br><span class="line">var aba &#x3D; a + b + a;</span><br><span class="line"></span><br><span class="line">var first &#x3D; abbaab - aba;</span><br><span class="line">first();  &#x2F;&#x2F; output: abbaab</span><br><span class="line">Console.WriteLine();</span><br><span class="line">Console.WriteLine(object.ReferenceEquals(abbaab, first));  &#x2F;&#x2F; output: True</span><br><span class="line"></span><br><span class="line">Action a2 &#x3D; () &#x3D;&gt; Console.Write(&quot;a&quot;);</span><br><span class="line">var changed &#x3D; aba - a;</span><br><span class="line">changed();  &#x2F;&#x2F; output: ab</span><br><span class="line">Console.WriteLine();</span><br><span class="line">var unchanged &#x3D; aba - a2;</span><br><span class="line">unchanged();  &#x2F;&#x2F; output: aba</span><br><span class="line">Console.WriteLine();</span><br><span class="line">Console.WriteLine(object.ReferenceEquals(aba, unchanged));  &#x2F;&#x2F; output: True</span><br></pre></td></tr></table></figure>
+<p>[4] 可通过查看 IL code 验证这点：</p>
+<img src="/CSharp-%E5%A7%94%E6%89%98/code.png" class="" title="code">
+
+<img src="/CSharp-%E5%A7%94%E6%89%98/+=.png" class="" title="+&#x3D;">
+
+<img src="/CSharp-%E5%A7%94%E6%89%98/combine.png" class="" title="combine">
+
+<img src="/CSharp-%E5%A7%94%E6%89%98/-=.png" class="" title="-&#x3D;">
+
+<img src="/CSharp-%E5%A7%94%E6%89%98/remove.png" class="" title="remove">
+
+<p>[5] 请参阅 <a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/lambda-operator#expression-body-definition" target="_blank" rel="noopener">=&gt; 运算符 - C# 参考 | Microsoft Docs (表达式主体定义)</a></p>
+<p>[6] 捕获上下文的外部变量以在回调方法中使用。闭包有对外部变量的引用，所以可能导致外部变量所在的对象声明周期延长。</p>
+<style>
+table th:first-of-type {
+    width: 27.5%;
+}
+table th:nth-of-type(2) {
+    width: 22.5%;
+}
+table th:nth-of-type(3) {
+    width: 50%;
+}
+</style>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+            <a href="/tags/delegate/" rel="tag"># delegate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/CSharp-%E4%B8%8D%E8%A6%81%E4%B8%BAfor%E5%BB%BA%E7%AB%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F/" rel="next" title="CSharp-不要为for建立属性的临时变量">
+                <i class="fa fa-chevron-left"></i> CSharp-不要为for建立属性的临时变量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="prev" title="单例模式">
+                单例模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Ryuu" />
+            
+              <p class="site-author-name" itemprop="name">Ryuu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Ryuu-64" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tomoto.top/" title="小龙宫" target="_blank">小龙宫</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.moyk.top/" title="影子" target="_blank">影子</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://m-studio-m.github.io/" title="Michael" target="_blank">Michael</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zerg73.github.io/" title="白白可乐" target="_blank">白白可乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://luff.cloud/" title="TheLong" target="_blank">TheLong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wzp0718.top/" title="wzp" target="_blank">wzp</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#委托是类"><span class="nav-text">委托是类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MulticastDelegate"><span class="nav-text">MulticastDelegate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委托链-多播"><span class="nav-text">委托链&#x2F;多播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#合并"><span class="nav-text">合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除"><span class="nav-text">移除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Combine"><span class="nav-text">Combine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Remove"><span class="nav-text">Remove</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不要定义过多的委托"><span class="nav-text">不要定义过多的委托</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#event-关键字"><span class="nav-text">event 关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventHandler"><span class="nav-text">EventHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委托的简化语法"><span class="nav-text">委托的简化语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Combine-与-Remove-的简化"><span class="nav-text">Combine 与 Remove  的简化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不需要显式构造委托对象"><span class="nav-text">不需要显式构造委托对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不需要定义回调方法-使用-lamdba-表达式"><span class="nav-text">不需要定义回调方法 (使用 lamdba 表达式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部变量不需要手动包装到类中即可传递给回调方法"><span class="nav-text">局部变量不需要手动包装到类中即可传递给回调方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委托与反射"><span class="nav-text">委托与反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参阅"><span class="nav-text">参阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-text">注释</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ryuu</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'UJf4GAElRibXyJ7NxUTFrGg6-gzGzoHsz',
+        appKey: 'O5i7CbWgK0enbp5nUvqlRANY',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'12' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":30,"vOffset":0},"mobile":{"show":true,"scale":0.5},"log":false});</script></body>
+</html>
