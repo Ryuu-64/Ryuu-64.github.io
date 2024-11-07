@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-fill-left.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C#,effective CSharp,LINQ,lambda," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如： 1234567891011121314151617var allEmployees &#x3D; FindAllEmployees();&#x2F;&#x2F; Find the first employees:var earlyFolks &#x3D;    from e in allEmployees">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-CSharp-38考虑用lambda表达式来代替方法">
+<meta property="og:url" content="http://yoursite.com/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如： 1234567891011121314151617var allEmployees &#x3D; FindAllEmployees();&#x2F;&#x2F; Find the first employees:var earlyFolks &#x3D;    from e in allEmployees">
+<meta property="article:published_time" content="2021-08-04T10:01:40.000Z">
+<meta property="article:modified_time" content="2024-11-07T09:36:52.490Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="effective CSharp">
+<meta property="article:tag" content="LINQ">
+<meta property="article:tag" content="lambda">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Effective-CSharp-38考虑用lamdba表达式来代替方法/"/>
+
+
+
+
+
+  <title>Effective-CSharp-38考虑用lambda表达式来代替方法 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ryuu 的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个计算机初学者</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Effective-CSharp-38考虑用lambda表达式来代替方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-04T18:01:40+08:00">
+                2021-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                   字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var allEmployees &#x3D; FindAllEmployees();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Find the first employees:</span><br><span class="line">var earlyFolks &#x3D;</span><br><span class="line">    from e in allEmployees</span><br><span class="line">    where e.Classification &#x3D;&#x3D; EmployeeType.Salary</span><br><span class="line">    where e.YearsOfService &gt; 20</span><br><span class="line">    where e.MonthlySalary &lt; 4000</span><br><span class="line">    select e;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Find the newest people:</span><br><span class="line">var newest &#x3D;</span><br><span class="line">    from e in allEmployees</span><br><span class="line">    where e.Classification &#x3D;&#x3D; EmployeeType.Salary</span><br><span class="line">    where e.YearsOfService &lt; 20</span><br><span class="line">    where e.MonthlySalary &lt; 4000</span><br><span class="line">    select e;</span><br></pre></td></tr></table></figure>
+
+<p>你可以将这些 where 合并为一条子句，然而这并不会带来太大区别。查询操作之间本就可以拼接 (见31条)，而简单的 where 谓词还会有可能内联 (inline)，因此，这两种写法在性能上是一样的。</p>
+<p>看到刚才那段代码，你可能会想把重复的 lambda 表达式提取到方法，以便复用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Factor out method:</span><br><span class="line">private static bool LowPaidSalaried(Employee e) &#x3D;&gt; </span><br><span class="line">    e.MonthlySalary &lt; 4000 &amp;&amp; e.Classification &#x3D;&#x3D; EmployeeType.Salary;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; else where</span><br><span class="line">var allEmployees &#x3D; FindAllEmployees();</span><br><span class="line"></span><br><span class="line">var earlyFolks &#x3D;</span><br><span class="line">	from e in allEmployees</span><br><span class="line">	where LowPaidSalaried(e) &amp;&amp; e.YearsOfService &gt; 20</span><br><span class="line">	select e;</span><br><span class="line">            </span><br><span class="line">&#x2F;&#x2F; Find the newest people:</span><br><span class="line">var newest &#x3D;</span><br><span class="line">	from e in allEmployees</span><br><span class="line">	where e.Classification &#x3D;&#x3D; EmployeeType.Salary</span><br><span class="line">	where e.YearsOfService &lt; 20</span><br><span class="line">	where e.MonthlySalary &lt; 4000</span><br><span class="line">	select e;</span><br></pre></td></tr></table></figure>
+
+<p>如果将来需要修改员工的类别 (Classification)，或修改筛选底薪员工时所依据的最低月薪 (MonthlySalary)，那么只需要改动 LowPaidSalaried() 里的逻辑即可。</p>
+<p>但是这样的重构不能提高其复用性，这与 lambda 表达式求值、解析及执行机制有关：</p>
+<ul>
+<li><p>LINQ to Objects</p>
+<p>为执行表达式中代码，将 lambda 表达式转化成为委托</p>
+</li>
+<li><p>LINQ to SQL</p>
+<p>根据 lambda 表达式创建表达式树，并解析，使其能在其他环境执行</p>
+</li>
+</ul>
+<p>LINQ to Objects 针对本地数据存储 (local data store) 来执行查询，数据通常放在泛型集合。系统根据 lambda 表达式中的逻辑建立匿名委托，并执行相关代码。LINQ to Objects 扩展方法使用 IEnumerable<T> 来表示输入序列。</p>
+<p>LINQ to SQL 使用表达式树，根据所写查询逻辑构建表达式树，将其解析为适当的 T-SQL 查询，这种查询是针对数据库执行的，LINQ to SQL 把 T-SQL 形式的查询字符串发送给数据库引擎并执行。这种处理方式要求 LINQ to SQL引擎必须解析表达式树，并把其中每一项操作都替换成等价的 SQL，这意味着所有的方法调用都需要换成 Expression.MethodCall 节点。然而 LINQ to SQL 引擎并不能把每一种方法调用都顺利的转化为 SQL 表达式，无法转换将会引发异常。</p>
+<p>如果所写的程序库需要支持任意类型的数据源，必须考虑上述情况。需要分开编写 lambda 表达式，且内联至代码中，以保证程序库正常运行。</p>
+<p>这并不是在鼓励一味的复制代码，而是提醒，涉及查询表达式及 lambda 的地方应该用更为合理的方法去创建复用代码块。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private static IQueryable&lt;Employee&gt; LowPaidSalariedFilter(this IQueryable&lt;Employee&gt; sequence) &#x3D;&gt;</span><br><span class="line">    from s in sequence</span><br><span class="line">    where s.Classification &#x3D;&#x3D; EmployeeType.Salary &amp;&amp; s.MonthlySalary &lt; 4000</span><br><span class="line">    select s;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; else where</span><br><span class="line">var allEmployees &#x3D; FindAllEmployees();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Find the first employees:</span><br><span class="line">var salaried &#x3D; allEmployees.LowPaidSalariedFilter();</span><br><span class="line"></span><br><span class="line">var earlyFolks &#x3D; salaried.Where(e &#x3D;&gt; e.YearsOfService &gt; 20);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Find the newest people:</span><br><span class="line">var newest &#x3D; salaried.Where(e &#x3D;&gt; e.YearsOfService &lt; 2);</span><br></pre></td></tr></table></figure>
+
+<p>并不是每一种查询都能像这样简单的改写，可能需要沿着调用链寻找，才能发现可供复用的列表处理逻辑 (list-processing logic)，从而提取相同的 lambda 表达式。31条提过，只要当程序真的需要遍历集合的时，enumerator 方法才会得以执行。可利用此特征，将查询操作分成许多小方法来写，这些小方法都能复用某一套 lambda 表达式来执行它所应该完成的那一部分查询工作。这些方法需要将待处理的序列当成输入值，并以 yield return 形式返回处理结果。这些小方法可构成较大的查询模块。避免重复的代码，使得代码结构更合理。</p>
+<p>也可按照同样的思路建立表达式树，以此拼接 IQueryable 形式的 enumerator，令查询操作能够远程执行。寻找相关员工所用的那棵表达式树可以先于其他查询拼接，然后执行。IQueryProvider 对象 (LINQ to SQL 引擎的数据源就是这种对象) 可以把全套查询操作一次执行完毕，而不必将其分解成多个部分放到本地执行。</p>
+<p>若想在复杂的查询中有效地复用 lambda 表达式，可以考虑针对封闭的泛型类型创建扩展方法。LowPaidSalariedFilter 方法就是这么写的，它接受有待筛选的 Employee 对象序列，输出经过筛选后的 Employee 对象序列。在实际工作中，还应该创建以 IEnumerable<Employee> 作阐述的重载版本，以便同时支持 LINQ to Objects 及 LINQ to SQL。</p>
+<p>你可以把查询操作分成多个小方法，其中一些方法在其内部用 lambda 表达式处理序列，另一些方法以 lambda 表达式作参数。把这些小方法拼接起来，以实现整套操作。这样既可以支持 IEnumerable<T> 与 IQueryable<T>，又能令系统有机会构建出表达式树，以便高效执行查询。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+            <a href="/tags/effective-CSharp/" rel="tag"># effective CSharp</a>
+          
+            <a href="/tags/LINQ/" rel="tag"># LINQ</a>
+          
+            <a href="/tags/lambda/" rel="tag"># lambda</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Effective-CSharp-37%E5%B0%BD%E9%87%8F%E9%87%87%E7%94%A8%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E6%9F%A5%E8%AF%A2%EF%BC%8C%E8%80%8C%E4%B8%8D%E8%A6%81%E5%8F%8A%E6%97%A9%E6%B1%82%E5%80%BC/" rel="next" title="Effective-CSharp-37尽量采用惰性求值的方式来查询，而不要及早求值">
+                <i class="fa fa-chevron-left"></i> Effective-CSharp-37尽量采用惰性求值的方式来查询，而不要及早求值
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Effective-CSharp-31%E6%8A%8A%E9%92%88%E5%AF%B9%E5%BA%8F%E5%88%97%E7%9A%84API%E8%AE%BE%E8%AE%A1%E5%BE%97%E6%9B%B4%E5%8A%A0%E6%98%93%E4%BA%8E%E6%8B%BC%E6%8E%A5/" rel="prev" title="Effective-CSharp-31把针对序列的API设计得更加易于拼接">
+                Effective-CSharp-31把针对序列的API设计得更加易于拼接 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Ryuu" />
+            
+              <p class="site-author-name" itemprop="name">Ryuu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Ryuu-64" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tomoto.top/" title="小龙宫" target="_blank">小龙宫</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.moyk.top/" title="影子" target="_blank">影子</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://m-studio-m.github.io/" title="Michael" target="_blank">Michael</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zerg73.github.io/" title="白白可乐" target="_blank">白白可乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://luff.cloud/" title="TheLong" target="_blank">TheLong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wzp0718.top/" title="wzp" target="_blank">wzp</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ryuu</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'UJf4GAElRibXyJ7NxUTFrGg6-gzGzoHsz',
+        appKey: 'O5i7CbWgK0enbp5nUvqlRANY',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'12' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
