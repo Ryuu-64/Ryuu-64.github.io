@@ -265,6 +265,858 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/CSharp-%E5%8F%98%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/CSharp-%E5%8F%98%E4%BD%93/" itemprop="url">CSharp-变体</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-30T18:14:55+08:00">
+                2021-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/CSharp-%E5%8F%98%E4%BD%93/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/CSharp-%E5%8F%98%E4%BD%93/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                   字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Show you the code.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Variant type parameters could be declared in interfaces or delegates only!</span><br><span class="line"></span><br><span class="line">interface ICovariant&lt;out T&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Covariant&lt;T&gt; : ICovariant&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface IContravariant&lt;in T&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Contravariant&lt;T&gt; : IContravariant&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface IInvariant&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Invariant&lt;T&gt; : IInvariant&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Program</span><br><span class="line">&#123;</span><br><span class="line">    private static void Covariant( &#x2F;* out *&#x2F;)</span><br><span class="line">    &#123;</span><br><span class="line">        ICovariant&lt;object&gt; obj &#x3D; new Covariant&lt;object&gt;();</span><br><span class="line">        ICovariant&lt;string&gt; str &#x3D; new Covariant&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; You can assign &quot;Derived&quot; to &quot;Base&quot;</span><br><span class="line">        obj &#x3D; str;</span><br><span class="line">        str &#x3D; obj; &#x2F;&#x2F; error</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void Contravariant( &#x2F;* in *&#x2F;)</span><br><span class="line">    &#123;</span><br><span class="line">        IContravariant&lt;object&gt; obj &#x3D; new Contravariant&lt;object&gt;();</span><br><span class="line">        IContravariant&lt;string&gt; str &#x3D; new Contravariant&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; You can assign &quot;Base&quot; to &quot;Derived&quot;</span><br><span class="line">        str &#x3D; obj;</span><br><span class="line">        obj &#x3D; str; &#x2F;&#x2F; error</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void Invariant( &#x2F;* none *&#x2F;)</span><br><span class="line">    &#123;</span><br><span class="line">        IInvariant&lt;object&gt; obj &#x3D; new Invariant&lt;object&gt;();</span><br><span class="line">        IInvariant&lt;string&gt; str &#x3D; new Invariant&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; You can&#39;t do any assign </span><br><span class="line">        obj &#x3D; str; &#x2F;&#x2F; error</span><br><span class="line">        str &#x3D; obj; &#x2F;&#x2F; error</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/" itemprop="url">Java-垃圾收集算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-27T22:15:08+08:00">
+                2021-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">深入理解Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                   字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>垃圾收集算法的实现设计大量的程序细节，且各个平台虚拟机操作内存的方法都有差异，本节仅重点介绍分代收集理论，几种算法思想，及其发展过程。若对其中细节感兴趣，推荐阅读 Richard Jones 《垃圾回收算法手册》 第 2 ~ 4 章。</p>
+<p>从如何判定对象消亡的角度出发，垃圾收集算法可划分为 “引用记数式垃圾收集” (Reference Counting GC) 和 “追踪式垃圾收集” (Tracing GC) 两大类，这两大类也被称作 “直接垃圾收集” 和 “间接垃圾收集”。由于引用记数式垃圾收集在主流的 Java 虚拟机中均未涉及，故本节主要介绍所有算法属于追踪式垃圾收集的范畴。</p>
+<h3 id="分代收集理论"><a href="#分代收集理论" class="headerlink" title="分代收集理论"></a>分代收集理论</h3><p>当前商业虚拟机的垃圾收集器，大多遵循了 “分代收集理论” (Generational Collection) 的理论进行设计。其建立在两个分代假说之上：</p>
+<ol>
+<li><strong>弱分代假说 (Weak Generational Hypothesis)</strong>：绝大多数对象朝生夕灭。</li>
+<li><strong>强分代假说 (Strong Generational Hypothesis)</strong>：熬过越多次 GC 的对象就越难死亡。</li>
+</ol>
+<p>这两个分代假说共同奠定了多款常用垃圾收集器的一致设计原则：收集器应将 Java 堆划分出不同的区域，然后将回收对象依据其年龄 (即熬过 GC 的次数) 分配到不同的区域之中存储。如果一个区域中大多数对象都是朝生夕灭，将其集中存储，每次 GC 只关注如何保留存活对象，而不是标记大量要被回收的对象，就能以较低代价回收大量空间；如果一个区域中大多数对象都是难死亡的对象，将其集中存储，虚拟机可以以较低的频率进行回收，这就同时兼顾了垃圾收集的时间开销和内存空间的有效利用。</p>
+<p>在 Java 划分出不同的区域后，垃圾收集器才可以每次只回收其中某一个，或者某部分区域 —— 才有了 “Minor GC”、”Major GC”、”Full GC” 这样的回收类型划分；才能针对不用的区域，安排与其存储对象存亡特征相匹配的垃圾收集算法 —— 发展出了 “标记 - 复制算法”、”标记 - 清除算法”、”标记 - 整理算法” 等针对性的垃圾收集算法 (稍后会提到)。</p>
+<p>把分代收集理论放到现在的商用 Java 虚拟机中，设计者一般会至少把 Java 划分为新生代 (Young Generation) 和老年代 (Old Generation) 两个区域 (HotSpot 虚拟机的命名，IBM J9 虚拟机对应称其为 婴儿区 (Nursery) 和长存区 (Tenured))。在新生代中，每次都有大量对象死去，而回收后活下来的少量对象会逐步转移至老年代存放。实际上分代收集理论并不是简单的分划内存区域那么简单，存在一个明显的问题：<strong>对象间可能存在跨代引用</strong>。</p>
+<p>假如要对新生代区域的 GC (Minor GC)，但新生代中的对象完全有可能被老年代引用，为了确定该区域中存活的对象，不得不在固定的 GC Roots 之外，在遍历整个老年代中的对象，以确保可达性分析的准确性，反之同理。这虽然在理论上可行，但是会为内存回收带来很大的性能负担，为解决此问题，引入第三个假说：</p>
+<ol start="3">
+<li><strong>跨代引用假说 (Intergenerational Reference Hypothesis)</strong>：跨代引用相对于同代引用来说占极少数。</li>
+</ol>
+<p>其实这可以通过前两个假说推出：存在互相引用关系的两个对象，应是倾向于同生共死的。若某个新生代的对象被老年代对象引用，由于老年代对象很难死亡，该引用将使得新生代中的对象同样得以存活，进而在年龄增长后晋升到老年代，此时跨代引用也随之解除了。</p>
+<p>依据此假说，不应为少量的跨代引用而扫描整个老年代，也不必浪费空间专门记录每一个对象是否存在，及存在哪些跨代引用，仅在新生代上建立一个全局数据结构 (“记忆集” Remember Set)，此结构将老年代划分为若干小块，表示出哪一块会存在跨代引用。当发生 Minor GC 时，只有包含了跨代引用的小块内存中的对象被加入 GC Roots 进行扫描。虽然此方法需要在改变对象引用时更新记忆集记录，将会增加一些执行时的开销，但比起收集器扫描整个老年代来说，仍然是划算的。</p>
+<hr>
+<ul>
+<li>部分收集 (Partial GC)：不是完整收集整个 Java 堆的垃圾，其中包括：<ul>
+<li>新生代收集 (Minor / Young GC)：仅回收新生代的垃圾。</li>
+<li>老年代收集 (Major / Old GC)：仅回收老年代的垃圾。目前只有 CMS 收集器有此行为。注意，”Major GC” 的说法存在混淆，不同的资料所指不同，可能指老年代收集，也可能指整堆收集。</li>
+<li>混合收集 (Mixed GC)：回收新生代的垃圾，及<strong>部分</strong>老年代的垃圾。目前只有 G1 收集器有此行为。</li>
+</ul>
+</li>
+<li>整堆收集 (Full GC)：回收整个 Java 堆和方法去的垃圾</li>
+</ul>
+<hr>
+<h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记 - 清除算法"></a>标记 - 清除算法</h3><p>最早出现，也是最基础的垃圾收集算法是 “标记 - 清除” (Mark - Sweep) 算法，在 1960 年由 Lisp 之父 John McCarthy 提出。算法分为 “标记” 和 “清除” 两个阶段：首先标记出所有需要回收的对象，标记后，统一回收被标记的对象，也可以反过来，标记存活的对象，回收未被标记的对象。</p>
+<p>之所以称其为最基础的收集方法，是因为后续的收集算法大都是以标记 - 清除算法为基础，对其缺点进行改进。它主要有两个缺点：</p>
+<ol>
+<li>执行效率不稳定。若有大量的对象需要回收，这需要进行大量的标记清除工作。</li>
+<li>内存碎片化问题，回收对象后，内存中会产生大量不连续的内存碎片，可能导致在需要为大对象分配空间时，没有足够大的连续内存。因此可能提前触发一次 GC。</li>
+</ol>
+<h3 id="标记-复制算法"><a href="#标记-复制算法" class="headerlink" title="标记 - 复制算法"></a>标记 - 复制算法</h3><p>也可简称为复制算法。为解决标记 - 清除算法面对大量可回收对象时执行效率的问题，1969 年 Fenichel 提出了一种称为 “半区复制” (Semispace Copying) 的垃圾收集算法。将内存容量均分两块，每次只使用其中的一块。当一块用完，就把还存活的对象复制到另一块，再将当前的块清理一次。如果内存中大多都是存活的对象，此算法将带来极大的内存复制时间开销，但若大多对象都是可回收的，算法仅需复制极少数对象即可。复制时移动堆指针，按顺序分配即可，这样内存碎片化的问题也解决了。实现简单，运行高效。缺点也是显而易见的，这种算法直接将可利用的内存缩小为了原来的一半，空间的浪费太多了。(Ryuu：相信已经有同志想到了新生代的 GC 了，也确实如此。)</p>
+<p>现在的商用 Java 虚拟机大多都优先采用了此算法回收新生代，IBM 公司曾有一项专门研究，对新生代 “朝生夕灭” 的特点做了更量化的诠释 —— 新生代中的对象有 98% 熬不过第一轮收集，因此并不需要按 1：1 的比例划分新生代的内存空间(Ryuu：调优时根据具体情况，这仅是较泛化的诠释)。</p>
+<p>在 1989 年，Andrew Appel 针对具备 “朝生夕灭” 特点的对象，提出了以重更优化的半区复制分带策略，现被称为 “Appel 式回收”。HotSpot 虚拟机的 Serial、ParNew 等新生代收集器均采用了这种策略来设计新生代的内存布局。Appel 的具体做法是把新生代分为一块较大的 Eden 空间和两块较小的 Survivor 空间，每次分配内存只使用 Eden 和其中一块 Survivor，发生 GC 时，将 Eden 和 Survivor 中存活的对象复制到另一个 Survivor，然后直接清空 Eden 和上次利用过的 Survivor (Ryuu：这两块 Survivor 也因此被称为 From 和 To，From from-survivor to to-survivor，存活对象从 From 移至 To 后，From 和 To 两者身份互换)。HotSpot 虚拟机默认 Eden 和 Survivor 的比例是 8：1，即每次新生代中可用的内存空间为整个新生代的 90 % (Eden 的 80% 加一个 Survivor 的 10%)，仅有10% 的空间是不能直接使用的。当然，98% 的对象被回收不是一定的，所以 Appel 式回收有一个安全设计：当 Survivor 不能一次容纳所有 GC 后存活的对象时，依赖其他内存区域 (大多情况下是老年代) 进行分配担保 (Handle Promotion)。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记 - 整理算法"></a>标记 - 整理算法</h3><p>标记 - 复制算法在对象存活率较高时需进行较多的复制操作，效率将会降低。更关键的是，如果不想浪费空间，就需要有额外的空间进行分配担保，以便应对使用的内存中存活的对象过多的问题，所以在老年代一般不直接使用这种算法。</p>
+<p>针对老年代的存亡特征，1974 年 Edward Lueders 提出了一种有针对性的 “标记 - 整理” (Mark - Compact) 算法，标记过程与 “标记 - 清除” 法相同，但后续步骤是将存活的对象都向内存空间的一端一移动，然后直接清理掉边界外的空间。</p>
+<p>标记 - 清除 和 标记 - 整理算法的本质是，前者是非移动式的回收算法，而后者是移动式的。是否移动存活对象是一项优缺点并存的风险决策：</p>
+<p>如果移动存活对象，尤其是在老年代这种每次都有大量对象存活的区域，移动这些对象并更新所有引用这些对象的地方负担极大，这种对于对象的移动操作必须暂停用户应用程序才能进行 (最新的 ZGC 和 Shenandoah 收集器使用读屏障 (Read Barrier) 技术实现了整理过程与用户线程的并发执行)，这就更加让使用者不得权衡其弊端了，这样的停顿被虚拟机的设计者形象的称为 “Stop The World” (通常标记 - 清除算法也是需要停顿用户线程来标记、清理可回收对象的，只是停顿时间相对而言要短)。</p>
+<p>但像标记 - 清除算法那样完全不考虑移动和整理存活对象，散在内存中的存活对象导致的空间碎片化问题就只能依赖于更复杂的内存分配器和内存访问器解决。如通过 “分区空闲分配链表” 解决内存分配问题 (计算机硬盘存储大文件就不要求物理连续的磁盘空间，在碎片化的磁盘上存储和访问是通过硬盘分区表实现的)。内存的访问是用户程序最频繁的操作，若在此环节增加额外的负担，势必会直接影响程序的吞吐量。</p>
+<p>基于以上两点，是否移动对象都各有其弊端，移动则回收复杂，不移动则分配复杂。从 GC 所需时间看，不移动对象停顿时间更短，甚至不需要停顿，但是从整个程序的吞吐量看，移动对象是正确的选择。此语境中，吞吐量的实质是赋值器 (Mutator，可以理解为使用垃圾收集的用户程序，为便于理解，多数地方用 “用户程序” 或 “用户线程” 代替) 与收集器的效率总和。即使不移动对象使得收集器的效率提升，但因内存分配和访问相比垃圾收集的频率要高得多，这部分的耗时会导致总吞吐量下降。HotSpot 虚拟机中关注吞吐量的 Parallel Old 收集器是基于标记 - 整理算法的，而关注延迟的 CMS 收集器是基于标记 - 清除算法的，这也侧面印证了这点。</p>
+<p>另外还有一种解决方案，那就是让虚拟机平时采用标记 - 清除算法，直到内存空间碎片化的程度大到影响对象分配时，采用标记 - 整理算法进行一次 GC，以获得规整的内存空间。这也是前文提及的 CMS 收集器面临碎片过多时的解决方案。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" itemprop="url">Java-垃圾收集器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-26T16:59:06+08:00">
+                2021-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">深入理解Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                   字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>在对象中添加一个引用计数器，每当有一个对他的引用，计数器值加一；引用失效时，计数器减一；任何时刻计数器为 0 的对象都是不可能再被使用的对象。</p>
+<p>引用记数算法 (Reference Counting) 虽然占用了一些额外的内存空间来进行记数，但原理简单，判定效率高，大多数情况下都是不错的算法。也有一些著名的应用案例，如微软 COM (Component Object Model) 技术、使用 ActionScript 3 的 FlashPlayer、Python 语言以及在游戏脚本领域得到许多应用的 Squirrel 中都使用了引用记数算法进行内存管理。</p>
+<p>但是，在 Java 领域，至少是主流的 Java 虚拟机里都没有选用引用计数算法进行内存管理，这个看似简单的算法有很多例外情况要考虑，必须配合大量额外处理才能保证其正确工作。</p>
+<p>请看如下的 testGC()：这两个对象最终都不可被访问 (最后都置 nul)，但是因为他们存在相互引用 (对象 objA 和 objB 都有字段 instance，并利用该字段进行相互引用)，引用记数算法将无法回收他们。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReferenceCountingGC</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Object instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> _1MB = <span class="number">1</span> &lt;&lt; <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">byte</span>[] bigSize = <span class="keyword">new</span> <span class="keyword">byte</span>[_1MB]; <span class="comment">// 占点内存以方便得知是否被回收</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testGC</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ReferenceCountingGC objA = <span class="keyword">new</span> ReferenceCountingGC();</span><br><span class="line">        ReferenceCountingGC objB = <span class="keyword">new</span> ReferenceCountingGC();</span><br><span class="line">        objA.instance = objB;</span><br><span class="line">        objB.instance = objA;</span><br><span class="line"></span><br><span class="line">        objA = <span class="keyword">null</span>;</span><br><span class="line">        objB = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 建议 gc 进行回收</span></span><br><span class="line">        System.gc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(Ryuu: 我这里用的是 G1 回收器，gc 日志跟作者的不一样)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0.007</span>s][info][gc] Using G1</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Version: <span class="number">16.0</span><span class="number">.2</span>+<span class="number">7</span>-<span class="number">67</span> (release)</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] CPUs: <span class="number">12</span> total, <span class="number">12</span> available</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Memory: <span class="number">32717</span>M</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Large Page Support: Disabled</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] NUMA Support: Disabled</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Compressed Oops: Enabled (Zero based)</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Heap Region Size: <span class="number">4</span>M</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Heap Min Capacity: <span class="number">8</span>M</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Heap Initial Capacity: <span class="number">512</span>M</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Heap Max Capacity: <span class="number">8180</span>M</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Pre-touch: Disabled</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Parallel Workers: <span class="number">10</span></span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Concurrent Workers: <span class="number">3</span></span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Concurrent Refinement Workers: <span class="number">10</span></span><br><span class="line">[<span class="number">0.010</span>s][info][gc,init] Periodic GC: Disabled</span><br><span class="line">[<span class="number">0.010</span>s][info][gc,metaspace] <span class="function">CDS <span class="title">archive</span><span class="params">(s)</span> mapped at: [0x0000000800000000-0x0000000800bb0000-0x0000000800bb0000), size 12255232, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 0.</span></span><br><span class="line"><span class="function">[0.010s][info][gc,metaspace] Compressed class space mapped at: 0x0000000800c00000-0x0000000840c00000, reserved size: 1073741824</span></span><br><span class="line"><span class="function">[0.010s][info][gc,metaspace] Narrow klass base: 0x0000000800000000, Narrow klass shift: 3, Narrow klass range: 0x100000000</span></span><br><span class="line"><span class="function">[0.088s][info][gc,task     ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Using 10 workers of 10 <span class="keyword">for</span> full compaction</span></span><br><span class="line"><span class="function">[0.088s][info][gc,start    ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Pause <span class="title">Full</span> <span class="params">(System.gc()</span>)</span></span><br><span class="line"><span class="function">[0.088s][info][gc,phases,start] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 1: Mark live objects</span></span><br><span class="line"><span class="function">[0.089s][info][gc,phases      ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 1: Mark live objects 0.833ms</span></span><br><span class="line"><span class="function">[0.089s][info][gc,phases,start] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 2: Prepare <span class="keyword">for</span> compaction</span></span><br><span class="line"><span class="function">[0.090s][info][gc,phases      ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 2: Prepare <span class="keyword">for</span> compaction 0.761ms</span></span><br><span class="line"><span class="function">[0.090s][info][gc,phases,start] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 3: Adjust pointers</span></span><br><span class="line"><span class="function">[0.090s][info][gc,phases      ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 3: Adjust pointers 0.477ms</span></span><br><span class="line"><span class="function">[0.090s][info][gc,phases,start] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 4: Compact heap</span></span><br><span class="line"><span class="function">[0.091s][info][gc,phases      ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Phase 4: Compact heap 0.571ms</span></span><br><span class="line"><span class="function">[0.092s][info][gc,heap        ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Eden regions: 2-&gt;0<span class="params">(<span class="number">1</span>)</span></span></span><br><span class="line"><span class="function">[0.092s][info][gc,heap        ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Survivor regions: 0-&gt;0<span class="params">(<span class="number">0</span>)</span></span></span><br><span class="line"><span class="function">[0.092s][info][gc,heap        ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Old regions: 0-&gt;1</span></span><br><span class="line"><span class="function">[0.092s][info][gc,heap        ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Archive regions: 0-&gt;0</span></span><br><span class="line"><span class="function">[0.092s][info][gc,heap        ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Humongous regions: 0-&gt;0</span></span><br><span class="line"><span class="function">[0.092s][info][gc,metaspace   ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Metaspace: 488<span class="title">K</span><span class="params">(<span class="number">704</span>K)</span>-&gt;488<span class="title">K</span><span class="params">(<span class="number">704</span>K)</span> NonClass: 462<span class="title">K</span><span class="params">(<span class="number">576</span>K)</span>-&gt;462<span class="title">K</span><span class="params">(<span class="number">576</span>K)</span> Class: 25<span class="title">K</span><span class="params">(<span class="number">128</span>K)</span>-&gt;25<span class="title">K</span><span class="params">(<span class="number">128</span>K)</span></span></span><br><span class="line"><span class="function">[0.092s][info][gc             ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> Pause <span class="title">Full</span> <span class="params">(System.gc()</span>) 4M-&gt;0<span class="title">M</span><span class="params">(<span class="number">16</span>M)</span> 4.173ms</span></span><br><span class="line"><span class="function">[0.093s][info][gc,cpu         ] <span class="title">GC</span><span class="params">(<span class="number">0</span>)</span> User</span>=<span class="number">0.00</span>s Sys=<span class="number">0.00</span>s Real=<span class="number">0.00</span>s</span><br><span class="line">[<span class="number">0.093</span>s][info][gc,heap,exit   ] Heap</span><br><span class="line">[<span class="number">0.094</span>s][info][gc,heap,exit   ]  garbage-first heap   total <span class="number">16384</span>K, used <span class="number">1039</span>K [<span class="number">0x0000000600c00000</span>, <span class="number">0x0000000800000000</span>)</span><br><span class="line">[<span class="number">0.094</span>s][info][gc,heap,exit   ]   region size <span class="number">4096</span>K, <span class="number">1</span> young (<span class="number">4096</span>K), <span class="number">0</span> survivors (<span class="number">0</span>K)</span><br><span class="line">[<span class="number">0.094</span>s][info][gc,heap,exit   ]  Metaspace       used <span class="number">491</span>K, committed <span class="number">704</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">[<span class="number">0.094</span>s][info][gc,heap,exit   ]   <span class="class"><span class="keyword">class</span> <span class="title">space</span>    <span class="title">used</span> 25<span class="title">K</span>, <span class="title">committed</span> 128<span class="title">K</span>, <span class="title">reserved</span> 1048576<span class="title">K</span></span></span><br></pre></td></tr></table></figure>
+
+<p>gc 日志中可见 “Pause Full (System.gc()) 4M-&gt;0M(16M) 4.173ms”，这说明虚拟机并没有因为两个对象存在相互引用就放弃回收他们，也说明了 Java 虚拟机并不是通过引用记数算法进行对象存活判断的。</p>
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>当前主流的商用程序语言 (Java、C#、Lisp) 的内存管理子系统，都是靠通过可达性分析 (Reachability Analysis) 算法来判定对象是否存活。其基本思路是通过一系列 “GC Roots” 的根对象作为起始节点集，从这些节点开始，根据引用关系向下搜索，搜索过程所走的路径被称为 “引用链” (Reference Chain)，如果某个对象到 GC Roots 间没有任何引用相连，用图论的话说，从 GC Roots 到该对象不可达，证明此对象是不可能再被使用的。</p>
+<p>在 Java 技术体系中，固定可作为 GC Roots 的对象包括以下几种：</p>
+<ul>
+<li>虚拟机栈 (栈帧中的本地变量表) 中引用的对象，如当前正在运行的方法所使用的参数、局部变量、临时变量等。</li>
+<li>方法区中的静态属性引用对象，如 Java 类的引用类型静态变量。</li>
+<li>方法区中常量引用对象，如字符串常量池 (String Table) 里的引用。</li>
+<li>本地方法栈中 JNI (通常被称为 Native 方法) 引用的对象。</li>
+<li>Java 虚拟机内部引用，如基本数据类型对应的 Class 对象，一些常驻的异常对象 (如 NullPointException、OutOfMemoryError) 等，还有系统类加载器。</li>
+<li>所有被同步锁 (synchronized 关键字) 持有的对象。</li>
+<li>反应 Java 虚拟机内部情况的 JMXBean、JVMTI 中注册的回调、本地代码缓存等。</li>
+</ul>
+<p>除了这些固定的 GC Roots 集合外，根据用户所选的垃圾收集器已经当前回收的内存区域不同，还可以有其他对象 “临时性” 地加入，共同构成完整 GC Roots 集合。如后文提到的分代收集和局部回收 (Partial GC)，如果只针对 Java 堆中某一块区域发起垃圾收集时 (如典型的，只针对新生代的垃圾收集)，必须考虑到内存区域只是虚拟机的实现细节，他们不是孤立封闭的，所以某个区域的对象完全有可能被位于堆中其他区域的对象引用，这时就需要将这些关联区域的对象也一并加入 GC Roots 集合中去，才能保证可达性分析的正确性。</p>
+<p>目前最新的几款垃圾收集器 (例如 OpenJDK 中的 G1、Shenandoah、ZGC 以及 Azul 的 PGC、C4) 无一例外的都具备局部回收的特征，为了避免 GC Roots 包含过多对象而过度膨胀，它们在实现上也做出了各种优化处理 (见后文)。 </p>
+<h3 id="关于引用"><a href="#关于引用" class="headerlink" title="关于引用"></a>关于引用</h3><p>无论是通过引用计数法判断对象的引用数量，还是通过可达性分析算法判断对象是否引用链可达，判定对象存活都和引用脱不开关系。在 JDK 1.2 版本前，Java 中的引用定义很传统：如果 reference 类型的数据中存储的数值代表的是另外一块内存的起始地址，就称该 reference 数据是代表某块内存、某个对象的引用。但是一个对象不应该只有 “被引用” 和 “未被引用” 两种状态。例如这种情况：当内存空间还足够，就保留在内存中，如果内存空间在完成 GC 后还是十分紧张，就抛弃这些对象 —— 很多系统缓存功能都符合此场景。</p>
+<p>在 JDK 1.2 版本后，Java 对引用的概念进行了扩充，将引用分为强引用 (Strongly Reference)、软引用 (Soft Reference)、弱引用 (Weak Reference) 和虚引用 (Phantom Reference) 四种，<strong>四种引用强度依次减弱</strong>。</p>
+<ol>
+<li><p><strong>强引用 (Strongly Reference)</strong></p>
+<p>“最传统” 的引用定义，指在程序代码中普遍存在的引用赋值，类似 “Object obj = new Object()” 的这种引用关系。无论何种情况，只要强引用还在，垃圾回收器就永远不会回收掉被引用的对象。</p>
+</li>
+<li><p><strong>软引用 (Soft Reference)</strong></p>
+<p>描述一些还有用，但非必要的对象，系统将要内存溢出前，会把这些对象列入回收范围中进行二次回收，如果回收后内存依然不足，才会抛出内存溢出异常。</p>
+</li>
+<li><p><strong>弱引用 (Weak Reference)</strong></p>
+<p>非必要的对象，其强度比软引用更弱。其对象只能生存到下一次 GC 发生前。当 GC 发生时，无论内存是否足够，都会回收掉仅被弱引用关联的对象。</p>
+</li>
+<li><p><strong>虚引用 (Phantom Reference)</strong></p>
+<p>也被称为 “幽灵引用” 或 “幻引用”，是最弱的引用关系。完全不会对其生存时间造成影响。也无法通过该引用获取实例。为一个对象设置虚引用仅是为了能让此对象被回收时受到一个系统通知。</p>
+</li>
+</ol>
+<h3 id="对象死亡判定"><a href="#对象死亡判定" class="headerlink" title="对象死亡判定"></a>对象死亡判定</h3><p>即使是在可达性分析算法中判定为不可达对象，也并非 “非死不可”。一个对象真正死亡，最多会经历两次标记，如果在进行可达性分析时没有在 GC Roots 的引用链上，将第一次被标记。之后判断该对象是否有必要执行 finalize()。若对象没有覆盖 finalize()，或者 finalize() 已被虚拟机调用，那么虚拟机将这两种情况都视为 “没有必要执行”。(Ryuu：注意，一个对象的 finalize() 只会被调用一次。)</p>
+<p>若有必要执行 finalize()，那么该对象将会被放置在一个名为 F-Queue 的队列中，并在稍后由虚拟机自己建立的，低调度优先级的 Finalizer 线程去执行它们的 finalize()。这里的 “执行” 仅指虚拟机会触发这个的方法开始运行，并不承诺一定等待他们运行结束。这是因为，若 finalize() 执行的太慢，或者极端的发生了死循环，将导致 F-Queue 的其他对象永久处于等待，甚至导致整个内存回收子系统崩溃。finalize() 方法是对象逃脱死亡的最后机会，稍后收集器将对 F-Queue 中的对象进行二次标记，若对象要在 finalize() 中避免死亡 —— 只需重新与引用链上的任何一个对象建立关联即可，例如把 this 赋给某个类变量或者对象成员的成员变量，那么它将会在二次标记时被移除 “即将回收” 的集合；如果它没有这么做，那就真的会被回收了。</p>
+<p>如下是对象执行 finalize()，依然存活的示例：(Ryuu：当然，一般情况下没人会在 finalize() 里做除了释放资源以外的事。)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON'T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalizeEscapeGC</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> FinalizeEscapeGC SAVE_HOOK = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">isAlive</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"alive"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.finalize();</span><br><span class="line">        System.out.println(<span class="string">"finalize method executed!"</span>);</span><br><span class="line">        FinalizeEscapeGC.SAVE_HOOK = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * finalize method executed!</span></span><br><span class="line"><span class="comment">     * alive</span></span><br><span class="line"><span class="comment">     * dead</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        SAVE_HOOK = <span class="keyword">new</span> FinalizeEscapeGC();</span><br><span class="line">        SAVE_HOOK = <span class="keyword">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        <span class="comment">// 因为 GC 的优先级低, 先让此线程暂停，以等待 GC</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span>(SAVE_HOOK != <span class="keyword">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"dead"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        SAVE_HOOK = <span class="keyword">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span>(SAVE_HOOK != <span class="keyword">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"dead"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>见以上代码段，SAVE_HOOK 对象的 finalize() 的确被执行，并且成功逃脱回收了。</p>
+<p>另外一点是，一个对象的 finalize() 只会被调用一次，所以第二次的自救失败了。</p>
+<p>上文的代码不是让读者去用此方法拯救对象。应该尽量避免使用 finalize()，它并不等同于 C 和 C++ 中的析构函数，这是 Java 刚诞生时为了使传统 C、C++ 程序员更容易接受 Java 所做的妥协。其代价是极高的。 <strong>finalize() 能做的工作，使用 try-finally 或者其他的方式能够做的更好、更及时</strong>。</p>
+<p><strong>(Ryuu：finalize() 自 Java 9 被弃用。其运行代价高，可能导致死锁、挂起。即使不在需要 finalize()，finalize() 也无法取消。不同对象的 finalize() 执行顺序没有保证，并且执行完成时间也没有保证。)</strong></p>
+<h3 id="方法区回收"><a href="#方法区回收" class="headerlink" title="方法区回收"></a>方法区回收</h3><p>有人认为方法区 (如 HotSpot 虚拟机中的元空间或永久代) 是没有垃圾收集的，JLS 中提到，可以不要求虚拟机实现方法区中的垃圾收集，确实也有未实现或未完全实现方法区类型卸载的收集器存在 (如 JDK 11 时期的 ZGC 收集器就不支持类卸载)，方法区垃圾收集的付出/收获比也通常是较低的：在 Java 堆中，尤其是新生代中，对与常规应用进行一次 GC 通常可以回收 70% - 99% 的内存空间，相比之下，方法区回收有着苛刻的判定条件，其垃圾收集效果却往往很低。</p>
+<p>方法区的垃圾收集主要回收两种内容：废弃的常量和不再使用的类型。回收废弃常量和回收 Java 堆中对象非常类似。例如字符串 “Java” 进入了常量池，但当前系统没有任何一个字符串对象的值是 “Java” (也就是说 “Java” 没有被任何字符串对象引用)，且虚拟机中也没有其他地方引用此字面量。如果此时发生 GC，若垃圾收集器判断有必要，这个 “Java” 将会被系统清理出常量池，常量池中的其他类 (接口)、方法、字段的符号引用也与此类似。</p>
+<p>判定一个类型是否属于 “不再被使用的类” 的条件就比较苛刻了。需同时满足条件：</p>
+<ol>
+<li>类所有的实例被回收，Java 堆中不存在该类及其派生子类的实例。</li>
+<li>加载该类的类加载器已被回收。(此条件一般很难满足，除非是精心设计的可替换类加载器的场景，如 OSGi、JSP 的重加载等)</li>
+<li>该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类方法。</li>
+</ol>
+<p>Java 虚拟机被允许对满足以上三个条件的无用类进行回收，仅是 “被允许”，并不是和对象一样，没有了引用就必然会回收。</p>
+<p>关于是否要进行类型回收，HotSpot 虚拟机提供了 -Xnoclassgc 参数进行控制，还可以通过 -verbose:class 以及 -XX:+TraceClass-Loading、 -XX:+TraceClassUnLoading 查看类加载和卸载信息，其中 -verbose:class 和 -XX:+TraceClass-Loading 可在 Product 版的虚拟机中使用，-XX:+TraceClassUnLoading 参数需要 FastDebug版虚拟机支持。</p>
+<p>在大量使用反射、动态代理、CGLib 等字节码框架，动态生成 JSP 以及 OSGi 这类频繁自定义类加载器的场景中，通常都需要 Java 虚拟机具备类型卸载的能力，以保证不对方法区造成过大的内存压力。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryuu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/" itemprop="url">Effective-CSharp-8用null条件运算符调用事件处理程序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-25T14:53:39+08:00">
+                2021-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                   字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>刚接触事件的人可能觉得触发事件是很容易的，只需将事件定义好，并在需要触发时调用相关的事件处理程序就可以了，底层的多播委托将会依次执行这些处理程序。实际上触发事件并不是如此简单。若根本没有事件对应的处理程序会怎样？若多个线程都要检测并调用事件处理程序，而线程之间互相争夺，会怎样？C# 6.0 引入的 null 条件运算符 (null-conditional operator，又称 null 传播运算符 (null-propagation operator)) 可用更加清晰的写法来解决这些问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class EventSource</span><br><span class="line">&#123;</span><br><span class="line">    private int counter;</span><br><span class="line">    private EventHandler&lt;int&gt; Updated;</span><br><span class="line"></span><br><span class="line">    public void RaiseUpdates()</span><br><span class="line">    &#123;</span><br><span class="line">        counter++;</span><br><span class="line">        Updated(this, counter);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种旧写法有个明显的问题：如在对象上出发 Updated 事件是并没有事件处理程序与之相关，将会发生 NullReferenceException，因为 C# 用 null 值表示这种没有处理程序与之相关的情况。于是，触发事件前，必须先判断事件处理程序是否为 null。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void RaiseUpdates()</span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    if(Updated !&#x3D; null)</span><br><span class="line">        Updated(this, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但这种写法依然有 bug。当程序线程执行完 if 判断了 Updated 不为 null 后，可能会有另一个线程打断该线程，并解除订阅，这样的话依然会引发 NullReferenceException，虽然这种情况很少见。</p>
+<p>这个 bug 很难诊断，也很难修复。想重现该错误，必须按照上述线程的执行顺序执行。一些开发老手在此问题上吃过亏，他们知道其危险，改用另一个种写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void RaiseUpdates()</span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    var handler &#x3D; Updated;</span><br><span class="line">    if(handler !&#x3D; null)</span><br><span class="line">        handler(this, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此方法是可行的，线程是安全的。但是从阅读的角度来看，看代码的人不太明白为何这样改后就能确保线程安全。</p>
+<p>var handler = Updated; 这是对赋值号的右侧做 <em>浅拷贝 (shallow copy)</em>，也就是创建一个新的引用，指向其事件处理程序。因此，即使是 Updated 被其他线程注销，变为 null。也不会影响 handler，handler 依然保存了原先记录的事件订阅者。这段代码实际上是通过浅拷贝为事件订阅这做了份快照，触发事件时通过快照来触发事件处理程序。</p>
+<p>触发事件是一项简单的任务，不该用这么冗长且费解的方式去完成。</p>
+<p>有了 null 条件运算符，可以用更清晰的写法来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void RaiseUpdates()</span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    Updated?.Invoke(this, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用了 null 条件运算符 (也就是 ?.) 安全地调用事件处理程序。该运算符首先对左侧内容进行 null 判断，若非 null 执行右侧内容。若为 null 则跳过此语句。</p>
+<p>从语义上来说这和 if 类似。但区别在于 ?. 运算符左侧的内容只会计算一次。</p>
+<p>由于 C# 不许 ?. 运算符右侧直接出现一对括号，因此必须用 Invoke() 去触发事件。每定义一种委托或事件，编译器都会为此生成类型安全的 Invoke()，这意味着，通过 Invoke 方法触发事件，使得代码篇幅更小，且线程安全。</p>
+<p>有了这种简单且清晰的写法后，原来的写法需要改一改了。以后触发事件都应采用此写法。</p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-" target="_blank" rel="noopener">成员访问运算符和表达式 - C# 参考</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3751,824 +4603,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ryuu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/" itemprop="url">Effective-CSharp-15不要创建无谓的对象</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-15T19:07:08+08:00">
-                2021-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C#</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                   字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>垃圾回收器可以帮你把内存管理好，并高效地移除那些用不到的对象，但这并不是在鼓励你毫无节制地创建对象，因为创建并摧毁一个基于堆 (heap-based) 的对象无论如何都要比根本不生成这个对象耗费更多的处理器时间。在方法中创建很多局部的引用对象可能会大幅降低程序的性能。</p>
-<p>因此，开发者不应该给垃圾回收器 (GC) 带来太多的负担，而是应该利用一些简单的技巧，尽量降低 GC 的工作量。所有引用类型的对象都需要先分配内存，然后才能使用，即使是局部变量也不例外。如果跟对象与这些对象之间没有路径可通，那么他们就变成了垃圾。具体到局部变量来看，如果声明这些变量的那个方法不再活跃于程序中，那么很可能导致这些变量成为垃圾。</p>
-<p>例如很多人喜欢在窗口的paint handler 里面分配 GDI 对象，这样做容易出现这个问题：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPaint</span>(<span class="params">PaintEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Bad. Created the same font every paint event.</span></span><br><span class="line">    <span class="keyword">using</span> (Font MyFont = <span class="keyword">new</span> Font(<span class="string">"Arial"</span>, <span class="number">10.0f</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        e.Graphics.DrawString(DataTime.Now.ToStirng(), MyFont, Brushes.Black, <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">base</span>.OnPaint(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>系统会频繁调用 OnPaint()，而每次调用时，都会创建新的 Font 对象，但是这并没有必要，因为实际上这些对象都是一样的，因此垃圾回收器总是得回收旧的 Font。GC 的执行时机与程序所分配的内存数量以及分配的频率有关，如果总是分配内存，那么 GC 的工作压力就比较大，这自然会降低程序效率。</p>
-<p>反之，将 Font 对象从局部变量改为成员变量，那么就可以复用同一个 Font：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">readonly</span> Font myFont = <span class="keyword">new</span> Font(<span class="string">"Arial"</span>, <span class="number">10.0f</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPaint</span>(<span class="params">PaintEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    e.Graphics.DrawString(DataTime.Now.ToStirng(), MyFont, Brushes.Black, <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">base</span>.OnPaint(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>改版之后就不会进行频繁的垃圾回收了，这将使得程序运行的稍快一点。对于像本例的 Font 这样实现了 IDisposable 接口的类型来说，把该类型的局部变量提升为成员之后，需要在类中实现这个接口(见17条)。</p>
-<p>如果局部变量是引用类型而非值类型，并且出现在需要频繁运行的例程 (routine) 中，那就应该将其提升为成员变量。上文的 OnPaint 例程中的 myFont 就是如此。请注意，只有当例程调用得较为频繁时材质的这样做，如果不太频繁，那么可以不用考虑这个问题。要避免频繁的创建相同的对象，而不是说把每个局部变量都转化为成员变量。</p>
-<p>上文的代码用到了 Brushes。Black 这个静态属性，该属性采用另一种技术来避免频繁创建相似的对象。如果程序中有很多地方都要用到某个引用类型的实例，那么可以把它创建成静态的成员变量。每次用黑色绘制窗口时，都要使用这样的画笔，但如果每次绘制时都去重新分配，那么程序在执行过程中要创建并销毁大量的 Brush 对象。即便按照刚才那条技巧将这个对象从局部提升为成员变量，也无法避免该问题。由于程序会创建很多窗口与控件，而且在绘制时会用到大量的黑色画笔，因此.NET框架的设计者决定，只创建一支黑色的画笔给程序中的各个地方公用。Brushes 类里面有大量的 Brush 对象，每个对象对应于一种颜色，这种颜色的画笔是程序中的每个例程都可以使用的。Brushes 类在其内部采用惰性求值算法 (lazy evaluation algorithm) 来创建画笔，这种算法的逻辑可以表示成下面这样：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Brush blackBrush;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Brush Black</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (blackBrush == <span class="literal">null</span>)</span><br><span class="line">            blackBrush = <span class="keyword">new</span> SolidBrush(Color.Black);</span><br><span class="line">        <span class="keyword">return</span> blackBrush;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>首次请求获取黑色画笔时，Brushes 类会创建该画笔，并把指向它的引用保存起来。以后如果还要获取这种颜色的画笔，那么 Brushes 类久把早前保存的引用直接返回给你，而不用再去重新创建。并且还有一个好处，如果某种画笔从始至终根本没有用到，那么 Brushes 类就根本不会创建该画笔。在编程工作中使用该技术会有正反两方面的效果， 正面效果是可以令程序少创建一些对象，而负面效果则是有可能导致对象在内存中待的比较久，这还意味着开发者无法释放非托管资源，因为你不知道什么时候调用 Dispose() 方法才好。</p>
-<p>前面讲的这两项技巧可以令程序在运行过程中尽量少分配一些对象，第一项技巧是把经常使用的局部变量提升为成员变量，第二项技巧是采用依赖注入 (dependency injection) 的办法创建并复用那些经常使用的实例。此外还有一项针对<em>不可变类型 (immutable type)</em> 的技巧，该技巧可以把这种类型对象最终所应具备的取值分步骤地构建好。比方说，System.String 类就是不可变的，这种字符串创建好之后，其内容无法修改。某些代码看上去好像是修改了字符串内容，但其实还是创建了新的string对象，并用它来替换原有的string，从而导致后者变为垃圾。下面这种写法看起来似乎没有问题：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> msg = <span class="string">"Hello, "</span>;</span><br><span class="line">msg += thisUser.name;</span><br><span class="line">msg += <span class="string">". Today is "</span>;</span><br><span class="line">msg += System.DateTime.Now.ToString();</span><br></pre></td></tr></table></figure>
-
-<p>但是这样写很没有效率，因为它相当于：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Not legal, for illustration only:</span></span><br><span class="line"><span class="keyword">string</span> msg = <span class="string">"Hello, "</span>;</span><br><span class="line"><span class="keyword">string</span> msg1 = <span class="keyword">new</span> <span class="keyword">string</span>(msg + thisUser.Name);</span><br><span class="line">msg = msg1; <span class="comment">// "Hello, " is garbage</span></span><br><span class="line"><span class="keyword">string</span> msg2 = <span class="keyword">new</span> <span class="keyword">string</span>(msg + <span class="string">". Today is "</span>);</span><br><span class="line">msg = msg2; <span class="comment">// "Hello, &lt;user&gt;" is garbage</span></span><br><span class="line"><span class="keyword">string</span> msg3 = <span class="keyword">new</span> <span class="keyword">string</span>(msg + System.DateTime.Now.ToString());</span><br><span class="line">msg = msg3; <span class="comment">// "Hello, &lt;user&gt;. Today is " is garbage</span></span><br></pre></td></tr></table></figure>
-
-<p>tmp1、tmp2、tmp3 以及最初的 msg 全都成了垃圾，因为在 string 类的对象上面运用 += 运算符会导致程序创建出新的字符串对象，并且指令向原字符串的引用指向这个新的对象。程序并不会把这两个字符串中的字符连接起来并将其保存在原来那个字符串的存储空间中。如果想用效率较高的办法完成刚才那个例子所执行的操作，那么可以考虑内插字符串实现：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> msg = <span class="keyword">string</span>.Format(<span class="string">"Hello, &#123;0&#125;. Today is &#123;1&#125;"</span>,thisUser.Name, DateTime.Now.ToString());</span><br></pre></td></tr></table></figure>
-
-<p>相较于 string.Format()，字符串内插避免了因写入太多参数而对错位置的情况：(见第4条)</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> msg = <span class="string">$"Hello, <span class="subst">&#123;thisUser.Name&#125;</span>. Today is <span class="subst">&#123;DateTime.Now.ToString()&#125;</span>"</span>;</span><br></pre></td></tr></table></figure>
-
-<p>如果要执行更为复杂的操作，那么可以使用 StringBuilder 类：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder msg = <span class="keyword">new</span> StringBuilder(<span class="string">"Hello, "</span>);</span><br><span class="line">msg.Append(thisUser.Name);</span><br><span class="line">msg.Append(<span class="string">". Today is "</span>);</span><br><span class="line">msg.Append(DateTime.Now.ToString());</span><br><span class="line"><span class="keyword">string</span> finalMsg = msg.ToString();</span><br></pre></td></tr></table></figure>
-
-<p>由于这个例子很简单，因此用内插字符串来做就足够了(内插字符串的用法见第4条)。如果最终要构建的字符串很复杂，不方便用内插字符串实现，那么可以考虑改用 StringBuilder 处理，这是一种可变的字符串，提供了修改其内容的机制，使得开发者能够以此来构建不可变 string 对象。与 StringBuilder 类本身的功能相比，更值得学习的是它所体现的设计思路，也就是说，如果要设计不可变的类型，那就应该考虑提供相应的 <em>builder(构建器)</em>，令开发者能够以分阶段的形式来指定不可变的对象最终所应具备的取值。这既可以保证构建出来的对象不会遭到修改，又能够给开发者提供较大的余地，使其可以将整个构建过程划分为多个步骤。</p>
-<p>垃圾回收器能够有效地管理应用程序使用的内存，但需注意，在堆上创建并销毁对象需要耗费一定的时间，因此，不要过多地创建对象，不要创建那些根本不用去重新构建的对象。此外，在函数中以局部变量的形式频繁创建引用类型的对象也是不合适的，应该把这些变量提升为成员变量，或是考虑把常用的那几个实例设置成相关类型中的静态对象。最后还有一条技巧，就是要考虑给不可变的类型设计相应的 builder 类，以供用户通过可变 builder 对象来构建不可变的对象。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-CSharp-3%E4%BC%98%E5%85%88%E8%80%83%E8%99%91is%E6%88%96as%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E5%B0%BD%E9%87%8F%E5%B0%91%E7%94%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ryuu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Effective-CSharp-3%E4%BC%98%E5%85%88%E8%80%83%E8%99%91is%E6%88%96as%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E5%B0%BD%E9%87%8F%E5%B0%91%E7%94%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" itemprop="url">Effective-CSharp-3优先考虑is或as运算符，尽量少用强制类型转换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-15T16:12:04+08:00">
-                2021-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C#</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/Effective-CSharp-3%E4%BC%98%E5%85%88%E8%80%83%E8%99%91is%E6%88%96as%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E5%B0%BD%E9%87%8F%E5%B0%91%E7%94%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/Effective-CSharp-3%E4%BC%98%E5%85%88%E8%80%83%E8%99%91is%E6%88%96as%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E5%B0%BD%E9%87%8F%E5%B0%91%E7%94%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                   字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong><em>若使用 C#，那么就必须适应静态类型检查机制，该机制在很多情况下都会起到良好的作用。</em></strong></p>
-<p>静态类型检查意味着编译器会把类型不符的用法找出来，这也令应用程序在运行期能够少做一些类型检查。然而有的时候还必须在运行期检查对象的类型，比如，如果所使用的框架已经在方法签名里把参数写成了 Object，那么可能就得先将该参数转成其他类型(例如其他的类或接口)，然后才能继续编写代码。有两种办法能实现转换，一是使用 as 运算符，二是通过强制类型转换 (cast) 来绕过编译器的类型检查。在这之前，可以先通过 is 判断该操作是否合理，然后再使用 as 运算符 或执行强制类型转换。</p>
-<p>在这两种方法中，应该优先考虑第一种办法，这样做要比盲目地进行类型转换更加安全，且在运行的时候更有效率。<strong><em>as 及 is 运算符不会考虑由用户所定义的转换。</em></strong>只有当运行期的类型与要转换到的类型相符合时，该操作才能顺利地执行。这种类型转换操作很少会为了类型转换而构建新的对象(但若用 as 运算符把装箱的值类型转换成未装箱且可以为 null 的值类型，则会创建新的对象)。</p>
-<p>下面来看一个例子。如果需要把 object 对象转换为 MyType 实例，那么可以这样写：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> o = Factory.GetObject();</span><br><span class="line"><span class="comment">// Version one:</span></span><br><span class="line">MyType t = <span class="number">0</span> <span class="keyword">as</span> MyType;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(t!= <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// work with t, it's a MyType</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// report the failure</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此外，也可以这样写：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> o = Factory.GetObject();</span><br><span class="line"><span class="comment">// Version one:</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    MyType t;</span><br><span class="line">    t = (MyType) o;</span><br><span class="line">    <span class="keyword">if</span> (t != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// work with t, it's a MyType </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(InvalidCastException)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// report the conversion failure</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>大家应该会觉得第一种写法比第二种更简单，而且更好理解。由于第一种写法不需要使用 try/catch 结构，因此程序的开销与代码量都比较低。如果采取第二种写法，那么不仅要捕获异常，而且还得判断t是不是 null。强制类型转换在遇到 null 的时候并不抛出异常，这导致开发者必须处理两种情况：一种是 o 本来就为 null，因此强制转换后所得的 t 也是 null；另一种是程序因 o 无法类型转换为 MyType 而抛出异常。如果采用第一种写法，那么由于 as 操作在这两种特殊情况下的结果都是 null，因此只需要用 if (t!= null) 来概括处理就可以了。</p>
-<p>as 运算符与强制类型转换之间的最大区别在于如何对待由用户所定义的转换逻辑。as 与 is 运算符只会判断待转换的那个对象在运行期是何种类型，并据此做出相应的处理，除了必要的装箱与取消装箱操作，它们不会执行其他操作。如果待转换的对象既不属于目标类型，也不属于由目标类型所派生出来的类型，那么 as 操作就会失败。反之，强制类型转换操作则有可能使用某些类型转换逻辑来实现类型转换，这不仅包含由用户所定义的类型转换逻辑，而且还包括内置的数值类型之间的转换。例如可能发生从 long 至 short 转换，这种转换可能导致信息丢失。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-Java-18%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ryuu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Effective-Java-18%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF/" itemprop="url">Effective-Java-18复合优先于继承</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-14T17:15:09+08:00">
-                2021-05-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/Effective-Java-18%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/Effective-Java-18%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                   字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>继承(inheritance)是实现代码重用的有力手段，但它并非永远是完成这项工作的最佳工具。</strong>使用不当会导致软件变得很脆弱。在包的内部使用继承是非常安全的，在那里子类和超类的实现都处在同一个程序员的控制下。对于专门为了继承而设计并且具有很好的文档说明的类来说(见19条)，使用继承也是非常安全的。然而，对于普通的具体类(concrete class)进行跨越包边界的继承，则是非常危险的。提示一下，本条目使用”继承”一词，含义是实现继承(当一个类扩展另一个类的时候)。本条目中讨论的问题并不指接口继承(类实现接口或接口扩展接口)。</p>
-<p><strong>与方法调用不同的是，继承打破了封装性[Snyder86]。</strong>子类依赖于其超类中特定功能的实现细节。超类的实现有可能会随着发行版本的不同而有所变化，如果发生了变化，子类可能会遭到破坏，即时是子类代码完全没有改变。因而，子类必须要跟着其超类的更新而演变，除非超类是专门为了扩展而设计的，并且具有很好的文档说明。</p>
-<p>为了说明得更加具体，我们建设有一个程序使用了 HashSet。为了调优该程序的性能需要查询 HashSet，看一看自从它被创建以来添加了多少个元素(不要与它当前的元素数目混淆起来，它会随着元素的删除而递减)。为了提供这种功能，需要基于 HashSet 编写一个变体，定义记录视图插入的元素的数量 addCount，并针对该计数值导出一个访问方法。HashSet 类包含两个可以郑家元素的方法：add 和 addAll，因此这两个方法都要被覆盖：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken - Inappropriate use of inheritance!</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstrumentedHashSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">HashSet</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// The number of attempted element insertions</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> addCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAddCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> addCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        addCount++;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.add(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;</span><br><span class="line">        addCount += c.size();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.addAll(c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个类看起来非常合理，但是它并不能正常工作。假设我们创建一个实例，并利用addAll方法添加了三个元素。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">InstrumentedHashSet&lt;String&gt; s = <span class="keyword">new</span> InstrumentedHashSet&lt;&gt;();</span><br><span class="line">s.addAll(List.of(<span class="string">"Snap"</span>, <span class="string">"Crackle"</span>, <span class="string">"Pop"</span>));</span><br><span class="line">System.out.println(s.getAddCount()); <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
-
-<p>此时我我们期望 getAddCount 方法能返回3，但实际上它返回的是6。原因是，在 HashSet 的内部 addAll 方法是基于它的add 方法来实现的，即使 HashSet 的文档中并没有说明这样的实现细节。所以实际上在 addAll() 中的所有元素都使得 addCount 加了2。只需要去掉被覆盖的 addAll 方法。虽然这样可以正常工作，但其功能正确性依赖于这样的事实：HashSet 的 addAll 方法是在其 add 方法上实现的。 <strong>这种自用性（self-use）是实现细节，而不是承诺，不能保证在 java 平台的所有实现中都保持不变，不能保证随着上发行版本的不同而不发生变化</strong>。因此，InstrumentedHashSet 类将会是非常脆弱的。</p>
-<p>导致子类脆弱的一个原因是，它们的超类在后续的发行版本中可获得新方法。假设程序的安全性依赖于这一事实：所有被插入至某个集合的元素都满足某个先决条件。下面的做法将能保证这一点：对集合进行子类化，并覆盖掉所有的能够添加元素的方法。如果在后续的发行版本中，超类中没有增加能插入元素的新方法，那么这种做法能够正常工作。然而，<strong>一旦超类增加了这样的新方法，则很有可能因为调用了这个没有被覆写的新方法，而将”非法”的元素添加到子类的实例中</strong>。这不是一个纯粹的理论问题。在把 Hashtable 和 Vector 加入到 Collections Framework 中的时候，就修正了几个这类性质的安全漏洞。</p>
-<p>以上问题都来源于覆盖 (overriding) 方法。<strong>在扩展一个类时，增加新的方法，而不覆盖现有的方法只是相对的安全，并不是没有风险</strong>。如果超类在后续的发行版本中获得了一个新方法，并且和子类中的某一方法只是返回类型不同，这样的子类将无法通过编译 [JLS，8.4.8.3]。如果给子类提供的方法带有与新的超类方法完全相同的签名及返回类型，这就覆盖了超类中的方法。<strong>你的方法是否能遵守新超类方法，也是个问题。因为在编写子类方法时，超类新方法还并存在</strong>。</p>
-<p>幸运的是，有一种方法可以避免前文所述的所有问题。不扩展现有类，而是在新的类中增加一个私有域，引用现有类的一个实例。这种设计被称为 “复合” (composition)。因为现有类变成了新类的一个组件。新类中的每个实例方法都能调用被包含的现有实例中对应的方法，并返回其结果。这被称为转发 (forwarding)，新类中的方法被称为转发方法 (forwarding method)。这样的类将会非常的稳固，它不依赖于现有类的实现细节，即使是现有类增加了新的方法，也不会影响到新的类。</p>
-<p>如下示例用复合 / 转发方法来代替 InstrumentedHashSet 类。注意这个实现分为两部分：类本身和可重用的转发类 (forwarding class)，其中包含了所有转发方法，没有任何的其他方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Wrapper class - uses composition in place of inheritance</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstrumentedSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">ForwardingSet</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> addCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">InstrumentedSet</span><span class="params">(Set&lt;E&gt; s)</span> </span>&#123; <span class="keyword">super</span>(s); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAddCount</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> addCount; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        addCount++;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.add(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;</span><br><span class="line">        addCount += c.size();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.addAll(c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Reusable forwarding class</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ForwardingSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Set</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;E&gt; s;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ForwardingSet</span><span class="params">(Set&lt;E&gt; s)</span> </span>&#123; <span class="keyword">this</span>.s = s; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> s.size(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> s.isEmpty(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(Object o)</span> </span>&#123; <span class="keyword">return</span> s.contains(o); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> s.iterator(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object[] toArray() &#123; <span class="keyword">return</span> s.toArray(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T[] toArray(T[] a) &#123; <span class="keyword">return</span> s.toArray(a); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123; <span class="keyword">return</span> s.add(e); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123; <span class="keyword">return</span> s.remove(o); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">containsAll</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123; <span class="keyword">return</span> s.containsAll(c); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123; <span class="keyword">return</span> s.addAll(c); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">retainAll</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> s.retainAll(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">removeAll</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123; <span class="keyword">return</span> s.retainAll(c); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123; s.clear(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123; <span class="keyword">return</span> s.equals(o); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> s.hashCode(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> s.toString(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Set 接口的存在使得 InstrumentedSet 类的设计成为可能，因为 Set 接口保存了 HashSet 类的功能特性。前文的基于继承的方法只适用于单个具体类，并且对于超类中所支持的每个构造器都要求有一个单独的构造器，与此不同的是，这里的包装类 (wrapper class) 可以被用来包装任何 Set 实现，并且可以结合任何先前存在的构造器一起工作：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Instant&gt; times = <span class="keyword">new</span> InstrumentedSet&lt;&gt;(<span class="keyword">new</span> TreeSet&lt;&gt;(cmp));</span><br><span class="line">Set&lt;E&gt; s = <span class="keyword">new</span> InstrumentedSet&lt;&gt;(<span class="keyword">new</span> HashSet&lt;&gt;(INIT_CAPACITY));</span><br></pre></td></tr></table></figure>
-
-<p>因为每一个 InstrumentedSet 实例都把另一个 Set 实例包装，所以 InstrumentedSet 类被称为包装类 (wrapper class)。这也正是 Decorator (修饰者) 模式 [Gamma95] (InstrumentedSet 类对集合进行修饰，增加计数特性)。有时复合和转发的结合也被宽松的称为 “委托” (delegation)。从技术的角度而言，这不是委托，除非包装对象把自身传递给被包装的对象 [Liebermen86; Gamma95] (Ryuu：确实是有种委托的味道)。</p>
-<p>包装类几乎没有什么缺点。需要注意的是，<strong>包装类不适合用于回调框架 (callback framework)</strong>；在回调框架中，对象需要把自身的引用传递给其他对象，用于后续的调用 (“回调”)。因为被包装的类并不直到它外面的包装对象，它传递一个指向自身的引用 (this)，回调时避开了外面的包装对象。这被称为 SELF 问题 [Lieberman86]。有些人担心转发方法调用所带来的性能影响，或者包装对象导致的内存使用。在实践中，这两者都不会造成太大的影响。编写转发方法倒是有点繁琐，但只需给每个接口编写一次构造器，转发类则可以通过包含接口的包提供。如 Guava 就为所有的集合接口提供了转发类 [Guava]。</p>
-<p><strong>只有当子类真正是超类的子类型 (subtype) 时，才适合用继承</strong>。对于 A、B 两类，只有两个类有 “is-a” 的关系时，B 才应该扩展 A。若想用 B 扩展 A，就应该问问自己：每个 B 是否 is an A？如果不能肯定，那么就不应该进行扩展。如果没有 is-a 的关系，通常情况下，B 包含 A 的一个私有实例，并暴露一个较小的、较简单的 API：A 本质上不是 B 的一部分，只是它的实现细节。</p>
-<p>在 Java 平台类库中，有许多明显违反这条原则的地方。例如，栈 (stack) 并不是向量 (vector)，所以 Stack 不应扩展 Vector。同样的，属性列表也不是散列表，所以 Properties 不应扩展 Hashtable。这种情况下，复合模式才是恰当的。</p>
-<p><strong>若在适用复合的地方使用了继承，则会不必要地暴露实现细节</strong>。这样得到的 API 会把你限制在原始的实现上，不必要的局限该类。更为严重的是，由于暴露了内部的细节，客户端可能直接访问这些内部细节。至少会造成语义上的混淆。例如，如果 p 指向 Properties 实例，那么 p.getProperty(key) 就有可能产生与 p.get(key) 不同的结果：getProperty 考虑了默认的属性表，get 继承自 HashTable，未考虑默认的属性列表。最为严重的是，客户可能直接修改超类，从而破坏子类的约束条件。在 Properties 的情况中，设计者的目标是只允许字符串作为键 (key) 和值 (value)，但直接访问底层的 HashTable 就允许违反这种约束条件。一旦违反了约束，就不能再使用 Properties API 的其他部分了。等到发现这个问题的时，已经太迟，因为客户已经依赖于使用非字符串的键和值了。</p>
-<p>在使用继承而非复合前，<strong>考虑被扩展类的 API 是否有缺陷</strong>。是否愿意这些缺陷传播到类中 API？继承机制会把超类 API 的所有缺陷传播到子类中，而复合则允许设计新的 API 以隐藏这些缺陷。</p>
-<p><strong>继承违背了封装原则。只有当子类和超类有 “is-a” 的关系时，使用继承才是恰当的</strong>。并且，若子类与超类处于不同的包，并且超类并不是为继承而设计，那么继承将会导致脆弱性 (fragility)。为了避免这种脆弱性，<strong>可用复合转发机制来代替继承，尤其是当存在适当的接口可以实现包装类的时候</strong>。包装类不仅比子类更健壮，功能也更强大。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ryuu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/" itemprop="url">Effective-Java-6消除过期的对象引用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-12T16:25:30+08:00">
-                2021-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                   字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>当你从手动管理内存的语言(比如C或者C++)转换到具有垃圾回收功能的语言时，工作会更加容易，因为当对象使用完毕后将会自动回收。但是，这并不代表着程序员再也不需要考虑内存管理的事情了。</p>
-<p>考虑以下这个简单栈实现的例子:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Can you spot the "memory leak"?</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stack</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> Object[] elements;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        elements = <span class="keyword">new</span> Object[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Object e)</span> </span>&#123;</span><br><span class="line">        elements[size++] = e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        <span class="keyword">return</span> elements[--size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Ensure space for at least one more element, roughly doubling the capacity each time the array needs to grow.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.length == size)</span><br><span class="line">            elements = Arrays.copyOf(elements, <span class="number">2</span> * size + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段程序(泛型版见26条)中并没有很明显的错错误。但其中隐藏着一个问题。不严格的讲，这段程序存在”内存泄漏”，随着内存的占用不断增加，程序的性能降低将会越来越明显。在极端的情况下，这种内存泄漏会导致磁盘交换(Disk Paging)，甚至导致程序失败(OutOfMemoryError)，虽然这种情况相对少见。</p>
-<p>错误在于，如果一个栈先是增长，然后再收缩，那么，从栈中弹出来的对象将不会被当作垃圾回收，即时是使用栈的程序不在引用这些对象，它们也不会被回收。因为，栈内部维护着对这些对象的过期引用(obsolete reference)。所谓的过期引用，是指永远也不会在被解除的引用。在本示例中，凡是在elements数字的”活动部分(active protion)”之外的任何引用都是过期的。活动部分是指elements中下标小于size的那些元素。</p>
-<p>在支持垃圾回收的语言中，内存泄漏是很隐蔽的(称这些内存泄漏为”无意识的对象保持(unintentional object retention)”更为恰当)。如果一个对象引用被无意识的保留起来了，也会有许许多多的对象被排除在垃圾回收机制之外，从而对性能造成潜在的重大影响。</p>
-<p>这类问题的修复方法很简单:一旦对象引用已经过期，只需清空这些引用即可。对于上述例子中的Stack而言，只要有数据被弹出栈，指向它的引用就过期了。pop方法修改版如下:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">    Object result = elements[--size];</span><br><span class="line">    elements[size] = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Ryuu: elements的中的元素本身就和size不相关，仅是返回个值栈末尾的元素当然不会被回收，要将elements对其元素的引用置空，让元素没有被指针指向，该元素才会被当作垃圾回收。</p>
-<p>以下是 Ryuu 的示例代码，您可以打断点尝试，不置空元素确实不会被回收</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.EmptyStackException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rule6</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Stack stack = <span class="keyword">new</span> Stack();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            stack.push(<span class="string">"1"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            stack.pop(); <span class="comment">// break point</span></span><br><span class="line">        System.out.println(<span class="string">"complete"</span>); <span class="comment">// break point</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Can you spot the "memory leak"?</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> Object[] elements;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        elements = <span class="keyword">new</span> Object[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Object e)</span> </span>&#123;</span><br><span class="line">        elements[size++] = e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        <span class="keyword">return</span> elements[--size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Ensure space for at least one more element, roughly doubling the capacity each time the array needs to grow.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.length == size)</span><br><span class="line">            elements = Arrays.copyOf(elements, <span class="number">2</span> * size + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> Object[] elements;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Stack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        elements = <span class="keyword">new</span> Object[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Object e)</span> </span>&#123;</span><br><span class="line">        elements[size++] = e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        Object result = elements[--size];</span><br><span class="line">        elements[size] = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Ensure space for at least one more element, roughly doubling the capacity each time the array needs to grow.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.length == size)</span><br><span class="line">            elements = Arrays.copyOf(elements, <span class="number">2</span> * size + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>清空过期引用的另一个好处是，如果它们以后又被错误的引用，程序就会立即抛出NullPointerException异常，而不是悄悄地错误运行下去。尽快地检测出程序中的错误总是有益的。</p>
-<p>当程序员第一次被类似这样的问题困扰的时候，它们往往会过分小心: 对于每一个对象引用，一旦程序不再用到它，就把他清空。其实这样做并没有必要，会把程序弄得很乱。<strong><em>清空对象引用应该是种例外，而不是一种规范行为。</em></strong>消除过期引用的最好的方法是让包含该引用的变量结束其生命周期。如果你是在最紧凑的作用范围内定义每一个变量(见第45条)，这种情形就会自然而然地发生。</p>
-<h3 id="内存泄漏常见的三个来源"><a href="#内存泄漏常见的三个来源" class="headerlink" title="内存泄漏常见的三个来源"></a>内存泄漏常见的三个来源</h3><h4 id="1-自行管理内存类。"><a href="#1-自行管理内存类。" class="headerlink" title="1. 自行管理内存类。"></a>1. <strong>自行管理内存类。</strong></h4><p>   一般在这种情况下，程序员应警惕其可能的内存泄漏问题。一旦元素被释放掉，则该元素种包含的任何对象引用都应该被清空。</p>
-<h4 id="2-缓存。"><a href="#2-缓存。" class="headerlink" title="2. 缓存。"></a>2. <strong>缓存。</strong></h4><p>   一旦将对象引用放到缓存中，很容易就会被遗忘掉，从而使得它不在有用之后很长一段时间内仍然留在缓存中。</p>
-<h4 id="3-监听器和其他回调。"><a href="#3-监听器和其他回调。" class="headerlink" title="3. 监听器和其他回调。"></a>3. <strong>监听器和其他回调。</strong></h4><p>   如果实现了一个API，客户端在这个API当中注册回调，却没有显式的取消注册 ，那么除非你采取某些行动，否则它们就会积聚。确保回调立即被当作垃圾回收的最佳方法是只保存它们的弱引用(weak reference)，例如，只将它们保存成WeakHashMap中的键。</p>
-<p>由于内存泄漏通常不会表现成明显的失败，所以它们可以在一个系统中存在很多年。往往只有通过检查代码，或者借助于Heap剖析工具(Heap Profiler)才能发现内存泄漏问题。因此，如果能够在内存泄漏发生之前就知道如何预测此类问题，并阻止它们发生，那是最好不过了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4622,7 +4656,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
