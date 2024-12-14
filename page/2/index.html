@@ -120,7 +120,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -171,6 +171,113 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/02/Effective-Java-34%E7%94%A8enum%E4%BB%A3%E6%9B%BFint%E5%B8%B8%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/01/02/Effective-Java-34%E7%94%A8enum%E4%BB%A3%E6%9B%BFint%E5%B8%B8%E9%87%8F/" class="post-title-link" itemprop="url">Effective-Java-34用enum代替int常量</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-02 00:03:48" itemprop="dateCreated datePublished" datetime="2023-01-02T00:03:48+08:00">2023-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>230</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。</p>
+<p>在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The int enum pattern - severely deficient!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_FUJI</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_PIPPIN</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_GRANNY_SMITH</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_NAVEL</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_TEMPLE</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_BLOOD</span> <span class="operator">=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这种方法称作 int 枚举模式 (int enum pattern)，他存在许多不足。int 枚举模式无类型安全性，也无描述性可言。</p>
+<p>例入将 apple 传到需要 orange 的方法中，编译器也不会产生任何警告，还会用 &#x3D;&#x3D; 操作符对 apple 与 orange 进行比较，甚至更糟：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tasty citrus flavored applesauce!</span></span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> (APPLE_FUJI - ORANGE_TEMPLE) / APPLE_PIPPIN;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1458,135 +1565,6 @@ table th:nth-of-type(3) {
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/03/Effective-CSharp-37%E5%B0%BD%E9%87%8F%E9%87%87%E7%94%A8%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E6%9F%A5%E8%AF%A2%EF%BC%8C%E8%80%8C%E4%B8%8D%E8%A6%81%E5%8F%8A%E6%97%A9%E6%B1%82%E5%80%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/03/Effective-CSharp-37%E5%B0%BD%E9%87%8F%E9%87%87%E7%94%A8%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E6%9F%A5%E8%AF%A2%EF%BC%8C%E8%80%8C%E4%B8%8D%E8%A6%81%E5%8F%8A%E6%97%A9%E6%B1%82%E5%80%BC/" class="post-title-link" itemprop="url">Effective-CSharp-37尽量采用惰性求值的方式来查询，而不要及早求值</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-03 19:48:06" itemprop="dateCreated datePublished" datetime="2021-08-03T19:48:06+08:00">2021-08-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>定义查询操作，程序并不会立刻把数据获取并填充至序列，因为定义的实际上只是一套执行步骤，当真正需要遍历结果时，才会执行。每迭代一遍产生一套新结果，这叫做***惰性求值 (lazy evaluation)<em><strong>，反之，若像普通代码一样直接查询某套变量的取值并立即记录，那么就称为</strong></em>及早求值 (eager evaluation)***。</p>
-<p>若定义查询操作需多次执行，请考虑采用哪种求值方式。是给数据做一份快照，还是先把逻辑记录下来，以便随时根据该逻辑查询，并将结果置入序列？</p>
-<p>惰性求值与一般编写代码时的思路有很大区别，LINQ 查询操作把代码当数据看，用作参数的 lamdba 表达式要等到调用时才执行。此外，如果 provider 使用表达式树 (expression tree) 而不是委托，那么稍后可能还会有新的表达式融入树中。</p>
-<p>通过以下示例演示惰性求值与及早求值的区别。生成一个序列，暂停，迭代，暂停，再迭代：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="title">IEnumerable</span>&lt;<span class="title">TResult</span>&gt; <span class="title">Generate</span>&lt;<span class="title">TResult</span>&gt;(<span class="params"><span class="built_in">int</span> number, Func&lt;TResult&gt; generator</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; number; i++)</span><br><span class="line">        <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="title">generator</span>()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Start time for Test One: 8:37:28 PM</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Waiting...      Press Return</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> </span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Iterating...</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 8:37:30 PM</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ...</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 8:37:30 PM</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>      Waiting...      Press Return</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>  Iterating...</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>   8:37:39 PM</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>   ...</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>   8:37:39 PM</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">LazyEvaluation</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;Start time for Test One: <span class="subst">&#123;DateTime.Now:T&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> sequence = Generate(<span class="number">10</span>, () =&gt; DateTime.Now);</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Waiting... \tPress Return&quot;</span>);</span><br><span class="line">    Console.ReadLine();</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Iterating...&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (DateTime dateTime <span class="keyword">in</span> sequence) <span class="comment">// warning: Possible multiple enumeration</span></span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;dateTime:T&#125;</span>&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Waiting... \tPress Return&quot;</span>);</span><br><span class="line">    Console.ReadLine();</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Iterating...&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (DateTime dateTime <span class="keyword">in</span> sequence) <span class="comment">// warning: Possible multiple enumeration</span></span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;dateTime:T&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意观察结果中的时间戳 (time stamp)。由此可知，前后两次迭代所生成的是不同的两个序列，因为 sequence 变量保存的不是创建好的元素，而是创建元素所用的表达式树。(Ryuu：在 Rider 中编写该代码，将出现 Possible multiple enumeration 警告，同样告知，此操作可能导致遍历序列前后不一致。)</p>
-<p>由于查询表达式能够惰性求值，因此可以在现有的查询操作后继续拼接其他的操作。</p>
-<p>如下示例将 sequence1 序列得到的时间转换成协调世界时：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sequence1 = Generate(<span class="number">10</span>, () =&gt; DateTime.Now);</span><br><span class="line"><span class="keyword">var</span> sequence2 =</span><br><span class="line">    <span class="keyword">from</span> dateTime <span class="keyword">in</span> sequence1</span><br><span class="line">    <span class="keyword">select</span> dateTime.ToUniversalTime();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (DateTime dateTime <span class="keyword">in</span> sequence2)</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;dateTime:T&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>sequence1 和 sequence2 两个序列是在功能层面上组合，而不是在数据层面上。系统并不会先把 sequence1 的所有值拿出来，然后全部修改一遍，构成 sequence2。而是执行相关的代码，把 sequence1 的元素生成出来，紧接着执行另一端代码处理该元素，将结果放入sequence2。程序并不会把时间都准备好，并将其转换为协调世界时，而是等待调用时再去生成该序列中被调用的时间。</p>
-<p>由于查询表达式可惰性求值，因此，理论上来说，它可以操作无穷序列 (infinite sequence)。如果代码写的较为合理，那么程序仅需检查开头部分即可，因为在完成查询后程序会停止。反之，有些写法令表达式必须把整个序列处理一遍才能得到完整结果：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 0123456789</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">LazyEvaluation3</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> answers = <span class="function"><span class="keyword">from</span> number <span class="keyword">in</span> <span class="title">AllNumbers</span>() <span class="keyword">select</span> number</span>;</span><br><span class="line">    <span class="keyword">var</span> smallNumbers = answers.Take(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> smallNumbers)</span><br><span class="line">        Console.Write(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">AllNumbers</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> number = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (number &lt; <span class="built_in">int</span>.MaxValue)</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> number++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此示例不必生成整个序列，而是仅生成十个数 (虽然 AllNumbers() 可以生成至 int.MaxValue)。Take() 方法只需要其中的前 N 个对象。</p>
-<p>反之，如果把查询语句改成这样，程序将一直运行，直到 int.MaxValue才停下：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> answers = <span class="function"><span class="keyword">from</span> number <span class="keyword">in</span> <span class="title">AllNumbers</span>() <span class="keyword">where</span> number &lt; 10 <span class="keyword">select</span> number</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> answers)</span><br><span class="line">	Console.Write(num);</span><br></pre></td></tr></table></figure>
-
-<p>查询语句需要逐个判断序列中的每个元素，并根据其是否小于 10 决定要不要生成该元素，该逻辑导致其必须遍历整个元素。</p>
-<p><strong>某些查询操作必须把整个序列处理一遍，然后才能得到结果</strong>。比如上例的 where，以及 OrderBy、Max、Min。对于可能无限延伸下去的序列来说，尽量不要执行此操作。即使是有限长度，还是应尽量利用过滤机制来缩减待处理的数据，以提高程序效率。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Order before filter.</span></span><br><span class="line"><span class="keyword">var</span> sortedProductsSlow =</span><br><span class="line">    <span class="keyword">from</span> p <span class="keyword">in</span> products</span><br><span class="line">    <span class="keyword">orderby</span> p.UnitsInStock <span class="keyword">descending</span></span><br><span class="line">    <span class="keyword">where</span> p.UnitsInStock &gt; <span class="number">100</span></span><br><span class="line">    <span class="keyword">select</span> p;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Filter before order.</span></span><br><span class="line"><span class="keyword">var</span> sortedProductsFast =</span><br><span class="line">    <span class="keyword">from</span> p <span class="keyword">in</span> products</span><br><span class="line">    <span class="keyword">where</span> p.UnitsInStock &gt; <span class="number">100</span></span><br><span class="line">    <span class="keyword">orderby</span> p.UnitsInStock <span class="keyword">descending</span></span><br><span class="line">    <span class="keyword">select</span> p;</span><br></pre></td></tr></table></figure>
-
-<p>第一种方法会将所有产品排序，然后剔除小于等于 100 的产品，而第二种，则是先剔除小于等于 100 的产品，然后再排序，这样的话待排序的数据量可能减小。在编写算法时，请安排合适的执行顺序，这样的算法可能执行很快，反之，则可能极为耗时。</p>
-<p>笔者列举了以上理由，建议查询时优先考虑惰性求值，但在个别情况下，可能想要给结果做一份快照，这是可以考虑 ToList() 及 ToArray()，他们都能立刻根据查询结果来生成序列，并保存至容器中。该方法用在以下两个场合：</p>
-<ol>
-<li>需要立即执行查询操作</li>
-<li>将来还要使用同一套查询结果</li>
-</ol>
-<p>与及早求值的方法比，惰性求值能减少程序工作量，且使用起来更灵活。若有需要，可使用 ToList() 及 ToArray() 来保存结果。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1610,13 +1588,13 @@ table th:nth-of-type(3) {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">74k</span>
+    <span title="站点总字数">75k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:28</span>
+    <span title="站点阅读时长">4:33</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

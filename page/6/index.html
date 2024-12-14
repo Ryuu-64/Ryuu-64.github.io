@@ -120,7 +120,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -171,6 +171,125 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/" class="post-title-link" itemprop="url">Effective-CSharp-2考虑用readonly代替const</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>710</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>C# 有两种常量，一种是**编译期 (compile-time)<strong>的，另一种是</strong>运行期 (runtime)**的。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Compile-time constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="built_in">int</span> Millennium = <span class="number">2000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Runtime constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ThisYear = <span class="number">2004</span>;</span><br></pre></td></tr></table></figure>
+
+<p>以上代码展示了如何在 class 或 struct 的范围内声明这两种常量 此外编译期常量还能在方法中声明，而 readyonly 常量则不行。</p>
+<p>编译器的常量取值嵌入目标代码中。例如</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == Millennium)</span><br></pre></td></tr></table></figure>
+
+<p>编译成 IL 之后，与直接使用字面量2000是一样的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == <span class="number">2000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行期常量与之不同，如果代码中使用到了运行期常量，那么其生成的 IL 的、也会同样<strong>引用</strong>该变量，而不会直接使用字面量。</p>
+<p>这两种变量支持的值也不一样。编译期的常量只能用来表示内置的 int, float, enum, string。非基本变量不能使用编译期常量声明，需要使用 readonly。在生成 IL 的过程中，只有用来表示这些原始类型的编译期常量才会替换成字面量。</p>
+<p>无法编译，试图使用 new 操作符进行初始化: (Ryuu: 即使是参数是值类型也不行，其对象在编译期不存在)</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">// Does not compile ,use readonly instead:</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> DateTime classCreation = <span class="keyword">new</span> DateTime(<span class="number">2000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>编译期常量只能用数字，字符串或 null 初始化。</strong>readonly 常量在执行完构造函数 (constructor) 之后不可以再修改。(和编译期常量不同，他的值是在执行完构造函数后才初始化的)</p>
+<p>在生成 IL 的时候，代码中的编译期常量会直接以其常量值写入，如果在制作另外的程序集 (assembly) 的时候用到了该程序集中的编译期常量，那么这个常量将会以字面值写入另外的程序集。</p>
+<p>有的时候开发者确实想把某个值固定在编译期，比如程序版本记录，如果更新整个项目，那么里面每个版本号都会变为最新，如果仅更新其中某些程序集，那么只有更新的程序集的版本号会变为最新值。</p>
+<p>const 的性能比 readonly 的要好。由于程序集可以直接访问值，而不用查询变量，因此性能稍高。但是，开发者需要考虑是否值得为了这点性能而使得代码变得僵硬。在决定这么做之前，您应该先通过 profile 工具做性能测试。(可以试试 BenchmarkDotNet)</p>
+<p>const 关键字用来声明那些必须在编译期得以确定的值，例如 attribute 参数、switch case 语句的标签、enum 的定义等，偶尔用于声明不会随版本而变化的值。除此之外的值考虑用 readonly 常量声明。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -942,7 +1061,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+      <time title="修改时间：2024-12-14 18:54:20" itemprop="dateModified" datetime="2024-12-14T18:54:20+08:00">2024-12-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1032,13 +1151,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">74k</span>
+    <span title="站点总字数">75k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:28</span>
+    <span title="站点阅读时长">4:33</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
