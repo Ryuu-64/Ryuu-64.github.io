@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如前文所说的，若对象包含非托管资源，那么一定要正确的清理。对于非托管型资源来说，.NET Framework 会采用一套标准的模式来完成清理工作，如果你所变写的类里也用到了非托管资源，那么该类的使用者就会认为这个类同样遵循这套模式。标准的 dispose (释放&#x2F;处置) 模式会实现 IDisposable 接口，又会提供 finalizer (终结器&#x2F;终止化器)，以便在客户端忘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-CSharp-17实现标准的dispose模式">
+<meta property="og:url" content="http://example.com/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="如前文所说的，若对象包含非托管资源，那么一定要正确的清理。对于非托管型资源来说，.NET Framework 会采用一套标准的模式来完成清理工作，如果你所变写的类里也用到了非托管资源，那么该类的使用者就会认为这个类同样遵循这套模式。标准的 dispose (释放&#x2F;处置) 模式会实现 IDisposable 接口，又会提供 finalizer (终结器&#x2F;终止化器)，以便在客户端忘">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-17T02:32:45.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.566Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="effective CSharp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/","path":"2021/05/17/Effective-CSharp-17实现标准的dispose模式/","title":"Effective-CSharp-17实现标准的dispose模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-CSharp-17实现标准的dispose模式 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-CSharp-17实现标准的dispose模式 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-CSharp-17实现标准的dispose模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-17 10:32:45" itemprop="dateCreated datePublished" datetime="2021-05-17T10:32:45+08:00">2021-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>如前文所说的，若对象包含非托管资源，那么一定要正确的清理。对于非托管型资源来说，.NET Framework 会采用一套标准的模式来完成清理工作，如果你所变写的类里也用到了非托管资源，那么该类的使用者就会认为这个类同样遵循这套模式。标准的 dispose (释放&#x2F;处置) 模式会实现 IDisposable 接口，又会提供 finalizer (终结器&#x2F;终止化器)，以便在客户端忘记调用 IDisposable.Dispose() 的情况下也可以释放资源。这样做虽然有可能令程序的性能因执行 finalizer 而下降，但毕竟可以保证垃圾回收器能够把资源回收掉。这是处理非托管资源的正确方式，开发者应该透彻地理解该方式。实际上，.NET 中的非托管资源还可以通过System.Runtime.Interop.SafeHandle 的派生类来访问，那个类也正确地实现了这套标准的 dispose 模式。</p>
+<p>在类的继承体系中，位于根部的那个基类应该做到如下几点</p>
+<ul>
+<li><p>实现 IDisposable 接口，以便释放资源。</p>
+</li>
+<li><p>若本身含有非托管资源，添加 finalizer，以防客户端忘记调用 Dispose() 方法。若是没有非托管资源，则不添加 finalizer。</p>
+</li>
+<li><p>Dispose 方法与 finalizer (如果有) 都把释放资源的工作委派给虚方法，使得子类能够重写该方法，以释放它们自己的资源。</p>
+</li>
+</ul>
+<p>继承体系中的子类应该做到以下几点：</p>
+<ul>
+<li>若子类有自己的资源需要释放，那就重写由基类所定义的那个虚方法，若没有，则不重写该方法。</li>
+<li>若子类自身的某个成员字段表示非托管资源，实现 finalizer，若没有这样的字段，则不用实现 finalizer。</li>
+<li>记得调用基类的同名函数。</li>
+</ul>
+<p>若类包含非托管资源，必须提供 finalizer，因为开发者不能保证使用者总是会调用 Dispose()。如果他们忘了，则会造成资源泄漏，尽管这是使用者的错误，但是受责备的是你 (因为你没有提前防范这种情况)。**(Ryuu：当然，作为使用者，应使用 Dispose()，而不是全部依赖于 finalizer (特别是在使用外部资源时)。finalizer 仅是保险手段，其确切的执行时间是不可知的 (作者下文有述)。Java 中也是如此。)**</p>
+<p>垃圾收集器每次运行时，都会把不带 finalizer 的垃圾对象立刻从内存中移除。而带有 finalizer 的对象则会继续留在内存中，并添加到队列中。GC 会安排线程在这些对象上运行其 finalizer，运行完毕后，通常可以像不带 finalizer 的垃圾对象一样被移除。但与那些对象相比，他们属于老一代的对象，因为只有当其 finalizer 执行过一次后， GC 才会将其视为可以直接释放的对象，他们需要在内存中停留更长的时间。这也是没有办法，因为必须通过 finalizer 来保证非托管资源得到释放。尽管程序的性能可能因此有所下降，但只要客户端记得调用 Dispose()，就不会有此问题。</p>
+<p>如果所编写的类使用了某些必须及时释放的资源，那么应按照广利实现 IDisposable 接口，以提醒此类使用者与运行系统注意。该接口只包含一个方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IDisposable</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Dispose</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现 IDisposable.Dispose() 时需要注意：</p>
+<ol>
+<li>释放所有的非托管资源</li>
+<li>释放所有的托管资源 (其中包括取消事件订阅)</li>
+<li>设定相关状态标志，表示该对象已被清理。若清理后还有对其成员的访问，可通过状态标志得知该情况，令这些操作抛出 ObjectDisposedException。</li>
+<li>阻止垃圾回收器对该对象的重复清除 (可以通过 GC.SuppressFinalize(this) 来完成)。</li>
+</ol>
+<p>正确实现 IDisposable 接口是一举两得的，因为它既提供了适当的机制使得托管资源能够及时释放，又令客户端可以通过标准的 Dispose() 来释放非托管类型的资源。如果你编写的类实现了 IDisposable 接口，并且客户端又能够记得调用其 Dispose()，那么程序将不必执行 finalizer，其性能也得到了保证，这将使得此类能顺利融入 .NET 环境中。</p>
+<p>但此机制依然有漏洞，因为子类在清理自身的资源时必须保证基类的资源也能得到清理。若子类要重写 finalizer 或是想根据自己的需要给 IDisposable.Dispose() 添加新的逻辑，那么必须调用基类的版本。否则，基类的资源无法正确释放。此外，由于 finalizer 和 Dispose() 都有类似的任务。因此，这两个方法几乎总是包含重复的代码。直接重写接口中的函数可能无法达到预期效果，因为这些函数默认的情况下是非虚的。为此，需要再做一点工作来解决问题：把  finalizer 和 Dispose() 中重复的代码提取到 protected 级别的虚函数中，使得子类能够重写该函数，以释放他们分配的资源，而基类则应在接口方法中把核心的逻辑实现好。该辅助函数可以声明为此以供子类重写，使得其能在 Dispose() 方法或 finalizer 得以执行时把相关的资源清理干净：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>IDisposable.Dispose() 和 finalizer 都可以调用此方法以清理相关资源。这个方法与 IDisposable.Dispose() 相互重载。由于其是虚方法，子类可以重写该方法，以便用适当的代码来清理自身的资源并调用基类版本。</p>
+<ul>
+<li><p>isDisposing：true</p>
+<p>清理托管资源与非托管资源 (这表明该方法是在 IDisposable.Dispose() 中调用的)</p>
+</li>
+<li><p>isDisposing：false</p>
+<p>仅清理非托管资源 (这表明该方法是在 finalizer 中调用的)</p>
+</li>
+</ul>
+<p>无论是哪种情况，都要调用基类的 Dispose(bool)，使得基类有机会清除其资源。</p>
+<p>如下示例演示了该模式所用的代码框架，其中，MyResourceHog 实现了 IDisposable 接口，并创建了 Dispose(bool) 的虚方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyResourceHog</span> : <span class="title">IDisposable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Flag for already disposed</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> alreadyDisposed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Implementation of IDisposable</span></span><br><span class="line">    <span class="comment">// Call the virtual Dispose method</span></span><br><span class="line">    <span class="comment">// Suppress Finalization</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispose</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Dispose(<span class="literal">true</span>);</span><br><span class="line">        GC.SuppressFinalize(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t dispose more than once.</span></span><br><span class="line">        <span class="keyword">if</span> (alreadyDisposed) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isDisposing)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// elided: free managed resources here.</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// elided: free managed resources here.</span></span><br><span class="line">        <span class="comment">// Set disposed flag:</span></span><br><span class="line">        alreadyDisposed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ExampleMethod</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (alreadyDisposed)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ObjectDisposedException(<span class="string">&quot;MyResourceHog&quot;</span>, <span class="string">&quot;Called Example Method on Disposed object&quot;</span>);</span><br><span class="line">        <span class="comment">// remainder elided.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DerivedResourceHog 继承了 MyResourceHog，并重写了基类中的 protected Dispose(bool)：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DerivedResourceHog</span> : <span class="title">MyResourceHog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Have its own disposed flag.</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> disposed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t dispose more than once.</span></span><br><span class="line">        <span class="keyword">if</span> (disposed) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (isDisposing)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> free managed resources here.</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> free unmanaged resources here.</span></span><br><span class="line">        <span class="comment">// Let the base class free its resource.</span></span><br><span class="line">        <span class="comment">// Base class is responsible for calling</span></span><br><span class="line">        <span class="comment">// GC.SuppressFinalize()</span></span><br><span class="line">        <span class="keyword">base</span>.Dispose(isDisposing);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Set derived class disposed flag:</span></span><br><span class="line">        disposed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请注意，基类和子类对象采用各自的 disposed 标志来表示其资源是否得到释放。若公用一个标志，那么子类可能率先将其设置为 true，而等到基类运行 Dispose(bool) 时，则会误认为其资源已释放。</p>
+<p><strong>Dispose(bool) 与 finalizer 需要具备 <em>幂等性 (idempotent)<em><strong>，多次调用 Dispose(bool) 的效果应与调用一次相同。由于各对象的 dispose 操作之间可能没有明确的顺序，因此在执行自身的 Dispose(bool) 时，或许其中某些成员已经被</strong></em>释放 (dispose)</em></strong> 了。这并不表示程序出了问题，因为 Dispose() 本身就可能多次被调用。对于该方法以外的其他 public 方法而言，如果在此对象已被释放后还有人要调用，那么应抛出 ObjectDisposedException ( Dispose() 是个例外)。在对象释放后调用该方法应该没有任何效果。当系统执行某个对象的 finalizer 时，该对象所引用的某些资源可能已经释放过，或是没有得到初始化。对于前者来说，不用检查其是否为 null，因为他所引用的资源还可以继续引用，只是有可能被释放，甚至其 finalizer 有可能已经执行过了。</p>
+<p>上文示例的两个类都没有 finalizer，示例代码根本不会以 false 为参数调用 Dispose(bool)。只有<strong>当该类型直接包含非托管资源时，才应实现 finalizer</strong>。否则不调用也会给该类带来负担，因为这有着较大的开销。若有，则必须添加 finalizer 才能正确的实现 dispose 模式，此时的 finalizer 应与 Dispose(bool) 相同，都可以适当地将非托管资源释放掉。</p>
+<p>在编写 Dispose 或 finalizer 等资源清理方法时，最重要的一点是：<strong>仅释放资源，不进行其他处理</strong>。否则就会产生一些涉及对象生存期的严重问题。一般的，对象在构造时诞生，在变成垃圾并回收时死亡。若程序不在访问某个对象，可以认为该对象已 *昏迷 (comatose)*，对象中的方法也不会得到调用，实际上等于已经消亡了，然而如果他包含 finalizer，那么系统在正式宣告其死亡前，会给他机会，使其能够将非托管资源清理。此时，如果 finalizer 令该对象可以重新为程序引用，那么他将复活，但是这种从昏迷中醒来的对象有其问题：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BadClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Store a reference to a global object:</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> List&lt;BadClass&gt; FinalizedList = <span class="keyword">new</span> List&lt;BadClass&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> msg;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BadClass</span>(<span class="params"><span class="built_in">string</span> msg</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~BadClass()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Add this object to the list.</span></span><br><span class="line">        <span class="comment">// This object is reachable, no longer garbage.</span></span><br><span class="line">        <span class="comment">// It&#x27;s back!</span></span><br><span class="line">        FinalizedList.Add(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>BadClass 对象执行其 finalizer 时，会将指向自身的引用添加到全局变量表中，使得程序能够再度访问该对象，使得此对象复活。这会造成很大问题。由于 finalizer 已经执行过了，因此垃圾回收器不会再执行其 finalizer ，于是这个复活的对象将不会被系统做终结 (finalize)。其次，该对象引用的资源可能无效了。对于那些只通过 finalizer 队列中对象访问的资源来说，GC 将不会把他们从内存中移除，但这些资源的 finalizer 可能已经执行过了，这些资源基本上不能再使用了。请不要采用此写法。</p>
+<p>应该不会有人在终结对象时故意将其复活。但此例说明，若想在 Dispose 和 finalizer 中调用其他的函数以执行一些工作，请仔细考虑，这些操作可能会导致 bug，最好是将其删除，使得 Dispose 和 finalizer 只用来释放资源。</p>
+<p>对于运行在托管环境的程序来说，开发者不需要给自己的每一个类都编写 finalizer。只有当其中包含了非托管资源或是带有实现了 IDisposable 接口的成员，才需要添加 finalizer。注意，在只需 IDisposable 接口但不需要 finalizer 的场合下，还是应该把整套模式写出，使得子类可轻松的实现标准的 dispose 方案。</p>
+<p>(<strong>Ryuu：</strong>作者所述许多要点，文档中都有具体实现，推荐查看 (本书作者也是 dotnet docs 的作者，<a target="_blank" rel="noopener" href="https://github.com/BillWagner">Bill wagner’s github overview</a>)。<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/destructors">终结器 - C# 编程指南</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/unmanaged-types">非托管类型 - C# 参考</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.idisposable?view=net-5.0">IDisposable 接口 (System)</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/standard/garbage-collection/implementing-dispose">实现 Dispose 方法</a>)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/effective-CSharp/" rel="tag"># effective CSharp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/" rel="prev" title="Effective-CSharp-15不要创建无谓的对象">
+                  <i class="fa fa-angle-left"></i> Effective-CSharp-15不要创建无谓的对象
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/19/Effective-Java-28%E5%88%97%E8%A1%A8%E4%BC%98%E4%BA%8E%E6%95%B0%E7%BB%84/" rel="next" title="Effective-Java-28列表优于数组">
+                  Effective-Java-28列表优于数组 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

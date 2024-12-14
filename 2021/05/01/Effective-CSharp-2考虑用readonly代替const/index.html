@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="C# 有两种常量，一种是**编译期 (compile-time)的，另一种是运行期 (runtime)**的。 12345&#x2F;&#x2F; Compile-time constant:public const int Millennium &#x3D; 2000;&#x2F;&#x2F; Runtime constant:public static readonly int ThisYear &#x3D; 2004;  以上代码展示了如何在 cla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-CSharp-2考虑用readonly代替const">
+<meta property="og:url" content="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="C# 有两种常量，一种是**编译期 (compile-time)的，另一种是运行期 (runtime)**的。 12345&#x2F;&#x2F; Compile-time constant:public const int Millennium &#x3D; 2000;&#x2F;&#x2F; Runtime constant:public static readonly int ThisYear &#x3D; 2004;  以上代码展示了如何在 cla">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-01T15:01:08.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.566Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="effective CSharp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/","path":"2021/05/01/Effective-CSharp-2考虑用readonly代替const/","title":"Effective-CSharp-2考虑用readonly代替const"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-CSharp-2考虑用readonly代替const | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-CSharp-2考虑用readonly代替const | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-CSharp-2考虑用readonly代替const
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>710</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>C# 有两种常量，一种是**编译期 (compile-time)<strong>的，另一种是</strong>运行期 (runtime)**的。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Compile-time constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="built_in">int</span> Millennium = <span class="number">2000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Runtime constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ThisYear = <span class="number">2004</span>;</span><br></pre></td></tr></table></figure>
+
+<p>以上代码展示了如何在 class 或 struct 的范围内声明这两种常量 此外编译期常量还能在方法中声明，而 readyonly 常量则不行。</p>
+<p>编译器的常量取值嵌入目标代码中。例如</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == Millennium)</span><br></pre></td></tr></table></figure>
+
+<p>编译成 IL 之后，与直接使用字面量2000是一样的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == <span class="number">2000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行期常量与之不同，如果代码中使用到了运行期常量，那么其生成的 IL 的、也会同样<strong>引用</strong>该变量，而不会直接使用字面量。</p>
+<p>这两种变量支持的值也不一样。编译期的常量只能用来表示内置的 int, float, enum, string。非基本变量不能使用编译期常量声明，需要使用 readonly。在生成 IL 的过程中，只有用来表示这些原始类型的编译期常量才会替换成字面量。</p>
+<p>无法编译，试图使用 new 操作符进行初始化: (Ryuu: 即使是参数是值类型也不行，其对象在编译期不存在)</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">// Does not compile ,use readonly instead:</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> DateTime classCreation = <span class="keyword">new</span> DateTime(<span class="number">2000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>编译期常量只能用数字，字符串或 null 初始化。</strong>readonly 常量在执行完构造函数 (constructor) 之后不可以再修改。(和编译期常量不同，他的值是在执行完构造函数后才初始化的)</p>
+<p>在生成 IL 的时候，代码中的编译期常量会直接以其常量值写入，如果在制作另外的程序集 (assembly) 的时候用到了该程序集中的编译期常量，那么这个常量将会以字面值写入另外的程序集。</p>
+<p>有的时候开发者确实想把某个值固定在编译期，比如程序版本记录，如果更新整个项目，那么里面每个版本号都会变为最新，如果仅更新其中某些程序集，那么只有更新的程序集的版本号会变为最新值。</p>
+<p>const 的性能比 readonly 的要好。由于程序集可以直接访问值，而不用查询变量，因此性能稍高。但是，开发者需要考虑是否值得为了这点性能而使得代码变得僵硬。在决定这么做之前，您应该先通过 profile 工具做性能测试。(可以试试 BenchmarkDotNet)</p>
+<p>const 关键字用来声明那些必须在编译期得以确定的值，例如 attribute 参数、switch case 语句的标签、enum 的定义等，偶尔用于声明不会随版本而变化的值。除此之外的值考虑用 readonly 常量声明。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/effective-CSharp/" rel="tag"># effective CSharp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/" rel="prev" title="Effective-Java-2遇到多个构造器参数时需要考虑用构建器">
+                  <i class="fa fa-angle-left"></i> Effective-Java-2遇到多个构造器参数时需要考虑用构建器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/" rel="next" title="Effective-CSharp-1优先使用隐式类型的局部变量">
+                  Effective-CSharp-1优先使用隐式类型的局部变量 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="垃圾回收器可以帮你把内存管理好，并高效地移除那些用不到的对象，但这并不是在鼓励你毫无节制地创建对象，因为创建并摧毁一个基于堆 (heap-based) 的对象无论如何都要比根本不生成这个对象耗费更多的处理器时间。在方法中创建很多局部的引用对象可能会大幅降低程序的性能。 因此，开发者不应该给垃圾回收器 (GC) 带来太多的负担，而是应该利用一些简单的技巧，尽量降低 GC 的工作量。所有引用类型的对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-CSharp-15不要创建无谓的对象">
+<meta property="og:url" content="http://example.com/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="垃圾回收器可以帮你把内存管理好，并高效地移除那些用不到的对象，但这并不是在鼓励你毫无节制地创建对象，因为创建并摧毁一个基于堆 (heap-based) 的对象无论如何都要比根本不生成这个对象耗费更多的处理器时间。在方法中创建很多局部的引用对象可能会大幅降低程序的性能。 因此，开发者不应该给垃圾回收器 (GC) 带来太多的负担，而是应该利用一些简单的技巧，尽量降低 GC 的工作量。所有引用类型的对象">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-15T11:07:08.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.565Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="effective CSharp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/","path":"2021/05/15/Effective-CSharp-15不要创建无谓的对象/","title":"Effective-CSharp-15不要创建无谓的对象"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-CSharp-15不要创建无谓的对象 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-CSharp-15不要创建无谓的对象 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-CSharp-15不要创建无谓的对象
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-15 19:07:08" itemprop="dateCreated datePublished" datetime="2021-05-15T19:07:08+08:00">2021-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>垃圾回收器可以帮你把内存管理好，并高效地移除那些用不到的对象，但这并不是在鼓励你毫无节制地创建对象，因为创建并摧毁一个基于堆 (heap-based) 的对象无论如何都要比根本不生成这个对象耗费更多的处理器时间。在方法中创建很多局部的引用对象可能会大幅降低程序的性能。</p>
+<p>因此，开发者不应该给垃圾回收器 (GC) 带来太多的负担，而是应该利用一些简单的技巧，尽量降低 GC 的工作量。所有引用类型的对象都需要先分配内存，然后才能使用，即使是局部变量也不例外。如果跟对象与这些对象之间没有路径可通，那么他们就变成了垃圾。具体到局部变量来看，如果声明这些变量的那个方法不再活跃于程序中，那么很可能导致这些变量成为垃圾。</p>
+<p>例如很多人喜欢在窗口的paint handler 里面分配 GDI 对象，这样做容易出现这个问题：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPaint</span>(<span class="params">PaintEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Bad. Created the same font every paint event.</span></span><br><span class="line">    <span class="keyword">using</span> (Font MyFont = <span class="keyword">new</span> Font(<span class="string">&quot;Arial&quot;</span>, <span class="number">10.0f</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        e.Graphics.DrawString(DataTime.Now.ToStirng(), MyFont, Brushes.Black, <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">base</span>.OnPaint(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>系统会频繁调用 OnPaint()，而每次调用时，都会创建新的 Font 对象，但是这并没有必要，因为实际上这些对象都是一样的，因此垃圾回收器总是得回收旧的 Font。GC 的执行时机与程序所分配的内存数量以及分配的频率有关，如果总是分配内存，那么 GC 的工作压力就比较大，这自然会降低程序效率。</p>
+<p>反之，将 Font 对象从局部变量改为成员变量，那么就可以复用同一个 Font：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">readonly</span> Font myFont = <span class="keyword">new</span> Font(<span class="string">&quot;Arial&quot;</span>, <span class="number">10.0f</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPaint</span>(<span class="params">PaintEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    e.Graphics.DrawString(DataTime.Now.ToStirng(), MyFont, Brushes.Black, <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">base</span>.OnPaint(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改版之后就不会进行频繁的垃圾回收了，这将使得程序运行的稍快一点。对于像本例的 Font 这样实现了 IDisposable 接口的类型来说，把该类型的局部变量提升为成员之后，需要在类中实现这个接口(见17条)。</p>
+<p>如果局部变量是引用类型而非值类型，并且出现在需要频繁运行的例程 (routine) 中，那就应该将其提升为成员变量。上文的 OnPaint 例程中的 myFont 就是如此。请注意，只有当例程调用得较为频繁时材质的这样做，如果不太频繁，那么可以不用考虑这个问题。要避免频繁的创建相同的对象，而不是说把每个局部变量都转化为成员变量。</p>
+<p>上文的代码用到了 Brushes。Black 这个静态属性，该属性采用另一种技术来避免频繁创建相似的对象。如果程序中有很多地方都要用到某个引用类型的实例，那么可以把它创建成静态的成员变量。每次用黑色绘制窗口时，都要使用这样的画笔，但如果每次绘制时都去重新分配，那么程序在执行过程中要创建并销毁大量的 Brush 对象。即便按照刚才那条技巧将这个对象从局部提升为成员变量，也无法避免该问题。由于程序会创建很多窗口与控件，而且在绘制时会用到大量的黑色画笔，因此.NET框架的设计者决定，只创建一支黑色的画笔给程序中的各个地方公用。Brushes 类里面有大量的 Brush 对象，每个对象对应于一种颜色，这种颜色的画笔是程序中的每个例程都可以使用的。Brushes 类在其内部采用惰性求值算法 (lazy evaluation algorithm) 来创建画笔，这种算法的逻辑可以表示成下面这样：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Brush blackBrush;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Brush Black</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (blackBrush == <span class="literal">null</span>)</span><br><span class="line">            blackBrush = <span class="keyword">new</span> SolidBrush(Color.Black);</span><br><span class="line">        <span class="keyword">return</span> blackBrush;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首次请求获取黑色画笔时，Brushes 类会创建该画笔，并把指向它的引用保存起来。以后如果还要获取这种颜色的画笔，那么 Brushes 类久把早前保存的引用直接返回给你，而不用再去重新创建。并且还有一个好处，如果某种画笔从始至终根本没有用到，那么 Brushes 类就根本不会创建该画笔。在编程工作中使用该技术会有正反两方面的效果， 正面效果是可以令程序少创建一些对象，而负面效果则是有可能导致对象在内存中待的比较久，这还意味着开发者无法释放非托管资源，因为你不知道什么时候调用 Dispose() 方法才好。</p>
+<p>前面讲的这两项技巧可以令程序在运行过程中尽量少分配一些对象，第一项技巧是把经常使用的局部变量提升为成员变量，第二项技巧是采用依赖注入 (dependency injection) 的办法创建并复用那些经常使用的实例。此外还有一项针对<em>不可变类型 (immutable type)</em> 的技巧，该技巧可以把这种类型对象最终所应具备的取值分步骤地构建好。比方说，System.String 类就是不可变的，这种字符串创建好之后，其内容无法修改。某些代码看上去好像是修改了字符串内容，但其实还是创建了新的string对象，并用它来替换原有的string，从而导致后者变为垃圾。下面这种写法看起来似乎没有问题：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> msg = <span class="string">&quot;Hello, &quot;</span>;</span><br><span class="line">msg += thisUser.name;</span><br><span class="line">msg += <span class="string">&quot;. Today is &quot;</span>;</span><br><span class="line">msg += System.DateTime.Now.ToString();</span><br></pre></td></tr></table></figure>
+
+<p>但是这样写很没有效率，因为它相当于：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Not legal, for illustration only:</span></span><br><span class="line"><span class="built_in">string</span> msg = <span class="string">&quot;Hello, &quot;</span>;</span><br><span class="line"><span class="built_in">string</span> msg1 = <span class="keyword">new</span> <span class="built_in">string</span>(msg + thisUser.Name);</span><br><span class="line">msg = msg1; <span class="comment">// &quot;Hello, &quot; is garbage</span></span><br><span class="line"><span class="built_in">string</span> msg2 = <span class="keyword">new</span> <span class="built_in">string</span>(msg + <span class="string">&quot;. Today is &quot;</span>);</span><br><span class="line">msg = msg2; <span class="comment">// &quot;Hello, &lt;user&gt;&quot; is garbage</span></span><br><span class="line"><span class="built_in">string</span> msg3 = <span class="keyword">new</span> <span class="built_in">string</span>(msg + System.DateTime.Now.ToString());</span><br><span class="line">msg = msg3; <span class="comment">// &quot;Hello, &lt;user&gt;. Today is &quot; is garbage</span></span><br></pre></td></tr></table></figure>
+
+<p>tmp1、tmp2、tmp3 以及最初的 msg 全都成了垃圾，因为在 string 类的对象上面运用 +&#x3D; 运算符会导致程序创建出新的字符串对象，并且指令向原字符串的引用指向这个新的对象。程序并不会把这两个字符串中的字符连接起来并将其保存在原来那个字符串的存储空间中。如果想用效率较高的办法完成刚才那个例子所执行的操作，那么可以考虑内插字符串实现：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> msg = <span class="built_in">string</span>.Format(<span class="string">&quot;Hello, &#123;0&#125;. Today is &#123;1&#125;&quot;</span>,thisUser.Name, DateTime.Now.ToString());</span><br></pre></td></tr></table></figure>
+
+<p>相较于 string.Format()，字符串内插避免了因写入太多参数而对错位置的情况：(见第4条)</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> msg = <span class="string">$&quot;Hello, <span class="subst">&#123;thisUser.Name&#125;</span>. Today is <span class="subst">&#123;DateTime.Now.ToString()&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果要执行更为复杂的操作，那么可以使用 StringBuilder 类：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder msg = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;Hello, &quot;</span>);</span><br><span class="line">msg.Append(thisUser.Name);</span><br><span class="line">msg.Append(<span class="string">&quot;. Today is &quot;</span>);</span><br><span class="line">msg.Append(DateTime.Now.ToString());</span><br><span class="line"><span class="built_in">string</span> finalMsg = msg.ToString();</span><br></pre></td></tr></table></figure>
+
+<p>由于这个例子很简单，因此用内插字符串来做就足够了(内插字符串的用法见第4条)。如果最终要构建的字符串很复杂，不方便用内插字符串实现，那么可以考虑改用 StringBuilder 处理，这是一种可变的字符串，提供了修改其内容的机制，使得开发者能够以此来构建不可变 string 对象。与 StringBuilder 类本身的功能相比，更值得学习的是它所体现的设计思路，也就是说，如果要设计不可变的类型，那就应该考虑提供相应的 *builder(构建器)*，令开发者能够以分阶段的形式来指定不可变的对象最终所应具备的取值。这既可以保证构建出来的对象不会遭到修改，又能够给开发者提供较大的余地，使其可以将整个构建过程划分为多个步骤。</p>
+<p>垃圾回收器能够有效地管理应用程序使用的内存，但需注意，在堆上创建并销毁对象需要耗费一定的时间，因此，不要过多地创建对象，不要创建那些根本不用去重新构建的对象。此外，在函数中以局部变量的形式频繁创建引用类型的对象也是不合适的，应该把这些变量提升为成员变量，或是考虑把常用的那几个实例设置成相关类型中的静态对象。最后还有一条技巧，就是要考虑给不可变的类型设计相应的 builder 类，以供用户通过可变 builder 对象来构建不可变的对象。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/effective-CSharp/" rel="tag"># effective CSharp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/15/Effective-CSharp-3%E4%BC%98%E5%85%88%E8%80%83%E8%99%91is%E6%88%96as%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E5%B0%BD%E9%87%8F%E5%B0%91%E7%94%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" rel="prev" title="Effective-CSharp-3优先考虑is或as运算符，尽量少用强制类型转换">
+                  <i class="fa fa-angle-left"></i> Effective-CSharp-3优先考虑is或as运算符，尽量少用强制类型转换
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/" rel="next" title="Effective-CSharp-17实现标准的dispose模式">
+                  Effective-CSharp-17实现标准的dispose模式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

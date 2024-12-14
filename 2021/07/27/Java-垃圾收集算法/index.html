@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="垃圾收集算法的实现设计大量的程序细节，且各个平台虚拟机操作内存的方法都有差异，本节仅重点介绍分代收集理论，几种算法思想，及其发展过程。若对其中细节感兴趣，推荐阅读 Richard Jones 《垃圾回收算法手册》 第 2 ~ 4 章。 从如何判定对象消亡的角度出发，垃圾收集算法可划分为 “引用记数式垃圾收集” (Reference Counting GC) 和 “追踪式垃圾收集” (Tracing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-垃圾收集算法">
+<meta property="og:url" content="http://example.com/2021/07/27/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="垃圾收集算法的实现设计大量的程序细节，且各个平台虚拟机操作内存的方法都有差异，本节仅重点介绍分代收集理论，几种算法思想，及其发展过程。若对其中细节感兴趣，推荐阅读 Richard Jones 《垃圾回收算法手册》 第 2 ~ 4 章。 从如何判定对象消亡的角度出发，垃圾收集算法可划分为 “引用记数式垃圾收集” (Reference Counting GC) 和 “追踪式垃圾收集” (Tracing">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-27T14:15:08.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.578Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="GC">
+<meta property="article:tag" content="分代收集理论">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/07/27/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/07/27/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/","path":"2021/07/27/Java-垃圾收集算法/","title":"Java-垃圾收集算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java-垃圾收集算法 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%90%86%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">分代收集理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">标记 - 清除算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0-%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">标记 - 复制算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">标记 - 整理算法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/27/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java-垃圾收集算法 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java-垃圾收集算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-27 22:15:08" itemprop="dateCreated datePublished" datetime="2021-07-27T22:15:08+08:00">2021-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>垃圾收集算法的实现设计大量的程序细节，且各个平台虚拟机操作内存的方法都有差异，本节仅重点介绍分代收集理论，几种算法思想，及其发展过程。若对其中细节感兴趣，推荐阅读 Richard Jones 《垃圾回收算法手册》 第 2 ~ 4 章。</p>
+<p>从如何判定对象消亡的角度出发，垃圾收集算法可划分为 “引用记数式垃圾收集” (Reference Counting GC) 和 “追踪式垃圾收集” (Tracing GC) 两大类，这两大类也被称作 “直接垃圾收集” 和 “间接垃圾收集”。由于引用记数式垃圾收集在主流的 Java 虚拟机中均未涉及，故本节主要介绍所有算法属于追踪式垃圾收集的范畴。</p>
+<h3 id="分代收集理论"><a href="#分代收集理论" class="headerlink" title="分代收集理论"></a>分代收集理论</h3><p>当前商业虚拟机的垃圾收集器，大多遵循了 “分代收集理论” (Generational Collection) 的理论进行设计。其建立在两个分代假说之上：</p>
+<ol>
+<li>**弱分代假说 (Weak Generational Hypothesis)**：绝大多数对象朝生夕灭。</li>
+<li>**强分代假说 (Strong Generational Hypothesis)**：熬过越多次 GC 的对象就越难死亡。</li>
+</ol>
+<p>这两个分代假说共同奠定了多款常用垃圾收集器的一致设计原则：收集器应将 Java 堆划分出不同的区域，然后将回收对象依据其年龄 (即熬过 GC 的次数) 分配到不同的区域之中存储。如果一个区域中大多数对象都是朝生夕灭，将其集中存储，每次 GC 只关注如何保留存活对象，而不是标记大量要被回收的对象，就能以较低代价回收大量空间；如果一个区域中大多数对象都是难死亡的对象，将其集中存储，虚拟机可以以较低的频率进行回收，这就同时兼顾了垃圾收集的时间开销和内存空间的有效利用。</p>
+<p>在 Java 划分出不同的区域后，垃圾收集器才可以每次只回收其中某一个，或者某部分区域 —— 才有了 “Minor GC”、”Major GC”、”Full GC” 这样的回收类型划分；才能针对不用的区域，安排与其存储对象存亡特征相匹配的垃圾收集算法 —— 发展出了 “标记 - 复制算法”、”标记 - 清除算法”、”标记 - 整理算法” 等针对性的垃圾收集算法 (稍后会提到)。</p>
+<p>把分代收集理论放到现在的商用 Java 虚拟机中，设计者一般会至少把 Java 划分为新生代 (Young Generation) 和老年代 (Old Generation) 两个区域 (HotSpot 虚拟机的命名，IBM J9 虚拟机对应称其为 婴儿区 (Nursery) 和长存区 (Tenured))。在新生代中，每次都有大量对象死去，而回收后活下来的少量对象会逐步转移至老年代存放。实际上分代收集理论并不是简单的分划内存区域那么简单，存在一个明显的问题：<strong>对象间可能存在跨代引用</strong>。</p>
+<p>假如要对新生代区域的 GC (Minor GC)，但新生代中的对象完全有可能被老年代引用，为了确定该区域中存活的对象，不得不在固定的 GC Roots 之外，在遍历整个老年代中的对象，以确保可达性分析的准确性，反之同理。这虽然在理论上可行，但是会为内存回收带来很大的性能负担，为解决此问题，引入第三个假说：</p>
+<ol start="3">
+<li>**跨代引用假说 (Intergenerational Reference Hypothesis)**：跨代引用相对于同代引用来说占极少数。</li>
+</ol>
+<p>其实这可以通过前两个假说推出：存在互相引用关系的两个对象，应是倾向于同生共死的。若某个新生代的对象被老年代对象引用，由于老年代对象很难死亡，该引用将使得新生代中的对象同样得以存活，进而在年龄增长后晋升到老年代，此时跨代引用也随之解除了。</p>
+<p>依据此假说，不应为少量的跨代引用而扫描整个老年代，也不必浪费空间专门记录每一个对象是否存在，及存在哪些跨代引用，仅在新生代上建立一个全局数据结构 (“记忆集” Remember Set)，此结构将老年代划分为若干小块，表示出哪一块会存在跨代引用。当发生 Minor GC 时，只有包含了跨代引用的小块内存中的对象被加入 GC Roots 进行扫描。虽然此方法需要在改变对象引用时更新记忆集记录，将会增加一些执行时的开销，但比起收集器扫描整个老年代来说，仍然是划算的。</p>
+<hr>
+<ul>
+<li>部分收集 (Partial GC)：不是完整收集整个 Java 堆的垃圾，其中包括：<ul>
+<li>新生代收集 (Minor &#x2F; Young GC)：仅回收新生代的垃圾。</li>
+<li>老年代收集 (Major &#x2F; Old GC)：仅回收老年代的垃圾。目前只有 CMS 收集器有此行为。注意，”Major GC” 的说法存在混淆，不同的资料所指不同，可能指老年代收集，也可能指整堆收集。</li>
+<li>混合收集 (Mixed GC)：回收新生代的垃圾，及<strong>部分</strong>老年代的垃圾。目前只有 G1 收集器有此行为。</li>
+</ul>
+</li>
+<li>整堆收集 (Full GC)：回收整个 Java 堆和方法去的垃圾</li>
+</ul>
+<hr>
+<h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记 - 清除算法"></a>标记 - 清除算法</h3><p>最早出现，也是最基础的垃圾收集算法是 “标记 - 清除” (Mark - Sweep) 算法，在 1960 年由 Lisp 之父 John McCarthy 提出。算法分为 “标记” 和 “清除” 两个阶段：首先标记出所有需要回收的对象，标记后，统一回收被标记的对象，也可以反过来，标记存活的对象，回收未被标记的对象。</p>
+<p>之所以称其为最基础的收集方法，是因为后续的收集算法大都是以标记 - 清除算法为基础，对其缺点进行改进。它主要有两个缺点：</p>
+<ol>
+<li>执行效率不稳定。若有大量的对象需要回收，这需要进行大量的标记清除工作。</li>
+<li>内存碎片化问题，回收对象后，内存中会产生大量不连续的内存碎片，可能导致在需要为大对象分配空间时，没有足够大的连续内存。因此可能提前触发一次 GC。</li>
+</ol>
+<h3 id="标记-复制算法"><a href="#标记-复制算法" class="headerlink" title="标记 - 复制算法"></a>标记 - 复制算法</h3><p>也可简称为复制算法。为解决标记 - 清除算法面对大量可回收对象时执行效率的问题，1969 年 Fenichel 提出了一种称为 “半区复制” (Semispace Copying) 的垃圾收集算法。将内存容量均分两块，每次只使用其中的一块。当一块用完，就把还存活的对象复制到另一块，再将当前的块清理一次。如果内存中大多都是存活的对象，此算法将带来极大的内存复制时间开销，但若大多对象都是可回收的，算法仅需复制极少数对象即可。复制时移动堆指针，按顺序分配即可，这样内存碎片化的问题也解决了。实现简单，运行高效。缺点也是显而易见的，这种算法直接将可利用的内存缩小为了原来的一半，空间的浪费太多了。(Ryuu：相信已经有同志想到了新生代的 GC 了，也确实如此。)</p>
+<p>现在的商用 Java 虚拟机大多都优先采用了此算法回收新生代，IBM 公司曾有一项专门研究，对新生代 “朝生夕灭” 的特点做了更量化的诠释 —— 新生代中的对象有 98% 熬不过第一轮收集，因此并不需要按 1：1 的比例划分新生代的内存空间(Ryuu：调优时根据具体情况，这仅是较泛化的诠释)。</p>
+<p>在 1989 年，Andrew Appel 针对具备 “朝生夕灭” 特点的对象，提出了以重更优化的半区复制分带策略，现被称为 “Appel 式回收”。HotSpot 虚拟机的 Serial、ParNew 等新生代收集器均采用了这种策略来设计新生代的内存布局。Appel 的具体做法是把新生代分为一块较大的 Eden 空间和两块较小的 Survivor 空间，每次分配内存只使用 Eden 和其中一块 Survivor，发生 GC 时，将 Eden 和 Survivor 中存活的对象复制到另一个 Survivor，然后直接清空 Eden 和上次利用过的 Survivor (Ryuu：这两块 Survivor 也因此被称为 From 和 To，From from-survivor to to-survivor，存活对象从 From 移至 To 后，From 和 To 两者身份互换)。HotSpot 虚拟机默认 Eden 和 Survivor 的比例是 8：1，即每次新生代中可用的内存空间为整个新生代的 90 % (Eden 的 80% 加一个 Survivor 的 10%)，仅有10% 的空间是不能直接使用的。当然，98% 的对象被回收不是一定的，所以 Appel 式回收有一个安全设计：当 Survivor 不能一次容纳所有 GC 后存活的对象时，依赖其他内存区域 (大多情况下是老年代) 进行分配担保 (Handle Promotion)。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记 - 整理算法"></a>标记 - 整理算法</h3><p>标记 - 复制算法在对象存活率较高时需进行较多的复制操作，效率将会降低。更关键的是，如果不想浪费空间，就需要有额外的空间进行分配担保，以便应对使用的内存中存活的对象过多的问题，所以在老年代一般不直接使用这种算法。</p>
+<p>针对老年代的存亡特征，1974 年 Edward Lueders 提出了一种有针对性的 “标记 - 整理” (Mark - Compact) 算法，标记过程与 “标记 - 清除” 法相同，但后续步骤是将存活的对象都向内存空间的一端一移动，然后直接清理掉边界外的空间。</p>
+<p>标记 - 清除 和 标记 - 整理算法的本质是，前者是非移动式的回收算法，而后者是移动式的。是否移动存活对象是一项优缺点并存的风险决策：</p>
+<p>如果移动存活对象，尤其是在老年代这种每次都有大量对象存活的区域，移动这些对象并更新所有引用这些对象的地方负担极大，这种对于对象的移动操作必须暂停用户应用程序才能进行 (最新的 ZGC 和 Shenandoah 收集器使用读屏障 (Read Barrier) 技术实现了整理过程与用户线程的并发执行)，这就更加让使用者不得权衡其弊端了，这样的停顿被虚拟机的设计者形象的称为 “Stop The World” (通常标记 - 清除算法也是需要停顿用户线程来标记、清理可回收对象的，只是停顿时间相对而言要短)。</p>
+<p>但像标记 - 清除算法那样完全不考虑移动和整理存活对象，散在内存中的存活对象导致的空间碎片化问题就只能依赖于更复杂的内存分配器和内存访问器解决。如通过 “分区空闲分配链表” 解决内存分配问题 (计算机硬盘存储大文件就不要求物理连续的磁盘空间，在碎片化的磁盘上存储和访问是通过硬盘分区表实现的)。内存的访问是用户程序最频繁的操作，若在此环节增加额外的负担，势必会直接影响程序的吞吐量。</p>
+<p>基于以上两点，是否移动对象都各有其弊端，移动则回收复杂，不移动则分配复杂。从 GC 所需时间看，不移动对象停顿时间更短，甚至不需要停顿，但是从整个程序的吞吐量看，移动对象是正确的选择。此语境中，吞吐量的实质是赋值器 (Mutator，可以理解为使用垃圾收集的用户程序，为便于理解，多数地方用 “用户程序” 或 “用户线程” 代替) 与收集器的效率总和。即使不移动对象使得收集器的效率提升，但因内存分配和访问相比垃圾收集的频率要高得多，这部分的耗时会导致总吞吐量下降。HotSpot 虚拟机中关注吞吐量的 Parallel Old 收集器是基于标记 - 整理算法的，而关注延迟的 CMS 收集器是基于标记 - 清除算法的，这也侧面印证了这点。</p>
+<p>另外还有一种解决方案，那就是让虚拟机平时采用标记 - 清除算法，直到内存空间碎片化的程度大到影响对象分配时，采用标记 - 整理算法进行一次 GC，以获得规整的内存空间。这也是前文提及的 CMS 收集器面临碎片过多时的解决方案。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/GC/" rel="tag"># GC</a>
+              <a href="/tags/%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%90%86%E8%AE%BA/" rel="tag"># 分代收集理论</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/26/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" rel="prev" title="Java-垃圾收集器">
+                  <i class="fa fa-angle-left"></i> Java-垃圾收集器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/30/CSharp-%E5%8F%98%E4%BD%93/" rel="next" title="CSharp-变体">
+                  CSharp-变体 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

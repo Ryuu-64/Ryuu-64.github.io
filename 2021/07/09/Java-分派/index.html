@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java 是一门面向对象的程序语言，Java 具备面向对象的3个基本特征：封装、继承与多态。分派调用过程将会解释多态性特征的一些最基本的体现，如 Java 虚拟机如何实现 “重载” 和 “重写”。 静态分派“分派” (Dispatch) 本身就带有动态性，一般不应用在静态语境中，在英文原版的 《Java 虚拟机规范》和《Java 语言规范》里的说法都是 “Method Overload Resol">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-分派">
+<meta property="og:url" content="http://example.com/2021/07/09/Java-%E5%88%86%E6%B4%BE/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="Java 是一门面向对象的程序语言，Java 具备面向对象的3个基本特征：封装、继承与多态。分派调用过程将会解释多态性特征的一些最基本的体现，如 Java 虚拟机如何实现 “重载” 和 “重写”。 静态分派“分派” (Dispatch) 本身就带有动态性，一般不应用在静态语境中，在英文原版的 《Java 虚拟机规范》和《Java 语言规范》里的说法都是 “Method Overload Resol">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-09T06:42:31.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.577Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="面向对象">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/07/09/Java-%E5%88%86%E6%B4%BE/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/07/09/Java-%E5%88%86%E6%B4%BE/","path":"2021/07/09/Java-分派/","title":"Java-分派"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java-分派 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%B4%BE"><span class="nav-number">1.</span> <span class="nav-text">静态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E6%B4%BE"><span class="nav-number">2.</span> <span class="nav-text">动态分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%88%86%E6%B4%BE%E4%B8%8E%E5%A4%9A%E5%88%86%E6%B4%BE"><span class="nav-number">3.</span> <span class="nav-text">单分派与多分派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8A%A8%E6%80%81%E5%88%86%E6%B4%BE%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">虚拟机动态分派实现</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/09/Java-%E5%88%86%E6%B4%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java-分派 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java-分派
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-09 14:42:31" itemprop="dateCreated datePublished" datetime="2021-07-09T14:42:31+08:00">2021-07-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Java 是一门面向对象的程序语言，Java 具备面向对象的3个基本特征：封装、继承与多态。分派调用过程将会解释多态性特征的一些最基本的体现，如 Java 虚拟机如何实现 “重载” 和 “重写”。</p>
+<h3 id="静态分派"><a href="#静态分派" class="headerlink" title="静态分派"></a>静态分派</h3><p>“分派” (Dispatch) 本身就带有动态性，一般不应用在静态语境中，在英文原版的 《Java 虚拟机规范》和《Java 语言规范》里的说法都是 “Method Overload Resolution”，实际应当归于 “解析”。但许多翻译的中文资料将其称为 “静态分派”。</p>
+<p>为解释静态分派与重载 (Overload)，请看如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * hello, guy!</span></span><br><span class="line"><span class="comment"> * hello, guy!</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StaticDispatch</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br><span class="line">        <span class="type">Human</span> <span class="variable">woman</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line">        <span class="type">StaticDispatch</span> <span class="variable">sd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StaticDispatch</span>();</span><br><span class="line">        sd.sayHello(man);</span><br><span class="line">        sd.sayHello(woman);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Man</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Woman</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">(Human guy)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello, guy!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">(Man guy)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello, gentleman!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">(Woman guy)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello, lady!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相信对 Java 稍有了解的程序员看完代码后都能判断出正确的结果。但为何虚拟机会选择执行参数为 Human 的重载呢？首先需要弄清两个关键概念：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br></pre></td></tr></table></figure>
+
+<p>以上代码中的 “Human” 称为变量的 “静态类型” (Static Type)，或者叫做 “外观类型” (Apparent Type)，后面的 “Man” 则被称为变量的 “实际类型” (Actual Type) 或者叫 “运行时类型” (Runtime Type)。外观类型和实际类型在程序中都可能会发生变化，区别是外观类型的变化仅仅在使用时发生，变量本身的外观类型不会改变，并且最终的外观类型在编译期是可知的；而实际类型变化的结果在运行期才可以确定，编译器在编译程序的时候并不知道一个对象的实际类型是什么。</p>
+<p>不妨通过以下代码解释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实际类型变化</span></span><br><span class="line"><span class="type">Human</span> <span class="variable">human</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextBoolean() ? <span class="keyword">new</span> <span class="title class_">Man</span>() : <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 外观类型变化</span></span><br><span class="line">sd.sayHello((Man) human);</span><br><span class="line">sd.sayHello((Woman) human);</span><br></pre></td></tr></table></figure>
+
+<p>human 的实际类型是可变的 (根据 nextBoolean() 的值决定)，编译期是不可知的，必须等到运行时才可以确定。human 的外观类型是 Human，可以在使用时临时改变类型，但这种改变在编译期是可知的，两次 sayHello 的调用，在编译期完全可以明确是 Man 还是 Women。</p>
+<p>回到最先的代码 main 中两次调用 sd.sayHello ，此时调用哪个重载版本完全取决于传入参数的数据类型。代码中定义了两个实际类型不同，外观类型却相同的对象。虚拟机 (准确的来说是编译器) 重载时是通过参数的外观类型而不是实际类型作为判定依据的。外观类型在编译期可知，在编译阶段 Javac 编译器根据参数的外观类型决定了使用哪个重载版本，因此选择了 sayHello(Human) 作为调用的目标，并将这个方法的符号引用写到 main 里的两条invokevirtual 指令的参数中，如下反汇编的 26: 与 31:。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// javap -c 反汇编</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: <span class="keyword">new</span>           #<span class="number">7</span>                  <span class="comment">// class StaticDispatch$Man</span></span><br><span class="line">       <span class="number">3</span>: dup</span><br><span class="line">       <span class="number">4</span>: invokespecial #<span class="number">9</span>                  <span class="comment">// Method StaticDispatch$Man.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">       <span class="number">7</span>: astore_1</span><br><span class="line">       <span class="number">8</span>: <span class="keyword">new</span>           #<span class="number">10</span>                 <span class="comment">// class StaticDispatch$Woman</span></span><br><span class="line">      <span class="number">11</span>: dup</span><br><span class="line">      <span class="number">12</span>: invokespecial #<span class="number">12</span>                 <span class="comment">// Method StaticDispatch$Woman.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">15</span>: astore_2</span><br><span class="line">      <span class="number">16</span>: <span class="keyword">new</span>           #<span class="number">13</span>                 <span class="comment">// class StaticDispatch</span></span><br><span class="line">      <span class="number">19</span>: dup</span><br><span class="line">      <span class="number">20</span>: invokespecial #<span class="number">15</span>                 <span class="comment">// Method &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">23</span>: astore_3</span><br><span class="line">      <span class="number">24</span>: aload_3</span><br><span class="line">      <span class="number">25</span>: aload_1</span><br><span class="line">      <span class="number">26</span>: invokevirtual #<span class="number">16</span>                 <span class="comment">// Method sayHello:(LStaticDispatch$Human;)V</span></span><br><span class="line">      <span class="number">29</span>: aload_3</span><br><span class="line">      <span class="number">30</span>: aload_2</span><br><span class="line">      <span class="number">31</span>: invokevirtual #<span class="number">16</span>                 <span class="comment">// Method sayHello:(LStaticDispatch$Human;)V</span></span><br><span class="line">      <span class="number">34</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p><em><strong>所有依赖外观类型来决定方法执行版本的分派动作，都称为静态分派。</strong></em>静态分派最典型的应用表现就是方法的重载。<strong>静态分派发生在编译阶段</strong>，因此确定静态分派的动作实际上<strong>不是由虚拟机来执行</strong>，这也是一些资料选择把静态分派归于 “解析” 而不是 “分派” 的原因。</p>
+<p>(未完待续)</p>
+<h3 id="动态分派"><a href="#动态分派" class="headerlink" title="动态分派"></a>动态分派</h3><p>动态分派与 Java 语言动态性的另一重要体现 —— 重写 (Override) 有着很密切的关联。请看如下代码段</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * man say hello</span></span><br><span class="line"><span class="comment"> * woman say hello</span></span><br><span class="line"><span class="comment"> * woman say hello</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StaticDispatch</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br><span class="line">        <span class="type">Human</span> <span class="variable">woman</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line">        man.sayHello();</span><br><span class="line">        woman.sayHello();</span><br><span class="line">        man = <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line">        man.sayHello();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Man</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;man say hello&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Woman</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;woman say hello&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于习惯了面向对象的 Java 程序员来说，运行结果正如预期。但 Java 虚拟机是如何判断应该调用哪个方法的？</p>
+<p>显然这里的选择调用的方法不可能再根据外观类型来决定。因为该实例的两个对象外观类型都是 Human 产生了不同的行为。man 在两次调用中还执行了两个不同的方法。原因很明显，因为这两个变量的实际类型不同。</p>
+<p>Java 是如何根据实际类型来分派方法执行的版本的呢？请看如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: <span class="keyword">new</span>           #<span class="number">7</span>                  <span class="comment">// class dispatch/DynamicDispatch$Man</span></span><br><span class="line">       <span class="number">3</span>: dup</span><br><span class="line">       <span class="number">4</span>: invokespecial #<span class="number">9</span>                  <span class="comment">// Method dispatch/DynamicDispatch$Man.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">       <span class="number">7</span>: astore_1</span><br><span class="line">       <span class="number">8</span>: <span class="keyword">new</span>           #<span class="number">10</span>                 <span class="comment">// class dispatch/DynamicDispatch$Woman</span></span><br><span class="line">      <span class="number">11</span>: dup</span><br><span class="line">      <span class="number">12</span>: invokespecial #<span class="number">12</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Woman.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">15</span>: astore_2</span><br><span class="line">      <span class="number">16</span>: aload_1</span><br><span class="line">      <span class="number">17</span>: invokevirtual #<span class="number">13</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Human.sayHello:()V</span></span><br><span class="line">      <span class="number">20</span>: aload_2</span><br><span class="line">      <span class="number">21</span>: invokevirtual #<span class="number">13</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Human.sayHello:()V</span></span><br><span class="line">      <span class="number">24</span>: <span class="keyword">new</span>           #<span class="number">10</span>                 <span class="comment">// class dispatch/DynamicDispatch$Woman</span></span><br><span class="line">      <span class="number">27</span>: dup</span><br><span class="line">      <span class="number">28</span>: invokespecial #<span class="number">12</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Woman.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">31</span>: astore_1</span><br><span class="line">      <span class="number">32</span>: aload_1</span><br><span class="line">      <span class="number">33</span>: invokevirtual #<span class="number">13</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Human.sayHello:()V</span></span><br><span class="line">      <span class="number">36</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p>0 ~ 15 行是准备动作，建立 man 和 woman 的内存空间、调用 Man 和 Woman 类型的实例构造器，将这个实例引用存放到第 1、2 个局部变量表的变量槽中，这些动作实际对应以下的 Java 源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br><span class="line"><span class="type">Human</span> <span class="variable">woman</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br></pre></td></tr></table></figure>
+
+<p>16 ~ 21 的 aload 指令分别把刚刚创建的两个对象的引用压到栈顶，这两个对象是执行 sayHello 的所有者，称为接收者 (Receiver)；17 和 21 行是方法调用指令，这两条调用指令单从字节码角度来看，无论是指令(都是 invokevirtual) 还是参数 ( 都是常量池中第 22 项的常量，注释显示了这个常量是 Human.sayHello 的符号引用) 都完全一样，但是这两句指令最终执行的目标方法并不相同。解决问题的关键必须从 invokevirtual 指令本身入手，要弄清楚它是如何确定调用方法版本、如何实现多态查找来着手分析才行。</p>
+<p>根据 《Java 虚拟机规范》，invokevirtual 指令的运行时解析过程大致分为以下几个部分：</p>
+<ol>
+<li><p>找到操作数栈顶的第一个元素所指向的对象的<strong>实际类型</strong>，记作 C</p>
+</li>
+<li><p>如果在类型 C 中找到与常量中的描述符和简单名称都相符的方法，则进行访问权限校验，</p>
+<p>如果通过则返回这个方法的直接引用，查找过程结束；</p>
+<p>不通过则返回 java.lang.IllegalAccessError 异常。</p>
+</li>
+<li><p>否则，按继承关系自下而上依次对 C 的各个父类进行第二步的搜索及验证。</p>
+</li>
+<li><p>若始终没有合适的方法，抛出 java.lang.AbstractMethodError 异常。</p>
+</li>
+</ol>
+<p>正是因为 invokevirtual 指令执行的第一步就是在运行期确定接收者的实际类型，所以两次调用中的 invokevirtual 指令并不是把常量池中方法的符号引用解析到直接引用上就结束了，还会根据方法接收者的实际类型来选择方法版本，这个过程就是 Java 语言中方法重写的本质。<strong>这种在运行期根据实际类型确定方法执行版本的分派过程称为动态分派</strong>。</p>
+<p>这种多态性的根源在于虚方法调用指令 invokevirtual 的执行逻辑，所以这只会对方法有效，对字段无效，因为字段不使用这条指令。<strong>在 Java 中只有虚方法存在，没有虚字段</strong>。字段永远不参与多态，哪个类的方法访问某个名字的的字段时，该名字指的就是这个类能看到的那个字段。当子类声明了与父类同名的字段时，虽然在子类的内存中两个字段都会存在，但子类的字段会遮蔽父类的同名字段。</p>
+<p>请看如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * I&#x27;m Son, I have $0</span></span><br><span class="line"><span class="comment"> * I&#x27;m Son, I have $4</span></span><br><span class="line"><span class="comment"> * This guy has $2</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FieldHasNoPolymorphic</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Father</span> <span class="variable">guy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Son</span>();</span><br><span class="line">        System.out.println(<span class="string">&quot;This guy has $&quot;</span> + guy.money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="variable">money</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Father</span><span class="params">()</span> &#123;</span><br><span class="line">            money = <span class="number">2</span>;</span><br><span class="line">            showMeTheMoney();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showMeTheMoney</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;I&#x27;m Father, I have $&quot;</span> + money);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Son</span> <span class="keyword">extends</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="variable">money</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Son</span><span class="params">()</span> &#123;</span><br><span class="line">            money = <span class="number">4</span>;</span><br><span class="line">            showMeTheMoney();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showMeTheMoney</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;I&#x27;m Son, I have $&quot;</span> + money);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出的两句都是 “I’m Son”，因为 Son 类在创建的时候，首先隐式调用了 Father 的构造函数，而 Father 构造函数中对 showMeTheMoney 的调用是一次虚方法的调用，执行的版本是 Son::showMeTheMoney 方法，所以输出的是 “I’m Son”。虽然父类的 money 已经初始化成 2，但 Son::showMeTheMoney 方法中访问的是子类的 money，这里的结果是 0，因为它要到子类的构造函数执行时才会被初始化。之后子类构造方法执行输出 4，main 的最后一句通过外观类型访问到了父类中的 money，输出 2。</p>
+<h3 id="单分派与多分派"><a href="#单分派与多分派" class="headerlink" title="单分派与多分派"></a>单分派与多分派</h3><p>方法的接收者与方法的参数统称为方法的宗量，该定义最早出现在《Java 与模式》。根据分派基于多少种宗量，可将分派划分为单分派和多分派两种。单分派是根据一个宗量对目标方法进行选择，多分派则是根据多于一个宗量对目标方法进行选择。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * father choose 360</span></span><br><span class="line"><span class="comment"> * son choose qq</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dispatch</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Father</span> <span class="variable">father</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Father</span>();</span><br><span class="line">        father.hardChoice(<span class="keyword">new</span> <span class="title class_">_360</span>());</span><br><span class="line">        <span class="type">Father</span> <span class="variable">son</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Son</span>();</span><br><span class="line">        son.hardChoice(<span class="keyword">new</span> <span class="title class_">QQ</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">QQ</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">_360</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(QQ arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;father choose qq&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(_360 arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;father choose 360&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Son</span> <span class="keyword">extends</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(QQ arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;son choose qq&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(_360 arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;son choose 360&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两次 hardChoice 的结果已在注释标注，重点是编译阶段中编译器的静态分派过程。选择目标方法的依据有两点：一是外观类型是 Father 还是 Son，二是方法参数是 QQ 还是 360.这次选择结果的最终产物是产生了两条 invokevirtual 指令，两条指令的参数分别为常量池中指向 Father::hardChoice(360) 及 Father::hardChoice(QQ) 方法的符号引用。因为是根据两个宗量进行选择，所以 <strong>Java 语言的静态分派属于多分派类型</strong>。</p>
+<p>再看运行阶段中虚拟机的动态分派的过程。在执行 “son.hardChoice(new QQ());”，也就是指对应的 invokevirtual 指令时，由于编译期已经决定目标方法的签名必须为 hardChoice(QQ) ，虚拟机不管关心此时传递过来的参数到底是什么，因为其外观类型、实际类型都不会对选择构成任何影响，唯一可以影响虚拟机的该方法接受者的实际类型是 Father 还是 Son。因为只有一个宗量作为选择的依据，所以 <strong>Java 语言的动态分派属于单分派类型</strong>。</p>
+<p>根据上述论证，如今的 Java 语言是一门静态多分派、动态单分派的语言。强调如今是因为这个结论未必会一直保持。 C# 3.0 及之前的版本与 Java 一样是动态单分派语言，但在 C# 4.0 加入dynamic 类型后，就可以很方便的实现多分派。JDK 10 时 Java 语言出现新关键字 var，但请不要将其与 C# dynamic 混淆，实际上 Java var 对应的是 C# var。它们与 dynamic 有本质区别：var 是在编译时根据声明语句的右侧表达式类型进行静态推断的，本质上这是一种语法糖(见 Effective-CSharp-1优先使用隐式类型的局部变量)；而 dynamic 在编译时完全不关心类型是什么，等到运行的时候再做类型判断。 与 C# dynamic 功能<strong>相近</strong>的是 JDK 9 时通过 JEP 276 引入的 jdk.dynalink 模块，使用 jdk.dynalink 可以实现在表达式中使用动态类型，Javac 编译器可以将其操作翻译为 invokedynamic 指令的调用点。</p>
+<h3 id="虚拟机动态分派实现"><a href="#虚拟机动态分派实现" class="headerlink" title="虚拟机动态分派实现"></a>虚拟机动态分派实现</h3><p>前文介绍的分派过程，作为对于 Java 虚拟机概念模型的解释已基本足够了，明确的解释了虚拟机在分派时会做什么这个问题。但要问 Java 虚拟机 “具体如何做到”，答案则可能因虚拟机的实现而不同而有差别。</p>
+<p>动态分派是执行非常频繁的动作，且动态分派的方法版本选择过程需要运行时在接收者类型的方法元数据中搜索合适的目标方法。因此， Java 虚拟机实现基于执行性能的顾虑，真正运行时一般不会如此频繁地去反复搜索类型元数据，面对这种情况，一种基础且常见的优化手段是为类型在方注区中建立一个虚方法表（Virtual Method Table，也称为 vtable，与此对应的、在 invokeinterface 执行时也会用到接口方法表 —— Interface Method Table，简称 itable)，使用虚方法表索引代替元数据查找以提高性能。</p>
+<p>虚方法表中存放着各个方法的实际入口地址。如果某个方法在子类中没有被重写，子类的虚方法表中的地址入口将与父类相同方法的入口地址一致，都是指向父类的实现入口。如果子类重写了这个方法，子类虚方法表中的地址则会被替换为指向子类实现版本的入口地址。</p>
+<p>为了程序实现方便，拥有相同签名的方法，在父类、子类的虚方法表中都应当具有一样的索引序号，这样当类型变换时，仅需要变更查找的虚方法表，就可以从不同的虚方法表中按索引转换出所需的入口地址。虚方法表一般在类加载的连接阶段进行初始化，准备了类的变量初始值后，虚拟机会把该类的虚方法表也一同初始化完毕。</p>
+<p>上述的查虚方法表是分派调用的一种优化手段，由于 Java 对象里面的方法默认 (即不使用 final) 就是虚方法，虚拟机除了使用虚方法表之外，为了进一步提高性能，还会用类型继承关系分析 (Class Hierarchy Analysis，CHA)、守护内联 (Guarded Inlining)、内存缓存 (Inline Cache) 等多种非稳定的激进优化来争取更大的性能空间。 </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag"># 面向对象</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/09/Java-Ram-Cache-Block-Transfer/" rel="prev" title="Java-Ram-Cache-Block-Transfer">
+                  <i class="fa fa-angle-left"></i> Java-Ram-Cache-Block-Transfer
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/14/Effective-Java-40%E5%9D%9A%E6%8C%81%E4%BD%BF%E7%94%A8Override%E6%B3%A8%E8%A7%A3/" rel="next" title="Effective-Java-40坚持使用Override注解">
+                  Effective-Java-40坚持使用Override注解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

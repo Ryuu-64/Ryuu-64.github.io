@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="刚接触事件的人可能觉得触发事件是很容易的，只需将事件定义好，并在需要触发时调用相关的事件处理程序就可以了，底层的多播委托将会依次执行这些处理程序。实际上触发事件并不是如此简单。若根本没有事件对应的处理程序会怎样？若多个线程都要检测并调用事件处理程序，而线程之间互相争夺，会怎样？C# 6.0 引入的 null 条件运算符 (null-conditional operator，又称 null 传播运算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-CSharp-8用null条件运算符调用事件处理程序">
+<meta property="og:url" content="http://example.com/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="刚接触事件的人可能觉得触发事件是很容易的，只需将事件定义好，并在需要触发时调用相关的事件处理程序就可以了，底层的多播委托将会依次执行这些处理程序。实际上触发事件并不是如此简单。若根本没有事件对应的处理程序会怎样？若多个线程都要检测并调用事件处理程序，而线程之间互相争夺，会怎样？C# 6.0 引入的 null 条件运算符 (null-conditional operator，又称 null 传播运算">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-25T06:53:39.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.569Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="effective CSharp">
+<meta property="article:tag" content="C# delegate">
+<meta property="article:tag" content="C# null 条件运算符">
+<meta property="article:tag" content="C# null 传播运算符">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/","path":"2021/07/25/Effective-CSharp-8用null条件运算符调用事件处理程序/","title":"Effective-CSharp-8用null条件运算符调用事件处理程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-CSharp-8用null条件运算符调用事件处理程序 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-CSharp-8用null条件运算符调用事件处理程序 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-CSharp-8用null条件运算符调用事件处理程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-25 14:53:39" itemprop="dateCreated datePublished" datetime="2021-07-25T14:53:39+08:00">2021-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>865</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>刚接触事件的人可能觉得触发事件是很容易的，只需将事件定义好，并在需要触发时调用相关的事件处理程序就可以了，底层的多播委托将会依次执行这些处理程序。实际上触发事件并不是如此简单。若根本没有事件对应的处理程序会怎样？若多个线程都要检测并调用事件处理程序，而线程之间互相争夺，会怎样？C# 6.0 引入的 null 条件运算符 (null-conditional operator，又称 null 传播运算符 (null-propagation operator)) 可用更加清晰的写法来解决这些问题。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventSource</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> counter;</span><br><span class="line">    <span class="keyword">private</span> EventHandler&lt;<span class="built_in">int</span>&gt; Updated;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        counter++;</span><br><span class="line">        Updated(<span class="keyword">this</span>, counter);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种旧写法有个明显的问题：如在对象上出发 Updated 事件是并没有事件处理程序与之相关，将会发生 NullReferenceException，因为 C# 用 null 值表示这种没有处理程序与之相关的情况。于是，触发事件前，必须先判断事件处理程序是否为 null。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    <span class="keyword">if</span>(Updated != <span class="literal">null</span>)</span><br><span class="line">        Updated(<span class="keyword">this</span>, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但这种写法依然有 bug。当程序线程执行完 if 判断了 Updated 不为 null 后，可能会有另一个线程打断该线程，并解除订阅，这样的话依然会引发 NullReferenceException，虽然这种情况很少见。</p>
+<p>这个 bug 很难诊断，也很难修复。想重现该错误，必须按照上述线程的执行顺序执行。一些开发老手在此问题上吃过亏，他们知道其危险，改用另一个种写法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    <span class="keyword">var</span> handler = Updated;</span><br><span class="line">    <span class="keyword">if</span>(handler != <span class="literal">null</span>)</span><br><span class="line">        handler(<span class="keyword">this</span>, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此方法是可行的，线程是安全的。但是从阅读的角度来看，看代码的人不太明白为何这样改后就能确保线程安全。</p>
+<p>var handler &#x3D; Updated; 这是对赋值号的右侧做 *浅拷贝 (shallow copy)*，也就是创建一个新的引用，指向其事件处理程序。因此，即使是 Updated 被其他线程注销，变为 null。也不会影响 handler，handler 依然保存了原先记录的事件订阅者。这段代码实际上是通过浅拷贝为事件订阅这做了份快照，触发事件时通过快照来触发事件处理程序。</p>
+<p>触发事件是一项简单的任务，不该用这么冗长且费解的方式去完成。</p>
+<p>有了 null 条件运算符，可以用更清晰的写法来实现：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    Updated?.Invoke(<span class="keyword">this</span>, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用了 null 条件运算符 (也就是 ?.) 安全地调用事件处理程序。该运算符首先对左侧内容进行 null 判断，若非 null 执行右侧内容。若为 null 则跳过此语句。</p>
+<p>从语义上来说这和 if 类似。但区别在于 ?. 运算符左侧的内容只会计算一次。</p>
+<p>由于 C# 不许 ?. 运算符右侧直接出现一对括号，因此必须用 Invoke() 去触发事件。每定义一种委托或事件，编译器都会为此生成类型安全的 Invoke()，这意味着，通过 Invoke 方法触发事件，使得代码篇幅更小，且线程安全。</p>
+<p>有了这种简单且清晰的写法后，原来的写法需要改一改了。以后触发事件都应采用此写法。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-">成员访问运算符和表达式 - C# 参考</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/effective-CSharp/" rel="tag"># effective CSharp</a>
+              <a href="/tags/C-delegate/" rel="tag"># C# delegate</a>
+              <a href="/tags/C-null-%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6/" rel="tag"># C# null 条件运算符</a>
+              <a href="/tags/C-null-%E4%BC%A0%E6%92%AD%E8%BF%90%E7%AE%97%E7%AC%A6/" rel="tag"># C# null 传播运算符</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/" rel="prev" title="Effective-Java-50必要时进行保护性拷贝">
+                  <i class="fa fa-angle-left"></i> Effective-Java-50必要时进行保护性拷贝
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/26/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" rel="next" title="Java-垃圾收集器">
+                  Java-垃圾收集器 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

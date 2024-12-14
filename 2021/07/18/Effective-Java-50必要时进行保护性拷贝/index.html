@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java 用起来如此舒适的一个因素在于，它是一门安全的语言 (safe language)。这意味着，它对于缓冲区溢出、数组越界、非法指针以及其他的内存破坏错误都自动免疫，而这些错误却困扰着诸如 C 和 C++ 这样的不安全语言。在一门安全语言中，在设计类时，无论系统的其他部分发生什么问题，类的约束都可以保持为真。对于那些 “把所有内存当作一个巨大的数组来对待” 的语言来说，这是不可能的。 即使在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-Java-50必要时进行保护性拷贝">
+<meta property="og:url" content="http://example.com/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="Java 用起来如此舒适的一个因素在于，它是一门安全的语言 (safe language)。这意味着，它对于缓冲区溢出、数组越界、非法指针以及其他的内存破坏错误都自动免疫，而这些错误却困扰着诸如 C 和 C++ 这样的不安全语言。在一门安全语言中，在设计类时，无论系统的其他部分发生什么问题，类的约束都可以保持为真。对于那些 “把所有内存当作一个巨大的数组来对待” 的语言来说，这是不可能的。 即使在">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-18T07:15:28.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.573Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="effective Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/","path":"2021/07/18/Effective-Java-50必要时进行保护性拷贝/","title":"Effective-Java-50必要时进行保护性拷贝"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-Java-50必要时进行保护性拷贝 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-Java-50必要时进行保护性拷贝 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-Java-50必要时进行保护性拷贝
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-18 15:15:28" itemprop="dateCreated datePublished" datetime="2021-07-18T15:15:28+08:00">2021-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Java 用起来如此舒适的一个因素在于，它是一门安全的语言 (safe language)。这意味着，它对于缓冲区溢出、数组越界、非法指针以及其他的内存破坏错误都自动免疫，而这些错误却困扰着诸如 C 和 C++ 这样的不安全语言。在一门安全语言中，在设计类时，无论系统的其他部分发生什么问题，类的约束都可以保持为真。对于那些 “把所有内存当作一个巨大的数组来对待” 的语言来说，这是不可能的。</p>
+<p>即使在安全的语言中，如果不采取一点措施，还是无法与其它的类隔离开来。<strong>建设类的客户端会尽其所能来破坏这个类的约束条件，因此你必须保护性地设计程序。</strong>实际上，只有当有人试图破坏系统的安全性时，才可能发生这种情况；更有可能的是，对你的 API 产生误解的程序员，所导致的各种不可预期的行为，只好由类来处理。无论是何种情况，编写面对客户端的不良行为仍保持健壮性的类，这是非常值得投入时间去做的事情。</p>
+<p>如果没有对象的帮助，另一个类不可能修改对象的内部状态，但是对象很容易在无意识的情况下提供帮助。例如 下面的类表示一段不可变的时间周期：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken &quot;immutable&quot; time period class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Period</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date start;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date end;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Period</span><span class="params">(Date start, Date end)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (start.compareTo(end) &gt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(start + <span class="string">&quot; after &quot;</span> + end);</span><br><span class="line">        <span class="built_in">this</span>.start = start;</span><br><span class="line">        <span class="built_in">this</span>.end = end;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">start</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> start;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">end</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> end;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>乍看之下，此类似乎是不可变的，并且加了周期的起始时间 (start) 不能在结束时间 (end) 之后。然而，因为 Date 类本身是可变的，因此很容易违反这个约束条件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Attack the internals of a Period instance</span></span><br><span class="line"><span class="type">Date</span> <span class="variable">start</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="type">Date</span> <span class="variable">end</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="type">Period</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Period</span>(start, end);</span><br><span class="line">end.setYear(<span class="number">78</span>); <span class="comment">// Modifies internals of p!</span></span><br></pre></td></tr></table></figure>
+
+<p>从 Java 8 开始，修正这个问题最明显的方式是使用 Instant (或 LocalDateTime，或者 ZonedDateTime) 代替 Date，因为 Instant (以及另一个 java.time 类) 是不可变类 (见17条)。<strong>Date 已经过时了，不应该在新代码中使用</strong>。</p>
+<p>为了保护 Period 实例的内部信息，避免受到此攻击，对于构造器的每个可变参数进行保护性拷贝 (defensive copy) 是必要的，并且使用备份对象作为 Period 实例的组件，而不使用原始的对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Repaired constructor - makes defensive copies of parameters</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">Period</span><span class="params">(Date start, Date end)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.start = <span class="keyword">new</span> <span class="title class_">Date</span>(start.getTime());</span><br><span class="line">    <span class="built_in">this</span>.end = <span class="keyword">new</span> <span class="title class_">Date</span>(end.getTime());</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.start.compareTo(<span class="built_in">this</span>.end) &gt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="built_in">this</span>.start + <span class="string">&quot; after &quot;</span> + <span class="built_in">this</span>.end);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用了新的构造器之后，上述的攻击对于 Period 实例不再有效。注意，<strong>保护性拷贝是在检查参数的有效性 (见第38条) 之前进行的，并且有效性检查是针对拷贝之后的对象，而不是针对原始的对象</strong>。虽然这样做看起来有点不太自然，却是必要的。这样做可以避免在 “危险阶段” 期间从另一个线程改变类的参数，这里的危险阶段是指从检査参数开始，直到拷贝参数之间的时间段。在计算机安全社区中，这被称作Time-Of-Check &#x2F; Time-Of-Use 或者 TOCTOU 攻击 [ViegaO1]。</p>
+<p>同时也请注意，没有用 Date 的 clone 方法来进行保护性拷贝。因为 Date 是非 final 的， 不能保证 clone 方法一定返回类为 java.util.Date 的对象：有可能返回专门出于恶意的目的而设计的不可信子类实例。例如，子类可以在每个实例被创建的时候，把指向该实例的引用记录到一个私有的静态列表中，并且允许攻击者访问这个列表。这将使得攻击者可以 自由地控制所有的实例。为了阻止这种攻击，<strong>对于参数类型可以被不可信任方子类化的参数，不使用 clone 方法进行保护性拷贝</strong>。</p>
+<p>虽然替换构造器就可以成功地避免上述的攻击，但是改变 Period 实例仍然是有可能的，因为它的访问方法提供了对其可变内部成员的访问能力：**(Ryuu：原始方法返回的是其成员的视图，这样会导致 Period 可被修改)**</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Repaired accessors - make defensive copies of internal fields</span></span><br><span class="line"><span class="keyword">public</span> Date <span class="title function_">start</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Date</span>(start.getTime());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Date <span class="title function_">end</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Date</span>(end.getTime());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用了新的构造器和新的访问方法之后，Period 真正是不可变的了。不管程序员是多么恶意，或者多么不合格，都绝对不会违反 “周期的起始时间不能落后于结束时间” 的约束条件。因为除了 Period 类自身之外，其他任何类都无法访问 Period实例中的任何一个可变域。这些域被真正封装在对象的内部。</p>
+<p>访问方法与构造器不同，它们在进行保护性拷贝的时候允许使用 clone 方法。之所以如此， 是因为我们知道，Period 内部的 Date 对象的类是 java.util.Date，而不可能是其他某个潜在的不可信子类。也就是说，基于第11条中所阐述的原因，一般情况下，最好使用构造器或者静态工厂。</p>
+<p><strong>参数的保护性拷贝并不仅仅针对不可变类。每当编写方法或者构造器时，如果它要允许客户提供的对象进入到内部数据结构中，则有必要考虑，客户提供的对象是否有可能是可变的。如果是，就考虑你的类是否能够容忍对象进入数据结构之后发生变化。如果答案是否定的，就必须对该对象进行保护性拷贝，并且让拷贝之后的对象，而不是原始对象进入到数据结构中。</strong>例如，如果你正在考虑使用由客户提供的对象引用作为内部 Set 实例的元素，或者 作为内部Map实例的键 (key)，就应该意识到，如果这个对象在插入之后再被修改，Set 或者 Map 的约束条件就会遭到破坏。</p>
+<p>在内部组件被返回给客户端之前，对它们进行保护性拷贝也是同样的道理。不管类是否为不可变的，在把一个指向内部可变组件的引用返回给客户端之前，也应该加倍认真地考虑。 解决方案是，应该返回保护性拷贝。记住长度非零的数组总是可变的。因此，在把内部数组返回给客户端之前，应该总要进行保护性拷贝。另一种解决方案是，给客户端返回该数组的不可变视图（immutableview)。这两种方法在第13条中都已经演示过了。</p>
+<p>可以肯定地说，只要有可能，都应该使用不可变的对象作为对象内部的组件，这样就不必再为保护性拷贝（见第15条）操心。在前面的 Period 例子中，有经验的程序员通常使用 Date.getTime() 返回的 long 基本类型作为内部的时间表示法， 而不是使用 Date 对象引用。他们之所以这样做，主要因为 Date 是可变的。</p>
+<p>保护性拷贝可能会带来相关的性能损失，这种说法并不总是正确的。如果类信任它的调用者不会修改内部的组件，可能因为类及其客户端都是同一个包的双方，那么不进行保护性拷贝也是可以的。<strong>在这种情况下，类的文档中就必须淸楚地说明，调用者绝不能修改可受影响的参数或者返回值</strong>。</p>
+<p>即使跨越包的作用范围，也并不总是适合在将可变参数整合到对象中之前，对它进行保护性拷贝。有一些方法和构造器的调用，要求参数所引用的对象必须有个显式的交接过程。当客户端调用这样的方法时，它承诺以后不再直接修改该对象。如果方法或者构造器 期望接管一个由客户端提供的可变对象，它就必须在文档中明确地指明这一点。</p>
+<p>如果类所包含的方法或者构造器的调用需要移交对象的控制权，这个类就无法让自身抵御恶意的客户端。只有当类和它的客户端之间有着互相的信任，或者破坏类的约束条件不会伤害到除了客户端之外的其他对象时，这种类才是可以接受的。后一种情形的例子是包装类模式 (wrapper class pattern) (见第18条)。根据包装类的本质特征，客户端只需在对象被包装 之后直接访问它，就可以破坏包装类的约束条件，但是，这么做往往只会伤害到客户端自己。</p>
+<p>总结：如果类具有从客户端得到或者返回到客户端的可变组件，类就必须保护性地拷贝这些组件。如果拷贝的成本受到限制，并且类信任它的客户端不会不恰当地修改组件，就可以在文档中指明客户端的职责是不得修改受到影响的组件，以此来代替保护性拷贝。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/effective-Java/" rel="tag"># effective Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/18/Effective-CSharp-4%E7%94%A8%E5%86%85%E6%8F%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%96%E4%BB%A3String-Format/" rel="prev" title="Effective-CSharp-4用内插字符串取代string.Format">
+                  <i class="fa fa-angle-left"></i> Effective-CSharp-4用内插字符串取代string.Format
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/" rel="next" title="Effective-CSharp-8用null条件运算符调用事件处理程序">
+                  Effective-CSharp-8用null条件运算符调用事件处理程序 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

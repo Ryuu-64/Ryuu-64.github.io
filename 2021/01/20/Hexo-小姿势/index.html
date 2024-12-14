@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Hexo 小姿势在本地启动 hexo server (ctrl + c 停止)  1hexo s  创建新的博客文章 new blog 1hexo n &quot;文章名称&quot;   生成文件并部署至仓库 deploy 1hexo d  部署的信息在 _config.yml 文件最下的 deploy &#x2F;&#x2F;  _config.yml 示例 (记得冒号后要有空格) 12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo-小姿势">
+<meta property="og:url" content="http://example.com/2021/01/20/Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="Hexo 小姿势在本地启动 hexo server (ctrl + c 停止)  1hexo s  创建新的博客文章 new blog 1hexo n &quot;文章名称&quot;   生成文件并部署至仓库 deploy 1hexo d  部署的信息在 _config.yml 文件最下的 deploy &#x2F;&#x2F;  _config.yml 示例 (记得冒号后要有空格) 12345">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:54:43.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.575Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/01/20/Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/01/20/Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF/","path":"2021/01/20/Hexo-小姿势/","title":"Hexo-小姿势"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hexo-小姿势 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF"><span class="nav-number">1.</span> <span class="nav-text">Hexo 小姿势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E5%B0%8F%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">hexo  小问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">后续问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E6%96%B9%E6%A1%88"><span class="nav-number">2.3.</span> <span class="nav-text">最终方案</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/20/Hexo-%E5%B0%8F%E5%A7%BF%E5%8A%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Hexo-小姿势 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo-小姿势
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:54:43" itemprop="dateCreated datePublished" datetime="2021-01-20T22:54:43+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>696</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Hexo-小姿势"><a href="#Hexo-小姿势" class="headerlink" title="Hexo 小姿势"></a>Hexo 小姿势</h2><p>在本地启动 hexo server</p>
+<p>(ctrl + c 停止) </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>创建新的博客文章 new blog</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
+
+<p> 生成文件并部署至仓库 deploy</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>部署的信息在 _config.yml 文件最下的 deploy</p>
+<p>&#x2F;&#x2F;  _config.yml 示例 (记得冒号后要有空格)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/deployment.html</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span> </span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/Ryuu-64/Ryuu-64.github.io</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-小问题"><a href="#hexo-小问题" class="headerlink" title="hexo  小问题"></a>hexo  小问题</h2><p>当node 版本过高时会产生以下 Warning</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="title class_">Use</span> <span class="string">`node --trace-warnings ...`</span> to show where the warning was created)</span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular dependency</span><br></pre></td></tr></table></figure>
+
+<p>官方的 issues <a target="_blank" rel="noopener" href="https://github.com/stylus/stylus/issues/2534">https://github.com/stylus/stylus/issues/2534</a></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>不用改变node的版本</p>
+<p>找到项目中的此文件: \node_modules\stylus\lib\nodes\index.js 在最前处添加如下代码即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exports</span>.<span class="property">lineno</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="built_in">exports</span>.<span class="property">column</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="built_in">exports</span>.<span class="property">filename</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="后续问题"><a href="#后续问题" class="headerlink" title="后续问题"></a>后续问题</h3><p>结果还是有问题</p>
+<p>博客部署出错了 详情如下</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FATAL Something&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span><br><span class="line">TypeError [ERR_INVALID_ARG_TYPE]: The &quot;mode&quot; argument must be integer. Received an instance of Object</span><br><span class="line">    at copyFile (fs.js:1972:10)</span><br><span class="line">    at tryCatcher (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at ret (eval at makeNodePromisifiedEval (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promisify.js:184:12), &lt;anonymous&gt;:13:39)</span><br><span class="line">    at F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\hexo-fs\lib\fs.js:144:39</span><br><span class="line">    at tryCatcher (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at Promise._settlePromiseFromHandler (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:547:31)</span><br><span class="line">    at Promise._settlePromise (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:604:18)</span><br><span class="line">    at Promise._settlePromise0 (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:649:10)</span><br><span class="line">    at Promise._settlePromises (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:729:18)</span><br><span class="line">    at Promise._fulfill (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:673:18)</span><br><span class="line">    at Promise._resolveCallback (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:466:57)</span><br><span class="line">    at Promise._settlePromiseFromHandler (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:559:17)</span><br><span class="line">    at Promise._settlePromise (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:604:18)</span><br><span class="line">    at Promise._settlePromise0 (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:649:10)</span><br><span class="line">    at Promise._settlePromises (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:729:18)</span><br><span class="line">    at Promise._fulfill (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:673:18)</span><br></pre></td></tr></table></figure>
+
+<h3 id="最终方案"><a href="#最终方案" class="headerlink" title="最终方案"></a>最终方案</h3><p>下载一个 nodejs 的 12.x 的版本</p>
+<p>再部署就没有任何问题了</p>
+<p>还有问题就把高版本的 nodejs 删除</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/03/%E6%88%91%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="prev" title="我的个人博客搭建">
+                  <i class="fa fa-angle-left"></i> 我的个人博客搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/21/%E5%A4%8D%E5%88%B6%E7%BD%91%E9%A1%B5%E4%B8%8A%E7%9A%84%E6%96%87%E6%9C%AC/" rel="next" title="复制网页上的文本">
+                  复制网页上的文本 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

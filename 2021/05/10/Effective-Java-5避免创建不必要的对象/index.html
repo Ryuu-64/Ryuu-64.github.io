@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。 作为一个极端反面的例子，考虑下面的语句: 1String s &#x3D; new String(&quot;stringgette&quot;); &#x2F;&#x2F; DON&#x27;T DO THIS!  该语句每次执行的时候都创建一个新的St">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-Java-5避免创建不必要的对象">
+<meta property="og:url" content="http://example.com/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。 作为一个极端反面的例子，考虑下面的语句: 1String s &#x3D; new String(&quot;stringgette&quot;); &#x2F;&#x2F; DON&#x27;T DO THIS!  该语句每次执行的时候都创建一个新的St">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-10T08:55:54.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.574Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="effective Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/","path":"2021/05/10/Effective-Java-5避免创建不必要的对象/","title":"Effective-Java-5避免创建不必要的对象"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-Java-5避免创建不必要的对象 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-Java-5避免创建不必要的对象 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-Java-5避免创建不必要的对象
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-10 16:55:54" itemprop="dateCreated datePublished" datetime="2021-05-10T16:55:54+08:00">2021-05-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><em><strong>一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。</strong></em>重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。</p>
+<p>作为一个极端反面的例子，考虑下面的语句:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;stringgette&quot;</span>); <span class="comment">// DON&#x27;T DO THIS!</span></span><br></pre></td></tr></table></figure>
+
+<p>该语句每次执行的时候都创建一个新的String实例，但是这些创建对象的动作全都是不必要的。传递给String构造器的参数”stringgette”本身就是个String实例，功能方面等同于构造器创建的所有对象。如果这种用法是在一个循环中，或者是在一个被频繁调用的方法中，就会创建出成千上万不不要的String实例。</p>
+<p>改进后的版本如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;stringgette&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这个版本只使用一个String实例，而不是每次执行的时候都创建一个新的实例。而且，它可以保证，对于所有在同一台虚拟机种的代码，只要它们包含想用的字符串字面常量，该对象就会被重用 [JLS, 3.10.5]</p>
+<p><em><strong>对于同时提供了静态工厂方法(见第1条)和构造器的不可变类，通常可以使用静态工厂方法而不是构造器，以避免创建不必要的对象。</strong></em>例如，静态工厂方法Boolean.valueOf(String)几乎总是优先于构造器Boolean(String)。构造器在每次调用的时候都会创建一个新的对象，而静态工厂方法则从来不要求这样做，实际上也不会这样做。</p>
+<p><em><strong>除了重用不可变对象之外，也可以重用那些一直不会被修改的可变对象。</strong></em>下面是一个比较微妙，也比较常见的反面例子，其中涉及可变的Date对象，它们的值一旦计算出来之后就不在变化。这个类建立了一个模型，其中有一个人，并有一个isBabyBoomer方法，用来检验这个人是否为一个”baby boomer”(婴儿潮时期出生的婴儿)，也就是检验这个人是否出生于1946-1964年。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date birthDate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Other fields, methods and constructor omitted</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBabyBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// Unnecessary allocation of expensive object</span></span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">gmtCal</span> <span class="operator">=</span> Calendar.getInstance(TimeZone.getTimeZone(<span class="string">&quot;GMT&quot;</span>));</span><br><span class="line">        gmtCal.set(<span class="number">1946</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">boomStart</span> <span class="operator">=</span> gmtCal.getTime();</span><br><span class="line">        gmtCal.set(<span class="number">1964</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">boomEnd</span> <span class="operator">=</span> gmtCal.getTime();</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(boomStart) &gt;= <span class="number">0</span> &amp;&amp; birthDate.compareTo(boomEnd) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>isBabyBoomer 每次别调用的时候，都会新建一个Calendar ，一个 TimeZone 和两个 Date 实例，这是不必要的。下面的版本用一个静态的初始化器(initializer)</p>
+<p>，避免了这种效率低下的情况:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date birthDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Date BOOM_START;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Date BOOM_END;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">gmtCal</span> <span class="operator">=</span> Calendar.getInstance(TimeZone.getTimeZone(<span class="string">&quot;GMT&quot;</span>));</span><br><span class="line">        gmtCal.set(<span class="number">1946</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        BOOM_START = gmtCal.getTime();</span><br><span class="line">        gmtCal.set(<span class="number">1964</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        BOOM_END = gmtCal.getTime();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Other fields, methods and constructor omitted</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBabyBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(BOOM_START) &gt;= <span class="number">0</span> &amp;&amp; birthDate.compareTo(BOOM_END) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改进后的Person类只在初始化的时候创建Calender，TimeZone和Date实例一次，而不是在每次调用isBabyBoomer的时候都创建这些实例。如果isBabyBoomer方法被频繁的调用，这种方法将会显著地提高性能 (作者: 在我的机器上，每调用一千万次，原来的版本需要32 000ms，而改进后的版本只需 130ms)。除了提高性能之外，代码的含义也更加清晰了。<strong>把boomStart和boomEnd从局部变量改为final静态域，这些如期显然是被作为常量对待，从而使得代码更易于理解。</strong>但是，这种优化带来的效果并不总是那么明显，因为Calender实例创建代价特别昂贵。</p>
+<p>如果改进后的Person类被初始化了，isBabyBoomer方法却永远不会被调用，那就没有必要初始化BOOM_START和BOOM_END域。通过<strong>延迟初始化(lazily initializing)</strong>(见第71条)，即把对这些域的初始化延迟到isBabyBoomer方法第一次被调用的时候进行，则有可能消除这些不必要的初始化工作，但是不建议这样做。正如延迟初始化中常见的情况一样，这样做会使方法的实现更加复杂，从而无法将性能显著提高到超过已经达到的水平(见55条)。</p>
+<p>在本条目前面的例子中，所讨论的对象显然都是能够被重用的，因为它们被初始化之后不会再改变。其他的情形则并不总是这么明显了。考虑适配器(adapter)的情形 [Gamma95, p.139]，有时也叫做视图 (view)。适配器是指这样一个对象：它把功能委托给一个后备对象 (backing object)，从而为后备对象提供一个可以替代的接口。由于适配器除了后备对象之外，没有其他的状态信息，所以针对某个给定对象的特定适配器而言，它不需要创建多个适配器实例。</p>
+<p><strong>例如，Map接口的keySet方法返回该Map对象的Set视图，其中包含该Map中所有的键 (key)。看起来好像每次调用keySet都应该创建一个新的Set实例，但是，对于一个给定的Map对象，实际上每次调用keySet都返回同样的Set实例。虽然返回的Set实例一般是可改变的，但是所有返回的对象在功能上是等同的：当其中一个返回对象发生变化时，所有其他的返回对象也要发生变化，因为它们是由同一个Map实例支撑的。虽然创建KeySet视图对象的多个实例并无害处，但也无必要。</strong></p>
+<p>在Java 1.5发行版本中，有一种创建多余对象的新方法，称作自动装箱 (auto boxing)，它允许程序员将基本类型和装箱基本类型 (Boxed Primitive Type) 混用，按需要自动装箱和拆箱。自动装箱使得基本类型和装箱基本类型之间的区别变得模糊起来，但是并没有完全消除。它们在语义上还有着微妙的差别，在性能上也有着比较明显的差别 (见第49条)。考虑下面的程序，他计算所有int正值的总和。为此，程序必须使用long，因为int不够大，无法容纳所有int正值的总和:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Hideously slow program! Can you spot the object creation?</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">Long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段程序是正确的，但是要比预期的情况要更慢，因为这里打错了字符大写了L。变量sum 由 long类型变为了Long类型，意味着程序构造了2<sup>31</sup>个多余的Long实例。将sum的声明从Long改为long (作者: 在我的机器上运行时间从43秒降低到了6.8秒)。结论很明显：<em><strong>要优先使用基本类型而不是装箱基本类型，要当心无意识的自动装箱。</strong></em></p>
+<p>以下是我自己尝试的代码 时间分别是 50 6598 ms 和 50 827 ms 性能差了约10倍。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="variable">TIME_SPEND</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="variable">TIME_SPEND_TOTAL</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="comment">// Avoid unnecessary boxing and unboxing.</span></span><br><span class="line">    <span class="comment">// Long sum = 0L; // TEST_COUNT = 50 6598 ms</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0L</span>; <span class="comment">// TEST_COUNT = 50 827 ms</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">TEST_COUNT</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; TEST_COUNT; j++) &#123;</span><br><span class="line">        sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        TIME_SPEND_TOTAL += System.currentTimeMillis() - TIME_SPEND;</span><br><span class="line">        System.out.println(<span class="string">&quot;No.&quot;</span> + (j + <span class="number">1</span>) + <span class="string">&quot; : &quot;</span> + (System.currentTimeMillis() - TIME_SPEND) + <span class="string">&quot; ms &quot;</span> +sum);</span><br><span class="line">        TIME_SPEND = System.currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(TIME_SPEND_TOTAL / TEST_COUNT + <span class="string">&quot; ms&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>不要错误的认为本条目介绍的内容暗示着”创建对象的代价非常昂贵，我们应该尽可能的避免创建对象”。相反，由于小对象的构造器只做很少量的显式工作，所以，小对象的创建和回收动作是非常廉价的，特别是在现代的JVM实现上更是如此。通过创建附加的对象，提升程序的清晰性，简洁性和功能性，这通常是件好事。</strong></em></p>
+<p>反之，通过维护自己的对象池 (object pool) 来避免创建对象并不是一种好的做法，除非池中的对象是非常重量级的。真正正确使用对象池的典型对象示例就是数据库连接池。建立数据库连接的代价是非常昂贵的，因此重用这些对象非常有意义。而且，数据库的许可可能限制你只能使用一定数量的连接。但是，一般而言，维护自己的对象池必定增加代码的复杂度，同时增加内存占用 (footprint)，并且还会损害性能。现代的JVM实现具有高度优化的垃圾回收器，其性能很容易就会超过轻量级对象池的性能。</p>
+<p>与本条目对应的是第39条中有关”保护性拷贝(defensive copying)” 的内容。本条目提及”当你应该重用现有对象的时候，请不要创建新的对象”，而第39条中”当你应该创建新对象的时候，请不要重用现有的对象”。注意，在提倡使用保护性拷贝的时候，因重用对象而付出的代价要远远大于因创建重复对象而付出的代价。必要时如果没能实施保护性拷贝，将会导致潜在的错误和安全漏洞；而不必要地创建对象则只会影响程序的风格和功能。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/effective-Java/" rel="tag"># effective Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/10/Effective-Java-4%E9%80%9A%E8%BF%87%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%BA%E5%8C%96%E4%B8%8D%E5%8F%AF%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E8%83%BD%E5%8A%9B/" rel="prev" title="Effective-Java-4通过私有构造器强化不可实例化的能力">
+                  <i class="fa fa-angle-left"></i> Effective-Java-4通过私有构造器强化不可实例化的能力
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/12/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/" rel="next" title="Effective-Java-6消除过期的对象引用">
+                  Effective-Java-6消除过期的对象引用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

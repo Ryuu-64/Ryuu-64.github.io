@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="静态工厂和构造器有个共同的局限性：都不能很好地扩展大量的可选参数 例： 考虑用一个类表示包装食品外面显示的营养成分标签。这些标签中有几个域是必需的：每份含量，每罐含量，每份卡路里，还有超过20个可选域：总脂肪量，饱和脂肪量，转化脂肪量，胆固醇，钠等等。大多数的产品在某几个可选域中都会有非0的值。 对于这样的类，应该用哪种构造器或者静态方法来编写呢？ 1. 重叠构造器 (telescoping co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-Java-2遇到多个构造器参数时需要考虑用构建器">
+<meta property="og:url" content="http://example.com/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="静态工厂和构造器有个共同的局限性：都不能很好地扩展大量的可选参数 例： 考虑用一个类表示包装食品外面显示的营养成分标签。这些标签中有几个域是必需的：每份含量，每罐含量，每份卡路里，还有超过20个可选域：总脂肪量，饱和脂肪量，转化脂肪量，胆固醇，钠等等。大多数的产品在某几个可选域中都会有非0的值。 对于这样的类，应该用哪种构造器或者静态方法来编写呢？ 1. 重叠构造器 (telescoping co">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-30T04:57:23.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.572Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="effective Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/","path":"2021/04/30/Effective-Java-2遇到多个构造器参数时需要考虑用构建器/","title":"Effective-Java-2遇到多个构造器参数时需要考虑用构建器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Effective-Java-2遇到多个构造器参数时需要考虑用构建器 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%87%8D%E5%8F%A0%E6%9E%84%E9%80%A0%E5%99%A8-telescoping-constructor"><span class="nav-number">1.</span> <span class="nav-text">1. 重叠构造器 (telescoping constructor)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-JavaBeans%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">2. JavaBeans模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Builder%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">3. Builder模式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Effective-Java-2遇到多个构造器参数时需要考虑用构建器 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective-Java-2遇到多个构造器参数时需要考虑用构建器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-30 12:57:23" itemprop="dateCreated datePublished" datetime="2021-04-30T12:57:23+08:00">2021-04-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>静态工厂和构造器有个共同的局限性：都不能很好地扩展大量的可选参数</strong></p>
+<p>例：</p>
+<p>考虑用一个类表示包装食品外面显示的营养成分标签。这些标签中有几个域是必需的：每份含量，每罐含量，每份卡路里，还有超过20个可选域：总脂肪量，饱和脂肪量，转化脂肪量，胆固醇，钠等等。大多数的产品在某几个可选域中都会有非0的值。</p>
+<p>对于这样的类，应该用哪种构造器或者静态方法来编写呢？</p>
+<h3 id="1-重叠构造器-telescoping-constructor"><a href="#1-重叠构造器-telescoping-constructor" class="headerlink" title="1. 重叠构造器 (telescoping constructor)"></a>1. <strong>重叠构造器 (telescoping constructor)</strong></h3><p>   提供第一个<strong>只有必要参数</strong>的构造器</p>
+<p>   提供第二个<strong>包含必要参数且包含一个可选参数</strong>的构造器</p>
+<p>   提供第三个<strong>包含必要参数且包含两个可选参数</strong>的构造器</p>
+<p>   以此类推，最后一个构造器包含所有参数</p>
+<p>   如下是个简单的示例</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servingSize; <span class="comment">//(ml)          required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servings; <span class="comment">//(per container)  required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> calories; <span class="comment">//                 optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> fat;      <span class="comment">//(g)              optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> sodium;   <span class="comment">//(mg)             optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> carbohydrate; <span class="comment">//(g)          optional</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//必须的选项</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, fat, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat, <span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, fat, sodium, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//包含所有的选项</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat, <span class="type">int</span> sodium, <span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">        <span class="built_in">this</span>.servings = servings;</span><br><span class="line">        <span class="built_in">this</span>.calories = calories;</span><br><span class="line">        <span class="built_in">this</span>.fat = fat;</span><br><span class="line">        <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">        <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>仅仅想创建一个该类对象，使用最短的构造器即可</p>
+<p>但如果想要设置参数表中靠后的参数问题就来了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>(<span class="number">240</span>,<span class="number">8</span>,<span class="number">100</span>,<span class="number">0</span>,<span class="number">35</span>,<span class="number">27</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如上初始化中 fat 的值为0，这个参数本是不用初始化的，就6个参数的情况下，还说的过去，随着参数增加，这样就不行了。</p>
+<p><em><strong>重叠构造器是可行的，但当参数增多时，客户端的代码将变得很难编写，阅读性也较差，并且如果初始化时容易填错顺序，导致运行时的错误。</strong></em></p>
+<h3 id="2-JavaBeans模式"><a href="#2-JavaBeans模式" class="headerlink" title="2. JavaBeans模式"></a>2. <strong>JavaBeans模式</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JavaBeans Pattern - allows inconsistency, mandates mutability</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">servingSize</span> <span class="operator">=</span> -<span class="number">1</span>; <span class="comment">//(ml)          required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">servings</span> <span class="operator">=</span> -<span class="number">1</span>; <span class="comment">//(per container)  required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">calories</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">//                 optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">fat</span> <span class="operator">=</span> <span class="number">0</span>;      <span class="comment">//(g)              optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">sodium</span> <span class="operator">=</span> <span class="number">0</span>;   <span class="comment">//(mg)             optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">carbohydrate</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">//(g)          optional</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setServingSize</span><span class="params">(<span class="type">int</span> servingSize)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setServings</span><span class="params">(<span class="type">int</span> servings)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servings = servings;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCalories</span><span class="params">(<span class="type">int</span> calories)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.calories = calories;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setFat</span><span class="params">(<span class="type">int</span> fat)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.fat = fat;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSodium</span><span class="params">(<span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCarbohydrate</span><span class="params">(<span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化</span></span><br><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>();</span><br><span class="line">cocaCola.setServingSize(<span class="number">240</span>);</span><br><span class="line">cocaCola.setServings(<span class="number">8</span>);</span><br><span class="line">cocaCola.setCalories(<span class="number">100</span>);</span><br><span class="line">cocaCola.setSodium(<span class="number">35</span>);</span><br><span class="line">cocaCola.setCarbohydrate(<span class="number">27</span>);</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>JavaBeans模式创建实例很容易，代码可读性也很强，但其有很严重的缺点:</strong></em></p>
+<ol>
+<li><p>构造的过程包含多个调用，在构造过程中JavaBeans可能处于不一致状态</p>
+<p>例如一个线程正在使用setter初始化值，而另一个线程正用getter取得该对象的字段</p>
+</li>
+<li><p>使用JavaBeans模式则该类不可成为不可变类 (因为有setter访问器)</p>
+</li>
+</ol>
+<h3 id="3-Builder模式"><a href="#3-Builder模式" class="headerlink" title="3. Builder模式"></a>3. <strong>Builder模式</strong></h3><p>此模式有重叠构造器的<strong>安全性</strong>，也有JavaBeans模式的<strong>高可读性</strong></p>
+<p>不直接生成需要的对象，而是得到一个builder对象，调用所有的必要的构造器或静态工厂，设置每一个需要设置的参数，最后调用一个无参数的build方法来生成一个不可变对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servingSize;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servings;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> calories;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> fat;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> sodium;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> carbohydrate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        servingSize = builder.servingSize;</span><br><span class="line">        servings = builder.servings;</span><br><span class="line">        calories = builder.calories;</span><br><span class="line">        fat = builder.fat;</span><br><span class="line">        sodium = builder.sodium;</span><br><span class="line">        carbohydrate = builder.carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="comment">// Required parameters</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> servingSize;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> servings;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> calories;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> fat;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> sodium;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> carbohydrate;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">            <span class="built_in">this</span>.servings = servings;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// builder的 setter 返回自身实现链接调用</span></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">calories</span><span class="params">(<span class="type">int</span> calories)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.calories = calories;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">fat</span><span class="params">(<span class="type">int</span> fat)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.fat = fat;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">sodium</span><span class="params">(<span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">carbohydrate</span><span class="params">(<span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> NutritionFacts <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化</span></span><br><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>.Builder(<span class="number">240</span>, <span class="number">8</span>).calories(<span class="number">100</span>).sodium(<span class="number">35</span>).carbohydrate(<span class="number">27</span>).build();</span><br></pre></td></tr></table></figure>
+
+<p>Builder 模式的可读性提高了很多，代码简易。Builder模式模拟了了<strong>具名可选参数</strong></p>
+<p><em><strong>如果该类包含多个字段，Builder模式就是种不错的选择，特别是当大多数参数都是可选的时候。与重叠构造器与JavaBeans相比要更加安全与易读。</strong></em></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/effective-Java/" rel="tag"># effective Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/30/Effective-Java-1%E8%80%83%E8%99%91%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E4%BB%A3%E6%9B%BF%E6%9E%84%E9%80%A0%E5%99%A8/" rel="prev" title="Effective-Java-1考虑用静态工厂方法代替构造器">
+                  <i class="fa fa-angle-left"></i> Effective-Java-1考虑用静态工厂方法代替构造器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/" rel="next" title="Effective-CSharp-2考虑用readonly代替const">
+                  Effective-CSharp-2考虑用readonly代替const <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="(Ryuu: 附上原文地址 : Custom &#x3D;&#x3D; operator, should we keep it?) 正文Unity 的 &#x3D;&#x3D; 运算符有特殊实现 (UnityEngine.Object 重载了 &#x3D;&#x3D; 及 !&#x3D; 运算符)。  当一个 MonoBehaviour 有字段，在 editor only [1] 时，这些字段不是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-自定义&#x3D;&#x3D;运算符，我们应该保留它吗">
+<meta property="og:url" content="http://example.com/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="(Ryuu: 附上原文地址 : Custom &#x3D;&#x3D; operator, should we keep it?) 正文Unity 的 &#x3D;&#x3D; 运算符有特殊实现 (UnityEngine.Object 重载了 &#x3D;&#x3D; 及 !&#x3D; 运算符)。  当一个 MonoBehaviour 有字段，在 editor only [1] 时，这些字段不是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-23T02:53:29.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:50:01.581Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="UnityEngine">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/","path":"2021/08/23/Unity-自定义==运算符，我们应该保留它吗/","title":"Unity-自定义==运算符，我们应该保留它吗"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity-自定义==运算符，我们应该保留它吗 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">注释</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity-自定义==运算符，我们应该保留它吗 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity-自定义==运算符，我们应该保留它吗
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-23 10:53:29" itemprop="dateCreated datePublished" datetime="2021-08-23T10:53:29+08:00">2021-08-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>(Ryuu: 附上原文地址 : <a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">Custom &#x3D;&#x3D; operator, should we keep it?</a>)</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>Unity 的 &#x3D;&#x3D; 运算符有特殊实现 (UnityEngine.Object 重载了 &#x3D;&#x3D; 及 !&#x3D; 运算符)。</p>
+<ol>
+<li><p>当一个 MonoBehaviour 有字段，在 editor only <strong>[1]</strong> 时，这些字段不是 “real null”，而是 “fake null”。UnityEngine 的 &#x3D;&#x3D; 运算符能够检测是否存在 fake null object。</p>
+<p>虽然这样做很奇怪，但这能让 Unity 在 fake null object 中存储信息。当执行其方法 (method)，或访问其属性 (property)，提供更多的上下文信息。</p>
+<p>若不在 fake null object 中存储信息，只能得到 NullReferenceException，堆栈跟踪。并不知道具体是哪个带有 MonoBehaviour 的 GameObject 有字段为 null。</p>
+<p>在 fake null object 中存储信息，Unity 能够在检视窗口 (Inspector) 中高亮该 GameObject，并给出更多指引:”looks like you are accessing a non initialized field in this MonoBehaviour over here, use the inspector to make the field point to something” (看来你在 MonoBehaviour 中试图访问未实例化字段，请在检视窗口使其指向实例)。</p>
+</li>
+<li><p>第二点稍加复杂。</p>
+<p>当你获取 GameObject 类型的 c# object **[2]<strong>，他几乎不包含任何信息。这是因为 Unity 是基于 C&#x2F;C++ 的引擎。关于此 GameObject 的所有实际信息 (name，component list，HideFlags，等等) 都存活在 C++ 侧。C# object 所有的仅是指向原生对象 (native object) 的指针 (pointer)。我们称这样的对象为</strong>“包装对象” (wrapper objects)**。</p>
+<p>这些如 GameObject 的 c++ objects 及其他一切继承自 UnityEngine.Object 的生命周期都被明确的管理。当你加载新场景，或在其上调用 Object.Destroy(myObject); 时，这些 Object 将会被销毁。</p>
+<p>C# object 的生命周期有 C# 的管理方式，其具有垃圾收集器 (garbage collector) **[4]**。这意味着，有可能被包裹的 C++ Object 已经被销毁，但包裹它的 C# 包装对象依然存在。将此对象与 null 比较，UnityEngine 重载的 &#x3D;&#x3D; 会返回 true，尽管实际上的 C# 变量 (variable) 不为 null。</p>
+</li>
+</ol>
+<p>UnityEngine 自定义的空检测 (null check) 也导致许多缺陷</p>
+<ul>
+<li>这种自定义十分反直觉</li>
+<li>对两个 UnityEngine.Object 比较或与 null 比较，会比想象中的要慢</li>
+<li>UnityEngine 重载的 &#x3D;&#x3D; 是非线程安全 (not thread safe) 的 (这点 Unity 可在后续修复)</li>
+<li>其与 ?? 操作符的表现不一致，?? 同样进行空检测，但这是纯粹的 C# 空检测，会绕过 UnityEngine.Object 自定义空检测 <strong>[5]</strong></li>
+</ul>
+<p>回顾所有的这些优缺点，如果从头再构建 API，我们将不会选择自定义空检查，而是创建一个 myObject.destroyed 的属性，访问该属性以检测 object 的生死。让用户接受在空字段调用方法时不再提供更好的错误信息的事实。</p>
+<p>我们在思考我们是否应该改变此自定义运算符，我们一直在寻找 “修复，清除原始项目” 与 “不要破坏原始项目” 之间的正确的平衡。在这种情况下，我们想了解其他人的思考。</p>
+<p>对于 Unity5，我们一直在研究 Unity 自动更新脚本的能力 (于随后的博客中对此进行了详细介绍)。不幸的是，在本文情况下，我们无法使您的脚本自动升级 (无法准确辨识 “这个旧脚本确实需要旧的 behaviour” 和  “这个新脚本确实需要新的 behaviour” 的区分)。</p>
+<p>我们倾向于 “移除自定义 &#x3D;&#x3D; 运算符”，但还在犹豫，因为这将改变您工程中所有空检查的意义。对于对象不是 “really null” 而是已销毁对象的情况来说，空检查通常返回 true，如果我们修改了它，就会返回 false 了。若想检测变量是否指向被摧毁对象，需要把代码改成 “if (myObject.destroyed) {}”。我们对此有点紧张，无论你有没有读这篇文章，都很容易意识不到这种行为的改变，特别是大多数人根本没有意识到这种自定义空检查的存在。**[3]**</p>
+<p>如果我们作修改，应在 Unity5 上。对于非主要发行版，我们允许用户承受的升级痛苦阈值更低。</p>
+<p>你希望我们怎么做？以必须更改已有项目中的空检查为代价，提供更整洁的体验，或是保持现状？</p>
+<p>再见, Lucas (<a target="_blank" rel="noopener" href="https://twitter.com/lucasmeijer">@lucasmeijer</a>) **[6]</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[1] 我们只在编辑器中执行此操作。这就是为什么在调用GetComponent() 查询不存在的组件时，会看到 C# 内存分配产生，因为我们正在新分配的伪空对象中生成自定义警告字符串。在打包的游戏中，这种内存分配不会发生。这就是为什么测试游戏时，应在打包出来的独立端 (standalone 如 Mac, Windows or Linux) 或移动端测试，而不是在编辑器测试，因为我们在编辑器中做了很多额外的 安全&#x2F;用例检查，以使你的工作更轻松，而牺牲了一些性能。在分析性能和内存分配时，永远不要在编辑器，应始终分析构建出的游戏。</p>
+<p>[2] 不仅适用于 GameObject，也适用于继承自 UnityEngine.Object 的所有类。</p>
+<p>[3] 有趣的故事: 我在优化GetComponent<T>（）性能时遇到了这个问题，在为 transform 组件做一些缓存实现时，我没有看到任何性能优势。<a target="_blank" rel="noopener" href="https://twitter.com/jonasechterhoff">@jonasechterhoff</a> 也研究了此问题，得出了相同的结论。缓存代码如下所示：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Transform m_CachedTransform</span><br><span class="line"><span class="keyword">public</span> Transform transform</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">get</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (m_CachedTransform == <span class="literal">null</span>)</span><br><span class="line">      m_CachedTransform = InternalGetTransform();</span><br><span class="line">    <span class="keyword">return</span> m_CachedTransform;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实证明，我们自己的两位工程师都没有注意到空检查会比想象中更费时。这就是缓存没有带来速度提升的原因，”连我们自己都忘记了它 (Unity 自定义空检测)，会有多少用户会忘记了它？”，这使得我写下了此篇文章 :)</p>
+<p>[4] Ryuu: C# 托管对象的回收是 C# 垃圾回收器管理的，不能保证其生命周期和 C++ 侧对象完全一致。</p>
+<p>[5] Ryuu: 原文是 “and cannot be bypassed to call our custom null check”(可以绕过自定义空检测) 个人认为是写错了 (也可能是我英语太差，理解错了)，实际情况是，使用 ?? 或 ?. 都会绕过 UnityEngine.Object 的自定义空检测。附上 JetBrains&#x2F;resharper-unity 的解释页: <a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">Possible unintended bypass of lifetime check of underlying Unity engine object</a></p>
+<p>[6] Ryuu: 最后作者真香了，并没有移除自定义的空检查，而是想办法修复其产生的缺陷。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/UnityEngine/" rel="tag"># UnityEngine</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/05/Effective-CSharp-31%E6%8A%8A%E9%92%88%E5%AF%B9%E5%BA%8F%E5%88%97%E7%9A%84API%E8%AE%BE%E8%AE%A1%E5%BE%97%E6%9B%B4%E5%8A%A0%E6%98%93%E4%BA%8E%E6%8B%BC%E6%8E%A5/" rel="prev" title="Effective-CSharp-31把针对序列的API设计得更加易于拼接">
+                  <i class="fa fa-angle-left"></i> Effective-CSharp-31把针对序列的API设计得更加易于拼接
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" rel="next" title="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">
+                  Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">74k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:28</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
