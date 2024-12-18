@@ -120,7 +120,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -131,7 +131,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -171,6 +171,132 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/04/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/04/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">Effective-CSharp-38考虑用lambda表达式来代替方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-04 18:01:40" itemprop="dateCreated datePublished" datetime="2021-08-04T18:01:40+08:00">2021-08-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> allEmployees = FindAllEmployees();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the first employees:</span></span><br><span class="line"><span class="keyword">var</span> earlyFolks =</span><br><span class="line">    <span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span><br><span class="line">    <span class="keyword">where</span> e.Classification == EmployeeType.Salary</span><br><span class="line">    <span class="keyword">where</span> e.YearsOfService &gt; <span class="number">20</span></span><br><span class="line">    <span class="keyword">where</span> e.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">    <span class="keyword">select</span> e;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the newest people:</span></span><br><span class="line"><span class="keyword">var</span> newest =</span><br><span class="line">    <span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span><br><span class="line">    <span class="keyword">where</span> e.Classification == EmployeeType.Salary</span><br><span class="line">    <span class="keyword">where</span> e.YearsOfService &lt; <span class="number">20</span></span><br><span class="line">    <span class="keyword">where</span> e.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">    <span class="keyword">select</span> e;</span><br></pre></td></tr></table></figure>
+
+<p>你可以将这些 where 合并为一条子句，然而这并不会带来太大区别。查询操作之间本就可以拼接 (见31条)，而简单的 where 谓词还会有可能内联 (inline)，因此，这两种写法在性能上是一样的。</p>
+<p>看到刚才那段代码，你可能会想把重复的 lambda 表达式提取到方法，以便复用：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Factor out method:</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">LowPaidSalaried</span>(<span class="params">Employee e</span>)</span> =&gt; </span><br><span class="line">    e.MonthlySalary &lt; <span class="number">4000</span> &amp;&amp; e.Classification == EmployeeType.Salary;</span><br><span class="line"></span><br><span class="line"><span class="comment">// else where</span></span><br><span class="line"><span class="keyword">var</span> allEmployees = FindAllEmployees();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> earlyFolks =</span><br><span class="line">	<span class="function"><span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span></span><br><span class="line"><span class="function">	<span class="keyword">where</span> <span class="title">LowPaidSalaried</span>(<span class="params">e</span>) &amp;&amp; e.YearsOfService &gt; 20</span></span><br><span class="line"><span class="function">	<span class="keyword">select</span> e</span>;</span><br><span class="line">            </span><br><span class="line"><span class="comment">// Find the newest people:</span></span><br><span class="line"><span class="keyword">var</span> newest =</span><br><span class="line">	<span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span><br><span class="line">	<span class="keyword">where</span> e.Classification == EmployeeType.Salary</span><br><span class="line">	<span class="keyword">where</span> e.YearsOfService &lt; <span class="number">20</span></span><br><span class="line">	<span class="keyword">where</span> e.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">	<span class="keyword">select</span> e;</span><br></pre></td></tr></table></figure>
+
+<p>如果将来需要修改员工的类别 (Classification)，或修改筛选底薪员工时所依据的最低月薪 (MonthlySalary)，那么只需要改动 LowPaidSalaried() 里的逻辑即可。</p>
+<p>但是这样的重构不能提高其复用性，这与 lambda 表达式求值、解析及执行机制有关：</p>
+<ul>
+<li><p>LINQ to Objects</p>
+<p>为执行表达式中代码，将 lambda 表达式转化成为委托</p>
+</li>
+<li><p>LINQ to SQL</p>
+<p>根据 lambda 表达式创建表达式树，并解析，使其能在其他环境执行</p>
+</li>
+</ul>
+<p>LINQ to Objects 针对本地数据存储 (local data store) 来执行查询，数据通常放在泛型集合。系统根据 lambda 表达式中的逻辑建立匿名委托，并执行相关代码。LINQ to Objects 扩展方法使用 IEnumerable<T> 来表示输入序列。</p>
+<p>LINQ to SQL 使用表达式树，根据所写查询逻辑构建表达式树，将其解析为适当的 T-SQL 查询，这种查询是针对数据库执行的，LINQ to SQL 把 T-SQL 形式的查询字符串发送给数据库引擎并执行。这种处理方式要求 LINQ to SQL引擎必须解析表达式树，并把其中每一项操作都替换成等价的 SQL，这意味着所有的方法调用都需要换成 Expression.MethodCall 节点。然而 LINQ to SQL 引擎并不能把每一种方法调用都顺利的转化为 SQL 表达式，无法转换将会引发异常。</p>
+<p>如果所写的程序库需要支持任意类型的数据源，必须考虑上述情况。需要分开编写 lambda 表达式，且内联至代码中，以保证程序库正常运行。</p>
+<p>这并不是在鼓励一味的复制代码，而是提醒，涉及查询表达式及 lambda 的地方应该用更为合理的方法去创建复用代码块。例如：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> IQueryable&lt;Employee&gt; <span class="title">LowPaidSalariedFilter</span>(<span class="params"><span class="keyword">this</span> IQueryable&lt;Employee&gt; sequence</span>)</span> =&gt;</span><br><span class="line">    <span class="keyword">from</span> s <span class="keyword">in</span> sequence</span><br><span class="line">    <span class="keyword">where</span> s.Classification == EmployeeType.Salary &amp;&amp; s.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">    <span class="keyword">select</span> s;</span><br><span class="line"></span><br><span class="line"><span class="comment">// else where</span></span><br><span class="line"><span class="keyword">var</span> allEmployees = FindAllEmployees();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the first employees:</span></span><br><span class="line"><span class="keyword">var</span> salaried = allEmployees.LowPaidSalariedFilter();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> earlyFolks = salaried.Where(e =&gt; e.YearsOfService &gt; <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the newest people:</span></span><br><span class="line"><span class="keyword">var</span> newest = salaried.Where(e =&gt; e.YearsOfService &lt; <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<p>并不是每一种查询都能像这样简单的改写，可能需要沿着调用链寻找，才能发现可供复用的列表处理逻辑 (list-processing logic)，从而提取相同的 lambda 表达式。31条提过，只要当程序真的需要遍历集合的时，enumerator 方法才会得以执行。可利用此特征，将查询操作分成许多小方法来写，这些小方法都能复用某一套 lambda 表达式来执行它所应该完成的那一部分查询工作。这些方法需要将待处理的序列当成输入值，并以 yield return 形式返回处理结果。这些小方法可构成较大的查询模块。避免重复的代码，使得代码结构更合理。</p>
+<p>也可按照同样的思路建立表达式树，以此拼接 IQueryable 形式的 enumerator，令查询操作能够远程执行。寻找相关员工所用的那棵表达式树可以先于其他查询拼接，然后执行。IQueryProvider 对象 (LINQ to SQL 引擎的数据源就是这种对象) 可以把全套查询操作一次执行完毕，而不必将其分解成多个部分放到本地执行。</p>
+<p>若想在复杂的查询中有效地复用 lambda 表达式，可以考虑针对封闭的泛型类型创建扩展方法。LowPaidSalariedFilter 方法就是这么写的，它接受有待筛选的 Employee 对象序列，输出经过筛选后的 Employee 对象序列。在实际工作中，还应该创建以 IEnumerable<Employee> 作阐述的重载版本，以便同时支持 LINQ to Objects 及 LINQ to SQL。</p>
+<p>你可以把查询操作分成多个小方法，其中一些方法在其内部用 lambda 表达式处理序列，另一些方法以 lambda 表达式作参数。把这些小方法拼接起来，以实现整套操作。这样既可以支持 IEnumerable<T> 与 IQueryable<T>，又能令系统有机会构建出表达式树，以便高效执行查询。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1364,253 +1490,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/15/Effective-Java-10%E8%A6%86%E7%9B%96equals%E6%97%B6%E8%AF%B7%E9%81%B5%E5%AE%88%E9%80%9A%E7%94%A8%E7%BA%A6%E5%AE%9A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/15/Effective-Java-10%E8%A6%86%E7%9B%96equals%E6%97%B6%E8%AF%B7%E9%81%B5%E5%AE%88%E9%80%9A%E7%94%A8%E7%BA%A6%E5%AE%9A/" class="post-title-link" itemprop="url">Effective-Java-10覆盖equals时请遵守通用约定</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-15 12:52:48" itemprop="dateCreated datePublished" datetime="2021-07-15T12:52:48+08:00">2021-07-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>20 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>覆盖 equals 方法看起来容易，但是许多的覆盖方式会导致错误，并且产严重后果。最容易避免这类问题的办法就是不覆盖 equals 方法，在这种情况下，类的每个实例都只与它自身相等。如果满足以下任何一个条件：</p>
-<ol>
-<li><p><strong>类的每个实例本质上都是唯一的。</strong></p>
-<p>对于代表活动的实体，而不是值 (value) 的类来说的却如此，例如 Thread。</p>
-<p>Object 提供的 equals 实现对于这些类来说是正确的。</p>
-</li>
-<li><p><strong>类没有必要提供 “逻辑相等” (logical equality) 的测试功能。</strong></p>
-<p>例如，java.util.regex.Pattern 可以覆盖 equals，以检查两个 Pattern 实例是否代表同一个正则表达式，但是设计者并不认为客户需要或者期望这样的功能。</p>
-<p>在这类情况下，Object 继承得到的 equals 实现已经足够了。</p>
-</li>
-<li><p><strong>超类已经覆盖了 equals，超类的行为对于这个类也是合适的。</strong></p>
-<p>大多数的 Set 实现都从 AbstractSet 继承了 equals 实现， List 实现从 AbstractList 继承了 equals 实现，Map 实现从 AbstractMap 继承了 equals 实现。</p>
-</li>
-</ol>
-<p>那么什么时候应该覆盖 equals 方法呢？如果类具有自己的  “逻辑相等” (logical equality) 概念，而且超类还没有覆盖 equals。这通常属于 “值类” (value class) 的情况。值类仅仅是表示值的类，例如 Integer 或者 String。程序员在利用 equals 方法来比较值对象的引用时，希望知道它们逻辑上是否相等，而不是像了解它们是否指向同一个对象。为了满足要求，必须覆盖 equals 方法，这样做也使得这个类的实例可以被用作映射表的键和值，或者集合的元素，使映射或集合表现出预期的行为。</p>
-<p>有一种值类<strong>不需要覆盖</strong> equals 方法，即用实例受控 (见第1条) 确保 “每个值至多只存在一个对象”的类。枚举类型(见第34条)就属于这种类。对于这种类而言，逻辑相同与对象等同是一回事，此时 Object 的 equals 方法等同于逻辑意义上的 equals 方法。</p>
-<p>在覆盖 equals 方法的时候，必须遵守它的通用约定。以下是约定内容，Object 的规范。</p>
-<p>equals 方法实现了等价关系 (equivalence relation)，其属性如下：(Ryuu : 感觉自己回到了离散数学)</p>
-<ul>
-<li><p><strong>自反性 (reflexive)</strong></p>
-<p>对于任何非 null 的引用 x，x.equals(x) 必须返回 true。</p>
-</li>
-<li><p><strong>对称性 (symmetric)</strong></p>
-<p>对于任意非 null 的引用 x，y。当且仅当 x.equals(y) 返回 true 时，y.equals(x) 必须返回 true。</p>
-</li>
-<li><p><strong>传递性 (transitive)</strong></p>
-<p>对于任何非 null 的引用 x，y，z。如果 x.equals(y) 且 y.equals(z) 返回 true，x.equals(z) 也必须返回 true。</p>
-</li>
-<li><p><strong>一致性 (consistent)</strong></p>
-<p>对于任何非 null 的引用 x，y，只要 equals 的比较操作在对象中所用的信息没有被修改，任意次对 x.equals(y) 的调用，一致返回 true 或一致返回 false。</p>
-</li>
-<li><p><strong>对于任何非 null 的引用值 x，x.equals(null) 必须返回 false。</strong></p>
-</li>
-</ul>
-<p>除非你对数学特别感兴趣，否则这些规则看起来有点让人恐惧，但是不要忽视这些规则，如果违反了，程序很容易出错且很难找到错误根源。一个类的实例通常会被频繁的传递给另一个类的实例。许多类，包括所有的集合类 (collection class) 在内，都依赖于传递给它们的对象是否遵守了 equals 约定。</p>
-<p>幸运的是，虽然这些约定看起来很吓人。实际上并不复杂。一旦了解了这些约定，要遵守它们并不困难。</p>
-<p><strong>自反性 (Reflexivity)</strong> —— 仅仅说明对象等于自身。假如违反，将该类的实例添加到集合中，调用集合的 contains 方法，将告知该集合不包含刚刚添加的元素。</p>
-<p><strong>对称性 (Symmetry)</strong> —— 任何两个对象对于 “它们是否等同” 的问题都必须保持一致。违反该条件的清醒不难想象。以下类实现了一个不区分大小写的字符串。字符串由 toString 保存，但在 equals 操作中被忽略。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken - violates symmetry</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">CaseInsensitiveString</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">CaseInsensitiveString</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.s = Objects.requireNonNull(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Broken - violates symmetry</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (o <span class="keyword">instanceof</span> CaseInsensitiveString)</span><br><span class="line">            <span class="keyword">return</span> s.equalsIgnoreCase(((CaseInsensitiveString) o).s);</span><br><span class="line">        <span class="keyword">if</span> (o <span class="keyword">instanceof</span> String) <span class="comment">// One-way interoperability!</span></span><br><span class="line">            <span class="keyword">return</span> s.equalsIgnoreCase((String) o);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">CaseInsensitiveString</span> <span class="variable">cis</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CaseInsensitiveString</span>(<span class="string">&quot;Polish&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;Polish&quot;</span>;</span><br><span class="line">        System.out.println(cis.equals(s)); <span class="comment">// true</span></span><br><span class="line">        System.out.println(s.equals(cis)); <span class="comment">// false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在该类中 equals 企图与普通字符串对象进行互操作。正如注释结果，问题在于 CaseInsensitiveString 类中的 equals 知道普通字符串对象，但 String 类中的 equals 方法却不知道 CaseInsensitiveString 。显然这违反了对称性。</p>
-<p>若将 CaseInsensitiveString 的对象置入集合：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;CaseInsensitiveString&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">list.add(cis);</span><br><span class="line">System.out.println(list.contains(s)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<p>在当前的 OpenJDK list.contains(s) 返回的是 false，实际上根据实现的不同，可能会返回 true 或者抛出一个运行时异常。</p>
-<p><strong>一旦违反了 equals 约定，当其他对象面对你的对象时，你完全不知道这些对象的行为会怎么样。</strong></p>
-<p>为解决该问题，只需把企图与 String 互操作的这段代码从 equals 方法中去掉就可以了：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> o <span class="keyword">instanceof</span> CaseInsensitiveString &amp;&amp; ((CaseInsensitiveString) o).s.equalsIgnoreCase(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>传递性 (Transitivity)</strong> —— 若一个对象等于第二个对象，第二个对象等于第三个对象，则第一个对象等于第三个对象。用子类举例，将一个新的值组件 (value component) 添加到了超类中。子类增加的信息会影响 equals 的比较结果。首先以一个不可变的二维整型 Point 类作为开始：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> x;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Point</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.x = x;</span><br><span class="line">        <span class="built_in">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Point p)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> x == p.x &amp;&amp; y == p.y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>假如想要扩展这个类，为其添加颜色信息：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ColorPoint</span> <span class="keyword">extends</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Color color;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ColorPoint</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, Color color)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(x, y);</span><br><span class="line">        <span class="built_in">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果完全不提供 equals 方法，而是直接从 Point 继承过来，在 equals 做比较的时候颜色信息就被忽略了。虽然这不会违反 equals 约定，但很明显此方案是无法接受的。假设编写了一个 equals 方法，只有当它的参数是另一个有色点，并且具有相同的位置和颜色时，他才会返回 true：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken - violates symmetry</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> ColorPoint)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">super</span>.equals(o) &amp;&amp; ((ColorPoint) o).color == color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>问题在于，比较普通点和有色点，以及相反的情况时，可能会得到不同的结果。前一种忽略了颜色信息，而后一种则总是返回 false，因为参数的类型不正确。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Point</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="type">ColorPoint</span> <span class="variable">cp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ColorPoint</span>(<span class="number">1</span>, <span class="number">2</span>, Color.RED);</span><br><span class="line">System.out.println(p.equals(cp)); <span class="comment">// true</span></span><br><span class="line">System.out.println(cp.equals(p)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<p>可以做以下的尝试来修正上述问题，让 ColorPoint.equals 在进行 “混合比较” 时忽略颜色信息：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken - violates transitivity!</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Point)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If o is a normal Point,do a color-blind comparison</span></span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> ColorPoint))</span><br><span class="line">        <span class="keyword">return</span> o.equals(<span class="built_in">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// o is a ColorPoint; do a full comparison</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">super</span>.equals(o) &amp;&amp; ((ColorPoint) o).color == color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这种方法提供了对称性，但是牺牲了传递性：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ColorPoint</span> <span class="variable">p1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ColorPoint</span>(<span class="number">1</span>, <span class="number">2</span>, Color.RED);</span><br><span class="line"><span class="type">Point</span> <span class="variable">p2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="type">ColorPoint</span> <span class="variable">p3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ColorPoint</span>(<span class="number">1</span>, <span class="number">2</span>, Color.BLUE);</span><br><span class="line">System.out.println(p1.equals(p2)); <span class="comment">// true</span></span><br><span class="line">System.out.println(p2.equals(p3)); <span class="comment">// true</span></span><br><span class="line">System.out.println(p1.equals(p3)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<p>前两种是不考虑颜色的色盲比较，而第三种却考虑了颜色。</p>
-<p>此外，该方法还可能导致无限的递归：假设 Point 有两个子类，ColorPoint 和 SmellPoint，它们各自都带有这种 equals 方法。那么对于 colorPoint.equals(smellpoint) 的调用将抛出 StackOverflowError 异常。</p>
-<p>那么该如何解决呢？事实上，这是面向对象语言中关于等价关系的一个基本问题。<strong>无法在扩展可实例化的类的同时，既增加新的值组件，同时又保留 equals 约定</strong>，除非愿意放弃面向对象的抽象所带来的优势。</p>
-<p>你可能听说过，在 equals 方法中用 getClass 测试代替 instanceof 测试，可以扩展可实例化的类和新增值组件，同时保留 equals 约定：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken - violates Liskov substitution principle</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (o == <span class="literal">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">Point</span> <span class="variable">point</span> <span class="operator">=</span> (Point) o;</span><br><span class="line">    <span class="keyword">return</span> x == point.x &amp;&amp; y == point.y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段程序只有当对象具有相同的实现类事，才能使对象等同。但其结果是无法令人接受的：Point 子类的实例仍然是一个 Point，它仍然需要发挥作用，但是如果采用了这种方法，它将无法完成任务！</p>
-<p>假设要编写一个方法，以检验某个点是否在单位圆中，以下是可采用的一种方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize unitCircle to contain all Points on the unit circle</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Point&gt; unitCircle = Set.of(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">1</span>, <span class="number">0</span>), <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">0</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Point</span>(-<span class="number">1</span>, <span class="number">0</span>), <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">0</span>, -<span class="number">1</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">onUnitCircle</span><span class="params">(Point p)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> unitCircle.contains(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>虽然这可能不是最好的方法，但是这是可行的。</p>
-<p>但是，若通过某种不添加值组件的方法扩展 Point，例如让它的构造器记录创建了多少个实例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CounterPoint</span> <span class="keyword">extends</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">counter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">CounterPoint</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(x, y);</span><br><span class="line">        counter.incrementAndGet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">numberCreated</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> counter.get();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>里氏替换原则 (Liskov substitution principle) 认为，一个类型的任何重要属性也将适用于它的子类型。因此为该类型编写的任何方法，在他的子类型上也应该同样运行得很好 [Liskov 87]。若将 CounterPoint 实例传递给 onUnitCircle 方法。若在 Point 类中使用了基于 getClass 的 equals 方法，则返回 false。这是因为 onUnitCircle 方法所用的 HashSet 这样的集合，利用 equals 方法检验包含条件，没有任何 CounterPoint 实例与任何 Point 对应。但是，如果在 Point 上使用适当的基于 instanceof 的 equals 方法，当遇到 CounterPoint 时，相同的 onUnitCircle 方法就会工作得很好。遵从第18条 “复合优先于继承” 的建议。不再让 ColorPoint 扩展 Point，而是在 ColorPoint 中加入一个私有的 Point，以及一个公有的视图 (view) 方法 (见第6条)，此方法返回一个与该有色点处在相同位置的普通 Point 对象：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add a value component without violating the equals contract</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ColorPoint</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Point point;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Color color;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ColorPoint</span><span class="params">(Point point, Color color)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.point = point;</span><br><span class="line">        <span class="built_in">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns the point-view of this color point.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> point</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Point <span class="title function_">asPoint</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> point;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> ColorPoint that)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> that.point.equals(point) &amp;&amp; that.color.equals(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在 Java 平台类库中，有一些类扩展了可实例化类，添加了新的值组件。例如，java.sql.Timestamp 对 java.util.Date 进行扩展，并增加了 nanoseconds 域。Timestamp 的 equals 实现确实<strong>违反了对称性</strong>，如果 Timestamp 和 Date 对象用于同一个集合中，或者以其他的方式被混合在一起，则会引起不正确的行为。Timestamp 类有一个免责声明，告诫程序员不要混合使用 Date 和 Timestamp 对象。只要不把它们混合在一起就不会有麻烦。除此之外，没有其他的措施可以防止此问题，并且错误将很难调试。Timestamp 的这种行为是个错误，不值得效仿。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.util.Date * DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> obj <span class="keyword">instanceof</span> Date &amp;&amp; getTime() == ((Date) obj).getTime();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.sql.Timestamp extends java.util.Date * DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(java.lang.Object ts)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (ts <span class="keyword">instanceof</span> Timestamp) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.equals((Timestamp)ts);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Timestamp ts)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">super</span>.equals(ts)) &#123;</span><br><span class="line">        <span class="keyword">if</span>  (nanos == ts.nanos) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意，你可以在一个抽象 (abstract) 类的子类中增加新的值组件且不违反 equals 约定</strong>。对于根据第23条建议而得到的那种类层次结构来说，这一点十分重要。例如，有一抽象类 Shape ，没有任何的值组件，Circle 子类添加了一个 radius 域，Rectangle 子类添加了 length 和 width 域。只要不能直接创造超类的实例，前面所述的种种问题都不会发生。</p>
-<p><strong>一致性 (Consistency)</strong>  —— 如果两个对象相等，那么它们将始终保持相等，除非它们中有一个对象 (或者两个) 被修改了。换句话说，可变对象在不同的时候可以与不同的对象相等，而不可变对象则不会这样。当编写一个类时，应仔细考虑它是否应该是不可变的 (见第17条)。如果认为它应是不可变的，就必须保证 equals 方法满足这样的限制条件：相等的永远相等，不相等的永远不相等。</p>
-<p>无论如何，<strong>不要使 equals 方法依赖于不可靠的资源</strong>。如果违反了这条禁令，想要满足一致性要求将十分困难。例如，java.net.URL 的 equals 方法依赖于对 URL 中主机 IP 地址的比较。随时间的推移，不能确保产生相同的结果，IP 地址有可能发生变化。这会违反 equals 约定，在实践中可能引发一些问题。URL equals 方法是一个大错误，不应该模仿。遗憾的是，因为兼容性的要求，这一行为无法被改变。为了避免发生这种问题，equals 方法应该对驻留在内存中的对象执行确定性的计算。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.net.URL * DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">transient</span> URLStreamHandler handler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(obj <span class="keyword">instanceof</span> URL)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">URL</span> <span class="variable">u2</span> <span class="operator">=</span> (URL)obj;</span><br><span class="line">    <span class="keyword">return</span> handler.equals(<span class="built_in">this</span>, u2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.net.URLStreamHandler * DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(URL u1, URL u2)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Objects.equals(u1.getRef(), u2.getRef()) &amp;&amp; sameFile(u1, u2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>非空性 (Non-nullity)</strong> —— 暂且如此称呼。所有的对象都不能等于 null。尽管很难想象，在什么情况下 o.equals(null) 调用会意外地返回 true，但是意外抛出 NullPointerException 异常的情况不难想象。通用约定不允许抛出 NullPointerException 异常。许多类的 equals 方法都通过一个显式的 null 测试来防止该情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unnessasary!</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(o == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>然而这项测试是不必要的。</strong>为了测试其参数的等同性，equals 方法必须先把参数转换为适当的类型，以便可以调用它的访问方法，或者访问它的域。在进行转换之前， equals 方法必须使用 instanceof 操作符，检查其参数的类型是否正确：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> MyType)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">MyType</span> <span class="variable">mt</span> <span class="operator">=</span> (MyType) o;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果漏掉类型检查，并且传递给 equals 方法的参数又是错误的类型，那么equals 方法将会抛出 ClassCastException 异常，这违反了 equals 约定。但是，**如果 instanceof 操作符的第一个操作数为 null，那么，不管第二个操作数是哪种类型，instanceof 操作符都会指定应该返回的 false [JLS，15.20.2]**。因此如果把 null 传给 equals 方法，类型检查就会返回 false，所以不需要显示的 null 检查。</p>
-<p>结合所有这些要求，得出了以下实现高质量 equals 方法的诀窍：</p>
-<ol>
-<li><p><strong>使用 &#x3D;&#x3D; 操作符检查 “参数是否为这个对象的引用”。</strong></p>
-<p>如果是，则返回 true。这只不过是一种性能优化，如果比较操作性能消耗过大，就值得这么做。</p>
-</li>
-<li><p><strong>使用 instanceof 操作符检查 “参数是否为正确的类型”。</strong></p>
-<p>如果不是，则返回 false。一般来说，”正确的类型”是指 equals 方法所在的类。某些情况下是指该类所实现的某个接口。如果类实现的接口改进了 equals 约定，允许了在实现了该接口的类之间进行比较，那么就使用接口。集合接口如Set、List、Map 和 Map.Entry 具有这样的特性。</p>
-</li>
-<li><p><strong>把参数转换成正确的类型。</strong></p>
-<p>因为转换之前进行过 instanceof 测试，所以确保会成功。</p>
-</li>
-<li><p><strong>对于该类的每个 “关键” (significant) 域，检查参数中的域是否与该对象中对应的域相匹配。</strong></p>
-<p>如果这些测试全部通过，返回 true；否则返回 false。</p>
-<p>如果第二步中的类型是接口，就必须通过接口方法访问参数中的域；</p>
-<p>如果该类型是类，也许就能直接访问其参数，这要取决于它们的可访问性。</p>
-</li>
-</ol>
-<p>对于对象引用域，可以递归地调用 equals 方法；</p>
-<p>对于既不是 float 也不是 double 类型的基本类型域，可以使用 &#x3D;&#x3D; 操作符进行比较；</p>
-<p>对于 float 域，可以使用静态 Float.compare(float, float) 方法； 对于 double 域，使用 Double.compare(double, double)。对这两个域进行特殊处理是有必要的，因为存在着 Float.NaN、-0.0f 以及类似的 double 常量；详细信息请参考 JLS 15.21.1 或者 Float.equals 的文档。虽然可以用静态方法 Float.compare Double.compare 进行比较，但是每次比较都要进行自动装箱，这将导致性能下降。对于数组域，则要把以上这些指导原则应用到每一个元素上。如果数组域的每个元素都很重要，可以使用 Arrays.equals 方法。</p>
-<p>有些对象引用域包含 null 可能是合法的，所以，为了避免可能导致 NullPointerException 异常，使用静态方法 Objects.equals(Object, Object) 来检查这些类域的等同性。</p>
-<p>对于有些类，比如前面提到的CaseInsensitiveString类，域的比较要比简单的等同性测试复杂得多。如果是这种情况，可能希望保存该域的一个“范式”（canonical form），这样equals方法就可以根据这些范式进行低开销的精确比较，而不是高开销的非精确比较。这种方法对于不可变类（见第17条）是最为合适的；如果对象可能发生变化，就必须使其范式保持最新。</p>
-<p>域的比较顺序可能会影响equals方法的性能。为了获得最佳的性能，应该最先比较最有可能不一致的域，或者是开销最低的域，最理想的情况是两个条件同时满足的域。不应该比较那些不属于对象逻辑状态的域，例如用于同步操作的 Lock 域。也不需要比较衍生域 (derived field)，因为这些域可以由 “关键域” (significant field)计算获得，但是这样做有可能提高 equals 方法的性能。如果衍生域代表了整个对象的综合描述，比较这个域可以节省在比较失败时去比较实际数据所需要的开销。例如，假设有一个 Polygon 类，缓存了其面积。若两个多边形面积不同，则没有必要去比较它们的边和顶点。</p>
-<p><strong>在编写完equals方法之后，应该问自己三个问题：它是否是对称的、传递的、一致的？</strong>并且不要只是自问，还要编写单元测试来检验这些特性，除非用AutoValue (后面会讲到) 生成 equals 方法，在这种情况下就可以放心地省略测试。如果答案是否定的，就要找出原因，再相应地修改 equals 方法。当然， equals 方法也必须满足其他两个特性 (自反性和非空性)，但是这两种特性通常会自动满足。</p>
-<p>根据上面的诀窍构建 equals 方法的具体例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Class with a typical equals method</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">PhoneNumber</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">short</span> areaCode, prefix, lineNum;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PhoneNumber</span><span class="params">(<span class="type">int</span> areaCode, <span class="type">int</span> prefix, <span class="type">int</span> lineNum)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.areaCode = rangeCheck(areaCode, <span class="number">999</span>, <span class="string">&quot;areaCode&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.prefix = rangeCheck(prefix, <span class="number">999</span>, <span class="string">&quot;prefix&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.lineNum = rangeCheck(lineNum, <span class="number">9999</span>, <span class="string">&quot;line num&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">short</span> <span class="title function_">rangeCheck</span><span class="params">(<span class="type">int</span> val, <span class="type">int</span> max, String arg)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (val &lt; <span class="number">0</span> || val &gt; max) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(arg + <span class="string">&quot; : &quot;</span> + val);</span><br><span class="line">        <span class="keyword">return</span> (<span class="type">short</span>) val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span> == o) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> PhoneNumber that)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> areaCode == that.areaCode &amp;&amp; prefix == that.prefix &amp;&amp; lineNum == that.lineNum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面是最后的一些告诫：</p>
-<ul>
-<li><p><strong>覆盖 equals 时总要覆盖 hashCode</strong></p>
-<p>为了让关注点在 equals 方法上，本条建议中都没有覆盖 hashCode，详情见第11条。</p>
-</li>
-<li><p><strong>不要企图让 equals 方法过于智能。</strong></p>
-<p>如果只是简单地测试域中的值是否相等，则不难做到遵守 equals 约定。如果想过度地去寻求各种等价关系，则很容易陷入麻烦之中。把任何一种别名形式考虑到等价的范围内，往往不会是个好主意。例如，File类不应该试图把指向同一个文件的符号链接 (symbolic link) 当作相等的对象来看待。所幸 File 类没有这样做。</p>
-</li>
-<li><p><strong>不要将 equals 声明中的 Object 对象替换为其他的类型。</strong></p>
-<p>程序员编写出下面这样的 equals 方法并不鲜见，这会使程序员花上数个小时都搞不清为什么它不能正常工作：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(MyClass o)</span> &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>问题在于，这个方法并没有 重写 (override) Object.equals，因为它的参数应该是 Object 类型，相反，它重载 (overload) 了 Object.equals (见52条)。在正常 equals 方法的基础上，再提供一个 “强类型” (strongly typed) 的 equals 方法，这是无法接受的，因为会导致子类中的 Override 注解产生错误的正值，带来错误的安全感。<br>@Override 注解的用法一致，就如本条目中所示，可以防止犯这种错误 (见第40条)。这个equals方法不能编译，错误消息会告诉你到底哪里出了问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Still broken, but won&#x27;t compile</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(MyClass o)</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>编写和测试 equals (及 hashCode) 方法都是十分烦琐的，得到的代码也很琐碎。代替手工编写和测试这些方法的最佳途径，是使用 Google 开源的 AutoValue 框架，它会自动替你生成这些方法，通过类中的单个注解就能触发。在大多数情况下，AutoValue 生成的方法本质上与你亲自编写的方法是一样的。</p>
-<p>IDE 也有工具可以生成 equals 和 hashCode 方法，但得到的源代码比使用 Auto-Value 的更加冗长，可读性也更差，它无法自动追踪类中的变化，因此需要进行测试。也就是说，让 IDE 生成 equals (及 hashCode) 方法，通常优于手工实现它们，因为 IDE 不会犯粗心的错误，但是程序员会犯错。</p>
-<p>总而言之，不要轻易重写 equals 方法，除非迫不得已。因为在许多情况下，从 Object 处继承的实现正是你想要的。如果覆盖 equals，一定要比较这个类的所有关键域，并且查看它们是否遵守 equals 约定的所有五个条款。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1634,13 +1513,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">75k</span>
+    <span title="站点总字数">76k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:33</span>
+    <span title="站点阅读时长">4:36</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
