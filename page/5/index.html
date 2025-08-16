@@ -120,18 +120,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -180,7 +180,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/09/Effective-Java-3%E7%94%A8%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E6%88%96%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%BC%BA%E5%8C%96Singleton%E5%B1%9E%E6%80%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -198,7 +198,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">Effective-CSharp-1优先使用隐式类型的局部变量</a>
+          <a href="/2021/05/09/Effective-Java-3%E7%94%A8%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E6%88%96%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%BC%BA%E5%8C%96Singleton%E5%B1%9E%E6%80%A7/" class="post-title-link" itemprop="url">Effective-Java-3用私有构造器或枚举类型强化Singleton属性</a>
         </h2>
 
         <div class="post-meta-container">
@@ -209,7 +209,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
+      <time title="创建时间：2021-05-09 19:42:23" itemprop="dateCreated datePublished" datetime="2021-05-09T19:42:23+08:00">2021-05-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -224,7 +224,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
         </span>
     </span>
 
@@ -235,14 +235,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>756</span>
+      <span>648</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -253,22 +253,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong>隐式类型的局部变量是为了支持匿名类型而加入C#语言的。</strong></p>
-<p>用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。</p>
-<p>在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。</p>
-<p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。</p>
-<p>如下情况变量类型是显而易见的 (构造函数与工厂方法</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> MyType();</span><br><span class="line"><span class="keyword">var</span> thing = AccountFactory.CreateSavingAccount();</span><br></pre></td></tr></table></figure>
+          <p>Singleton 指仅仅被实例化一次的类。Singleton 通常被用来代表那些本质上唯一的系统组件，比如窗口管理器或者文件系统。(单例模式)</p>
+<p>在 Java 1.5 发行版本之前，实现Singleton有两种方法。这两种方法都要把构造器保持为私有的，并指定一个共有的静态成员。</p>
+<ol>
+<li><p>在第一个方法中，共有静态成员是个 final 域：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Singleton with public final field</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Elvis</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">final</span> <span class="type">Elvis</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Elvis</span>();</span><br><span class="line">	<span class="keyword">private</span> <span class="title function_">Elvis</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">leaveTheBuilding</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>如下情况变量类型没有清晰的指出</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
+<p> 私有的构造器仅被调用一次，用来实例化共有的静态 final 域 Elvis.INSTANCE。由于缺少共有的或者受保护的构造器，所以保证了Elvis的全局唯一性：一旦 Elvis 类被实例化，只会存在一个Elvis实例，不多也不少。</p>
+<p>但要提醒一点：享有特权的客户端可以借助AccessibleObject.setAccessible方法，通过反射机制调用私有构造器 (java 反射攻击) 。如果需要抵御这种攻击，可以修改构造器，让他在被要求创建第二个实例的时候抛出异常。</p>
+</li>
+<li><p>在第二种方法中，共有的成员是个静态工厂方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Singleton with static factory</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Elvis</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">final</span> <span class="type">Elvis</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Elvis</span>();</span><br><span class="line">	<span class="keyword">private</span> <span class="title function_">Elvis</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Elvis <span class="title function_">getInstance</span><span class="params">()</span> &#123; <span class="keyword">return</span> INSTANCE; &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">leaveTheBuilding</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>在这种情况下应当在变量声明时指定清晰的名称，尽管方法并没有指出返回类型，但这样就能让开发者推断出变量类型，例如：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> HighestSellingProduct = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
+<p>为了使利用这其中一种方法实现的Singleton类变成可序列化的(Serializable)，仅仅在声明中加上”implements Serializable” 是不够的。为了维护并保证Singleton，必须声明所有实例域都是顺时的(transient) 的，并提供一个readResolve方法。否则，每次反序列化一个序列化的实例时，都会创建一个新的实例。</p>
+<p>在如下的例子中会导致”假的Elvis”出现。为了防止这种情况，要在Elvis类中加入下面这个readResovle方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// readResovle method to preserve singleton property</span></span><br><span class="line"><span class="keyword">private</span> Object <span class="title function_">readResolve</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Return the one true Elvis and let the garbage collector take care of the Elvis impersonator</span></span><br><span class="line">    <span class="keyword">return</span> INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>查看代码的人会根据自己的理解认定该变量类型，可能恰好与变量在运行期的真实类型相符。但编译器不会像人那样思考，而是根据声明判定其在编译期的类型。若用 var 进行声明，编译器会推断其类型，而开发者看不到编译器推断的类型。因此，他们所认定的类型可能不符，这会在代码的维护中导致错误的修改，并产生一些本来可以避免的 Bug。</p>
-<p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。</p>
-<p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em></p>
+</li>
+<li><p>从 Java 1.5 发行版本起，实现Singleton还有第三种方法。只需要编写一个包含单个元素的枚举类型：(推荐方法)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Enum singleton - the preferred approch</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Elvis</span>&#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">leaveTheBuilding</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方法在功能上域共有域方法相近，但是他更加简洁，无偿的提供了序列化机制，绝对防止多次实例化，即使是在面对复杂序列化或者反射攻击的时候。虽然这种方法还没有广泛的采用，但是<em><strong>单元素的枚举类型已经成为实现Singleton的最佳方法。</strong></em></p>
+</li>
+</ol>
 
       
     </div>
@@ -388,6 +395,121 @@
 <p>有的时候开发者确实想把某个值固定在编译期，比如程序版本记录，如果更新整个项目，那么里面每个版本号都会变为最新，如果仅更新其中某些程序集，那么只有更新的程序集的版本号会变为最新值。</p>
 <p>const 的性能比 readonly 的要好。由于程序集可以直接访问值，而不用查询变量，因此性能稍高。但是，开发者需要考虑是否值得为了这点性能而使得代码变得僵硬。在决定这么做之前，您应该先通过 profile 工具做性能测试。(可以试试 BenchmarkDotNet)</p>
 <p>const 关键字用来声明那些必须在编译期得以确定的值，例如 attribute 参数、switch case 语句的标签、enum 的定义等，偶尔用于声明不会随版本而变化的值。除此之外的值考虑用 readonly 常量声明。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">Effective-CSharp-1优先使用隐式类型的局部变量</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>756</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>隐式类型的局部变量是为了支持匿名类型而加入C#语言的。</strong></p>
+<p>用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。</p>
+<p>在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。</p>
+<p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。</p>
+<p>如下情况变量类型是显而易见的 (构造函数与工厂方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> MyType();</span><br><span class="line"><span class="keyword">var</span> thing = AccountFactory.CreateSavingAccount();</span><br></pre></td></tr></table></figure>
+
+<p>如下情况变量类型没有清晰的指出</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下应当在变量声明时指定清晰的名称，尽管方法并没有指出返回类型，但这样就能让开发者推断出变量类型，例如：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> HighestSellingProduct = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
+
+<p>查看代码的人会根据自己的理解认定该变量类型，可能恰好与变量在运行期的真实类型相符。但编译器不会像人那样思考，而是根据声明判定其在编译期的类型。若用 var 进行声明，编译器会推断其类型，而开发者看不到编译器推断的类型。因此，他们所认定的类型可能不符，这会在代码的维护中导致错误的修改，并产生一些本来可以避免的 Bug。</p>
+<p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。</p>
+<p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em></p>
 
       
     </div>
@@ -1272,7 +1394,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:58</span>
+    <span title="站点阅读时长">4:01</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

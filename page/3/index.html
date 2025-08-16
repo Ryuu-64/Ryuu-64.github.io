@@ -120,18 +120,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -171,6 +171,154 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/17/Effective-Java-11%E8%A6%86%E7%9B%96equals%E6%97%B6%E6%80%BB%E8%A6%81%E8%A6%86%E7%9B%96hashCode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/17/Effective-Java-11%E8%A6%86%E7%9B%96equals%E6%97%B6%E6%80%BB%E8%A6%81%E8%A6%86%E7%9B%96hashCode/" class="post-title-link" itemprop="url">Effective-Java-11覆盖equals时总要覆盖hashCode</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-17 21:56:33" itemprop="dateCreated datePublished" datetime="2021-07-17T21:56:33+08:00">2021-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。</strong>如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：</p>
+<ul>
+<li>在应用程序的执行期间，只要对象的 equals 方法的比较操作所用到的信息没有被修改，那么对同一个对象的多次调用，hashCode 方法都必须始终返回同一个值。在一个应用程序与另一个程序的执行过程中，执行 hashCode 方法所返回的值可以不一致。</li>
+<li>如果两个对象根据 equals(Object) 方法比较<strong>相等</strong>，调用这两个对象中的 hashCode 方法都<strong>必须</strong>产生同样的整数结果。</li>
+<li>如果两个对象根据 equals(Object) 方法比较<strong>不相等</strong>，调用这两个对象中的 hashCode 方法，则<strong>不一定</strong>要求 hashCode 方法必须产生不同的结果 (哈希碰撞)。但是程序员应该知道，给不相等的对象产生截然不同的整数结果，有可能提高散列表（hash table）的性能。</li>
+</ul>
+<p><strong>因没有覆盖 hashCode 而违反的关键约定是第二条：相等的对象必须具有相等的散列码 (hash code)。</strong>根据类的 equals 方法，两个截然不同的实例在逻辑上有可能是相等的，但是根据 Object 类的 hashCode 方法，它们仅仅是两个没有任何共同之处的对象。因此，对象的 hashCode 方法返回两个看起来是随机的整数，而不是根据第二个约定所要求的那样，返回两个相等的整数。</p>
+<p>假设在 HashMap 中用第10条中出现过的 PhoneNumber 类的实例作为键：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;PhoneNumber, String&gt; m = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">m.put(<span class="keyword">new</span> <span class="title class_">PhoneNumber</span>(<span class="number">707</span>, <span class="number">867</span>, <span class="number">5309</span>), <span class="string">&quot;Jenny&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>你可能期望 m.get(new PhoneNumber(707, 867, 5309)) 会返回 “Jenny”，但它实际上返回的是 null。注意，这里涉及两个 PhoneNumber 实例：第一个被插入 HashMap 中，第二个实例与第一个相等，用于从 Map 中根据 PhoneNumber 去获取用户名字。由于 PhoneNumber 类没有覆盖 hashCode 方法，从而导致两个相等的实例具有不相等的散列码，违反了 hashCode 的约定。因此，put 方法把电话号码对象存放在一个散列桶 (hash bucket)中，get 方法却在另一个散列桶中查找这个电话号码。即使这两个实例正好被放到同一个散列桶中，get 方法也必定会返回 null，因为 HashMap 有一项优化，可以将与每个项相关联的散列码缓存起来，如果散列码不匹配，也就不再去检验对象的等同性。</p>
+<p>修正这个问题非常简单，只需为PhoneNumber类提供一个适当的 hashCode 方法即可。那么，hashCode 方法应该是什么样的呢？编写一个合法但并不好用的 hashCode 方法没有任何价值。例如，下面这个方法总是合法的，但是<strong>它永远都不应该被正式使用</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The worst possible legal hashCode implementation -never use!</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这个 hashCode 方法是合法的，因为它确保了相等的对象总是具有同样的散列码。但它也极为恶劣，因为它使得每个对象都具有同样的散列码。因此，每个对象都被映射到同一个散列桶中，使散列表退化为链表 (linked list)。它使得本该线性时间运行的程序变成了以平方级时间在运行。对于规模很大的散列表而言，这会关系到散列表能否正常工作。</p>
+<p>一个好的散列函数通常倾向于 “为不相等的对象产生不相等的散列码”。这正是hashCode约定中第三条的含义。理想情况下，散列函数应该把集合中不相等的实例均匀地分布到所有可能的int值上。要想完全达到这种理想的情形是非常困难的。幸运的是，相对接近这种理想情形则并不太困难。下面给出一种简单的解决办法：</p>
+<ol>
+<li><p>声明一个 int 变量并命名为 result，将它初始化为对象中第一个关键域的散列码 c，如步骤 2.1 中计算所示 (如第10条所述，关键域是指影响 equals 比较的域)。</p>
+</li>
+<li><p>对象中剩下的每一个关键域 f 都完成以下步骤：</p>
+<ol>
+<li><p>为该域计算 int 类型的散列码 c :</p>
+<ol>
+<li><p>若该域是基本类型，则计算 Type.hashCode(f)。这里的 Type 是装箱基本类型的类，与 f 的类型相对应。</p>
+</li>
+<li><p>若该域是一个对象引用，并且该类的 equals 方法通过递归地调用 equals 的方式来比较这个域，则同样为这个域递归地调用 hashCode。</p>
+<p>若需要更复杂的比较，则为这个域计算一个 “范式” (canonical representation)，然后针对这个范式调用 hashCode。</p>
+<p>若这个域的值为 null，则返回 0 (或者其他某个常数，但通常是0)。</p>
+</li>
+<li><p>如果该域是一个数组，则要把每一个元素当作单独的域来处理。</p>
+</li>
+</ol>
+<p>   递归地应用上述规则，对每个重要的元素计算一个散列码，然后根据步骤 2.2 中的做法把这些散列值组合起来。</p>
+<p>   若数组域中没有重要的元素，可以使用一个常量，但最好不要用 0。</p>
+<p>   若数组域中的所有元素都很重要，可以使用 Arrays.hashCode 方法。</p>
+</li>
+<li><p>按照下面的公式，把步骤 2.1 中计算得到的散列码 c 合并到 result 中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = <span class="number">31</span> * result + c;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>返回 result 。</p>
+<p>(Ryuu：附上 java 源码的实现，你会发现这就是作者提供的解决方案。这并不奇怪，本书作者 Joshua Bloch，曾任职 Sun 公司 进行 Java 的开发)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.util.Objects</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object... values)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Arrays.hashCode(values);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.util.Arrays</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">(Object a[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Object element : a)</span><br><span class="line">        result = <span class="number">31</span> * result + (element == <span class="literal">null</span> ? <span class="number">0</span> : element.hashCode());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写完了 hashCode 方法之后，问问自己<strong>相等的实例是否都具有相等的散列码</strong>。要编写单元测试来验证你的推断 (除非利用 AutoValue 生成 equals 和 hashCode 方法，这样你就可以放心地省略这些测试)。如果相等的实例有着不相等的散列码，则要找出原因，并修正错误。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1426,128 +1574,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FSOLID%E5%8E%9F%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FSOLID%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">设计模式SOLID原则</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-06-27 14:57:32" itemprop="dateCreated datePublished" datetime="2021-06-27T14:57:32+08:00">2021-06-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-12-14 00:50:34" itemprop="dateModified" datetime="2024-12-14T00:50:34+08:00">2024-12-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>185</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <ol>
-<li><p><strong>单一职责原则(Single Responsibility Principle)</strong></p>
-<p>单一类承担单一职责。</p>
-</li>
-<li><p><strong>开放封闭原则（Open close Principle)</strong></p>
-<p>对扩展开放，对修改封闭。</p>
-</li>
-<li><p><strong>里氏替换原则（Liskov Substitution Principle）</strong></p>
-<p>父类具有的功能，子类必须具有。</p>
-</li>
-<li><p><strong>接口隔离原则（Interface Segregation Principle）</strong></p>
-<p>依赖应当建立在最小的接口。 (而不是聚合的单一接口)</p>
-</li>
-<li><p><strong>依赖倒置原则（Dependency Inversion Principle）</strong></p>
-<p>依赖不基于实体类，而是基于接口 。(依赖不基于具体，而是基于抽象)</p>
-</li>
-</ol>
-<p>国内有设计模式六大原则的说法，多出一个：</p>
-<ol start="6">
-<li><p><strong>迪米特法则 (Law of Demeter)</strong> 又称 最少知道原则 (Least Knowledge Principle)</p>
-<p>模块不应了解所操作对象的内部情况。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1577,7 +1603,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:58</span>
+    <span title="站点阅读时长">4:01</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

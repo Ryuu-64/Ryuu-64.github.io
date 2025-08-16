@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="引子起因是有群友在尝试解决 double 不够存数据的问题，看到了 decimal，但对 decimal 的理解还是不对。   这段话说的很含糊，可能是从 ai 的文本中截取的一段。而问为什么要用 decimal 时，这也是一般人的回答。 更准确的表达是 decimal 是用来表达十进制数的，而二进制的浮点可能会把数据截断。 进制与截断decimal 如其名一样是十进制的，而一般的浮点（float">
+<meta property="og:type" content="article">
+<meta property="og:title" content="float vs decimal">
+<meta property="og:url" content="http://example.com/2025/08/16/float-vs-decimal/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="引子起因是有群友在尝试解决 double 不够存数据的问题，看到了 decimal，但对 decimal 的理解还是不对。   这段话说的很含糊，可能是从 ai 的文本中截取的一段。而问为什么要用 decimal 时，这也是一般人的回答。 更准确的表达是 decimal 是用来表达十进制数的，而二进制的浮点可能会把数据截断。 进制与截断decimal 如其名一样是十进制的，而一般的浮点（float">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/08/16/float-vs-decimal/img.png">
+<meta property="article:published_time" content="2025-08-16T11:18:45.000Z">
+<meta property="article:modified_time" content="2025-08-16T13:10:50.740Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="numeric types">
+<meta property="article:tag" content="binary vs decimal">
+<meta property="article:tag" content="float">
+<meta property="article:tag" content="decimal">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/08/16/float-vs-decimal/img.png">
+
+
+<link rel="canonical" href="http://example.com/2025/08/16/float-vs-decimal/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/08/16/float-vs-decimal/","path":"2025/08/16/float-vs-decimal/","title":"float vs decimal"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>float vs decimal | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%88%B6%E4%B8%8E%E6%88%AA%E6%96%AD"><span class="nav-number">2.</span> <span class="nav-text">进制与截断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E8%BF%9B%E5%88%B6%E8%BD%AC%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">十进制转二进制的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E9%83%A8%E5%88%86"><span class="nav-number">3.1.</span> <span class="nav-text">整数部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%95%B0%E9%83%A8%E5%88%86"><span class="nav-number">3.2.</span> <span class="nav-text">小数部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E8%AF%B7%E5%8F%82%E9%98%85"><span class="nav-number">4.</span> <span class="nav-text">另请参阅</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/16/float-vs-decimal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="float vs decimal | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          float vs decimal
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-16 19:18:45 / 修改时间：21:10:50" itemprop="dateCreated datePublished" datetime="2025-08-16T19:18:45+08:00">2025-08-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/numeric-types/" itemprop="url" rel="index"><span itemprop="name">numeric types</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/numeric-types/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>606</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>起因是有群友在尝试解决 double 不够存数据的问题，看到了 decimal，但对 decimal 的理解还是不对。</p>
+<img src="/2025/08/16/float-vs-decimal/img.png" class="" title="+&#x3D;">
+
+<p>这段话说的很含糊，可能是从 ai 的文本中截取的一段。而问为什么要用 decimal 时，这也是一般人的回答。</p>
+<p>更准确的表达是 decimal 是用来表达十进制数的，而二进制的浮点可能会把数据截断。</p>
+<h2 id="进制与截断"><a href="#进制与截断" class="headerlink" title="进制与截断"></a>进制与截断</h2><p>decimal 如其名一样是十进制的，而一般的浮点（float&#x2F;double）是基于二进制（binary floating-point）遵循 IEEE 754 标准的。</p>
+<p>最常见的情况是 0.1 + 0.2 &#x3D; 0.3 的例子，请参考以下代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.2&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.3&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.5&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> <span class="variable">floatResult</span> <span class="operator">=</span> <span class="number">.1f</span> + <span class="number">.2f</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;floatResult = %.64f\n&quot;</span>, floatResult);</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="variable">doubleResult</span> <span class="operator">=</span> <span class="number">.1</span> + <span class="number">.2</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;doubleResult = %.64f\n&quot;</span>, doubleResult);</span><br><span class="line"></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">decimalResult</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>).add(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.2&quot;</span>));</span><br><span class="line">System.out.printf(<span class="string">&quot;decimalResult = %.64f\n&quot;</span>, decimalResult);</span><br><span class="line"></span><br><span class="line">doubleResult = <span class="number">.2</span> + <span class="number">.3</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;doubleResult = %.64f\n&quot;</span>, doubleResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">19:53:38: Executing &#x27;:org.ryuu.Main.main()&#x27;…</span><br><span class="line"></span><br><span class="line">Starting Gradle Daemon...</span><br><span class="line">Gradle Daemon started in 1 s 634 ms</span><br><span class="line">&gt; Task :compileJava UP-TO-DATE</span><br><span class="line">&gt; Task :processResources NO-SOURCE</span><br><span class="line">&gt; Task :classes UP-TO-DATE</span><br><span class="line"></span><br><span class="line">&gt; Task :org.ryuu.Main.main()</span><br><span class="line">十进制数0.1在二进制数下不能有限表示。</span><br><span class="line">0.0001100110011001100110011001100110011001100110011001100110011001... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.2在二进制数下不能有限表示。</span><br><span class="line">0.0011001100110011001100110011001100110011001100110011001100110011... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.3在二进制数下不能有限表示。</span><br><span class="line">0.0100110011001100110011001100110011001100110011001100110011001100... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.5在二进制数下能有限表示。</span><br><span class="line">0.1</span><br><span class="line"></span><br><span class="line">floatResult = 0.3000000119209289600000000000000000000000000000000000000000000000</span><br><span class="line">doubleResult = 0.3000000000000000400000000000000000000000000000000000000000000000</span><br><span class="line">decimalResult = 0.3000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">doubleResult = 0.5000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 6s</span><br><span class="line">2 actionable tasks: 1 executed, 1 up-to-date</span><br><span class="line">19:53:46: Execution finished &#x27;:org.ryuu.Main.main()&#x27;.</span><br></pre></td></tr></table></figure>
+
+<p>0.1，0.2这样的数在二进制里类似十进制的1&#x2F;3(0.3333333…)，是无限循环的。浮点数会将数据截断，因此会丢失精度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0.1(decimal) = 0.0001100110011001100110011001100110011001100110011001100110011001... (binary)</span><br><span class="line">0.2(decimal) = 0.0011001100110011001100110011001100110011001100110011001100110011... (binary)</span><br></pre></td></tr></table></figure>
+
+<h2 id="十进制转二进制的计算"><a href="#十进制转二进制的计算" class="headerlink" title="十进制转二进制的计算"></a>十进制转二进制的计算</h2><p>$x$ 十进制数，$N$ 十进制数整数部分，$f$ 十进制数小数部分<br>$$x&#x3D;N+f$$</p>
+<h3 id="整数部分"><a href="#整数部分" class="headerlink" title="整数部分"></a>整数部分</h3><p>整数 $N$ 可表示为二进制展开式：</p>
+<p>$$<br>N &#x3D; b_k \cdot 2^k + b_{k-1} \cdot 2^{k-1} + \cdots + b_1 \cdot 2^1 + b_0 \cdot 2^0<br>$$</p>
+<p>其中各位数字由公式给出：</p>
+<p>$$<br>b_i &#x3D; \left\lfloor \frac{N}{2^i} \right\rfloor \bmod 2, \quad i &#x3D; 0, 1, 2, \ldots, k<br>$$</p>
+<h3 id="小数部分"><a href="#小数部分" class="headerlink" title="小数部分"></a>小数部分</h3><p>小数部分 $f$ 的二进制表示为：</p>
+<p>$$<br>f &#x3D; 0.b_1 b_2 b_3 \dots<br>$$</p>
+<p>其递推关系为：</p>
+<p>$$<br>\begin{aligned}<br>&amp; f_0 &#x3D; f, \quad n &#x3D; 1, 2, 3, \ldots \<br>&amp; b_n &#x3D; \left\lfloor 2 \cdot f_{n-1} \right\rfloor, \quad b_n \in {0,1} \<br>&amp; f_n &#x3D; 2 \cdot f_{n-1} - b_n, \quad 0 \le f_n &lt; 1<br>\end{aligned}<br>$$</p>
+<h2 id="另请参阅"><a href="#另请参阅" class="headerlink" title="另请参阅"></a>另请参阅</h2><p><a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/learn-float-vs-decimal">github</a> 有完整的示例工程</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/numeric-types/" rel="tag"># numeric types</a>
+              <a href="/tags/binary-vs-decimal/" rel="tag"># binary vs decimal</a>
+              <a href="/tags/float/" rel="tag"># float</a>
+              <a href="/tags/decimal/" rel="tag"># decimal</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/12/Jetbrains-Select-In-Project-View/" rel="prev" title="Jetbrains-Select-In-Project-View">
+                  <i class="fa fa-angle-left"></i> Jetbrains-Select-In-Project-View
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">66k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:01</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

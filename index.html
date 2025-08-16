@@ -120,18 +120,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -171,6 +171,128 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/16/float-vs-decimal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/16/float-vs-decimal/" class="post-title-link" itemprop="url">float vs decimal</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-16 19:18:45 / 修改时间：21:10:50" itemprop="dateCreated datePublished" datetime="2025-08-16T19:18:45+08:00">2025-08-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/numeric-types/" itemprop="url" rel="index"><span itemprop="name">numeric types</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/numeric-types/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>606</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>起因是有群友在尝试解决 double 不够存数据的问题，看到了 decimal，但对 decimal 的理解还是不对。</p>
+<img src="/2025/08/16/float-vs-decimal/img.png" class="" title="+&#x3D;">
+
+<p>这段话说的很含糊，可能是从 ai 的文本中截取的一段。而问为什么要用 decimal 时，这也是一般人的回答。</p>
+<p>更准确的表达是 decimal 是用来表达十进制数的，而二进制的浮点可能会把数据截断。</p>
+<h2 id="进制与截断"><a href="#进制与截断" class="headerlink" title="进制与截断"></a>进制与截断</h2><p>decimal 如其名一样是十进制的，而一般的浮点（float&#x2F;double）是基于二进制（binary floating-point）遵循 IEEE 754 标准的。</p>
+<p>最常见的情况是 0.1 + 0.2 &#x3D; 0.3 的例子，请参考以下代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.2&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.3&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.5&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> <span class="variable">floatResult</span> <span class="operator">=</span> <span class="number">.1f</span> + <span class="number">.2f</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;floatResult = %.64f\n&quot;</span>, floatResult);</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="variable">doubleResult</span> <span class="operator">=</span> <span class="number">.1</span> + <span class="number">.2</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;doubleResult = %.64f\n&quot;</span>, doubleResult);</span><br><span class="line"></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">decimalResult</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>).add(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.2&quot;</span>));</span><br><span class="line">System.out.printf(<span class="string">&quot;decimalResult = %.64f\n&quot;</span>, decimalResult);</span><br><span class="line"></span><br><span class="line">doubleResult = <span class="number">.2</span> + <span class="number">.3</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;doubleResult = %.64f\n&quot;</span>, doubleResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">19:53:38: Executing &#x27;:org.ryuu.Main.main()&#x27;…</span><br><span class="line"></span><br><span class="line">Starting Gradle Daemon...</span><br><span class="line">Gradle Daemon started in 1 s 634 ms</span><br><span class="line">&gt; Task :compileJava UP-TO-DATE</span><br><span class="line">&gt; Task :processResources NO-SOURCE</span><br><span class="line">&gt; Task :classes UP-TO-DATE</span><br><span class="line"></span><br><span class="line">&gt; Task :org.ryuu.Main.main()</span><br><span class="line">十进制数0.1在二进制数下不能有限表示。</span><br><span class="line">0.0001100110011001100110011001100110011001100110011001100110011001... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.2在二进制数下不能有限表示。</span><br><span class="line">0.0011001100110011001100110011001100110011001100110011001100110011... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.3在二进制数下不能有限表示。</span><br><span class="line">0.0100110011001100110011001100110011001100110011001100110011001100... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.5在二进制数下能有限表示。</span><br><span class="line">0.1</span><br><span class="line"></span><br><span class="line">floatResult = 0.3000000119209289600000000000000000000000000000000000000000000000</span><br><span class="line">doubleResult = 0.3000000000000000400000000000000000000000000000000000000000000000</span><br><span class="line">decimalResult = 0.3000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">doubleResult = 0.5000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 6s</span><br><span class="line">2 actionable tasks: 1 executed, 1 up-to-date</span><br><span class="line">19:53:46: Execution finished &#x27;:org.ryuu.Main.main()&#x27;.</span><br></pre></td></tr></table></figure>
+
+<p>0.1，0.2这样的数在二进制里类似十进制的1&#x2F;3(0.3333333…)，是无限循环的。浮点数会将数据截断，因此会丢失精度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0.1(decimal) = 0.0001100110011001100110011001100110011001100110011001100110011001... (binary)</span><br><span class="line">0.2(decimal) = 0.0011001100110011001100110011001100110011001100110011001100110011... (binary)</span><br></pre></td></tr></table></figure>
+
+<h2 id="十进制转二进制的计算"><a href="#十进制转二进制的计算" class="headerlink" title="十进制转二进制的计算"></a>十进制转二进制的计算</h2><p>$x$ 十进制数，$N$ 十进制数整数部分，$f$ 十进制数小数部分<br>$$x&#x3D;N+f$$</p>
+<h3 id="整数部分"><a href="#整数部分" class="headerlink" title="整数部分"></a>整数部分</h3><p>整数 $N$ 可表示为二进制展开式：</p>
+<p>$$<br>N &#x3D; b_k \cdot 2^k + b_{k-1} \cdot 2^{k-1} + \cdots + b_1 \cdot 2^1 + b_0 \cdot 2^0<br>$$</p>
+<p>其中各位数字由公式给出：</p>
+<p>$$<br>b_i &#x3D; \left\lfloor \frac{N}{2^i} \right\rfloor \bmod 2, \quad i &#x3D; 0, 1, 2, \ldots, k<br>$$</p>
+<h3 id="小数部分"><a href="#小数部分" class="headerlink" title="小数部分"></a>小数部分</h3><p>小数部分 $f$ 的二进制表示为：</p>
+<p>$$<br>f &#x3D; 0.b_1 b_2 b_3 \dots<br>$$</p>
+<p>其递推关系为：</p>
+<p>$$<br>\begin{aligned}<br>&amp; f_0 &#x3D; f, \quad n &#x3D; 1, 2, 3, \ldots \<br>&amp; b_n &#x3D; \left\lfloor 2 \cdot f_{n-1} \right\rfloor, \quad b_n \in {0,1} \<br>&amp; f_n &#x3D; 2 \cdot f_{n-1} - b_n, \quad 0 \le f_n &lt; 1<br>\end{aligned}<br>$$</p>
+<h2 id="另请参阅"><a href="#另请参阅" class="headerlink" title="另请参阅"></a>另请参阅</h2><p><a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/learn-float-vs-decimal">github</a> 有完整的示例工程</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1412,139 +1534,6 @@ table th:nth-of-type(3) {
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/05/Effective-CSharp-31%E6%8A%8A%E9%92%88%E5%AF%B9%E5%BA%8F%E5%88%97%E7%9A%84API%E8%AE%BE%E8%AE%A1%E5%BE%97%E6%9B%B4%E5%8A%A0%E6%98%93%E4%BA%8E%E6%8B%BC%E6%8E%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/05/Effective-CSharp-31%E6%8A%8A%E9%92%88%E5%AF%B9%E5%BA%8F%E5%88%97%E7%9A%84API%E8%AE%BE%E8%AE%A1%E5%BE%97%E6%9B%B4%E5%8A%A0%E6%98%93%E4%BA%8E%E6%8B%BC%E6%8E%A5/" class="post-title-link" itemprop="url">Effective-CSharp-31把针对序列的API设计得更加易于拼接</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-05 17:51:30" itemprop="dateCreated datePublished" datetime="2021-08-05T17:51:30+08:00">2021-08-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>由于大多数程序的算法都是要在一系列元素而非单一元素上执行操作，因此开发者会使用 foreach、for 循环及 while 等结构。通常把某集合用作输入值，然后检视或修改集合本身或其中元素，最后把另一个集合作为输出值返回给调用方。</p>
-<p>这样做的问题在于，若针对整个集合中的每个元素执行操作，<strong>程序效率很低</strong>。因为执行的操作通常不止一个，且需要多次变换才能把源集合元素转换为目标集合元素。在此过程中，需要创建一些集合保存中间结果，且集合有可能较大，必须等整个集合完成了一次变换操作后，才能继续执行下一次变换操作。要执行几次操作，就得把集合遍历几遍，因此，若执行操作较多，那么算法的执行时间会较长。</p>
-<p>另一种办法是，在方法中仅遍历一次，将序列中每个元素都处理一遍，并对其进行各种变换，得到结果。这将提高程序的效率，降低内存使用 (不用每执行一步就创建一个集合)。但这样的的代码很难复用，因为开发者复用的不是整套逻辑，而是其中的一小步。</p>
-<p>由于 C# 有*迭代器 (iterator)<em>，因此，开发者可用它创建出一种方法来操作序列中的元素，这样的方法只会在调用方法真正请求获取元素是才会处理并返回该元素。这些方法以 IEnumerable<T> 型参数表示源序列，并把要生成的目标序列也设计为 IEnumerable<T>，而且通过 yielld return语句返回序列中的元素，使得开发者无需给整个目标序列中的元素分配空间，而是可以等调用方真正用到序列中的下一个元素时采取向源序列查询相关数据，并以此生成所需元素。将通用的 IEnumerable<T> 或针对某种类型的 IEnumerable<T> 设计成方法的输入及输出参数是一种比较少见的思路，因此，很多开发者都不会这样做，但这种思路能带来许多好处。与传统方法相比，这种延</em>迟执行 (deferred execution，见37条)*机制可以降低算法所需内存空间，使算法各部分能够更灵活的拼接复用 (见40条)。还可把不同操作放在不用的 CPU 内核中执行，进一步的提高程序性能。可创建泛型方法，扩大其使用范围。</p>
-<p>如下实例将序列中每种元素输出一次 (重复元素不输出)：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Unique</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        Console.WriteLine(num);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此方法虽然简单，但是不能进行复用。</p>
-<p>可以考虑改用迭代器方法：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">UniqueV2</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> i <span class="keyword">in</span> <span class="title">UniqueV2</span>(<span class="params">nums</span>))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params">i</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    Console.WriteLine(UniqueV2(nums).First());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>有人认为这样改差不多，没什么好处。加上一些追踪语句，能让你更清楚此方法的运作：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">UniqueV2</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;\tEntering Unique&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;\tEvaluating <span class="subst">&#123;num.ToString()&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;\tRe-entering after yield return&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;\tExiting Unique&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Entering Unique</span></span><br><span class="line">    <span class="comment">// Evaluating 0</span></span><br><span class="line">    <span class="comment">// 0</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 3</span></span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 4</span></span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 5</span></span><br><span class="line">    <span class="comment">// 5</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 7</span></span><br><span class="line">    <span class="comment">// 7</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 3</span></span><br><span class="line">    <span class="comment">// Evaluating 2</span></span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 7</span></span><br><span class="line">    <span class="comment">// Evaluating 8</span></span><br><span class="line">    <span class="comment">// 8</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 0</span></span><br><span class="line">    <span class="comment">// Evaluating 3</span></span><br><span class="line">    <span class="comment">// Evaluating 1</span></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Exiting Unique</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> i <span class="keyword">in</span> <span class="title">UniqueV2</span>(<span class="params">nums</span>))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params">i</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//        Entering Unique</span></span><br><span class="line">    <span class="comment">//        Evaluating 0</span></span><br><span class="line">    <span class="comment">// 0</span></span><br><span class="line">    Console.WriteLine(UniqueV2(nums).First()); <span class="comment">// Ryuu: 添加一个示例</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// foreach (int num in Square(UniqueV2(nums)))</span></span><br><span class="line">    <span class="comment">//     Console.WriteLine($&quot;Number returned from unique square: &#123;num.ToString()&#125;&quot;);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>之所以有这样的效果，关键就在于 yield return 语句。此语句会返回值，并保留信息，记录当前执行的位置及内部迭代逻辑的状态。用此语句写出来的方法，输入输出值都是迭代器，其迭代逻辑可根据早前保留的信息判断当前应读取输入序列的哪一元素，据此生成并返回输出序列中的下一元素。此方法属于可从上次执行位置继续执行的方法 (continuable method)，系统每次运行它时，可根据先前记录的状态信息决定继续执行的位置。</p>
-<p>将 Unique() 方法改写成连续方法 (continuation method) 有两个好处：</p>
-<ol>
-<li>推迟了每个元素的求值时机，提高程序效率。</li>
-<li>此操作可拼接，可灵活复用。</li>
-</ol>
-<p>反之，想用包含 foreach 循环的命令式方法进行灵活复用则较为困难。</p>
-<p>注意，Unique() 方法还可转换为泛型方法：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">IEnumerable</span>&lt;<span class="title">T</span>&gt; <span class="title">UniqueV3</span>&lt;<span class="title">T</span>&gt;(<span class="params">IEnumerable&lt;T&gt; sequence</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;T&gt;();</span><br><span class="line">    <span class="keyword">foreach</span> (T item <span class="keyword">in</span> sequence)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(item)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(item);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>迭代器方法可把多个步骤拼接成一套流程。若要输出是每一种数值的平方，接上一个 Square() 即可：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Square</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num * num;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> num <span class="keyword">in</span> <span class="title">Square</span>(<span class="params">UniqueV2(nums</span>)))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params"><span class="string">$&quot;Number returned from unique square: <span class="subst">&#123;num.ToString()&#125;</span>&quot;</span></span>)</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>无论使用多少个迭代器方法，仅需将源序列迭代一次即可。</p>
-<p>将序列用作迭代器的输入参数。并令其输出另一序列是一种很好的思路，这使得开发者能设计更多的用法。若迭代器方法的参数不是一个序列而是两个，可用这样的迭代器方法将两个序列合并起来：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">string</span>&gt; <span class="title">Zip</span>(<span class="params">IEnumerable&lt;<span class="built_in">string</span>&gt; first, IEnumerable&lt;<span class="built_in">string</span>&gt; second</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> firstSequence = first.GetEnumerator())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">using</span> (<span class="keyword">var</span> secondSequence = second.GetEnumerator())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (firstSequence.MoveNext() &amp;&amp; secondSequence.MoveNext())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">$&quot;<span class="subst">&#123;firstSequence.Current&#125;</span><span class="subst">&#123;secondSequence.Current&#125;</span>&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Zip() 从两个不同的字符串序列中分别取出一个元素，并连接成为新字符串，输出目标序列。当然，此方法也可设计成泛型方法，只不过稍复杂 (见18条)。</p>
-<p>迭代器方法不会修改源序列本身，而是会依次产生目标序列中的元素，这些元素构成一个新序列。若源序列中的元素是引用型，那么迭代器有可能在处理元素时改动该元素内容。</p>
-<p>如果能把复杂的算法拆解成多个步骤，并将每个步骤都表示成小型的迭代器方法，那么可将这些方法拼成一条管道，使得程序仅需遍历一次源序列处理，即可对其中元素进行多种小变换。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1574,7 +1563,7 @@ table th:nth-of-type(3) {
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:58</span>
+    <span title="站点阅读时长">4:01</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
