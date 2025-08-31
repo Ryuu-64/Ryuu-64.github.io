@@ -15,10 +15,10 @@
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="Ryuu 的个人博客">
@@ -40,6 +40,23 @@
 
 
 
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
 
 
 
@@ -120,18 +137,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -180,6 +197,338 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/03/Java-%E4%B8%8E-CSharp-%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/03/Java-%E4%B8%8E-CSharp-%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B/" class="post-title-link" itemprop="url">Java 与 CSharp 中的泛型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-03 22:52:47" itemprop="dateCreated datePublished" datetime="2021-07-03T22:52:47+08:00">2021-07-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>Java 选择的泛型实现方式是”类型擦除式泛型”(Type Erasure Generics)，而 C# 选择的泛型实现方式是”具体化式泛型”(Reified Generics)。具现化、偏特化这些名词最初都是源于C++ 模板语法中的概念，可以不必纠结其概念定义。C# 里面泛型无论在程序源码、编译后的中间语言(IL，这时泛型是一个占位符)，或是运行时期的CLR里面都是切实存在的，List<int> 与 List<string> 就是两个不同的类型，他们由系统在运行期生成，有自己独立的虚方法表和类型数据。而 Java 语言中的泛型则只在程序源码中存在，在编译后的字节码文件中，全部泛型都被替换为原来的裸类型(Raw Type)，并且在相应的位置插入了强制转换代码，对于运行期 的 Java 语言而言，ArrayList<Integer> 和 ArrayList<String> 其实是同一个类型。</p>
+<p>   如果是 C# 开发者，很难想象以下的 Java 代码是不合法的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">T</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">T</span>();</span><br><span class="line">T[] array = <span class="keyword">new</span> <span class="title class_">T</span>[<span class="number">10</span>];</span><br><span class="line">List&lt;T&gt;[] listArray = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;T&gt;[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上述示例仅是 Java 泛型在编码阶段的不良影响，这个阶段的问题还能通过其他方法弥补 (多写几行代码，方法中多加一两个类型参数)，然而，在性能上的差距则是难以用编码弥补的。自 C# 2.0 引入了泛型后，带来的显著优势之一便是对比起 Java 在执行性能上的的提高，在使用平台提供的容器类型(例如 List<T> Dictionary&lt;TKey, TValue&gt;)时，无需像 Java 那样不厌其烦的拆装箱，如果在 Java 中想避免这种性能损失，需要构造一个与数据类型相关的容器类(例如 IntFloatHashMap)。显然，这样除了引入了更多的代码，复杂度提高，复用性降低外，丧失了泛型本身的存在价值。</p>
+<p>Java 的类型擦除式泛型无论是在使用效果上还是运行效率上，几乎是全面落后于 C# 的具现化式泛型，而它的唯一优势是在于实现这种泛型的影响范围上：擦除式泛型的实现几乎只需要在 Javac 编译器上做出改进即可，不需要改动字节码、不需要改动 Java 虚拟机，也保证了以前没用使用泛型的库，可以直接运行在 Java 5.0 之上。但这种听起来节省工作量甚至可以说是有偷工减料嫌疑的优势就显得非常短视。但这种方法确实在 Java 当年实现泛型的利弊权衡中胜出了。我们必须在当时的泛型历史背景中，考虑不同的实现方式带来的代价。</p>
+<h3 id="关于泛型"><a href="#关于泛型" class="headerlink" title="关于泛型"></a>关于泛型</h3><p>泛型的思想早在 C++ 语言的模板 (Template) 功能中就开始生根发芽了，而在 Java 语言中加入泛型的首次尝试出现在1996年。Martin Odersky (后来Scala语言的缔造者）当时是德国卡尔斯鲁厄编程理论的教授，他想设计一门能够支持函数式编程的程序语言，又不想从头把编程语言的所有功能都再做一遍。所以就注意到了刚刚发布一年的 Java，并在它上面实现了函数式编程的3大特性；泛型、高阶函数和模式匹配，形成了 Scala 语言的前身 Pizza 语言。后来，Java 的开发团队找到了 Martin Odersky，表示对 Pizza 语言的泛型功能很感兴趣，他们就一起建立了一个叫作 “Generic Java” 的新项目，且标是把 Pizza 语言的泛型单独移植到Java 语言上，其最终成果就是 Java 5.0 中的那个泛型实现，但是移植的过程并不是一开始就朝着类型擦除式泛型去的。事实上 Pizza 语言中的泛型更接近于现在 C# 的泛型，Martin Odersky 自已在采访自述中提到，进行 Generic Java 项目的过程中受到了重重约束，甚至多次让他感到沮丧，最紧、最难的约束来源于被迫要完全向后兼容无泛型 Java，即保证”二进制向后兼容性”(Binary Backwards Compatibility)。二进制向后兼容性是明确写入《Java 语言规范》中的对Java 使用者的严肃承诺，譬如一个在 JDK 1.2 中编译出来的 Class 文件，必须保证能够在 JDK 12 乃至以后的版本中也能够正常运行。</p>
+<p>Java 到1.4.2版之前都没有支持过泛型，而到 Java 5.0 突然要支持泛型，还要让以以前编译的程序在新版本的虚拟机还能正常运行，就意味着以前没有的限制不能突然冒出来。</p>
+<p>举个例子，在没有泛型的时代，由于 Java 中的数组是支持协变（Covariant)的，对应的集合类也可以存入不同类型的元素。类似于如下代码尽管不提倡，但是是完全可以正常编译成 Class 文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编译通过、运行时报错</span></span><br><span class="line">Object[] array = <span class="keyword">new</span> <span class="title class_">String</span>[<span class="number">10</span>];</span><br><span class="line">array[<span class="number">0</span>] = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 编译、运行都不会报错</span></span><br><span class="line"><span class="type">ArrayList</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">list.add(Integer.valueOf(<span class="number">10</span>));</span><br><span class="line">list.add(<span class="string">&quot;hello world&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>为了保证这些编译出来的 Class 文件可以在 Java 5.0 引入泛型之后继续运行，设计者大体上有两种选择：</p>
+<ol>
+<li>需要泛型化的类型(主要是容器类型)，以前有的就保持不变，然后<strong>平行地加一套泛型化版本的新类型</strong>。</li>
+<li>直接<strong>把已有的类型泛型化</strong>，即让所有需要泛型化的已有类型都原地泛型化，不添加任何平行于已有类型的泛型版。</li>
+</ol>
+<p>C# 选择第一条，添加了一组 System.Collections.Generic 的新容器，以前的 System.Collections 以及 System.Collections.Specialized 依然存在。C# 的开发人员很快就接受了新的容器，唯一的问题大概是许多 .NET 自身的标准库已经把老容器类型当作方法的返回值或者参数使用，这些方法至今还保持者原来的老样子。</p>
+<p>但如果相同的选择出现在 Java 中，很有可能不会是相同的结果，当时的 .NET 才问世两年，而 Java 已经快有十年的历史了，再加上各自的流行程度，两者遗留代码的规模根本不在一个数量级上。而且更大的问题是 Java 并不是没有做过第一条那样的技术决策，在 JDK 1.2 时，遗留代码规模尚小，Java 就引入过新的集合类，并且保留了旧集合类不动。这就导致了直到现在，标准库中还有 Vector(老) ArrayList(新)、Hashtable(老) HashMap(新) 等两套容器代码并存，如果再整出像  Vector(老) ArrayList(新)、Vector<T>(老但有泛型) ArrayList<T>(新且有泛型) 这样的容器，可能会被骂的更狠。</p>
+<p>如果当时有足够的时间来好好设计和实现，完全有可能做出更好的泛型系统，如今的 Valhalla 项目正在还以前泛型实现偷懒留下的技术债。</p>
+<h3 id="Java-类型擦除"><a href="#Java-类型擦除" class="headerlink" title="Java 类型擦除"></a>Java 类型擦除</h3><p>由于 Java 选择了第二条，直接把已有的类型泛型化。要让所有需要泛型化的已有类型都原地泛型化。如 ArrayList，原地泛型化后变成了 ArrayList<T> ，需要保证以前直接用 ArrayList 的代码泛型的新版本中还能使用这同一个容器，这就必须让所有泛型化的实例类型，如 ArrayList<Integer>  ArrayList<String> 这些全部自动成为 ArrayList 的子类型才行，否则类型转换将是不安全的。由此引出了裸类型(Raw Type)的概念，**裸类型应是所有该类型泛型化实例的共同父类型(Super Type)**，只有这样，如下的复制才是被系统允许的，从子类到父类的安全转型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; iList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">ArrayList&lt;String&gt; sList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">ArrayList list; <span class="comment">// Raw use of parameterized class &#x27;ArrayList&#x27;</span></span><br><span class="line">list = iList;</span><br><span class="line">list = sList;</span><br></pre></td></tr></table></figure>
+
+<p>接下来的问题是如何实现裸类型。这又出现了两种选择：</p>
+<ol>
+<li>运行期由 JVM 自动地、真实地构造出 ArrayList<Integer> 这样的类型，自动实现从 ArrayList<Integer> 派生自 ArrayList 的继承关系来满足裸类型的定义。</li>
+<li>简单粗暴地直接在编译时把 ArrayList<Integer> 还原成 ArrayList ，只在元素访问、修改时自动插入一些强制类型转换和检查指令。</li>
+</ol>
+<p>当然结果大家都知道了，Java 选择了第二种。将第一段代码编译成 Class 文件，再用字节码反编译工具进行反编译后，将会发现泛型都不见了，程序又变回了 Java 泛型出现以前的代码，类型变为了裸类型，只是在元素访问的时候插入了从 Object 到 String 的强制转型代码，如第二段代码所示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 泛型擦除前</span></span><br><span class="line">Map&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">map.put(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;你好&quot;</span>);</span><br><span class="line">map.put(<span class="string">&quot;how are you&quot;</span>, <span class="string">&quot;你好吗&quot;</span>);</span><br><span class="line">System.out.println(map.get(<span class="string">&quot;hello&quot;</span>));</span><br><span class="line">System.out.println(map.get(<span class="string">&quot;how are you&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 泛型擦除后</span></span><br><span class="line"><span class="type">Map</span> <span class="variable">map</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">map.put(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;你好&quot;</span>);</span><br><span class="line">map.put(<span class="string">&quot;how are you&quot;</span>, <span class="string">&quot;你好吗&quot;</span>);</span><br><span class="line">System.out.println((String) map.get(<span class="string">&quot;hello&quot;</span>));</span><br><span class="line">System.out.println((String) map.get(<span class="string">&quot;how are you&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><ol>
+<li><p>使用泛型擦除实现导致了对原始类(Primitive Type) 数据的支持成了新麻烦。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;<span class="type">int</span>&gt; iList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">ArrayList&lt;<span class="type">long</span>&gt; lList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">ArrayList list;</span><br><span class="line">list = iList;</span><br><span class="line">list = lList;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码是不合法的，因为，这种情况下，一旦把泛型信息擦除后，到要插入强制转型代码的地方就没有办法做下去了，因为不支持 int long 与 Object 之间的强制转换。Java 当时给出的方法一如既往的简单粗暴：没办法做，那就索性不用原生类型的泛型了，都用包装类，反正都做了自动的强制类型转换，遇到原生类型时把装拆箱也做了。这个决定导致了无数构造包装类和装箱、拆箱的开销，成为 Java 泛型慢的重要原因，也成为了如今 Valhalla 项目要重点解决的问题之一。</p>
+</li>
+<li><p>运行期无法取到泛型类型信息。使得一些代码变得极其繁琐，例如本文第一段代码的几种 Java 不支持的泛型用法，都是由于运行期 JVM 无法取得泛型类型而导致的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T[] convert(List&lt;T&gt; list, Class&lt;T&gt; componentType) &#123;</span><br><span class="line">    T[] array = (T[]) Array.newInstance(componentType, list.size());</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码，写一个从泛型版本的从 List 到数组的转换方法，由于不能从 List 中取得参数化类型 T，所以不得不从另一个额外参数中再传一个数组的组件类型进去，实属无奈。</p>
+</li>
+<li><p>通过擦除实现泛型，还丧失了一些面向对象应有的优雅，带来了一些模糊情况。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#x27;method(List&lt;String&gt;)&#x27; clashes with &#x27;method(List&lt;Integer&gt;)&#x27;</span></span><br><span class="line"><span class="comment">// both methods have same erasure</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">(List&lt;String&gt; list)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;invoke method(List&lt;String&gt; list)&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">(List&lt;Integer&gt; list)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;invoke method(List&lt;Integer&gt; list)&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码是不能被编译的，因为 List<String> List<Integer> 编译之后都被擦除了，变成了同一裸类型 List。类型擦除导致这两个方法的特征签名一模一样。但实际上这仅该方法是无法重载的一部分原因。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">method</span><span class="params">(List&lt;String&gt; list)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;invoke method(List&lt;String&gt; list)&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">method</span><span class="params">(List&lt;Integer&gt; list)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;invoke method(List&lt;Integer&gt; list)&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述的代码竟然是可以正常使用的(在一些 JVM 中，例如 JDK 6)。为两个方法指定不同的返回值，方法的重载竟然成功了，简直是打破了我们对于 Java 语言中返回值不参与重载选择的基本认知。</p>
+<p>实际上这当然不是根据返回值来确定的，能编译和执行成功，是因为两个 method() 方法加入了不同的返回值后才能共存在一个 Class 文件中。方法重载要求方法具备不同的特征签名，返回值并不包含在方法的特征签名中，所以返回值不参与重载选择，但是在 Class 文件格式之中，只要描述符不是完全一致的两个方法，就可以共存。</p>
+<p>由于 Java 泛型的引入，各种场景（虚拟机解析、反射等）下的方法调用都可能对原有的基础产生影响并带来新的需求，如在泛型类中如何获取传入的参数化类型等。所以 JCP 组织对《Java 虚拟机规范》做出了相应的修改，引入了诸如 Signature LocalVariableTypeTable 等新的属性用于解决伴随泛型而来的参数类型的识别问题，Signature 是其中最重要的一项属性，它的作用就是存储一个方法在字节码层面的特征整签名，这个属性中保存的参数类型并不是原生类型，而是包括了参数化类型的信息。修改后的虚拟机规范P要求所有能识别 49.0 以上版本的 Class 文件的虚拟机都要能正确地识别 Signature 参数。</p>
+<p>从上面的例子中可以看到擦除法对实际编码带来的不良影响，由于 List<String> 和 List<Integer> 擦除后是同一个类型，我们只能添加两个并不需要的返回值才能完成重载，这是一种毫无优雅和美感可言的解决方案，并且存在一定语意上的混乱，例如上文中提到的，用 JDK 6的 Javac 才能编译成功，其他版本或者是 ECJ 编译器都有可能拒绝编译。</p>
+<p>另外，从 Signature 属性的出现我们还可以得出结论，擦除法所谓的擦除，仅仅是对方法的 Code 属性中的字节码进行擦除，实际上元数据中还是保留了泛型信息，这也是我们在编码时能通过反射手段取得参数化类型的根本依据。</p>
+</li>
+</ol>
+<h3 id="值类型"><a href="#值类型" class="headerlink" title="值类型"></a>值类型</h3><p>目前比较明确的是未来的 Java 应该会提供 “值类型” (Value Type) 的语言层面的支持。</p>
+<p>说到值类型，这也是 C# 用户攻讦 Java 语言的常用武器之一</p>
+<p>C# 并没有 Java 意义上的原生数据类型，在 C# 中使用的 int、bool、double关键字其实是对应了一系列在 .NET 中来中预定义好的结构体(Struct)，如 Int32、 Boolean、 Double 等。在 C# 中开发人员也可以定义自己值类型，只要继承于 ValueType 类型即可，而 ValueType  也是统一基类 Object 的子类，所以并不会遇到 Java 那样 int 不自动装箱就无法转型为 Object 的尴尬。</p>
+<p>值类型可以与引用类型一样，具有构造函数，方法或是属性字段，等等，而它与引用类型的区别在于它在赋值的时候通常是整体复制，而不是像引用类型那样传递引用的。更为关键的是，值类型的实例很容易在方法的调用栈上实现分配，这意味着值类型会随着当前方法的退出而自动释放，不会给垃圾收集于系统带来任何压力。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/27/%E4%BA%8B%E5%8A%A1ACID%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/27/%E4%BA%8B%E5%8A%A1ACID%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">事务ACID特性</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-27 16:13:31" itemprop="dateCreated datePublished" datetime="2021-06-27T16:13:31+08:00">2021-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>事务是一组原子性的SQL查询，一个独立的工作单元。如果数据库引擎能够成功对数据库应用该组查询的全部语句，那么就执行该组查询。如果其中任何一条因为崩溃或其他原因无法执行，那么所有的语句都不会被执行。事务内的语句，要么全部执行成功，要么全部执行失败。</p>
+<ol>
+<li><p><strong>原子性(atomicity)</strong></p>
+<p>一个事务必须被视为一个不可分割的最小单元。</p>
+<p>整个事务中所有的操作要么全部提交(成功)，要么全部回滚(失败)。</p>
+<p>对于单一事务而言，不可能只执行其中的一部分操作。</p>
+</li>
+<li><p><strong>一致性(consistency)</strong></p>
+<p>总是从一个一致的状态转换到另一个一致的状态。</p>
+<p>若在事务执行过程中系统崩溃，因事务的修改还未提交，事务的修改不会被保存。</p>
+</li>
+<li><p><strong>隔离性(isolation)</strong></p>
+<p>一个事务所做的修改在提交前，对于其他的事务是不可见的。</p>
+<p>是否可见与**隔离级别(Isolation level)**相关。</p>
+</li>
+<li><p><strong>持久性(durability)</strong></p>
+<p>一旦事务提交，修改将永久保存。即使系统崩溃修改的数据也不会丢失。</p>
+<p>持久性的表现与持久性级别相关。</p>
+</li>
+</ol>
+<p>实现以上特性能提供更高的安全性，但也会需要数据库做更多的额外工作。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/27/Effective-Java-54%E8%BF%94%E5%9B%9E%E9%9B%B6%E9%95%BF%E5%BA%A6%E7%9A%84%E6%95%B0%E7%BB%84%E6%88%96%E9%9B%86%E5%90%88-%E8%80%8C%E4%B8%8D%E6%98%AFnull/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/27/Effective-Java-54%E8%BF%94%E5%9B%9E%E9%9B%B6%E9%95%BF%E5%BA%A6%E7%9A%84%E6%95%B0%E7%BB%84%E6%88%96%E9%9B%86%E5%90%88-%E8%80%8C%E4%B8%8D%E6%98%AFnull/" class="post-title-link" itemprop="url">Effective-Java-54返回零长度的数组或集合,而不是null</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-27 15:18:39" itemprop="dateCreated datePublished" datetime="2021-06-27T15:18:39+08:00">2021-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。</p>
+<p>有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:</p>
+<ol>
+<li>在这个级别上担心性能问题是不明智的，除非分析表明这个方法正是造成性能问题的原因(见67条)。</li>
+<li>不需要分配零长度的集合或者数组，也可以返回他们。</li>
+</ol>
+<p>如果切实造存在性2能问题，可以通过重复返回一个<em><strong>不可变</strong></em>的零长度集合(例如 Collections.emptyList() Collections.emptyMap() )，避免即时分配，因为不可变类可以被自由的共享(见17条)。这仅是一个优化，几乎用不上。如果您认为确实有必要，请在行动前后进行性能测试。</p>
+<p>简而言之，<strong>返回一个零长度的数组或集合，而不是null</strong>。如果返回null，那样会使得API更加难用，也更容易出错，且没有任何的性能优势。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FSOLID%E5%8E%9F%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -193,7 +542,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -229,21 +578,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>185</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -315,7 +649,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -351,21 +685,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>604</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -430,7 +749,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -466,21 +785,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>672</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -543,7 +847,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -579,21 +883,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -700,7 +989,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -736,21 +1025,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -831,7 +1105,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -867,21 +1141,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>925</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -941,7 +1200,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -977,21 +1236,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -1046,363 +1290,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/12/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/12/Effective-Java-6%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8/" class="post-title-link" itemprop="url">Effective-Java-6消除过期的对象引用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-12 16:25:30" itemprop="dateCreated datePublished" datetime="2021-05-12T16:25:30+08:00">2021-05-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>当你从手动管理内存的语言(比如C或者C++)转换到具有垃圾回收功能的语言时，工作会更加容易，因为当对象使用完毕后将会自动回收。但是，这并不代表着程序员再也不需要考虑内存管理的事情了。</p>
-<p>考虑以下这个简单栈实现的例子:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Can you spot the &quot;memory leak&quot;?</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Stack</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> Object[] elements;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Stack</span><span class="params">()</span> &#123;</span><br><span class="line">        elements = <span class="keyword">new</span> <span class="title class_">Object</span>[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Object e)</span> &#123;</span><br><span class="line">        elements[size++] = e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EmptyStackException</span>();</span><br><span class="line">        <span class="keyword">return</span> elements[--size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Ensure space for at least one more element, roughly doubling the capacity each time the array needs to grow.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">ensureCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.length == size)</span><br><span class="line">            elements = Arrays.copyOf(elements, <span class="number">2</span> * size + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段程序(泛型版见26条)中并没有很明显的错错误。但其中隐藏着一个问题。不严格的讲，这段程序存在”内存泄漏”，随着内存的占用不断增加，程序的性能降低将会越来越明显。在极端的情况下，这种内存泄漏会导致磁盘交换(Disk Paging)，甚至导致程序失败(OutOfMemoryError)，虽然这种情况相对少见。</p>
-<p>错误在于，如果一个栈先是增长，然后再收缩，那么，从栈中弹出来的对象将不会被当作垃圾回收，即时是使用栈的程序不在引用这些对象，它们也不会被回收。因为，栈内部维护着对这些对象的过期引用(obsolete reference)。所谓的过期引用，是指永远也不会在被解除的引用。在本示例中，凡是在elements数字的”活动部分(active protion)”之外的任何引用都是过期的。活动部分是指elements中下标小于size的那些元素。</p>
-<p>在支持垃圾回收的语言中，内存泄漏是很隐蔽的(称这些内存泄漏为”无意识的对象保持(unintentional object retention)”更为恰当)。如果一个对象引用被无意识的保留起来了，也会有许许多多的对象被排除在垃圾回收机制之外，从而对性能造成潜在的重大影响。</p>
-<p>这类问题的修复方法很简单:一旦对象引用已经过期，只需清空这些引用即可。对于上述例子中的Stack而言，只要有数据被弹出栈，指向它的引用就过期了。pop方法修改版如下:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EmptyStackException</span>();</span><br><span class="line">    <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> elements[--size];</span><br><span class="line">    elements[size] = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Ryuu: elements的中的元素本身就和size不相关，仅是返回个值栈末尾的元素当然不会被回收，要将elements对其元素的引用置空，让元素没有被指针指向，该元素才会被当作垃圾回收。</p>
-<p>以下是 Ryuu 的示例代码，您可以打断点尝试，不置空元素确实不会被回收</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.EmptyStackException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rule6</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Stack</span> <span class="variable">stack</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stack</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            stack.push(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            stack.pop(); <span class="comment">// break point</span></span><br><span class="line">        System.out.println(<span class="string">&quot;complete&quot;</span>); <span class="comment">// break point</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Can you spot the &quot;memory leak&quot;?</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Stack</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> Object[] elements;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Stack</span><span class="params">()</span> &#123;</span><br><span class="line">        elements = <span class="keyword">new</span> <span class="title class_">Object</span>[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Object e)</span> &#123;</span><br><span class="line">        elements[size++] = e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EmptyStackException</span>();</span><br><span class="line">        <span class="keyword">return</span> elements[--size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Ensure space for at least one more element, roughly doubling the capacity each time the array needs to grow.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">ensureCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.length == size)</span><br><span class="line">            elements = Arrays.copyOf(elements, <span class="number">2</span> * size + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Stack</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> Object[] elements;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Stack</span><span class="params">()</span> &#123;</span><br><span class="line">        elements = <span class="keyword">new</span> <span class="title class_">Object</span>[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Object e)</span> &#123;</span><br><span class="line">        elements[size++] = e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EmptyStackException</span>();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> elements[--size];</span><br><span class="line">        elements[size] = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Ensure space for at least one more element, roughly doubling the capacity each time the array needs to grow.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">ensureCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.length == size)</span><br><span class="line">            elements = Arrays.copyOf(elements, <span class="number">2</span> * size + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>清空过期引用的另一个好处是，如果它们以后又被错误的引用，程序就会立即抛出NullPointerException异常，而不是悄悄地错误运行下去。尽快地检测出程序中的错误总是有益的。</p>
-<p>当程序员第一次被类似这样的问题困扰的时候，它们往往会过分小心: 对于每一个对象引用，一旦程序不再用到它，就把他清空。其实这样做并没有必要，会把程序弄得很乱。<em><strong>清空对象引用应该是种例外，而不是一种规范行为。</strong></em>消除过期引用的最好的方法是让包含该引用的变量结束其生命周期。如果你是在最紧凑的作用范围内定义每一个变量(见第45条)，这种情形就会自然而然地发生。</p>
-<h3 id="内存泄漏常见的三个来源"><a href="#内存泄漏常见的三个来源" class="headerlink" title="内存泄漏常见的三个来源"></a>内存泄漏常见的三个来源</h3><h4 id="1-自行管理内存类。"><a href="#1-自行管理内存类。" class="headerlink" title="1. 自行管理内存类。"></a>1. <strong>自行管理内存类。</strong></h4><p>   一般在这种情况下，程序员应警惕其可能的内存泄漏问题。一旦元素被释放掉，则该元素种包含的任何对象引用都应该被清空。</p>
-<h4 id="2-缓存。"><a href="#2-缓存。" class="headerlink" title="2. 缓存。"></a>2. <strong>缓存。</strong></h4><p>   一旦将对象引用放到缓存中，很容易就会被遗忘掉，从而使得它不在有用之后很长一段时间内仍然留在缓存中。</p>
-<h4 id="3-监听器和其他回调。"><a href="#3-监听器和其他回调。" class="headerlink" title="3. 监听器和其他回调。"></a>3. <strong>监听器和其他回调。</strong></h4><p>   如果实现了一个API，客户端在这个API当中注册回调，却没有显式的取消注册 ，那么除非你采取某些行动，否则它们就会积聚。确保回调立即被当作垃圾回收的最佳方法是只保存它们的弱引用(weak reference)，例如，只将它们保存成WeakHashMap中的键。</p>
-<p>由于内存泄漏通常不会表现成明显的失败，所以它们可以在一个系统中存在很多年。往往只有通过检查代码，或者借助于Heap剖析工具(Heap Profiler)才能发现内存泄漏问题。因此，如果能够在内存泄漏发生之前就知道如何预测此类问题，并阻止它们发生，那是最好不过了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">Effective-Java-5避免创建不必要的对象</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-10 16:55:54" itemprop="dateCreated datePublished" datetime="2021-05-10T16:55:54+08:00">2021-05-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><em><strong>一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。</strong></em>重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。</p>
-<p>作为一个极端反面的例子，考虑下面的语句:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;stringgette&quot;</span>); <span class="comment">// DON&#x27;T DO THIS!</span></span><br></pre></td></tr></table></figure>
-
-<p>该语句每次执行的时候都创建一个新的String实例，但是这些创建对象的动作全都是不必要的。传递给String构造器的参数”stringgette”本身就是个String实例，功能方面等同于构造器创建的所有对象。如果这种用法是在一个循环中，或者是在一个被频繁调用的方法中，就会创建出成千上万不不要的String实例。</p>
-<p>改进后的版本如下:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;stringgette&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>这个版本只使用一个String实例，而不是每次执行的时候都创建一个新的实例。而且，它可以保证，对于所有在同一台虚拟机种的代码，只要它们包含想用的字符串字面常量，该对象就会被重用 [JLS, 3.10.5]</p>
-<p><em><strong>对于同时提供了静态工厂方法(见第1条)和构造器的不可变类，通常可以使用静态工厂方法而不是构造器，以避免创建不必要的对象。</strong></em>例如，静态工厂方法Boolean.valueOf(String)几乎总是优先于构造器Boolean(String)。构造器在每次调用的时候都会创建一个新的对象，而静态工厂方法则从来不要求这样做，实际上也不会这样做。</p>
-<p><em><strong>除了重用不可变对象之外，也可以重用那些一直不会被修改的可变对象。</strong></em>下面是一个比较微妙，也比较常见的反面例子，其中涉及可变的Date对象，它们的值一旦计算出来之后就不在变化。这个类建立了一个模型，其中有一个人，并有一个isBabyBoomer方法，用来检验这个人是否为一个”baby boomer”(婴儿潮时期出生的婴儿)，也就是检验这个人是否出生于1946-1964年。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date birthDate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Other fields, methods and constructor omitted</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBabyBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// Unnecessary allocation of expensive object</span></span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">gmtCal</span> <span class="operator">=</span> Calendar.getInstance(TimeZone.getTimeZone(<span class="string">&quot;GMT&quot;</span>));</span><br><span class="line">        gmtCal.set(<span class="number">1946</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">boomStart</span> <span class="operator">=</span> gmtCal.getTime();</span><br><span class="line">        gmtCal.set(<span class="number">1964</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">boomEnd</span> <span class="operator">=</span> gmtCal.getTime();</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(boomStart) &gt;= <span class="number">0</span> &amp;&amp; birthDate.compareTo(boomEnd) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>isBabyBoomer 每次别调用的时候，都会新建一个Calendar ，一个 TimeZone 和两个 Date 实例，这是不必要的。下面的版本用一个静态的初始化器(initializer)</p>
-<p>，避免了这种效率低下的情况:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date birthDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Date BOOM_START;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Date BOOM_END;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">gmtCal</span> <span class="operator">=</span> Calendar.getInstance(TimeZone.getTimeZone(<span class="string">&quot;GMT&quot;</span>));</span><br><span class="line">        gmtCal.set(<span class="number">1946</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        BOOM_START = gmtCal.getTime();</span><br><span class="line">        gmtCal.set(<span class="number">1964</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        BOOM_END = gmtCal.getTime();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Other fields, methods and constructor omitted</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBabyBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(BOOM_START) &gt;= <span class="number">0</span> &amp;&amp; birthDate.compareTo(BOOM_END) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>改进后的Person类只在初始化的时候创建Calender，TimeZone和Date实例一次，而不是在每次调用isBabyBoomer的时候都创建这些实例。如果isBabyBoomer方法被频繁的调用，这种方法将会显著地提高性能 (作者: 在我的机器上，每调用一千万次，原来的版本需要32 000ms，而改进后的版本只需 130ms)。除了提高性能之外，代码的含义也更加清晰了。<strong>把boomStart和boomEnd从局部变量改为final静态域，这些如期显然是被作为常量对待，从而使得代码更易于理解。</strong>但是，这种优化带来的效果并不总是那么明显，因为Calender实例创建代价特别昂贵。</p>
-<p>如果改进后的Person类被初始化了，isBabyBoomer方法却永远不会被调用，那就没有必要初始化BOOM_START和BOOM_END域。通过<strong>延迟初始化(lazily initializing)</strong>(见第71条)，即把对这些域的初始化延迟到isBabyBoomer方法第一次被调用的时候进行，则有可能消除这些不必要的初始化工作，但是不建议这样做。正如延迟初始化中常见的情况一样，这样做会使方法的实现更加复杂，从而无法将性能显著提高到超过已经达到的水平(见55条)。</p>
-<p>在本条目前面的例子中，所讨论的对象显然都是能够被重用的，因为它们被初始化之后不会再改变。其他的情形则并不总是这么明显了。考虑适配器(adapter)的情形 [Gamma95, p.139]，有时也叫做视图 (view)。适配器是指这样一个对象：它把功能委托给一个后备对象 (backing object)，从而为后备对象提供一个可以替代的接口。由于适配器除了后备对象之外，没有其他的状态信息，所以针对某个给定对象的特定适配器而言，它不需要创建多个适配器实例。</p>
-<p><strong>例如，Map接口的keySet方法返回该Map对象的Set视图，其中包含该Map中所有的键 (key)。看起来好像每次调用keySet都应该创建一个新的Set实例，但是，对于一个给定的Map对象，实际上每次调用keySet都返回同样的Set实例。虽然返回的Set实例一般是可改变的，但是所有返回的对象在功能上是等同的：当其中一个返回对象发生变化时，所有其他的返回对象也要发生变化，因为它们是由同一个Map实例支撑的。虽然创建KeySet视图对象的多个实例并无害处，但也无必要。</strong></p>
-<p>在Java 1.5发行版本中，有一种创建多余对象的新方法，称作自动装箱 (auto boxing)，它允许程序员将基本类型和装箱基本类型 (Boxed Primitive Type) 混用，按需要自动装箱和拆箱。自动装箱使得基本类型和装箱基本类型之间的区别变得模糊起来，但是并没有完全消除。它们在语义上还有着微妙的差别，在性能上也有着比较明显的差别 (见第49条)。考虑下面的程序，他计算所有int正值的总和。为此，程序必须使用long，因为int不够大，无法容纳所有int正值的总和:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Hideously slow program! Can you spot the object creation?</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">Long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段程序是正确的，但是要比预期的情况要更慢，因为这里打错了字符大写了L。变量sum 由 long类型变为了Long类型，意味着程序构造了2<sup>31</sup>个多余的Long实例。将sum的声明从Long改为long (作者: 在我的机器上运行时间从43秒降低到了6.8秒)。结论很明显：<em><strong>要优先使用基本类型而不是装箱基本类型，要当心无意识的自动装箱。</strong></em></p>
-<p>以下是我自己尝试的代码 时间分别是 50 6598 ms 和 50 827 ms 性能差了约10倍。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="variable">TIME_SPEND</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="variable">TIME_SPEND_TOTAL</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="comment">// Avoid unnecessary boxing and unboxing.</span></span><br><span class="line">    <span class="comment">// Long sum = 0L; // TEST_COUNT = 50 6598 ms</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0L</span>; <span class="comment">// TEST_COUNT = 50 827 ms</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">TEST_COUNT</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; TEST_COUNT; j++) &#123;</span><br><span class="line">        sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        TIME_SPEND_TOTAL += System.currentTimeMillis() - TIME_SPEND;</span><br><span class="line">        System.out.println(<span class="string">&quot;No.&quot;</span> + (j + <span class="number">1</span>) + <span class="string">&quot; : &quot;</span> + (System.currentTimeMillis() - TIME_SPEND) + <span class="string">&quot; ms &quot;</span> +sum);</span><br><span class="line">        TIME_SPEND = System.currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(TIME_SPEND_TOTAL / TEST_COUNT + <span class="string">&quot; ms&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><em><strong>不要错误的认为本条目介绍的内容暗示着”创建对象的代价非常昂贵，我们应该尽可能的避免创建对象”。相反，由于小对象的构造器只做很少量的显式工作，所以，小对象的创建和回收动作是非常廉价的，特别是在现代的JVM实现上更是如此。通过创建附加的对象，提升程序的清晰性，简洁性和功能性，这通常是件好事。</strong></em></p>
-<p>反之，通过维护自己的对象池 (object pool) 来避免创建对象并不是一种好的做法，除非池中的对象是非常重量级的。真正正确使用对象池的典型对象示例就是数据库连接池。建立数据库连接的代价是非常昂贵的，因此重用这些对象非常有意义。而且，数据库的许可可能限制你只能使用一定数量的连接。但是，一般而言，维护自己的对象池必定增加代码的复杂度，同时增加内存占用 (footprint)，并且还会损害性能。现代的JVM实现具有高度优化的垃圾回收器，其性能很容易就会超过轻量级对象池的性能。</p>
-<p>与本条目对应的是第39条中有关”保护性拷贝(defensive copying)” 的内容。本条目提及”当你应该重用现有对象的时候，请不要创建新的对象”，而第39条中”当你应该创建新对象的时候，请不要重用现有的对象”。注意，在提倡使用保护性拷贝的时候，因重用对象而付出的代价要远远大于因创建重复对象而付出的代价。必要时如果没能实施保护性拷贝，将会导致潜在的错误和安全漏洞；而不必要地创建对象则只会影响程序的风格和功能。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/10/Effective-Java-4%E9%80%9A%E8%BF%87%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%BA%E5%8C%96%E4%B8%8D%E5%8F%AF%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E8%83%BD%E5%8A%9B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/10/Effective-Java-4%E9%80%9A%E8%BF%87%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%BA%E5%8C%96%E4%B8%8D%E5%8F%AF%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E8%83%BD%E5%8A%9B/" class="post-title-link" itemprop="url">Effective-Java-4通过私有构造器强化不可实例化的能力</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-10 16:18:17" itemprop="dateCreated datePublished" datetime="2021-05-10T16:18:17+08:00">2021-05-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>548</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><em><strong>你可能需要编写只包含静态方法和静态域的类(例如一些工具类) 。</strong></em>这些类的名声很不好，因为有些人在面向对象的语言中滥用这样的类来编写过程化的程序。但它们也的确有他们的用处。</p>
-<p>这样的工具类 (utility class) 不希望被实例化，实例对它们没有意义。然而，在缺少显式构造器的情况下，编译器会自动提供一个共有的，无参的缺省构造器(default constructor)。对于用户而言，这个构造器与其他的构造器没有任何的区别，在已发行的API中常常可以看到一些被无意识地实例化的类。</p>
-<p><em><strong>企图通过将类做成抽象类来强制该类不可被实例化，这样是行不通的。</strong></em>该类可以被子类化，并且该子类可被实例化。这样甚至会误导用户，以为该类是特意为了继承而设计的。然而，有一些简单的习惯用法可以保证类不被实例化。由于只有当类不包含显式构造器时，编译器才会产生缺省的构造器，因此我们只要让这个类包含私有构造器，它就不能被实例化了：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Noninstantiable utility class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UtilityClass</span> &#123;</span><br><span class="line">    <span class="comment">// Suppress default constructor for noninstantiaility</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">UtilityClass</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">AssertionError</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    ... <span class="comment">// Remainder omitted</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>由于显示的构造器是私有的，所以不可以在该类的外部访问它。AssertionError不是必需的，但是它可以避免不小心在该类的内部调用构造器。他保证该类在任何情况下都不会被实例化。这种习惯用法有点违背直觉，好像构造器的声明就是设计成不能被调用一样。因此，较好的做法是，在代码中增加注释(见上文)。</p>
-<p>这种习惯用法也有其副作用，它使得一个类不能被子类化。所有的构造器都必须显示或隐式地调用超类 (superclass) 构造器，在这种情况下，子类就没有可访问的超累构造器可以调用了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1419,20 +1308,6 @@
     </span>
     <span class="author" itemprop="copyrightHolder">Ryuu</span>
   </div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="站点总字数">66k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">4:01</span>
-  </span>
-</div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
@@ -1455,24 +1330,6 @@
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-
-  
-
-
-
-
 
 </body>
 </html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="引子Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt; 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状项目里的实现有两种 直接获取其他业务的引用A 直接 调用了 B，B 又 调用了 C，D。还有 A 里">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 .NET 开始的 Java 委托设计与实现">
+<meta property="og:url" content="http://example.com/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="引子Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt; 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状项目里的实现有两种 直接获取其他业务的引用A 直接 调用了 B，B 又 调用了 C，D。还有 A 里">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-19T09:06:17.000Z">
+<meta property="article:modified_time" content="2025-08-31T07:08:03.546Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="java dotnet delegate">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/","path":"2025/08/19/从 .NET 开始的 Java 委托设计与实现/","title":"从 .NET 开始的 Java 委托设计与实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从 .NET 开始的 Java 委托设计与实现 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%8E%B0%E7%8A%B6"><span class="nav-number">1.1.</span> <span class="nav-text">项目的现状</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E8%8E%B7%E5%8F%96%E5%85%B6%E4%BB%96%E4%B8%9A%E5%8A%A1%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">直接获取其他业务的引用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E7%9A%84%E8%80%A6%E5%90%88"><span class="nav-number">1.1.1.1.1.</span> <span class="nav-text">直接的耦合</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%9A%84%E8%80%A6%E5%90%88"><span class="nav-number">1.1.1.1.2.</span> <span class="nav-text">派生的耦合</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.1.1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4-List"><span class="nav-number">1.1.2.</span> <span class="nav-text">维护 List</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E6%9E%90-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">设计与方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="nav-number">2.1.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88"><span class="nav-number">2.2.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.3.</span> <span class="nav-text">详细设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A7%94%E6%89%98%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.3.1.</span> <span class="nav-text">委托实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%92%AD%E5%A7%94%E6%89%98"><span class="nav-number">2.3.2.</span> <span class="nav-text">多播委托</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%80%A7"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">不可变性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E6%92%AD%E5%A7%94%E6%89%98-1"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">多播委托</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">语法糖</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88%E5%BC%8F%E6%93%8D%E4%BD%9C%EF%BC%88Stack-Semantics%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">栈式操作（Stack Semantics）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#event"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">event</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%92%AD%E5%A7%94%E6%89%98%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.4.1.</span> <span class="nav-text">多播委托实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">微基准测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B-invoke"><span class="nav-number">3.1.</span> <span class="nav-text">单线程 invoke</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90"><span class="nav-number">3.1.1.</span> <span class="nav-text">性能模型分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B-invoke"><span class="nav-number">3.2.</span> <span class="nav-text">多线程 invoke</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">性能模型分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%B7%B7%E5%90%88-add-remove-invoke"><span class="nav-number">3.3.</span> <span class="nav-text">多线程混合 add&#x2F;remove&#x2F;invoke</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">性能模型分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E8%AF%B7%E5%8F%82%E9%98%85"><span class="nav-number">4.</span> <span class="nav-text">另请参阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%B3%A8"><span class="nav-number">5.</span> <span class="nav-text">脚注</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从 .NET 开始的 Java 委托设计与实现 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从 .NET 开始的 Java 委托设计与实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-19 17:06:17" itemprop="dateCreated datePublished" datetime="2025-08-19T17:06:17+08:00">2025-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-08-31 15:08:03" itemprop="dateModified" datetime="2025-08-31T15:08:03+08:00">2025-08-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 <code>List&lt;Listener&gt;</code> 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。</p>
+<p>这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。</p>
+<h3 id="项目的现状"><a href="#项目的现状" class="headerlink" title="项目的现状"></a>项目的现状</h3><p>项目里的实现有两种</p>
+<h4 id="直接获取其他业务的引用"><a href="#直接获取其他业务的引用" class="headerlink" title="直接获取其他业务的引用"></a>直接获取其他业务的引用</h4><p>A 直接 调用了 B，B 又 调用了 C，D。还有 A 里写了本该是 B 处理的逻辑的问题，有的时候想找 B 的功能甚至得去 A<br>里找。有的地方改起来特别头疼，动一个地方好几个地方要一起改。</p>
+<h5 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h5><h6 id="直接的耦合"><a href="#直接的耦合" class="headerlink" title="直接的耦合"></a>直接的耦合</h6><p>直接持有其他对象的引用并调用耦合度过强了，逻辑会像网一样越织越复杂。<br>考虑到最坏的情况，有 N 个相互依赖的类：</p>
+<p>直接引用：</p>
+<p>O(N*(N-1)) 的复杂度，且依赖是直接的引用，非常强的耦合。</p>
+<p>观察者模式（Observer Pattern）：</p>
+<p>O(N*M) 的复杂度，N 为观察者，M为被观察者（subject）。依赖建立在被观察者和观察者之间，松耦合。</p>
+<ol>
+<li>M 通常会远小于 N</li>
+<li>M 一般只是个方法的集合，而不是业务类，耦合度低，维护成本也很低</li>
+</ol>
+<p>因此在实践中复杂度通常是 O(N)。</p>
+<p>发布订阅模式（Publish-Subscribe Pattern）：<br>O(M+N) 的复杂度，M 为发布者，N为订阅者。依赖建立在发布者和消息中介，订阅者和消息中介间，非常松耦合。</p>
+<p>比起观察者模式，发布者订阅者只需要关心主题（subject），只维护一个消息中介，而不是维护多个被观察者。</p>
+<p>对比表：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>依赖关系数量</th>
+<th>复杂度</th>
+<th>直观感受</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全互相依赖</td>
+<td>N*(N-1)</td>
+<td>O(N^2)</td>
+<td>地狱耦合 O(N^2)</td>
+</tr>
+<tr>
+<td>观察者模式 (Observer)</td>
+<td>N*M</td>
+<td>O(N*M)</td>
+<td>中等耦合 近似 O(N)</td>
+</tr>
+<tr>
+<td>发布订阅 (Pub&#x2F;Sub)</td>
+<td>M+N</td>
+<td>O(N)</td>
+<td>极低耦合 近似 O(1)</td>
+</tr>
+</tbody></table>
+<h6 id="派生的耦合"><a href="#派生的耦合" class="headerlink" title="派生的耦合"></a>派生的耦合</h6><p>当使用直接引用进行强耦合的同时，往往完全没必要的弱耦合也会出现，比如 A 直接引用 B，然后又在 A 里写了本该在 B<br>里处理的逻辑，这种现象在不同语境下有多种叫法：</p>
+<table>
+<thead>
+<tr>
+<th>叫法</th>
+<th>语境</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>职责泄漏 (Responsibility Leakage)</strong></td>
+<td>架构</td>
+<td>A 越界实现了 B 的逻辑，职责不清晰</td>
+</tr>
+<tr>
+<td><strong>逻辑泄漏 (Logic Leakage)</strong></td>
+<td>一般工程实践</td>
+<td>内部实现细节暴露到调用方</td>
+</tr>
+<tr>
+<td><strong>侵入式依赖 (Intrusive Dependency)</strong></td>
+<td>软件设计</td>
+<td>依赖对象的内部细节侵入调用方</td>
+</tr>
+<tr>
+<td><strong>领域逻辑泄漏 (Domain Logic Leakage)</strong></td>
+<td>DDD</td>
+<td>领域逻辑没有收敛在正确的领域模型或聚合根</td>
+</tr>
+<tr>
+<td><strong>贫血模型 (Anemic Domain Model)</strong></td>
+<td>DDD 反模式</td>
+<td>领域对象只有数据，没有行为，逻辑散落在应用层或服务层</td>
+</tr>
+<tr>
+<td><strong>横向逻辑扩散 (Logic Scattering)</strong></td>
+<td>面向切面编程&#x2F;架构</td>
+<td>同一类逻辑被分散到多个调用点</td>
+</tr>
+</tbody></table>
+<h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><p>直接引用带来的强耦合，不仅仅体现在 <strong>依赖数量</strong> 的复杂度上，更隐蔽的危害在于它会 <strong>诱导错误的逻辑分布</strong>。<br>这会导致开发的成本从开始到维护都很高，如果一开始就做好能省很多时间（当然后续能补救也是好的，至少后续不会再浪费时间了）。具体地，业务上的关系如果没有很强，那最好还是一开始就使用观察者模式或者发布订阅模式。</p>
+<h4 id="维护-List"><a href="#维护-List" class="headerlink" title="维护 List"></a>维护 List<Listener></h4><p>有几个 class 维护了多个 List<Listener>，每个 List<Listener> 都有增删和调用的 api，class 里光是这些 api 就有十来个方法。<br>不仅如此，有的这些调用的 api 里还混了这个class自身的其他操作。</p>
+<h5 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h5><p>可能是这个项目有很多人维护过，更新一些实现倒是有用 List<Listener> 实现了多播，使用了观察者模式处理业务。<br>但之前提到的派生的耦合的问题还在，而且违反了 DRY 原则，我在维护这个项目的时候经常是要到处找这些 List<Listener> 的 api，<br>看看有没有什么额外操作，又或者是有没有地方忘记加 api 了，很浪费时间。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>现在项目里直接引用和维护 List<Listener> 的方式都已经出现维护的时候很费时间的问题了，后面任务加了那么多再这样下去问题就更大了。<br>再这么浪费时间下去可不行，得像 .NET 的 multicast delegate 一样，提供一个统一多播实现。</p>
+<h2 id="设计与方案"><a href="#设计与方案" class="headerlink" title="设计与方案"></a>设计与方案</h2><h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><p>该库需要尽快完成，以满足项目需求，并确保高效开发。</p>
+<p>成熟可靠，因为这是要用在项目的核心功能上，关系到百万千万个用户的体验，不能出错。</p>
+<p>易用，我们的项目里有很多同事，水平参差不齐，得让大家都能用。我实际也问过同事，有的同事甚至都没听说过观察者模式。</p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>综合考虑，直接模仿 .NET 的 multicast delegate 是最合适的方案。又快又成熟可靠，还易用。<br>虽然 .NET 里的 delegate 一等公民而且还有方便的语法糖，我们在 java 里不能做到完全一样，但也能做到很接近。</p>
+<h3 id="详细设计"><a href="#详细设计" class="headerlink" title="详细设计"></a>详细设计</h3><p>由于 java 已经有 function interface（函数式接口）去作为 lambda 表达式的目标了，我们是无法做到像 .NET<br>一样委托和多播委托无感的。但用函数式接口去做委托，再用已经写好了的委托去写多播委托是可以的。</p>
+<h4 id="委托实现"><a href="#委托实现" class="headerlink" title="委托实现"></a>委托实现</h4><p>委托直接用函数式接口就行，主要是规范 api 和为多播委托做铺垫，同时不要忘记做好和 java 的适配。</p>
+<p>在实现前我们可以先做好 java EventListener[1] 的适配同时用接口标记 delegate</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.ryuu.functional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.EventListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Delegate</span> <span class="keyword">extends</span> <span class="title class_">EventListener</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保持和 .NET 一样，调用时的方法名称为 <code>... invoke(...)</code> 减少理解成本[2]。用<code>@FunctionalInterface</code>[3] 注解修饰实际的<br><code>delegate</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.ryuu.functional;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Action</span> <span class="keyword">extends</span> <span class="title class_">Delegate</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在委托就做好了。这样的另一个好处是，我们不需要在需要传 lambda 表达式的时候满世界找一个适配的函数式接口了，因为我们会像<br>.NET 一样预定义好：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">(T arg)</span>;</span><br><span class="line"><span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">(T1 arg1, T2 arg2)</span>;</span><br><span class="line">TResult <span class="title function_">invoke</span><span class="params">()</span>;</span><br><span class="line">TResult <span class="title function_">invoke</span><span class="params">(T arg)</span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="多播委托"><a href="#多播委托" class="headerlink" title="多播委托"></a>多播委托</h4><p>我们需要先清楚 .NET MulticastDelegate 的实现</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">sealed</span> <span class="keyword">override</span> Delegate <span class="title">CombineImpl</span>(<span class="params">Delegate? follow</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(SR.Arg_DlgtTypeMis);</span><br><span class="line">    <span class="keyword">return</span> NewMulticastDelegate(resultList, resultCount);</span><br><span class="line">    <span class="keyword">return</span> NewMulticastDelegate(resultList, resultCount, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">sealed</span> <span class="keyword">override</span> Delegate? RemoveImpl(Delegate <span class="keyword">value</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Special case - no values left</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>; </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">// they are both not real Multicast</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> NewMulticastDelegate(list, invocationCount - <span class="number">1</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="comment">// Special case - only one value left, either at the beginning or the end</span></span><br><span class="line">    <span class="keyword">return</span> (Delegate)invocationList[i != <span class="number">0</span> ? <span class="number">0</span> : invocationCount - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> NewMulticastDelegate(list, invocationCount - vInvocationCount, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="不可变性"><a href="#不可变性" class="headerlink" title="不可变性"></a>不可变性</h5><p>任何“修改”都通过构造新对象来完成。虽然 <code>MulticastDelegate</code> 内部维护了一个 <code>_invocationList</code>，但每次 <code>CombineImpl</code> 或<br><code>RemoveImpl</code> 实际上都会创建一个新的委托对象，而不会修改已有对象。这种方式使得委托本质上是不可变的（immutable）（虽然里面的 _<br>invocationList 在实现细节上并非只读）。</p>
+<p>在 Java 中，我们可以利用深拷贝和 <code>Collections.unmodifiableList</code> 来实现不可变性。</p>
+<h5 id="多播委托-1"><a href="#多播委托-1" class="headerlink" title="多播委托"></a>多播委托</h5><p>在 .NET 中，委托（delegate）统一由 <code>Delegate</code> &#x2F; <code>MulticastDelegate</code> 管理。<strong>用户代码层面并没有“单播 &#x2F; 多播”的区分</strong><br>，这个细节完全隐藏在实现内部：</p>
+<ul>
+<li>**单播 (single delegate)**：<code>invocationList</code> 为空，只存一个方法引用。</li>
+<li>**多播 (multicast delegate)**：<code>invocationList</code> 是数组，存多个方法引用。</li>
+</ul>
+<p>多播委托的合并与移除逻辑会自动处理这两种情况。因此，.NET 用户只会看到“委托可以 +&#x3D; &#x2F; -&#x3D; 方法”，而不会关心它当前是单播还是多播。</p>
+<p>在 Java 中，因为 lambda 表达式必然作用在单个函数的接口上，所以单播对用户是显式的，实现多播时可以与 .NET 一样过内部封装隐藏掉单播多播的区别。</p>
+<h5 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h5><p>在 c# 中可以直接用 +&#x3D; -&#x3D; 修改委托</p>
+<p>High-Level c#</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Fact</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Action a = () =&gt; &#123; &#125;;</span><br><span class="line">    Action b = () =&gt; &#123; &#125;;</span><br><span class="line">    a += b;</span><br><span class="line">    a -= b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Low-Level c#</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Fact</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Action a1 = UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_0 ?? (UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_0 = <span class="keyword">new</span> Action((<span class="built_in">object</span>) UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>, __methodptr(&lt;Test1&gt;b__0_0)));</span><br><span class="line">    Action b = UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_1 ?? (UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_1 = <span class="keyword">new</span> Action((<span class="built_in">object</span>) UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>, __methodptr(&lt;Test1&gt;b__0_1)));</span><br><span class="line">    Action a2 = (Action) Delegate.Remove(Delegate.Combine((Delegate) a1, (Delegate) b), (Delegate) b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>c# 在编译的时候把 <code>a += b</code> 和 <code>a -= b</code> 变成了 <code>Delegate.Remove </code>和<code>Delegate::Combine</code> 而且把新产生的对象赋回了 a。</p>
+<p>在 java 里我们是不可能通过编写代码实现这样的语法糖的，在 java 里用方法去实现就行。</p>
+<h3 id="栈式操作（Stack-Semantics）"><a href="#栈式操作（Stack-Semantics）" class="headerlink" title="栈式操作（Stack Semantics）"></a>栈式操作（Stack Semantics）</h3><ol>
+<li><strong>语义一致</strong><br>在委托（delegate）的操作语义上，<code>+=</code> 始终将新委托附加到 <strong>尾部</strong>（类似 <strong>push</strong>），而 <code>-=</code> 则撤销 <strong>最近一次添加的委托</strong>（类似<br><strong>pop</strong>）。这种设计确保了委托的修改符合 <strong>栈（LIFO）语义</strong>，简单直观。</li>
+<li><strong>实现高效</strong><br>从尾部开始查找和移除，可以直接截断尾部，操作成本低；若从头部开始匹配，则需要移动后续所有元素，效率更差。</li>
+</ol>
+<p>在 <strong>Java</strong> 中同样可以实现这种语义。做法是：</p>
+<ul>
+<li><strong>添加</strong>：始终往尾部追加。</li>
+<li><strong>删除</strong>：从尾部开始执行 <strong>子列表匹配（Sublist Matching）</strong>，只移除最近一次匹配到的委托。</li>
+</ul>
+<p>这样既能保证语义一致，又能在实现上保持高效。</p>
+<h5 id="event"><a href="#event" class="headerlink" title="event"></a>event</h5><p>c# 中 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/event">event</a>，是 <strong>基于 delegate<br>的一种特殊成员</strong></p>
+<p>High-Level c#</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">event</span> Action a = () =&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Low-Level c#</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line">[<span class="meta">DebuggerBrowsable(DebuggerBrowsableState.Never)</span>]</span><br><span class="line"><span class="keyword">private</span> Action a;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">event</span> Action a</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>] <span class="keyword">add</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 先读取当前事件委托链，存入 action1，这里是为了在循环中对比 CAS 是否成功</span></span><br><span class="line">        <span class="comment">// 虽然这里的 action1 和 this.a 引用类型的，但 delegate 是不可变的</span></span><br><span class="line">        <span class="comment">// this.a 改变时会引用一个新的实例，而 action1 还是会引用 this.a 改变前的旧实例</span></span><br><span class="line">        <span class="comment">// 如果是可变的：</span></span><br><span class="line">        <span class="comment">// this.a 改变时引用的实例没有改变，action1 引用的还是 this.a 的实例，此时无法进行 != 判断</span></span><br><span class="line">        Action action1 = <span class="keyword">this</span>.a;</span><br><span class="line">        <span class="comment">// 保存当前尝试的旧值</span></span><br><span class="line">        Action action2;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 存放 尝试用 CAS 更新的“旧值”。</span></span><br><span class="line">            action2 = action1;</span><br><span class="line">            <span class="comment">// public static T CompareExchange&lt;T&gt;(ref T location, T value, T comparand);</span></span><br><span class="line">            <span class="comment">// location：你要修改的变量（这里是 this.a）。</span></span><br><span class="line">            <span class="comment">// value：如果 location == comparand 条件满足，要写入的新值（这里是 Delegate.Combine(action2, value)）。</span></span><br><span class="line">            <span class="comment">// comparand：预期旧值（这里是 action2）。</span></span><br><span class="line">            <span class="comment">// return：location 在此操作之前的值（无论是否成功）</span></span><br><span class="line">            <span class="comment">// 这保证了无论怎样循环 action1 都是最新的 this.a 的值</span></span><br><span class="line">            action1 = Interlocked.CompareExchange&lt;Action&gt;(<span class="keyword">ref</span> <span class="keyword">this</span>.a, (Action) Delegate.Combine((Delegate) action2, (Delegate) <span class="keyword">value</span>), action2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// action1 不等于 action2（说明 CAS 失败，this.a 被其他线程修改过）。</span></span><br><span class="line">        <span class="comment">// 循环重新读取 this.a 并尝试合并。</span></span><br><span class="line">        <span class="keyword">while</span> (action1 != action2);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>] <span class="keyword">remove</span></span><br><span class="line">    &#123;</span><br><span class="line">        Action action1 = <span class="keyword">this</span>.a;</span><br><span class="line">        Action action2;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            action2 = action1;</span><br><span class="line">            action1 = Interlocked.CompareExchange&lt;Action&gt;(<span class="keyword">ref</span> <span class="keyword">this</span>.a, (Action) Delegate.Remove((Delegate) action2, (Delegate) <span class="keyword">value</span>), action2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (action1 != action2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可见编译器为 event 生成了 add 和 remove 访问器，使用了 CAS[4] 做自旋锁，来保证对多播的修改是线程安全的。</p>
+<p>在 Java 中，如果想实现类似的体验，可以通过 <strong>APT（Annotation Processing Tool）</strong> 来生成访问器代码，使使用体验更接近<br>.NET。然而，APT 会带来一些问题：</p>
+<ol>
+<li>增加了项目复杂度。</li>
+<li>IDE 对生成代码的支持可能不完善。</li>
+<li>用户自定义代码时，APT 生成的代码可能出现冲突或不易维护。</li>
+</ol>
+<p>考虑到这个项目是一个通用库，而不是语法糖增强工具，我们不会采用 APT 的方式。</p>
+<p>因此，我们选择通过 <strong>接口</strong> 实现类似 .NET 的 <code>event</code>：</p>
+<ul>
+<li>提供修改委托（添加&#x2F;移除）的方法。</li>
+<li>不暴露 <code>invoke</code> 方法给外部用户。</li>
+</ul>
+<p>这样既能保证多播操作的安全与一致性，也简化了使用和维护。</p>
+<h4 id="多播委托实现"><a href="#多播委托实现" class="headerlink" title="多播委托实现"></a>多播委托实现</h4><p>以多播委托移除为例，同时展示<strong>栈式操作</strong>，<strong>不可变性</strong>的具体实现：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">removeMulticastDelegate</span>(<span class="params">MulticastDelegate&lt;T&gt; multicastDelegate</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">int</span> sourceCount = count();</span><br><span class="line">    <span class="built_in">int</span> targetCount = multicastDelegate.count();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 栈式操作</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = sourceCount - targetCount; i &gt;= <span class="number">0</span>; i--) &#123; <span class="comment">// 从尾部开始</span></span><br><span class="line">        <span class="keyword">if</span> (subListEquals(multicastDelegate.delegates, i, targetCount)) &#123; <span class="comment">// 子表匹配</span></span><br><span class="line">            List&lt;T&gt; newList = <span class="keyword">new</span> ArrayList&lt;&gt;(delegates);</span><br><span class="line">            newList.subList(i, i + targetCount).clear();</span><br><span class="line">            delegates = Collections.unmodifiableList(newList); <span class="comment">// 内部实现 delegates 的不可变</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内部的添加方法为例，展示<strong>多播委托的内部隐藏单播多播区别</strong>实现：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addInternal</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">delegate</span> == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">delegate</span> instanceof MulticastDelegate) &#123;</span><br><span class="line">        addMulticastDelegate((MulticastDelegate&lt;T&gt;) <span class="built_in">delegate</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="comment">/* if (delegate instanceof Delegate) */</span> &#123;</span><br><span class="line">        addDelegate(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加为例，展示 <strong>event 多线程安全</strong>实现：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> final boolean isEvent;</span><br><span class="line"><span class="keyword">private</span> final Object delegatesWriteLock = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MulticastDelegate</span>(<span class="params">boolean isEvent</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isEvent = isEvent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> final <span class="keyword">void</span> <span class="title">add</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isEvent) &#123;</span><br><span class="line">        addSync(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        addAsync(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addSync</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    synchronized (delegatesWriteLock) &#123;</span><br><span class="line">        addInternal(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addAsync</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    addInternal(<span class="built_in">delegate</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们用的是 <code>synchronized</code> 保证多线程安全而不是基于 CAS<br>写一个自旋锁。我们需要考虑锁实现的性能，自旋锁是一种忙等（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Busy_waiting">busy waiting</a><br>），如果竞争很激烈[5]会非常浪费 CPU。这种情况可以让线程阻塞，CPU 还可以去执行其他线程，这样效率更高。</p>
+<p>代码段示例，展示 event 的<strong>调用全只留给声明事件的类内部</strong>实现：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Event</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">Delegate</span>&gt; &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">MulticastDelegate</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">Delegate</span>&gt; <span class="title">implements</span> <span class="title">Iterable</span>&lt;<span class="title">T</span>&gt;, <span class="title">Delegate</span>, <span class="title">Event</span>&lt;<span class="title">T</span>&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ClassWithActionsEvent</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> final Actions actions = Actions.<span class="keyword">event</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Event&lt;Action&gt; <span class="title">getActions</span>()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> actions;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">privateMethod</span>()</span> &#123;</span><br><span class="line">        actions.invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="微基准测试"><a href="#微基准测试" class="headerlink" title="微基准测试"></a>微基准测试</h2><p>.NET 的 delegate 的性能是不错的，我们可以使用 JMH(Java Microbenchmark Harness)[6]进行基准测试来查看是否符合性能模型。</p>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Param (baseActions)</th>
+<th>Sub-Benchmark</th>
+<th>Mode</th>
+<th>Cnt</th>
+<th>Score</th>
+<th>Error</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MultithreadInvokeBenchmark.invoke</td>
+<td>1</td>
+<td>total</td>
+<td>thrpt</td>
+<td>64</td>
+<td>270.771</td>
+<td>±5.094</td>
+<td>ops&#x2F;us</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.alloc.rate</td>
+<td>thrpt</td>
+<td>64</td>
+<td>8080.918</td>
+<td>±190.085</td>
+<td>MB&#x2F;sec</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.norm</td>
+<td>thrpt</td>
+<td>64</td>
+<td>32.001</td>
+<td>±0.001</td>
+<td>B&#x2F;op</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.count</td>
+<td>thrpt</td>
+<td>64</td>
+<td>6187.000</td>
+<td></td>
+<td>counts</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.time</td>
+<td>thrpt</td>
+<td>64</td>
+<td>4410.000</td>
+<td></td>
+<td>ms</td>
+</tr>
+<tr>
+<td>MultithreadMixedOpsBenchmark.mix</td>
+<td>1</td>
+<td>total</td>
+<td>thrpt</td>
+<td>64</td>
+<td>36.785</td>
+<td>±3.842</td>
+<td>ops&#x2F;us</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>add</td>
+<td>thrpt</td>
+<td>64</td>
+<td>0.507</td>
+<td>±0.054</td>
+<td>ops&#x2F;us</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>invoke</td>
+<td>thrpt</td>
+<td>64</td>
+<td>35.550</td>
+<td>±3.920</td>
+<td>ops&#x2F;us</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>remove</td>
+<td>thrpt</td>
+<td>64</td>
+<td>0.729</td>
+<td>±0.042</td>
+<td>ops&#x2F;us</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.alloc.rate</td>
+<td>thrpt</td>
+<td>64</td>
+<td>2004.565</td>
+<td>±83.029</td>
+<td>MB&#x2F;sec</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.norm</td>
+<td>thrpt</td>
+<td>64</td>
+<td>61.101</td>
+<td>±5.008</td>
+<td>B&#x2F;op</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.count</td>
+<td>thrpt</td>
+<td>64</td>
+<td>5122.000</td>
+<td></td>
+<td>counts</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.time</td>
+<td>thrpt</td>
+<td>64</td>
+<td>3669.000</td>
+<td></td>
+<td>ms</td>
+</tr>
+<tr>
+<td>SingleThreadInvokeBenchmark.invoke</td>
+<td>1</td>
+<td>total</td>
+<td>avgt</td>
+<td>64</td>
+<td>7.601</td>
+<td>±0.429</td>
+<td>ns&#x2F;op</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.alloc.rate</td>
+<td>avgt</td>
+<td>64</td>
+<td>3989.645</td>
+<td>±227.297</td>
+<td>MB&#x2F;sec</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.norm</td>
+<td>avgt</td>
+<td>64</td>
+<td>32.002</td>
+<td>±0.002</td>
+<td>B&#x2F;op</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.count</td>
+<td>avgt</td>
+<td>64</td>
+<td>4292.000</td>
+<td></td>
+<td>counts</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.time</td>
+<td>avgt</td>
+<td>64</td>
+<td>4203.000</td>
+<td></td>
+<td>ms</td>
+</tr>
+<tr>
+<td></td>
+<td>32</td>
+<td>total</td>
+<td>avgt</td>
+<td>64</td>
+<td>27.727</td>
+<td>±0.925</td>
+<td>ns&#x2F;op</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.alloc.rate</td>
+<td>avgt</td>
+<td>64</td>
+<td>1081.411</td>
+<td>±34.195</td>
+<td>MB&#x2F;sec</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.norm</td>
+<td>avgt</td>
+<td>64</td>
+<td>32.007</td>
+<td>±0.008</td>
+<td>B&#x2F;op</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.count</td>
+<td>avgt</td>
+<td>64</td>
+<td>4471.000</td>
+<td></td>
+<td>counts</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>gc.time</td>
+<td>avgt</td>
+<td>64</td>
+<td>3918.000</td>
+<td></td>
+<td>ms</td>
+</tr>
+</tbody></table>
+<h3 id="单线程-invoke"><a href="#单线程-invoke" class="headerlink" title="单线程 invoke"></a>单线程 invoke</h3><p>我们先从单线程的 <code>invoke</code> 性能分析开始，测试机器的 CPU 频率为 4.5GHz。执行速度测试结果如下：</p>
+<p><strong>单个委托执行</strong>消耗约 32 个 CPU 时钟周期，具体分布为：</p>
+<ul>
+<li><code>invokeinterface</code> 调用 + JIT 内联 lambda：约 3–10 cycles</li>
+<li>循环控制、列表访问、JVM 辅助调整及 CPU 流水线开销：约 20 cycles</li>
+</ul>
+<p>而执行 <strong>32 个委托的多播调用</strong>时，总开销仅约 126 个时钟周期：</p>
+<ul>
+<li>平均每个委托仅需 3–4 cycles，远低于单个委托的开销。</li>
+<li>这是因为多委托调用形成连续指令流，充分利用了 CPU 流水线，大幅减少了方法调用开销。</li>
+<li>另外，委托对象在内存中连续布局，提高了缓存命中率，有效摊平了列表访问和循环控制开销。</li>
+</ul>
+<h4 id="性能模型分析"><a href="#性能模型分析" class="headerlink" title="性能模型分析"></a>性能模型分析</h4><p>JVM 处理单个委托调用的开销主要来自<strong>方法调用和循环管理</strong>。</p>
+<h3 id="多线程-invoke"><a href="#多线程-invoke" class="headerlink" title="多线程 invoke"></a><strong>多线程 invoke</strong></h3><p>在 <code>MultithreadInvokeBenchmark.invoke</code> 中，我们测试了多线程环境下的 <code>invoke</code> 性能，基准测试结果显示：</p>
+<ul>
+<li>16个线程的<strong>总吞吐量</strong>约为 270.77 ops&#x2F;us，虽然高于单线程（3.694ns &lt; 7.6 ns），但性能瓶颈明显（GC）。</li>
+<li><strong>GC 分配率</strong>高达 8080 MB&#x2F;sec，表明多线程并发执行 <code>invoke</code> 时创建的快照式迭代器严重增加了垃圾回收负担。</li>
+<li><strong>每操作平均内存开销</strong>约 32 B，与单线程一致，这主要来自快照式迭代器的创建成本。</li>
+<li><strong>GC 时间与次数</strong>数据显示垃圾回收被频繁触发，特别是在短周期高频调用场景下，内存分配压力显著增大。</li>
+</ul>
+<h4 id="性能模型分析-1"><a href="#性能模型分析-1" class="headerlink" title="性能模型分析"></a>性能模型分析</h4><p>这是<strong>快照式迭代器</strong>的性能特征：读取速度快、线程安全，但在高频多线程调用下 GC 压力明显。</p>
+<h3 id="多线程混合-add-remove-invoke"><a href="#多线程混合-add-remove-invoke" class="headerlink" title="多线程混合 add&#x2F;remove&#x2F;invoke"></a><strong>多线程混合 add&#x2F;remove&#x2F;invoke</strong></h3><p>当我们将16线程 invoke 改为12线程 invoke、2线程 add、2线程 remove时，invoke 性能从270.771降至35.550，显著变慢。这是由于 invoke 的CPU缓存失效，线程间需要频繁同步内存数据所导致。而 add 和 remove 操作比 invoke 更慢，主要因为它们需要保证线程安全。</p>
+<h4 id="性能模型分析-2"><a href="#性能模型分析-2" class="headerlink" title="性能模型分析"></a>性能模型分析</h4><p><strong>写时复制表</strong>（Copy-On-Write List）的性能模型：读取操作高效，不受线程竞争影响，可并行执行多个读操作；写操作则需要复制并修改表，时间和空间成本较高，频繁写入会造成性能瓶颈。</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>至此微基准测试与分析完毕，基准测试结果表明，该实现符合预期的性能模型。</p>
+<h2 id="另请参阅"><a href="#另请参阅" class="headerlink" title="另请参阅"></a>另请参阅</h2><p>详细的实现请查看 <a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/functional.git">项目源码仓库</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/dotnet/runtime.git">dotnet runtime 仓库</a> 委托的实现在 <code>System.Private.CoreLib</code> 程序集中</p>
+<h2 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h2><p>[1] 详情请参考文档 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/EventListener.html">https://docs.oracle.com/javase/8/docs/api/java/util/EventListener.html</a></p>
+<p>[2] 在自然语言中，<code>invoke</code>是比<code>call</code>更正式的一个单词，例如，“invoke a law” （启用一条法律）或“invoke a blessing”<br>（祈求祝福）。一般用来表示某种东西被激活或应用。在编程中<code>invoke</code>一般是对事件，委托和回调的操作，而<code>call</code>是对函数和方法的直接调用。</p>
+<p>[3] <code>@FunctionalInterface</code>会将接口标记为函数式接口，这种类型的接口是lambda表达式和方法引用的目标。如果不小心添加了多个方法，编辑器会显示错误，如果需要一个函数式接口，请坚持使用<br><code>@FunctionalInterface</code>。同样的情况还有 <a href="/2021/07/14/Effective-Java-40%E5%9D%9A%E6%8C%81%E4%BD%BF%E7%94%A8Override%E6%B3%A8%E8%A7%A3/" title="Effective-Java-40坚持使用Override注解">Effective-Java-40坚持使用Override注解</a>。</p>
+<p>[4] 从线程安全性上来说，CAS 同时拥有原子性（硬件CPU指令级别的原子性），可见性（CAS操作自带内存屏障，操作结果立刻对其他线程可见）和有序性（CAS前后的代码会限制重排序），所以是线程安全的。</p>
+<p>从设计上来说 CAS 有 ABA 问题和忙等待（busy waiting）问题，但 delegate 是不可变对象，所以根本不会产生 ABA 的情况，而 +&#x3D;，-&#x3D;<br>操作频率远低于 invoke，一般来说不会忙等待或较少见，而如果选择加重锁，会额外引入用户态和内核态之间的上下文开销（唤醒线程又得有一次上下文切换开销）。</p>
+<p>[5] delegates 的业务是典型的读多写少，竞争激烈的情况应该不会很多，但无论如何我们还是要为使用者考虑，尽量覆盖更多情况。</p>
+<p>[6] 微基准测试是用来理解底层代价的，不能当作现时的使用场景，不能用于推测 QPS。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java-dotnet-delegate/" rel="tag"># java dotnet delegate</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/16/float-vs-decimal/" rel="prev" title="float vs decimal">
+                  <i class="fa fa-angle-left"></i> float vs decimal
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/08/21/%E5%8F%8C%E5%88%A0%E9%97%AE%E9%A2%98/" rel="next" title="双删问题">
+                  双删问题 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

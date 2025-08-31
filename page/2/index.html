@@ -15,10 +15,10 @@
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="Ryuu 的个人博客">
@@ -40,6 +40,23 @@
 
 
 
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
 
 
 
@@ -120,18 +137,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -180,6 +197,385 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/28/Unity-UnityEngine.Object%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/28/Unity-UnityEngine.Object%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AF%94%E8%BE%83/" class="post-title-link" itemprop="url">Unity-UnityEngine.Object的自定义比较</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-28 17:24:51" itemprop="dateCreated datePublished" datetime="2021-08-28T17:24:51+08:00">2021-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h2><h3 id="Unity-对象的空检测"><a href="#Unity-对象的空检测" class="headerlink" title="Unity 对象的空检测"></a>Unity 对象的空检测</h3><p><strong>UnityEngine.Object 有其自定义的空检测方法</strong>。</p>
+<p>因此 UnityEngine.Object 有两种空检测：</p>
+<ol>
+<li>检测 Unity 原生对象是否被销毁 (使用 UnityEngine.Object 自定义空检测)</li>
+<li>检测 Unity 对象是否初始化与正确引用  (使用 object.ReferenceEquals(monoBehaviour, null))</li>
+</ol>
+<h3 id="Unity-对象的生与死"><a href="#Unity-对象的生与死" class="headerlink" title="Unity 对象的生与死"></a>Unity 对象的生与死</h3><h4 id="原生对象与包装对象："><a href="#原生对象与包装对象：" class="headerlink" title="原生对象与包装对象："></a>原生对象与包装对象：</h4><p>Unity 是基于 C&#x2F;C++ 的引擎，GameObject 的所有实际信息 (name、component list、HideFlags 等等) 都存储在 C++ 对象中。此类对象被称为**”原生对象” (native object)**。</p>
+<p>C# GameObject 所有的仅是指向原生对象的指针 (pointer)。此类对象被称为**”包装对象” (wrapper object)**。</p>
+<p>C# 与 C++ 有不同的内存管理方式，这意味着<strong>包装对象与其包裹的原生对象有着不同的生命周期</strong>。</p>
+<p>当原生对象已被销毁，包装对象依然存在时，将包装对象其与 null 比较，**UnityEngine 的 &#x3D;&#x3D; 运算符严格执行 Unity object 底层的生命周期检查，返回 “true”**。</p>
+<h4 id="Real-null-与-Fake-null："><a href="#Real-null-与-Fake-null：" class="headerlink" title="Real null 与 Fake null："></a>Real null 与 Fake null：</h4><p>**在 Editor only 时，MonoBehaviour 不是 “real null” 而是 “fake null”**。[1]</p>
+<p>Unity 在 fake null object 中存储信息。当执行其方法 (method)，或访问其属性 (property) 时，可提供更多的上下文信息：</p>
+<p>在 fake null object 中存储信息，Unity 能够在检视窗口 (Inspector) 中高亮该 GameObject，并给出更多指引。如:”looks like you are accessing a non initialized field in this MonoBehaviour over here, use the inspector to make the field point to something” (看来您试图访问此 MonoBehaviour 的未实例化字段，请在检视窗口使其指向实例)。</p>
+<p>若不在 fake null object 中存储信息，只能得到 NullReferenceException 与堆栈跟踪。并不知道具体是哪个带有 MonoBehaviour 的 GameObject 有字段为 null。</p>
+<p><strong>UnityEngine 的 &#x3D;&#x3D; 运算符能够检测是否存在 fake null object</strong>。</p>
+<h3 id="Unity-相关代码"><a href="#Unity-相关代码" class="headerlink" title="Unity 相关代码"></a>Unity 相关代码</h3><p>反编译获得，不是源码。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UnityEngine.Object</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">operator</span> ==(Object x, Object y) =&gt; Object.CompareBaseObjects(x, y);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">operator</span> !=(Object x, Object y) =&gt; !Object.CompareBaseObjects(x, y);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">implicit</span> <span class="keyword">operator</span> <span class="title">bool</span>(<span class="params">Object exists</span>)</span> =&gt; !Object.CompareBaseObjects(exists, (Object) <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">Equals</span>(<span class="params"><span class="built_in">object</span> other</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Object rhs = other <span class="keyword">as</span> Object;</span><br><span class="line">    <span class="keyword">return</span> (!(rhs == (Object) <span class="literal">null</span>) || other == <span class="literal">null</span> || other <span class="keyword">is</span> Object) &amp;&amp; Object.CompareBaseObjects(<span class="keyword">this</span>, rhs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">CompareBaseObjects</span>(<span class="params">Object lhs, Object rhs</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">bool</span> flag1 = (<span class="built_in">object</span>) lhs == <span class="literal">null</span>;</span><br><span class="line">  <span class="built_in">bool</span> flag2 = (<span class="built_in">object</span>) rhs == <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (flag2 &amp; flag1)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (flag2)</span><br><span class="line">    <span class="keyword">return</span> !Object.IsNativeObjectAlive(lhs);</span><br><span class="line">  <span class="keyword">return</span> flag1 ? !Object.IsNativeObjectAlive(rhs) : lhs.m_InstanceID == rhs.m_InstanceID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsNativeObjectAlive</span>(<span class="params">Object o</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (o.GetCachedPtr() != IntPtr.Zero)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> !(o <span class="keyword">is</span> MonoBehaviour) &amp;&amp; !(o <span class="keyword">is</span> ScriptableObject) &amp;&amp; Object.DoesObjectWithInstanceIDExist(o.GetInstanceID());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>   <span class="doctag">&lt;para&gt;</span>Returns the instance id of the object.<span class="doctag">&lt;/para&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">SecuritySafeCritical</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">GetInstanceID</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">this</span>.EnsureRunningOnMainThread();</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.m_InstanceID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EnsureRunningOnMainThread</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (!Object.CurrentThreadIsMainThread())</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> InvalidOperationException(<span class="string">&quot;EnsureRunningOnMainThread can only be called from the main thread&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> IntPtr <span class="title">GetCachedPtr</span>()</span> =&gt; <span class="keyword">this</span>.m_CachedPtr;</span><br><span class="line"></span><br><span class="line">[<span class="meta">NativeMethod(IsFreeFunction = true, IsThreadSafe = true, Name = <span class="string">&quot;UnityEngineObjectBindings::DoesObjectWithInstanceIDExist&quot;</span>)</span>]</span><br><span class="line">[<span class="meta">MethodImpl(MethodImplOptions.InternalCall)</span>]</span><br><span class="line"><span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="built_in">bool</span> <span class="title">DoesObjectWithInstanceIDExist</span>(<span class="params"><span class="built_in">int</span> instanceID</span>)</span>;</span><br><span class="line"></span><br><span class="line">[<span class="meta">NativeMethod(IsFreeFunction = true, IsThreadSafe = true, Name = <span class="string">&quot;CurrentThreadIsMainThread&quot;</span>)</span>]</span><br><span class="line">[<span class="meta">MethodImpl(MethodImplOptions.InternalCall)</span>]</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="built_in">bool</span> <span class="title">CurrentThreadIsMainThread</span>()</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，Unity 实现了自己的空判断，并将其应用于重载的 !&#x3D; 运算符、&#x3D;&#x3D; 运算符、隐式 bool 转换运算符及重写的 System.Object 的 Equals(object obj) 中。</p>
+<p>其中涉及许多的逻辑，如确保方法调用于主线程，指定实例 id 的 UnityEngine.Object 是否存在，缓存的指针是否为 IntPtr.Zero，比较的两 UnityEngine.Object 的 实例 id 是否相同。及其他的外部方法调用。因此，<strong>相比于 object.ReferenceEquals() 的调用会被编译器优化为简单的空检查，Unity的自定义比较需要执行许多逻辑，速度较慢</strong>。</p>
+<h2 id="编写规范"><a href="#编写规范" class="headerlink" title="编写规范"></a>编写规范</h2><p>上文提到了 Unity 对象的两种 null 检测，<strong>编写代码时，一定要明确表意，确定为其中的一种</strong>。</p>
+<p>特别的，C# 的空合并运算符与空条件运算符将会绕过 Unity 的生命周期检查，导致表意不明：[2]</p>
+<h3 id="空合并运算符"><a href="#空合并运算符" class="headerlink" title="空合并运算符"></a>空合并运算符</h3><p>以下示例的表意不明确：是检查 gameObject 是否正确引用，还是检查原生 Unity 引擎对象是否已销毁？</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">var</span> go = gameObject ?? CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>若目的是检查底层引擎对象的生命周期，则此代码不正确，因为生命周期检查被绕过。</p>
+<p>使用显式 null 或 boolean 比较修复代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> go = gameObject != <span class="literal">null</span> ? gameObject : CreateNewGameObject();</span><br><span class="line"><span class="comment">// 也可使用隐式的 bool 转换运算符进行同样的检测</span></span><br><span class="line">go = gameObject ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>若目的是确保 gameObject 变量已被初始化并分配了有效的 C# 引用，推荐使用 object.ReferenceEquals()：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> !<span class="built_in">object</span>.ReferenceEquals(gameObject, <span class="literal">null</span>) ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>虽然稍显冗长，但表意十分明确。</p>
+<h3 id="空条件运算符"><a href="#空条件运算符" class="headerlink" title="空条件运算符"></a>空条件运算符</h3><p>以下示例的表意同样不明确：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line">monoBehaviour?.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>同样的，若目的是简单地检查 monoBehaviour 变量是否已正确初始化与引用，推荐使用 object.ReferenceEquals()：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">object</span>.ReferenceEquals(monoBehaviour, <span class="literal">null</span>))</span><br><span class="line">  monoBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>若目的是检查底层引擎对象的生命周期，推荐使用显式的 null 或 boolean 比较：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (monoBehaviour != <span class="literal">null</span>)</span><br><span class="line">  monoBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br><span class="line"><span class="comment">// 也可使用隐式的 bool 转换运算符</span></span><br><span class="line"><span class="keyword">if</span> (otherBehaviour)</span><br><span class="line">  otherBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="个人解决方案"><a href="#个人解决方案" class="headerlink" title="个人解决方案"></a>个人解决方案</h2><p>如果只是想检测 GameObject 是否初始化与正确引用，可以考虑使用 unity 平台宏 以及 C# 扩展方法对 ReferenceEquals 进行封装。[3]</p>
+<p>这样避免了在 editor 时 fake null object 引发的 ReferenceEquals 判断错误的问题，也提高了代码的可读性。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsSet</span>(<span class="params"><span class="keyword">this</span> GameObject gameObject</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">if</span> UNITY_EDITOR</span></span><br><span class="line">	<span class="keyword">return</span> gameObject;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	<span class="keyword">return</span> !ReferenceEquals(gameObject, <span class="literal">null</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="个人思考"><a href="#个人思考" class="headerlink" title="个人思考"></a>个人思考</h2><p>Unity 在与 null 进行比较时判断原生对象是否存活，而是不是检测 C# 对象。这种设计是反直觉的，大多数用户未注意到这种自定义比较。<a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">Custom &#x3D;&#x3D; operator, should we keep it? | Unity Blog</a> Unity 自己的开发者都忘记了。</p>
+<p>C# 的引用类型，若不是”值类” (Value class)，应采用默认的比较逻辑 (直接对引用进行比较)，不应重载的 !&#x3D;、&#x3D;&#x3D; 及隐式 bool 转换运算符，不应重写 System.Object 的 Equals(object obj) 方法。</p>
+<p>UnityEngine.Object 的比较逻辑有把自己的本职工作做好 (直接对引用进行比较)，又做了其他的工作 (判断原生对象是否存活)，这不符合单一职责原则。导致了两种空判断的存在，造成了可能的语义不明，与潜在的性能下降。这样增添的逻辑也导致其表现与 C# 的空合并运算符和空条件运算符不一致。导致在使用 UnityEngine.Object 没法很好的使用这两种运算符。若使用，则表意不明确，若不使用，则降低了代码的可读性 (见编写规范)。</p>
+<p>更好的方法可能是在 UnityEngine.Object 中加入 destroyed 这样的字段标识原生对象的存活情况。当用户想到知道时进行调用。[4]</p>
+<h2 id="参阅"><a href="#参阅" class="headerlink" title="参阅"></a>参阅</h2><p>Unity 的说明 <a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">Custom &#x3D;&#x3D; operator, should we keep it? | Unity Blog</a></p>
+<p>译文 <a href="/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/" title="Unity-自定义&#x3D;&#x3D;运算符，我们应该保留它吗">Unity-自定义&#x3D;&#x3D;运算符，我们应该保留它吗</a></p>
+<p>Resharper-unity 的说明 <a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains&#x2F;resharper-unity Wiki</a></p>
+<p>译文 <a href="/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" title="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/null-coalescing-operator">?? 和 ??&#x3D; 运算符 - C# 参考 | Microsoft Docs</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-">成员访问运算符和表达式 Null 条件运算符 ?. 和 ?[] - C# 参考</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">扩展方法 - C# 编程指南 | Microsoft Docs</a></p>
+<p>Real null 与 Fake null 的测试可见我的 github 仓库：<a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/UnityEngineObjectNullCheck">UnityEngineObjectNullCheck</a> (分别打包运行与编辑器运行对比区别)</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[1] 仅在编辑器中有这种情况。这也是为什么调用GetComponent() 查询不存在的组件时，有 C# 内存分配产生，因为此时 fake null object 中正在生成自定义警告字符串。</p>
+<p>这也是为什么测试游戏需要打包测试，而不是在编辑器测试。为了给用户提供便利，编辑器中做了很多额外的工作 (用例、安全检查等)，但是牺牲了性能。</p>
+<p>[2] 空合并运算符与空条件运算符是无法重载的，可能是因为这点，Unity 无法令其进行自定义的空检查</p>
+<p>[3] <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">扩展方法 - C# 编程指南 | Microsoft Docs</a></p>
+<p>[4] Unity 最终选择了不对其修改，而是修复由此带来的种种问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" class="post-title-link" itemprop="url">Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-28 16:46:23" itemprop="dateCreated datePublished" datetime="2021-08-28T16:46:23+08:00">2021-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>(Ryuu: 附上原文地址 : <a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains&#x2F;resharper-unity Wiki</a>)</p>
+<p>这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。</p>
+<p>若从 UnityEngine.Object 派生的类型使用空合并 (??) 或空传播或条件 (?.) 运算符，则会显示此警告。 这些运算符<strong>不会使用 UnityEngine.Object 上声明的自定义相等运算符</strong>，将绕过 Unity 原生(native)对象的存活检测。 为了阐明意图，最好使用显式 null 或 bool 比较，或调用 System.Object.ReferenceEquals()。</p>
+<h2 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h2><p>从 UnityEngine.Object 派生的类型是托管 .NET 对象，在 C# 脚本中用于表示与使用原生 Unity 引擎对象。这两种类型的对象具有<strong>不同的</strong>生命周期。托管的 .NET 对象在没有更多引用时被垃圾收集，而本地 Unity 引擎对象在加载新场景或通过显式调用 UnityEngine.Object.Destroy() 时被销毁。这意味着托管的 .NET 对象指向的原生对象可能已被销毁。 </p>
+<p>UnityEngine.Object 类定义了自定义相等运算符，当与 null 进行比较时，这些运算符将检查底层原生 Unity 引擎对象是否已被破坏。换句话说， myMonoBehaviour &#x3D;&#x3D; null 将检查是否已分配 myMonoBehaviour 变量，并且还将检查原生引擎对象是否已被销毁。可以使用布尔比较执行相同的检查，例如 if (myMonoBehaviour &#x3D;&#x3D; true) 或 if (!myMonoBehaviour) 或是 if (myMonoBehaviour)。</p>
+<p>如果使用空合并或条件运算符，则表意不明确，并且可能绕过预期的生命周期检查。如果打算进行生命周期检查，推荐使用与 null 或布尔比较的显式比较。若不打算进行生命周期检查，请调用 System.Object.ReferenceEquals() 以明确表意。注意，对 object.ReferenceEquals() 的调用被编译器优化为简单的空检查，比调用自定义相等运算符更快。</p>
+<h2 id="空合并运算符"><a href="#空合并运算符" class="headerlink" title="空合并运算符"></a>空合并运算符</h2><p>以下示例的表意不明确：是检查 gameObject是否正确引用，还是检查原生 Unity 引擎对象是否已销毁？</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> go = gameObject ?? CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>若目的是检查底层引擎对象的生命周期，则此代码不正确，因为生命周期检查被绕过。使用显式 null 或 boolean 比较修复代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> go = gameObject != <span class="literal">null</span> ? gameObject : CreateNewGameObject();</span><br><span class="line"><span class="comment">// 也可使用隐式的 bool 转换运算符进行同样的检测</span></span><br><span class="line">go = gameObject ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>若目的是确保 gameObject 变量已被初始化并分配了有效的 C# 引用，推荐使用显式调用 object.ReferenceEquals()：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> !<span class="built_in">object</span>.ReferenceEquals(gameObject, <span class="literal">null</span>) ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
+
+<p>虽然这种更改稍显冗长，但表意十分明确。</p>
+<h2 id="空条件运算符"><a href="#空条件运算符" class="headerlink" title="空条件运算符"></a>空条件运算符</h2><p>以下示例的表意同样不明确：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">monoBehaviour?.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>同样的，如果目的是简单地检查 monoBehaviour 变量是否已正确初始化与引用，推荐使用显式调用 object.ReferenceEquals()：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">object</span>.ReferenceEquals(monoBehaviour, <span class="literal">null</span>))</span><br><span class="line">  monoBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果目的是检查底层引擎对象的生命周期，推荐使用显式的 null 或 boolean 比较：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (monoBehaviour != <span class="literal">null</span>)</span><br><span class="line">  monoBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br><span class="line"><span class="comment">// 也可使用隐式的 bool 转换运算符</span></span><br><span class="line"><span class="keyword">if</span> (otherBehaviour)</span><br><span class="line">  otherBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="参阅"><a href="#参阅" class="headerlink" title="参阅"></a>参阅</h2><p>有关此主题的更多详细信息，请参阅 Unity 博客文章 <a target="_blank" rel="noopener" href="https://blogs.unity3d.com/2014/05/16/custom-operator-should-we-keep-it/">“Custom &#x3D;&#x3D; operator, should we keep it?”</a>. </p>
+<p>已翻译：<a href="/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" title="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/23/Unity-%E8%87%AA%E5%AE%9A%E4%B9%89==%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E4%BF%9D%E7%95%99%E5%AE%83%E5%90%97/" class="post-title-link" itemprop="url">Unity-自定义==运算符，我们应该保留它吗</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-23 10:53:29" itemprop="dateCreated datePublished" datetime="2021-08-23T10:53:29+08:00">2021-08-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>(Ryuu: 附上原文地址 : <a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">Custom &#x3D;&#x3D; operator, should we keep it?</a>)</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>Unity 的 &#x3D;&#x3D; 运算符有特殊实现 (UnityEngine.Object 重载了 &#x3D;&#x3D; 及 !&#x3D; 运算符)。</p>
+<ol>
+<li><p>当一个 MonoBehaviour 有字段，在 editor only <strong>[1]</strong> 时，这些字段不是 “real null”，而是 “fake null”。UnityEngine 的 &#x3D;&#x3D; 运算符能够检测是否存在 fake null object。</p>
+<p>虽然这样做很奇怪，但这能让 Unity 在 fake null object 中存储信息。当执行其方法 (method)，或访问其属性 (property)，提供更多的上下文信息。</p>
+<p>若不在 fake null object 中存储信息，只能得到 NullReferenceException，堆栈跟踪。并不知道具体是哪个带有 MonoBehaviour 的 GameObject 有字段为 null。</p>
+<p>在 fake null object 中存储信息，Unity 能够在检视窗口 (Inspector) 中高亮该 GameObject，并给出更多指引:”looks like you are accessing a non initialized field in this MonoBehaviour over here, use the inspector to make the field point to something” (看来你在 MonoBehaviour 中试图访问未实例化字段，请在检视窗口使其指向实例)。</p>
+</li>
+<li><p>第二点稍加复杂。</p>
+<p>当你获取 GameObject 类型的 c# object **[2]<strong>，他几乎不包含任何信息。这是因为 Unity 是基于 C&#x2F;C++ 的引擎。关于此 GameObject 的所有实际信息 (name，component list，HideFlags，等等) 都存活在 C++ 侧。C# object 所有的仅是指向原生对象 (native object) 的指针 (pointer)。我们称这样的对象为</strong>“包装对象” (wrapper objects)**。</p>
+<p>这些如 GameObject 的 c++ objects 及其他一切继承自 UnityEngine.Object 的生命周期都被明确的管理。当你加载新场景，或在其上调用 Object.Destroy(myObject); 时，这些 Object 将会被销毁。</p>
+<p>C# object 的生命周期有 C# 的管理方式，其具有垃圾收集器 (garbage collector) **[4]**。这意味着，有可能被包裹的 C++ Object 已经被销毁，但包裹它的 C# 包装对象依然存在。将此对象与 null 比较，UnityEngine 重载的 &#x3D;&#x3D; 会返回 true，尽管实际上的 C# 变量 (variable) 不为 null。</p>
+</li>
+</ol>
+<p>UnityEngine 自定义的空检测 (null check) 也导致许多缺陷</p>
+<ul>
+<li>这种自定义十分反直觉</li>
+<li>对两个 UnityEngine.Object 比较或与 null 比较，会比想象中的要慢</li>
+<li>UnityEngine 重载的 &#x3D;&#x3D; 是非线程安全 (not thread safe) 的 (这点 Unity 可在后续修复)</li>
+<li>其与 ?? 操作符的表现不一致，?? 同样进行空检测，但这是纯粹的 C# 空检测，会绕过 UnityEngine.Object 自定义空检测 <strong>[5]</strong></li>
+</ul>
+<p>回顾所有的这些优缺点，如果从头再构建 API，我们将不会选择自定义空检查，而是创建一个 myObject.destroyed 的属性，访问该属性以检测 object 的生死。让用户接受在空字段调用方法时不再提供更好的错误信息的事实。</p>
+<p>我们在思考我们是否应该改变此自定义运算符，我们一直在寻找 “修复，清除原始项目” 与 “不要破坏原始项目” 之间的正确的平衡。在这种情况下，我们想了解其他人的思考。</p>
+<p>对于 Unity5，我们一直在研究 Unity 自动更新脚本的能力 (于随后的博客中对此进行了详细介绍)。不幸的是，在本文情况下，我们无法使您的脚本自动升级 (无法准确辨识 “这个旧脚本确实需要旧的 behaviour” 和  “这个新脚本确实需要新的 behaviour” 的区分)。</p>
+<p>我们倾向于 “移除自定义 &#x3D;&#x3D; 运算符”，但还在犹豫，因为这将改变您工程中所有空检查的意义。对于对象不是 “really null” 而是已销毁对象的情况来说，空检查通常返回 true，如果我们修改了它，就会返回 false 了。若想检测变量是否指向被摧毁对象，需要把代码改成 “if (myObject.destroyed) {}”。我们对此有点紧张，无论你有没有读这篇文章，都很容易意识不到这种行为的改变，特别是大多数人根本没有意识到这种自定义空检查的存在。**[3]**</p>
+<p>如果我们作修改，应在 Unity5 上。对于非主要发行版，我们允许用户承受的升级痛苦阈值更低。</p>
+<p>你希望我们怎么做？以必须更改已有项目中的空检查为代价，提供更整洁的体验，或是保持现状？</p>
+<p>再见, Lucas (<a target="_blank" rel="noopener" href="https://twitter.com/lucasmeijer">@lucasmeijer</a>) **[6]</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[1] 我们只在编辑器中执行此操作。这就是为什么在调用GetComponent() 查询不存在的组件时，会看到 C# 内存分配产生，因为我们正在新分配的伪空对象中生成自定义警告字符串。在打包的游戏中，这种内存分配不会发生。这就是为什么测试游戏时，应在打包出来的独立端 (standalone 如 Mac, Windows or Linux) 或移动端测试，而不是在编辑器测试，因为我们在编辑器中做了很多额外的 安全&#x2F;用例检查，以使你的工作更轻松，而牺牲了一些性能。在分析性能和内存分配时，永远不要在编辑器，应始终分析构建出的游戏。</p>
+<p>[2] 不仅适用于 GameObject，也适用于继承自 UnityEngine.Object 的所有类。</p>
+<p>[3] 有趣的故事: 我在优化GetComponent<T>（）性能时遇到了这个问题，在为 transform 组件做一些缓存实现时，我没有看到任何性能优势。<a target="_blank" rel="noopener" href="https://twitter.com/jonasechterhoff">@jonasechterhoff</a> 也研究了此问题，得出了相同的结论。缓存代码如下所示：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Transform m_CachedTransform</span><br><span class="line"><span class="keyword">public</span> Transform transform</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">get</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (m_CachedTransform == <span class="literal">null</span>)</span><br><span class="line">      m_CachedTransform = InternalGetTransform();</span><br><span class="line">    <span class="keyword">return</span> m_CachedTransform;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实证明，我们自己的两位工程师都没有注意到空检查会比想象中更费时。这就是缓存没有带来速度提升的原因，”连我们自己都忘记了它 (Unity 自定义空检测)，会有多少用户会忘记了它？”，这使得我写下了此篇文章 :)</p>
+<p>[4] Ryuu: C# 托管对象的回收是 C# 垃圾回收器管理的，不能保证其生命周期和 C++ 侧对象完全一致。</p>
+<p>[5] Ryuu: 原文是 “and cannot be bypassed to call our custom null check”(可以绕过自定义空检测) 个人认为是写错了 (也可能是我英语太差，理解错了)，实际情况是，使用 ?? 或 ?. 都会绕过 UnityEngine.Object 的自定义空检测。附上 JetBrains&#x2F;resharper-unity 的解释页: <a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">Possible unintended bypass of lifetime check of underlying Unity engine object</a></p>
+<p>[6] Ryuu: 最后作者真香了，并没有移除自定义的空检查，而是想办法修复其产生的缺陷。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/05/Effective-CSharp-31%E6%8A%8A%E9%92%88%E5%AF%B9%E5%BA%8F%E5%88%97%E7%9A%84API%E8%AE%BE%E8%AE%A1%E5%BE%97%E6%9B%B4%E5%8A%A0%E6%98%93%E4%BA%8E%E6%8B%BC%E6%8E%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -193,7 +589,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -229,21 +625,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -262,10 +643,10 @@
 
 <p>此方法虽然简单，但是不能进行复用。</p>
 <p>可以考虑改用迭代器方法：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">UniqueV2</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> i <span class="keyword">in</span> <span class="title">UniqueV2</span>(<span class="params">nums</span>))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params">i</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    Console.WriteLine(UniqueV2(nums).First());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">UniqueV2</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> i <span class="keyword">in</span> <span class="title">UniqueV2</span>(<span class="params">nums</span>))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params">i</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    Console.WriteLine(UniqueV2(nums).First());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>有人认为这样改差不多，没什么好处。加上一些追踪语句，能让你更清楚此方法的运作：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">UniqueV2</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;\tEntering Unique&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;\tEvaluating <span class="subst">&#123;num.ToString()&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;\tRe-entering after yield return&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;\tExiting Unique&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Entering Unique</span></span><br><span class="line">    <span class="comment">// Evaluating 0</span></span><br><span class="line">    <span class="comment">// 0</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 3</span></span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 4</span></span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 5</span></span><br><span class="line">    <span class="comment">// 5</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 7</span></span><br><span class="line">    <span class="comment">// 7</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 3</span></span><br><span class="line">    <span class="comment">// Evaluating 2</span></span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 7</span></span><br><span class="line">    <span class="comment">// Evaluating 8</span></span><br><span class="line">    <span class="comment">// 8</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 0</span></span><br><span class="line">    <span class="comment">// Evaluating 3</span></span><br><span class="line">    <span class="comment">// Evaluating 1</span></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Exiting Unique</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> i <span class="keyword">in</span> <span class="title">UniqueV2</span>(<span class="params">nums</span>))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params">i</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//        Entering Unique</span></span><br><span class="line">    <span class="comment">//        Evaluating 0</span></span><br><span class="line">    <span class="comment">// 0</span></span><br><span class="line">    Console.WriteLine(UniqueV2(nums).First()); <span class="comment">// Ryuu: 添加一个示例</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// foreach (int num in Square(UniqueV2(nums)))</span></span><br><span class="line">    <span class="comment">//     Console.WriteLine($&quot;Number returned from unique square: &#123;num.ToString()&#125;&quot;);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">UniqueV2</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;\tEntering Unique&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;\tEvaluating <span class="subst">&#123;num.ToString()&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(num)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(num);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;\tRe-entering after yield return&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">&quot;\tExiting Unique&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Entering Unique</span></span><br><span class="line">    <span class="comment">// Evaluating 0</span></span><br><span class="line">    <span class="comment">// 0</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 3</span></span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 4</span></span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 5</span></span><br><span class="line">    <span class="comment">// 5</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 7</span></span><br><span class="line">    <span class="comment">// 7</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 3</span></span><br><span class="line">    <span class="comment">// Evaluating 2</span></span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 7</span></span><br><span class="line">    <span class="comment">// Evaluating 8</span></span><br><span class="line">    <span class="comment">// 8</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Evaluating 0</span></span><br><span class="line">    <span class="comment">// Evaluating 3</span></span><br><span class="line">    <span class="comment">// Evaluating 1</span></span><br><span class="line">    <span class="comment">// 1</span></span><br><span class="line">    <span class="comment">// Re-entering after yield return</span></span><br><span class="line">    <span class="comment">//     Exiting Unique</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> i <span class="keyword">in</span> <span class="title">UniqueV2</span>(<span class="params">nums</span>))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params">i</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//        Entering Unique</span></span><br><span class="line">    <span class="comment">//        Evaluating 0</span></span><br><span class="line">    <span class="comment">// 0</span></span><br><span class="line">    Console.WriteLine(UniqueV2(nums).First()); <span class="comment">// Ryuu: 添加一个示例</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// foreach (int num in Square(UniqueV2(nums)))</span></span><br><span class="line">    <span class="comment">//     Console.WriteLine($&quot;Number returned from unique square: &#123;num.ToString()&#125;&quot;);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>之所以有这样的效果，关键就在于 yield return 语句。此语句会返回值，并保留信息，记录当前执行的位置及内部迭代逻辑的状态。用此语句写出来的方法，输入输出值都是迭代器，其迭代逻辑可根据早前保留的信息判断当前应读取输入序列的哪一元素，据此生成并返回输出序列中的下一元素。此方法属于可从上次执行位置继续执行的方法 (continuable method)，系统每次运行它时，可根据先前记录的状态信息决定继续执行的位置。</p>
 <p>将 Unique() 方法改写成连续方法 (continuation method) 有两个好处：</p>
@@ -278,7 +659,7 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">IEnumerable</span>&lt;<span class="title">T</span>&gt; <span class="title">UniqueV3</span>&lt;<span class="title">T</span>&gt;(<span class="params">IEnumerable&lt;T&gt; sequence</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> uniqueSet = <span class="keyword">new</span> HashSet&lt;T&gt;();</span><br><span class="line">    <span class="keyword">foreach</span> (T item <span class="keyword">in</span> sequence)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (uniqueSet.Contains(item)) <span class="keyword">continue</span>;</span><br><span class="line">        uniqueSet.Add(item);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>迭代器方法可把多个步骤拼接成一套流程。若要输出是每一种数值的平方，接上一个 Square() 即可：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Square</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num * num;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> num <span class="keyword">in</span> <span class="title">Square</span>(<span class="params">UniqueV2(nums</span>)))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params"><span class="string">$&quot;Number returned from unique square: <span class="subst">&#123;num.ToString()&#125;</span>&quot;</span></span>)</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Square</span>(<span class="params">IEnumerable&lt;<span class="built_in">int</span>&gt; nums</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="built_in">int</span> num <span class="keyword">in</span> nums)</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> num * num;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] nums = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="built_in">int</span> num <span class="keyword">in</span> <span class="title">Square</span>(<span class="params">UniqueV2(nums</span>)))</span></span><br><span class="line"><span class="function">        Console.<span class="title">WriteLine</span>(<span class="params"><span class="string">$&quot;Number returned from unique square: <span class="subst">&#123;num.ToString()&#125;</span>&quot;</span></span>)</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>无论使用多少个迭代器方法，仅需将源序列迭代一次即可。</p>
 <p>将序列用作迭代器的输入参数。并令其输出另一序列是一种很好的思路，这使得开发者能设计更多的用法。若迭代器方法的参数不是一个序列而是两个，可用这样的迭代器方法将两个序列合并起来：</p>
@@ -326,7 +707,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -362,21 +743,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -452,7 +818,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -488,21 +854,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -581,7 +932,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -617,21 +968,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>448</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -704,7 +1040,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -740,21 +1076,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>128</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -805,7 +1126,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -841,21 +1162,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>12 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -947,7 +1253,7 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -983,21 +1289,6 @@
     </span>
 
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
-    </span>
 </div>
 
         </div>
@@ -1083,400 +1374,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/25/Effective-CSharp-8%E7%94%A8null%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">Effective-CSharp-8用null条件运算符调用事件处理程序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-25 14:53:39" itemprop="dateCreated datePublished" datetime="2021-07-25T14:53:39+08:00">2021-07-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>865</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>刚接触事件的人可能觉得触发事件是很容易的，只需将事件定义好，并在需要触发时调用相关的事件处理程序就可以了，底层的多播委托将会依次执行这些处理程序。实际上触发事件并不是如此简单。若根本没有事件对应的处理程序会怎样？若多个线程都要检测并调用事件处理程序，而线程之间互相争夺，会怎样？C# 6.0 引入的 null 条件运算符 (null-conditional operator，又称 null 传播运算符 (null-propagation operator)) 可用更加清晰的写法来解决这些问题。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventSource</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> counter;</span><br><span class="line">    <span class="keyword">private</span> EventHandler&lt;<span class="built_in">int</span>&gt; Updated;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        counter++;</span><br><span class="line">        Updated(<span class="keyword">this</span>, counter);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这种旧写法有个明显的问题：如在对象上出发 Updated 事件是并没有事件处理程序与之相关，将会发生 NullReferenceException，因为 C# 用 null 值表示这种没有处理程序与之相关的情况。于是，触发事件前，必须先判断事件处理程序是否为 null。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    <span class="keyword">if</span>(Updated != <span class="literal">null</span>)</span><br><span class="line">        Updated(<span class="keyword">this</span>, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但这种写法依然有 bug。当程序线程执行完 if 判断了 Updated 不为 null 后，可能会有另一个线程打断该线程，并解除订阅，这样的话依然会引发 NullReferenceException，虽然这种情况很少见。</p>
-<p>这个 bug 很难诊断，也很难修复。想重现该错误，必须按照上述线程的执行顺序执行。一些开发老手在此问题上吃过亏，他们知道其危险，改用另一个种写法：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    <span class="keyword">var</span> handler = Updated;</span><br><span class="line">    <span class="keyword">if</span>(handler != <span class="literal">null</span>)</span><br><span class="line">        handler(<span class="keyword">this</span>, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此方法是可行的，线程是安全的。但是从阅读的角度来看，看代码的人不太明白为何这样改后就能确保线程安全。</p>
-<p>var handler &#x3D; Updated; 这是对赋值号的右侧做 *浅拷贝 (shallow copy)*，也就是创建一个新的引用，指向其事件处理程序。因此，即使是 Updated 被其他线程注销，变为 null。也不会影响 handler，handler 依然保存了原先记录的事件订阅者。这段代码实际上是通过浅拷贝为事件订阅这做了份快照，触发事件时通过快照来触发事件处理程序。</p>
-<p>触发事件是一项简单的任务，不该用这么冗长且费解的方式去完成。</p>
-<p>有了 null 条件运算符，可以用更清晰的写法来实现：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RaiseUpdates</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    counter++;</span><br><span class="line">    Updated?.Invoke(<span class="keyword">this</span>, counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>采用了 null 条件运算符 (也就是 ?.) 安全地调用事件处理程序。该运算符首先对左侧内容进行 null 判断，若非 null 执行右侧内容。若为 null 则跳过此语句。</p>
-<p>从语义上来说这和 if 类似。但区别在于 ?. 运算符左侧的内容只会计算一次。</p>
-<p>由于 C# 不许 ?. 运算符右侧直接出现一对括号，因此必须用 Invoke() 去触发事件。每定义一种委托或事件，编译器都会为此生成类型安全的 Invoke()，这意味着，通过 Invoke 方法触发事件，使得代码篇幅更小，且线程安全。</p>
-<p>有了这种简单且清晰的写法后，原来的写法需要改一改了。以后触发事件都应采用此写法。</p>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-">成员访问运算符和表达式 - C# 参考</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/18/Effective-Java-50%E5%BF%85%E8%A6%81%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">Effective-Java-50必要时进行保护性拷贝</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-18 15:15:28" itemprop="dateCreated datePublished" datetime="2021-07-18T15:15:28+08:00">2021-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Java 用起来如此舒适的一个因素在于，它是一门安全的语言 (safe language)。这意味着，它对于缓冲区溢出、数组越界、非法指针以及其他的内存破坏错误都自动免疫，而这些错误却困扰着诸如 C 和 C++ 这样的不安全语言。在一门安全语言中，在设计类时，无论系统的其他部分发生什么问题，类的约束都可以保持为真。对于那些 “把所有内存当作一个巨大的数组来对待” 的语言来说，这是不可能的。</p>
-<p>即使在安全的语言中，如果不采取一点措施，还是无法与其它的类隔离开来。<strong>建设类的客户端会尽其所能来破坏这个类的约束条件，因此你必须保护性地设计程序。</strong>实际上，只有当有人试图破坏系统的安全性时，才可能发生这种情况；更有可能的是，对你的 API 产生误解的程序员，所导致的各种不可预期的行为，只好由类来处理。无论是何种情况，编写面对客户端的不良行为仍保持健壮性的类，这是非常值得投入时间去做的事情。</p>
-<p>如果没有对象的帮助，另一个类不可能修改对象的内部状态，但是对象很容易在无意识的情况下提供帮助。例如 下面的类表示一段不可变的时间周期：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken &quot;immutable&quot; time period class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Period</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date start;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date end;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Period</span><span class="params">(Date start, Date end)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (start.compareTo(end) &gt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(start + <span class="string">&quot; after &quot;</span> + end);</span><br><span class="line">        <span class="built_in">this</span>.start = start;</span><br><span class="line">        <span class="built_in">this</span>.end = end;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">start</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> start;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">end</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> end;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>乍看之下，此类似乎是不可变的，并且加了周期的起始时间 (start) 不能在结束时间 (end) 之后。然而，因为 Date 类本身是可变的，因此很容易违反这个约束条件：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Attack the internals of a Period instance</span></span><br><span class="line"><span class="type">Date</span> <span class="variable">start</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="type">Date</span> <span class="variable">end</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="type">Period</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Period</span>(start, end);</span><br><span class="line">end.setYear(<span class="number">78</span>); <span class="comment">// Modifies internals of p!</span></span><br></pre></td></tr></table></figure>
-
-<p>从 Java 8 开始，修正这个问题最明显的方式是使用 Instant (或 LocalDateTime，或者 ZonedDateTime) 代替 Date，因为 Instant (以及另一个 java.time 类) 是不可变类 (见17条)。<strong>Date 已经过时了，不应该在新代码中使用</strong>。</p>
-<p>为了保护 Period 实例的内部信息，避免受到此攻击，对于构造器的每个可变参数进行保护性拷贝 (defensive copy) 是必要的，并且使用备份对象作为 Period 实例的组件，而不使用原始的对象：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Repaired constructor - makes defensive copies of parameters</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">Period</span><span class="params">(Date start, Date end)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.start = <span class="keyword">new</span> <span class="title class_">Date</span>(start.getTime());</span><br><span class="line">    <span class="built_in">this</span>.end = <span class="keyword">new</span> <span class="title class_">Date</span>(end.getTime());</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.start.compareTo(<span class="built_in">this</span>.end) &gt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="built_in">this</span>.start + <span class="string">&quot; after &quot;</span> + <span class="built_in">this</span>.end);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>用了新的构造器之后，上述的攻击对于 Period 实例不再有效。注意，<strong>保护性拷贝是在检查参数的有效性 (见第38条) 之前进行的，并且有效性检查是针对拷贝之后的对象，而不是针对原始的对象</strong>。虽然这样做看起来有点不太自然，却是必要的。这样做可以避免在 “危险阶段” 期间从另一个线程改变类的参数，这里的危险阶段是指从检査参数开始，直到拷贝参数之间的时间段。在计算机安全社区中，这被称作Time-Of-Check &#x2F; Time-Of-Use 或者 TOCTOU 攻击 [ViegaO1]。</p>
-<p>同时也请注意，没有用 Date 的 clone 方法来进行保护性拷贝。因为 Date 是非 final 的， 不能保证 clone 方法一定返回类为 java.util.Date 的对象：有可能返回专门出于恶意的目的而设计的不可信子类实例。例如，子类可以在每个实例被创建的时候，把指向该实例的引用记录到一个私有的静态列表中，并且允许攻击者访问这个列表。这将使得攻击者可以 自由地控制所有的实例。为了阻止这种攻击，<strong>对于参数类型可以被不可信任方子类化的参数，不使用 clone 方法进行保护性拷贝</strong>。</p>
-<p>虽然替换构造器就可以成功地避免上述的攻击，但是改变 Period 实例仍然是有可能的，因为它的访问方法提供了对其可变内部成员的访问能力：**(Ryuu：原始方法返回的是其成员的视图，这样会导致 Period 可被修改)**</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Repaired accessors - make defensive copies of internal fields</span></span><br><span class="line"><span class="keyword">public</span> Date <span class="title function_">start</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Date</span>(start.getTime());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Date <span class="title function_">end</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Date</span>(end.getTime());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>采用了新的构造器和新的访问方法之后，Period 真正是不可变的了。不管程序员是多么恶意，或者多么不合格，都绝对不会违反 “周期的起始时间不能落后于结束时间” 的约束条件。因为除了 Period 类自身之外，其他任何类都无法访问 Period实例中的任何一个可变域。这些域被真正封装在对象的内部。</p>
-<p>访问方法与构造器不同，它们在进行保护性拷贝的时候允许使用 clone 方法。之所以如此， 是因为我们知道，Period 内部的 Date 对象的类是 java.util.Date，而不可能是其他某个潜在的不可信子类。也就是说，基于第11条中所阐述的原因，一般情况下，最好使用构造器或者静态工厂。</p>
-<p><strong>参数的保护性拷贝并不仅仅针对不可变类。每当编写方法或者构造器时，如果它要允许客户提供的对象进入到内部数据结构中，则有必要考虑，客户提供的对象是否有可能是可变的。如果是，就考虑你的类是否能够容忍对象进入数据结构之后发生变化。如果答案是否定的，就必须对该对象进行保护性拷贝，并且让拷贝之后的对象，而不是原始对象进入到数据结构中。</strong>例如，如果你正在考虑使用由客户提供的对象引用作为内部 Set 实例的元素，或者 作为内部Map实例的键 (key)，就应该意识到，如果这个对象在插入之后再被修改，Set 或者 Map 的约束条件就会遭到破坏。</p>
-<p>在内部组件被返回给客户端之前，对它们进行保护性拷贝也是同样的道理。不管类是否为不可变的，在把一个指向内部可变组件的引用返回给客户端之前，也应该加倍认真地考虑。 解决方案是，应该返回保护性拷贝。记住长度非零的数组总是可变的。因此，在把内部数组返回给客户端之前，应该总要进行保护性拷贝。另一种解决方案是，给客户端返回该数组的不可变视图（immutableview)。这两种方法在第13条中都已经演示过了。</p>
-<p>可以肯定地说，只要有可能，都应该使用不可变的对象作为对象内部的组件，这样就不必再为保护性拷贝（见第15条）操心。在前面的 Period 例子中，有经验的程序员通常使用 Date.getTime() 返回的 long 基本类型作为内部的时间表示法， 而不是使用 Date 对象引用。他们之所以这样做，主要因为 Date 是可变的。</p>
-<p>保护性拷贝可能会带来相关的性能损失，这种说法并不总是正确的。如果类信任它的调用者不会修改内部的组件，可能因为类及其客户端都是同一个包的双方，那么不进行保护性拷贝也是可以的。<strong>在这种情况下，类的文档中就必须淸楚地说明，调用者绝不能修改可受影响的参数或者返回值</strong>。</p>
-<p>即使跨越包的作用范围，也并不总是适合在将可变参数整合到对象中之前，对它进行保护性拷贝。有一些方法和构造器的调用，要求参数所引用的对象必须有个显式的交接过程。当客户端调用这样的方法时，它承诺以后不再直接修改该对象。如果方法或者构造器 期望接管一个由客户端提供的可变对象，它就必须在文档中明确地指明这一点。</p>
-<p>如果类所包含的方法或者构造器的调用需要移交对象的控制权，这个类就无法让自身抵御恶意的客户端。只有当类和它的客户端之间有着互相的信任，或者破坏类的约束条件不会伤害到除了客户端之外的其他对象时，这种类才是可以接受的。后一种情形的例子是包装类模式 (wrapper class pattern) (见第18条)。根据包装类的本质特征，客户端只需在对象被包装 之后直接访问它，就可以破坏包装类的约束条件，但是，这么做往往只会伤害到客户端自己。</p>
-<p>总结：如果类具有从客户端得到或者返回到客户端的可变组件，类就必须保护性地拷贝这些组件。如果拷贝的成本受到限制，并且类信任它的客户端不会不恰当地修改组件，就可以在文档中指明客户端的职责是不得修改受到影响的组件，以此来代替保护性拷贝。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/18/Effective-CSharp-4%E7%94%A8%E5%86%85%E6%8F%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%96%E4%BB%A3String-Format/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/18/Effective-CSharp-4%E7%94%A8%E5%86%85%E6%8F%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%96%E4%BB%A3String-Format/" class="post-title-link" itemprop="url">Effective-CSharp-4用内插字符串取代string.Format</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-18 15:03:10" itemprop="dateCreated datePublished" datetime="2021-07-18T15:03:10+08:00">2021-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>自从有了编程这门职业，开发者需要把计算机中板寸的信息转换成更便于人阅读的格式。C# 语言中的相关 API 可以追溯到几十年前诞生的 C 语言，但是这些旧习惯应该改变，C# 6.0 提供了内插字符串 (Interpolated String) 这项新功能可以更好的用来设置字符串格式。</p>
-<p>与旧习惯相比，这项功能有很多好处。开发者可用他们写出可读性更高的代码，编译器也可以用它实现更为完备的静态类型检查机制，降低程序出错概率。此外，它还可以提供更加丰富的语法，令你可以用更为合适的表达式来生成自己想要的字符串的格式。</p>
-<p>String.Format() 虽然可使用，但是会导致一些问题。</p>
-<ol>
-<li><strong>开发者必须对生成的字符串进行测试及验证</strong>。所有的替换操作都是根据格式字符串中的序号来完成的，而编译器不会验证格式字符串后的参数个数与有待替换的序号数是否相等。如果两者不相等，那么程序在运行时将抛出异常。</li>
-<li><strong>格式字符串中的序号与 params 数组中的位置必须对应</strong>。而阅读代码的人不太容易看出数组中的字符串是不是按照正确顺序排列。必须允许代码，并检查生成的字符串，才能确认这一点。</li>
-</ol>
-<p>不妨用 C# 提供的新特性简化代码编写工作，这项新特性就是内插字符串，这种语法糖 (syntactic sugar)，的功能是极其强大的。</p>
-<p>内插字符串以 $ 开头，不像传统的格式字符串把序号放在一对花括号，并用其指代的 params 数组中的对应元素，而是直接在花括号中编写 C# 表达式。</p>
-<ol>
-<li><strong>开发者能直接在字符串中看到待替换的内容，代码可读性高</strong>。</li>
-<li><strong>表达式在字符串内，每一个有待替换的部分都能与替换部分的表达式对应</strong>。</li>
-</ol>
-<p><strong>花括号中的内容叫作表达式而不是泛称为语句，其不能使用 if &#x2F; else 或 while 等控制流语句来做替换</strong>。若需要控制流语句做替换，那么必须把这些逻辑写成方法，在内插字符串里嵌入该方法的调用结果。</p>
-<p>字符串内插机制是通过库代码完成的，那些代码与当前的 string.Format() 类似 (至于如何实现国际化，见第五条)。内插字符串会在必要的时候把变量从其他类型转换为 string 类型：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The value of pi is <span class="subst">&#123;Math.PI&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>由字符串内插操作生成的代码会调用一个参数为 params 对象数组的格式化方法</strong>。 Math.PI 是 double 类型，而 double 类型是值类型，因此，必须将其自动转换为 Object 才行。此转换需装箱，**若此代码运行很频繁，或需要在短小的循环中反复执行，那么会严重影响性能 (见第9条)**。该情况下，开发者应自己去做字符串转换，这样就不需要给表达式中的数值装箱了：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The value of pi is <span class="subst">&#123;Math.PI.ToString()&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>如果 ToString() 直接返回的文本不符合你的要求，那么可以修改其他参数，创造你想要的文本：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The value of pi is <span class="subst">&#123;Math.PI.ToString(<span class="string">&quot;F2&quot;</span>)&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>可使用标准格式说明符 (C# 语言内建说明符) 来调整字符串格式</strong>。我们有可能需要对字符串做一些处理，或是把表达式返回的对象格式化，只需要在大括号中的表达式后面加上冒号，并将格式说明符写在右侧。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The value of pi is <span class="subst">&#123;Math.PI:F2&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>由于条件表达式也使用冒号，因此，如果在内插字符串中用冒号，那么 C# 可能会把他理解成格式说明符的前导符，而不将其视为条件表达式的一部分，这行代码是无法编译的：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The value of pi is <span class="subst">&#123;round ? Math.PI.ToString(): Math.PI.ToString(<span class="string">&quot;F2&quot;</span>)&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>可以用小括号将整个内容括起，编译器就不会再把冒号是为格式字符串的前导符了。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The value of pi is <span class="subst">&#123;(round ? Math.PI.ToString() : Math.PI.ToString(<span class="string">&quot;F2&quot;</span>))&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>可以通过 null 合并运算符 (null-coalescing operator) 与 null 条件运算符 (null-conditional operator，也称为 null-propagation operator (null 传播运算符)) 更清晰的处理</strong>那些可能缺失的值：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">$&quot;The customer&#x27;s name is <span class="subst">&#123;c?.name ?? <span class="string">&quot;Name is missing&quot;</span>&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>通过示例可以看出，花括号中还可以嵌入字符串，凡是位于 { 和 } 之间的字符，就都会被当作此表达式中的 C# 代码，并加以解析 (冒号除外，他是用来表示右侧的内容是格式说明符)。</p>
-<p><strong>内插字符串可以嵌套</strong>。合理利用此方法，可以极大的简化编程工作量。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(</span><br><span class="line">    <span class="string">$@&quot;Record is <span class="subst">&#123;(</span></span></span><br><span class="line"><span class="subst"><span class="string">        records.TryGetValue(index, <span class="keyword">out</span> <span class="built_in">string</span> result) ? result : <span class="string">$&quot;No record found at index <span class="subst">&#123;index&#125;</span>&quot;</span></span></span></span><br><span class="line"><span class="subst"><span class="string">    )&#125;</span>&quot;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>如果查找的记录不存在，那么就会执行条件表达式的 false 部分，从而令嵌套的内插字符串生效，该字符串会返回一条消息，指出要查找位置的记录不存在。</p>
-<p><strong>可以使用 LINQ 查询操作来创建内容,其本身也支持利用内插字符串调整查询结果格式</strong>：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> output = <span class="string">$@&quot;The First five items are: <span class="subst">&#123;</span></span></span><br><span class="line"><span class="subst"><span class="string">    src.Take(</span></span></span><br><span class="line"><span class="subst"><span class="string">        <span class="number">5</span></span></span></span><br><span class="line"><span class="subst"><span class="string">    ).Select(</span></span></span><br><span class="line"><span class="subst"><span class="string">        n =&gt; <span class="string">$@&quot;Item: <span class="subst">&#123;n.ToString()&#125;</span>&quot;</span></span></span></span><br><span class="line"><span class="subst"><span class="string">    ).Aggregate(</span></span></span><br><span class="line"><span class="subst"><span class="string">        (c, a) =&gt; <span class="string">$@&quot;<span class="subst">&#123;Environment.NewLine&#125;</span><span class="subst">&#123;a&#125;</span>&quot;</span></span></span></span><br><span class="line"><span class="subst"><span class="string">    )</span></span></span><br><span class="line"><span class="subst"><span class="string">&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>上面的这种写法可能不太会出现在正式的产品代码中，但可以看出，内插字符串和 C# 之间结合的相当密切。ASP.NET MVC 框架中的 Razor View 引擎也支持内插字符串，使得开发者在编写 Web 应用程序时能够更便捷地以 HTML 的形式来输出信息。默认的 MVC 应用程序本身就演示了怎样在 Razor View 中使用内插字符串，以下示例节选自 controller 部分，它可以显示当前登入的用户名：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">asp-controller</span>=<span class="string">&quot;Message&quot;</span> <span class="attr">asp-action</span>=<span class="string">&quot;Index&quot;</span> <span class="attr">title</span>=<span class="string">&quot;Manage&quot;</span>&gt;</span> Hello@User.GetUserName()!<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>构建应用程序中的其他 HTML 页面时，也可以采用这个技巧，更为精确地表达你想输出的内容。</p>
-<p>上述实例展示了内插字符串的强大功能，虽然这些功能可用传统格式化字符串实现，但是比较麻烦。值得注意的地方在于，内插字符串本身也会解析称为一条普通的字符串 (将其中的填充部分解析填充后，其与普通字符串无差别)。<strong>使用内插字符串创建 SQL 命令是极其危险的：内插字符串不会创建参数化的 SQL 查询 (parameterized SQL query)，只会形成一个普通的 string 对象，参数已经全部被写入至该 string 中了。不只是 SQL 命令，凡是需要留到运行时去解析的信息都有此风险</strong>，开发者需要特别小心。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1493,20 +1392,6 @@
     </span>
     <span class="author" itemprop="copyrightHolder">Ryuu</span>
   </div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="站点总字数">66k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">4:01</span>
-  </span>
-</div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
@@ -1529,24 +1414,6 @@
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-
-  
-
-
-
-
 
 </body>
 </html>
