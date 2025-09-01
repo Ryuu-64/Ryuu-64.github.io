@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="引子Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt; 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状项目里的实现有两种 直接获取其他业务的引用A 直接 调用了 B，B 又 调用了 C，D。还有 A 里">
+    <meta name="description" content="引子Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt;来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状项目里的实现有两种 直接获取其他业务的引用A 直接 调用了 B，B 又 调用了 C，D。还有 A 里写">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从 .NET 开始的 Java 委托设计与实现">
 <meta property="og:url" content="http://example.com/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="引子Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt; 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状项目里的实现有两种 直接获取其他业务的引用A 直接 调用了 B，B 又 调用了 C，D。还有 A 里">
+<meta property="og:description" content="引子Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt;来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状项目里的实现有两种 直接获取其他业务的引用A 直接 调用了 B，B 又 调用了 C，D。还有 A 里写">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-08-19T09:06:17.000Z">
-<meta property="article:modified_time" content="2025-08-31T07:08:03.546Z">
+<meta property="article:modified_time" content="2025-09-01T13:44:25.607Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java dotnet delegate">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-08-31 15:08:03" itemprop="dateModified" datetime="2025-08-31T15:08:03+08:00">2025-08-31</time>
+      <time title="修改时间：2025-09-01 21:44:25" itemprop="dateModified" datetime="2025-09-01T21:44:25+08:00">2025-09-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,7 +261,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 <code>List&lt;Listener&gt;</code> 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 <code>List&lt;Listener&gt;</code><br>来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。</p>
 <p>这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。</p>
 <h3 id="项目的现状"><a href="#项目的现状" class="headerlink" title="项目的现状"></a>项目的现状</h3><p>项目里的实现有两种</p>
 <h4 id="直接获取其他业务的引用"><a href="#直接获取其他业务的引用" class="headerlink" title="直接获取其他业务的引用"></a>直接获取其他业务的引用</h4><p>A 直接 调用了 B，B 又 调用了 C，D。还有 A 里写了本该是 B 处理的逻辑的问题，有的时候想找 B 的功能甚至得去 A<br>里找。有的地方改起来特别头疼，动一个地方好几个地方要一起改。</p>
@@ -700,7 +700,7 @@
 <li><strong>GC 时间与次数</strong>数据显示垃圾回收被频繁触发，特别是在短周期高频调用场景下，内存分配压力显著增大。</li>
 </ul>
 <h4 id="性能模型分析-1"><a href="#性能模型分析-1" class="headerlink" title="性能模型分析"></a>性能模型分析</h4><p>这是<strong>快照式迭代器</strong>的性能特征：读取速度快、线程安全，但在高频多线程调用下 GC 压力明显。</p>
-<h3 id="多线程混合-add-remove-invoke"><a href="#多线程混合-add-remove-invoke" class="headerlink" title="多线程混合 add&#x2F;remove&#x2F;invoke"></a><strong>多线程混合 add&#x2F;remove&#x2F;invoke</strong></h3><p>当我们将16线程 invoke 改为12线程 invoke、2线程 add、2线程 remove时，invoke 性能从270.771降至35.550，显著变慢。这是由于 invoke 的CPU缓存失效，线程间需要频繁同步内存数据所导致。而 add 和 remove 操作比 invoke 更慢，主要因为它们需要保证线程安全。</p>
+<h3 id="多线程混合-add-remove-invoke"><a href="#多线程混合-add-remove-invoke" class="headerlink" title="多线程混合 add&#x2F;remove&#x2F;invoke"></a><strong>多线程混合 add&#x2F;remove&#x2F;invoke</strong></h3><p>当我们将16线程 invoke 改为12线程 invoke、2线程 add、2线程 remove时，invoke 性能从270.771降至35.550，显著变慢。这是由于 invoke<br>的CPU缓存失效，线程间需要频繁同步内存数据所导致。而 add 和 remove 操作比 invoke 更慢，主要因为它们需要保证线程安全。</p>
 <h4 id="性能模型分析-2"><a href="#性能模型分析-2" class="headerlink" title="性能模型分析"></a>性能模型分析</h4><p><strong>写时复制表</strong>（Copy-On-Write List）的性能模型：读取操作高效，不受线程竞争影响，可并行执行多个读操作；写操作则需要复制并修改表，时间和空间成本较高，频繁写入会造成性能瓶颈。</p>
 <h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>至此微基准测试与分析完毕，基准测试结果表明，该实现符合预期的性能模型。</p>
 <h2 id="另请参阅"><a href="#另请参阅" class="headerlink" title="另请参阅"></a>另请参阅</h2><p>详细的实现请查看 <a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/functional.git">项目源码仓库</a></p>
@@ -711,7 +711,10 @@
 <p>[4] 从线程安全性上来说，CAS 同时拥有原子性（硬件CPU指令级别的原子性），可见性（CAS操作自带内存屏障，操作结果立刻对其他线程可见）和有序性（CAS前后的代码会限制重排序），所以是线程安全的。</p>
 <p>从设计上来说 CAS 有 ABA 问题和忙等待（busy waiting）问题，但 delegate 是不可变对象，所以根本不会产生 ABA 的情况，而 +&#x3D;，-&#x3D;<br>操作频率远低于 invoke，一般来说不会忙等待或较少见，而如果选择加重锁，会额外引入用户态和内核态之间的上下文开销（唤醒线程又得有一次上下文切换开销）。</p>
 <p>[5] delegates 的业务是典型的读多写少，竞争激烈的情况应该不会很多，但无论如何我们还是要为使用者考虑，尽量覆盖更多情况。</p>
-<p>[6] 微基准测试是用来理解底层代价的，不能当作现时的使用场景，不能用于推测 QPS。</p>
+<p>[6] 微基准测试是用来理解底层代价的，<strong>不能</strong>当作现时的使用场景，<strong>不能</strong>用于推测 QPS。</p>
+<p>基准测试的数值本身并不重要，重要的是我们可以从这些数值推导的<strong>性能模型</strong>（比如在我们的 delegate 里是<strong>快照不可变列表</strong>和*<br>*接口调用&#x2F;方法引用**的性能模型）。</p>
+<p>如果你对此很好奇请阅读 <a target="_blank" rel="noopener" href="https://shipilev.net/blog/2014/nanotrusting-nanotime/">nanotrusting-nanotime</a> 博客内容。</p>
+<p>如果你对代码的性能很好奇可以观看此视频 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9tvbz8CSI8M">code::dive conference 2015 - Andrei Alexandrescu - Writing Fast Code II</a></p>
 
     </div>
 
