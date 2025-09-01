@@ -143,12 +143,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -360,7 +360,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/08/21/%E5%8F%8C%E5%88%A0%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">双删问题</a>
+          <a href="/2025/08/21/%E5%8F%8C%E5%88%A0%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">双写一致性问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -370,9 +370,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-08-21 22:37:26 / 修改时间：23:04:00" itemprop="dateCreated datePublished" datetime="2025-08-21T22:37:26+08:00">2025-08-21</time>
+      <time title="创建时间：2025-08-21 22:37:26" itemprop="dateCreated datePublished" datetime="2025-08-21T22:37:26+08:00">2025-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-09-01 23:35:48" itemprop="dateModified" datetime="2025-09-01T23:35:48+08:00">2025-09-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -380,11 +386,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">分布式系统</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/%E4%B8%80%E8%87%B4%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">一致性</span></a>
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E4%B8%80%E8%87%B4%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">分布式系统 一致性</span></a>
         </span>
     </span>
 
@@ -395,14 +397,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>55</span>
+      <span>989</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -413,7 +415,63 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <table>
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在 <strong>缓存 + 数据库</strong> 的经典架构里，缓存通常作为加速层来缓解数据库压力。<br>但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。</p>
+<p>常见的更新顺序有两种：</p>
+<ol>
+<li><p><strong>先写数据库，再写缓存</strong></p>
+<ul>
+<li>优点：简单直观，能保证数据库最终一致性。</li>
+<li>缺点：在删除缓存和数据库更新之间的时间差，可能有请求先查到老数据，一致性弱。</li>
+</ul>
+</li>
+<li><p><strong>先写缓存，再写数据库</strong></p>
+<ul>
+<li>优点：能一定程度上减少脏读。</li>
+<li>缺点：如果数据库更新失败，就会丢掉缓存，反而更糟。</li>
+</ul>
+</li>
+</ol>
+<p>因此我们大多时候会选择先写数据库再写缓存。</p>
+<h2 id="删除与更新"><a href="#删除与更新" class="headerlink" title="删除与更新"></a>删除与更新</h2><p>在写缓存的时候我们可以选择删除或者更新，大多数时候我们会选择更新，因为[1]：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"><strong>删除缓存 (Cache-Aside)</strong></th>
+<th align="left"><strong>更新缓存</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>复杂程度</strong></td>
+<td align="left">简单</td>
+<td align="left">复杂</td>
+</tr>
+<tr>
+<td align="left"><strong>幂等性</strong></td>
+<td align="left"><strong>天然幂等</strong>（无论怎么删，最终结果都是缓存被删除了）</td>
+<td align="left">非幂等操作</td>
+</tr>
+<tr>
+<td align="left"><strong>并发写安全</strong></td>
+<td align="left"><strong>安全</strong> (删除顺序不影响最终状态)</td>
+<td align="left"><strong>不安全</strong> (并发更新可能导致缓存数据错乱或覆盖，即使是redis也只保证单个命令是安全的)</td>
+</tr>
+<tr>
+<td align="left"><strong>效率</strong></td>
+<td align="left"><strong>高</strong> (直接删除，不关心数据)</td>
+<td align="left"><strong>低</strong> (可能频繁更新一个后续无人读取的值，消耗CPU和带宽，特别是当你在维护一个复杂的缓存时)</td>
+</tr>
+<tr>
+<td align="left"><strong>数据最终一致性</strong></td>
+<td align="left"><strong>更易保证</strong> (删除不依赖数据)</td>
+<td align="left"><strong>更难保证</strong> (依赖数据，若顺序错误可能脏甚至是错误)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="缓存失效策略（Cache-Aside-Lazy-Loading）"><a href="#缓存失效策略（Cache-Aside-Lazy-Loading）" class="headerlink" title="缓存失效策略（Cache-Aside &#x2F; Lazy-Loading）"></a>缓存失效策略（Cache-Aside &#x2F; Lazy-Loading）</h2><p>写数据库，删除缓存，下次请求重建缓存，简单可靠。</p>
+<h3 id="双删"><a href="#双删" class="headerlink" title="双删"></a>双删</h3><p>双删也是经常提到的办法，属于一种增强版的写数据库后删除缓存，能够减少不一致窗口期。</p>
+<p><strong>在更新数据库之后，执行两次缓存删除操作</strong>：</p>
+<table>
 <thead>
 <tr>
 <th>事务A</th>
@@ -445,6 +503,47 @@
 <td></td>
 </tr>
 </tbody></table>
+<p>第二次删除缓存通常会延迟，目的是解决以下问题：</p>
+<table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>写数据库 val &#x3D; 37</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>写数据库 val &#x3D; 42</td>
+</tr>
+<tr>
+<td></td>
+<td>写缓存 val &#x3D; 42</td>
+</tr>
+<tr>
+<td>写缓存 val &#x3D; 37</td>
+<td></td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>延迟时间的选择</strong><br>延迟需要大于业务中可能的并发请求处理时间。</li>
+<li><strong>幂等性</strong><br>删除缓存操作需要是幂等的，即多删几次不会有副作用。</li>
+</ol>
+<h3 id="双删缺陷"><a href="#双删缺陷" class="headerlink" title="双删缺陷"></a>双删缺陷</h3><p><strong>弱一致性</strong></p>
+<ul>
+<li>在第一次删除和第二次删除之间，如果有读请求访问数据，还是可能会从数据库加载旧数据回填缓存 → <strong>读到脏数据</strong>。</li>
+<li>因此双删保证的只是 <strong>最终一致性</strong>，<strong>无法保证</strong>请求级别的<strong>强一致性</strong>。</li>
+</ul>
+<p><strong>令人纠结的时间</strong></p>
+<ul>
+<li><strong>延迟太短</strong>：第二次删除可能还没覆盖到并发读回填的缓存，最终一致性可能都无法保证（长时间或永久脏缓存）。</li>
+<li><strong>延迟太长</strong>：第二次删除的间隔内，缓存可能被大量请求读写回填，脏数据存在的时间过长（脏数据多）。</li>
+</ul>
+<p>实际上，延迟双删更多是工程<strong>妥协</strong>：在读多写少、对短时间不一致可容忍的业务场景下适用（个人感觉有点骚操作，不过能保证最终一致性的同时还能减少脏数据时间总是好的）。</p>
+<h2 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h2><p>[1] 删除是 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/KISS_principle">KISS原则</a>和 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">YAGNI原则</a> 的体现。此外，好的设计往往是对需求的精准把握，我们作为设计师要从需求好好考虑，找到最关键的问题，简单并不是简陋。</p>
 
       
     </div>
@@ -471,7 +570,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/19/%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%20%E4%BB%8E%20.NET%20%E5%88%B0%20Java/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -489,7 +588,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/08/19/%E4%BB%8E%20.NET%20%E5%BC%80%E5%A7%8B%E7%9A%84%20Java%20%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">从 .NET 开始的 Java 委托设计与实现</a>
+          <a href="/2025/08/19/%E5%A7%94%E6%89%98%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%20%E4%BB%8E%20.NET%20%E5%88%B0%20Java/" class="post-title-link" itemprop="url">委托设计与实现 从 .NET 到 Java</a>
         </h2>
 
         <div class="post-meta-container">
@@ -507,7 +606,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-09-01 21:44:25" itemprop="dateModified" datetime="2025-09-01T21:44:25+08:00">2025-09-01</time>
+      <time title="修改时间：2025-09-01 23:03:10" itemprop="dateModified" datetime="2025-09-01T23:03:10+08:00">2025-09-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1974,13 +2073,13 @@ table th:nth-of-type(3) {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">72k</span>
+    <span title="站点总字数">73k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:21</span>
+    <span title="站点阅读时长">4:25</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
