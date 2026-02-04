@@ -137,18 +137,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -188,6 +188,114 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/30/Hexo-%E5%BC%95%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%87%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/30/Hexo-%E5%BC%95%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%87%E7%AB%A0/" class="post-title-link" itemprop="url">Hexo-引用自己的文章</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-30 16:47:15" itemprop="dateCreated datePublished" datetime="2021-08-30T16:47:15+08:00">2021-08-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>86</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>文章名称不需要后缀名</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post<span class="emphasis">_link 文章名称 %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post<span class="emphasis">_link Hello-World %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>文章链接配置位于 _config.yml 中 permalink</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as &#x27;http://yoursite.com/child&#x27; and root as &#x27;/child/&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://yoursite.com</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1367,163 +1475,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/26/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/26/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" class="post-title-link" itemprop="url">Java-垃圾收集器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-26 16:59:06" itemprop="dateCreated datePublished" datetime="2021-07-26T16:59:06+08:00">2021-07-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>在对象中添加一个引用计数器，每当有一个对他的引用，计数器值加一；引用失效时，计数器减一；任何时刻计数器为 0 的对象都是不可能再被使用的对象。</p>
-<p>引用记数算法 (Reference Counting) 虽然占用了一些额外的内存空间来进行记数，但原理简单，判定效率高，大多数情况下都是不错的算法。也有一些著名的应用案例，如微软 COM (Component Object Model) 技术、使用 ActionScript 3 的 FlashPlayer、Python 语言以及在游戏脚本领域得到许多应用的 Squirrel 中都使用了引用记数算法进行内存管理。</p>
-<p>但是，在 Java 领域，至少是主流的 Java 虚拟机里都没有选用引用计数算法进行内存管理，这个看似简单的算法有很多例外情况要考虑，必须配合大量额外处理才能保证其正确工作。</p>
-<p>请看如下的 testGC()：这两个对象最终都不可被访问 (最后都置 nul)，但是因为他们存在相互引用 (对象 objA 和 objB 都有字段 instance，并利用该字段进行相互引用)，引用记数算法将无法回收他们。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ReferenceCountingGC</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">Object</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">_1MB</span> <span class="operator">=</span> <span class="number">1</span> &lt;&lt; <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">byte</span>[] bigSize = <span class="keyword">new</span> <span class="title class_">byte</span>[_1MB]; <span class="comment">// 占点内存以方便得知是否被回收</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">testGC</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ReferenceCountingGC</span> <span class="variable">objA</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReferenceCountingGC</span>();</span><br><span class="line">        <span class="type">ReferenceCountingGC</span> <span class="variable">objB</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReferenceCountingGC</span>();</span><br><span class="line">        objA.instance = objB;</span><br><span class="line">        objB.instance = objA;</span><br><span class="line"></span><br><span class="line">        objA = <span class="literal">null</span>;</span><br><span class="line">        objB = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 建议 gc 进行回收</span></span><br><span class="line">        System.gc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>(Ryuu: 我这里用的是 G1 回收器，gc 日志跟作者的不一样)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0.</span>007s][info][gc] Using G1</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Version: <span class="number">16.0</span><span class="number">.2</span>+<span class="number">7</span>-<span class="number">67</span> (release)</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] CPUs: <span class="number">12</span> total, <span class="number">12</span> available</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Memory: 32717M</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Large Page Support: Disabled</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] NUMA Support: Disabled</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Compressed Oops: Enabled (Zero based)</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Heap Region Size: 4M</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Heap Min Capacity: 8M</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Heap Initial Capacity: 512M</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Heap Max Capacity: 8180M</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Pre-touch: Disabled</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Parallel Workers: <span class="number">10</span></span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Concurrent Workers: <span class="number">3</span></span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Concurrent Refinement Workers: <span class="number">10</span></span><br><span class="line">[<span class="number">0.</span>010s][info][gc,init] Periodic GC: Disabled</span><br><span class="line">[<span class="number">0.</span>010s][info][gc,metaspace] CDS <span class="title function_">archive</span><span class="params">(s)</span> mapped at: [<span class="number">0x0000000800000000</span>-<span class="number">0x0000000800bb0000</span>-<span class="number">0x0000000800bb0000</span>), size <span class="number">12255232</span>, SharedBaseAddress: <span class="number">0x0000000800000000</span>, ArchiveRelocationMode: <span class="number">0.</span></span><br><span class="line">[<span class="number">0.</span>010s][info][gc,metaspace] Compressed <span class="keyword">class</span> <span class="title class_">space</span> mapped at: <span class="number">0x0000000800c00000</span>-<span class="number">0x0000000840c00000</span>, reserved size: <span class="number">1073741824</span></span><br><span class="line">[<span class="number">0.</span>010s][info][gc,metaspace] Narrow klass base: <span class="number">0x0000000800000000</span>, Narrow klass shift: <span class="number">3</span>, Narrow klass range: <span class="number">0x100000000</span></span><br><span class="line">[<span class="number">0.</span>088s][info][gc,task     ] GC(<span class="number">0</span>) Using <span class="number">10</span> workers of <span class="number">10</span> <span class="keyword">for</span> full compaction</span><br><span class="line">[<span class="number">0.</span>088s][info][gc,start    ] GC(<span class="number">0</span>) Pause <span class="title function_">Full</span> <span class="params">(System.gc()</span>)</span><br><span class="line">[<span class="number">0.</span>088s][info][gc,phases,start] GC(<span class="number">0</span>) Phase <span class="number">1</span>: Mark live objects</span><br><span class="line">[<span class="number">0.</span>089s][info][gc,phases      ] GC(<span class="number">0</span>) Phase <span class="number">1</span>: Mark live objects <span class="number">0.</span>833ms</span><br><span class="line">[<span class="number">0.</span>089s][info][gc,phases,start] GC(<span class="number">0</span>) Phase <span class="number">2</span>: Prepare <span class="keyword">for</span> compaction</span><br><span class="line">[<span class="number">0.</span>090s][info][gc,phases      ] GC(<span class="number">0</span>) Phase <span class="number">2</span>: Prepare <span class="keyword">for</span> compaction <span class="number">0.</span>761ms</span><br><span class="line">[<span class="number">0.</span>090s][info][gc,phases,start] GC(<span class="number">0</span>) Phase <span class="number">3</span>: Adjust pointers</span><br><span class="line">[<span class="number">0.</span>090s][info][gc,phases      ] GC(<span class="number">0</span>) Phase <span class="number">3</span>: Adjust pointers <span class="number">0.</span>477ms</span><br><span class="line">[<span class="number">0.</span>090s][info][gc,phases,start] GC(<span class="number">0</span>) Phase <span class="number">4</span>: Compact heap</span><br><span class="line">[<span class="number">0.</span>091s][info][gc,phases      ] GC(<span class="number">0</span>) Phase <span class="number">4</span>: Compact heap <span class="number">0.</span>571ms</span><br><span class="line">[<span class="number">0.</span>092s][info][gc,heap        ] GC(<span class="number">0</span>) Eden regions: <span class="number">2</span>-&gt;<span class="number">0</span>(<span class="number">1</span>)</span><br><span class="line">[<span class="number">0.</span>092s][info][gc,heap        ] GC(<span class="number">0</span>) Survivor regions: <span class="number">0</span>-&gt;<span class="number">0</span>(<span class="number">0</span>)</span><br><span class="line">[<span class="number">0.</span>092s][info][gc,heap        ] GC(<span class="number">0</span>) Old regions: <span class="number">0</span>-&gt;<span class="number">1</span></span><br><span class="line">[<span class="number">0.</span>092s][info][gc,heap        ] GC(<span class="number">0</span>) Archive regions: <span class="number">0</span>-&gt;<span class="number">0</span></span><br><span class="line">[<span class="number">0.</span>092s][info][gc,heap        ] GC(<span class="number">0</span>) Humongous regions: <span class="number">0</span>-&gt;<span class="number">0</span></span><br><span class="line">[<span class="number">0.</span>092s][info][gc,metaspace   ] GC(<span class="number">0</span>) Metaspace: 488K(704K)-&gt;488K(704K) NonClass: 462K(576K)-&gt;462K(576K) Class: 25K(128K)-&gt;25K(128K)</span><br><span class="line">[<span class="number">0.</span>092s][info][gc             ] GC(<span class="number">0</span>) Pause <span class="title function_">Full</span> <span class="params">(System.gc()</span>) 4M-&gt;0M(16M) <span class="number">4.</span>173ms</span><br><span class="line">[<span class="number">0.</span>093s][info][gc,cpu         ] GC(<span class="number">0</span>) User=<span class="number">0.</span>00s Sys=<span class="number">0.</span>00s Real=<span class="number">0.</span>00s</span><br><span class="line">[<span class="number">0.</span>093s][info][gc,heap,exit   ] Heap</span><br><span class="line">[<span class="number">0.</span>094s][info][gc,heap,exit   ]  garbage-first heap   total 16384K, used 1039K [<span class="number">0x0000000600c00000</span>, <span class="number">0x0000000800000000</span>)</span><br><span class="line">[<span class="number">0.</span>094s][info][gc,heap,exit   ]   region size 4096K, <span class="number">1</span> young (4096K), <span class="number">0</span> survivors (0K)</span><br><span class="line">[<span class="number">0.</span>094s][info][gc,heap,exit   ]  Metaspace       used 491K, committed 704K, reserved 1056768K</span><br><span class="line">[<span class="number">0.</span>094s][info][gc,heap,exit   ]   <span class="keyword">class</span> <span class="title class_">space</span>    used 25K, committed 128K, reserved 1048576K</span><br></pre></td></tr></table></figure>
-
-<p>gc 日志中可见 “Pause Full (System.gc()) 4M-&gt;0M(16M) 4.173ms”，这说明虚拟机并没有因为两个对象存在相互引用就放弃回收他们，也说明了 Java 虚拟机并不是通过引用记数算法进行对象存活判断的。</p>
-<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>当前主流的商用程序语言 (Java、C#、Lisp) 的内存管理子系统，都是靠通过可达性分析 (Reachability Analysis) 算法来判定对象是否存活。其基本思路是通过一系列 “GC Roots” 的根对象作为起始节点集，从这些节点开始，根据引用关系向下搜索，搜索过程所走的路径被称为 “引用链” (Reference Chain)，如果某个对象到 GC Roots 间没有任何引用相连，用图论的话说，从 GC Roots 到该对象不可达，证明此对象是不可能再被使用的。</p>
-<p>在 Java 技术体系中，固定可作为 GC Roots 的对象包括以下几种：</p>
-<ul>
-<li>虚拟机栈 (栈帧中的本地变量表) 中引用的对象，如当前正在运行的方法所使用的参数、局部变量、临时变量等。</li>
-<li>方法区中的静态属性引用对象，如 Java 类的引用类型静态变量。</li>
-<li>方法区中常量引用对象，如字符串常量池 (String Table) 里的引用。</li>
-<li>本地方法栈中 JNI (通常被称为 Native 方法) 引用的对象。</li>
-<li>Java 虚拟机内部引用，如基本数据类型对应的 Class 对象，一些常驻的异常对象 (如 NullPointException、OutOfMemoryError) 等，还有系统类加载器。</li>
-<li>所有被同步锁 (synchronized 关键字) 持有的对象。</li>
-<li>反应 Java 虚拟机内部情况的 JMXBean、JVMTI 中注册的回调、本地代码缓存等。</li>
-</ul>
-<p>除了这些固定的 GC Roots 集合外，根据用户所选的垃圾收集器已经当前回收的内存区域不同，还可以有其他对象 “临时性” 地加入，共同构成完整 GC Roots 集合。如后文提到的分代收集和局部回收 (Partial GC)，如果只针对 Java 堆中某一块区域发起垃圾收集时 (如典型的，只针对新生代的垃圾收集)，必须考虑到内存区域只是虚拟机的实现细节，他们不是孤立封闭的，所以某个区域的对象完全有可能被位于堆中其他区域的对象引用，这时就需要将这些关联区域的对象也一并加入 GC Roots 集合中去，才能保证可达性分析的正确性。</p>
-<p>目前最新的几款垃圾收集器 (例如 OpenJDK 中的 G1、Shenandoah、ZGC 以及 Azul 的 PGC、C4) 无一例外的都具备局部回收的特征，为了避免 GC Roots 包含过多对象而过度膨胀，它们在实现上也做出了各种优化处理 (见后文)。 </p>
-<h3 id="关于引用"><a href="#关于引用" class="headerlink" title="关于引用"></a>关于引用</h3><p>无论是通过引用计数法判断对象的引用数量，还是通过可达性分析算法判断对象是否引用链可达，判定对象存活都和引用脱不开关系。在 JDK 1.2 版本前，Java 中的引用定义很传统：如果 reference 类型的数据中存储的数值代表的是另外一块内存的起始地址，就称该 reference 数据是代表某块内存、某个对象的引用。但是一个对象不应该只有 “被引用” 和 “未被引用” 两种状态。例如这种情况：当内存空间还足够，就保留在内存中，如果内存空间在完成 GC 后还是十分紧张，就抛弃这些对象 —— 很多系统缓存功能都符合此场景。</p>
-<p>在 JDK 1.2 版本后，Java 对引用的概念进行了扩充，将引用分为强引用 (Strongly Reference)、软引用 (Soft Reference)、弱引用 (Weak Reference) 和虚引用 (Phantom Reference) 四种，<strong>四种引用强度依次减弱</strong>。</p>
-<ol>
-<li><p><strong>强引用 (Strongly Reference)</strong></p>
-<p>“最传统” 的引用定义，指在程序代码中普遍存在的引用赋值，类似 “Object obj &#x3D; new Object()” 的这种引用关系。无论何种情况，只要强引用还在，垃圾回收器就永远不会回收掉被引用的对象。</p>
-</li>
-<li><p><strong>软引用 (Soft Reference)</strong></p>
-<p>描述一些还有用，但非必要的对象，系统将要内存溢出前，会把这些对象列入回收范围中进行二次回收，如果回收后内存依然不足，才会抛出内存溢出异常。</p>
-</li>
-<li><p><strong>弱引用 (Weak Reference)</strong></p>
-<p>非必要的对象，其强度比软引用更弱。其对象只能生存到下一次 GC 发生前。当 GC 发生时，无论内存是否足够，都会回收掉仅被弱引用关联的对象。</p>
-</li>
-<li><p><strong>虚引用 (Phantom Reference)</strong></p>
-<p>也被称为 “幽灵引用” 或 “幻引用”，是最弱的引用关系。完全不会对其生存时间造成影响。也无法通过该引用获取实例。为一个对象设置虚引用仅是为了能让此对象被回收时受到一个系统通知。</p>
-</li>
-</ol>
-<h3 id="对象死亡判定"><a href="#对象死亡判定" class="headerlink" title="对象死亡判定"></a>对象死亡判定</h3><p>即使是在可达性分析算法中判定为不可达对象，也并非 “非死不可”。一个对象真正死亡，最多会经历两次标记，如果在进行可达性分析时没有在 GC Roots 的引用链上，将第一次被标记。之后判断该对象是否有必要执行 finalize()。若对象没有覆盖 finalize()，或者 finalize() 已被虚拟机调用，那么虚拟机将这两种情况都视为 “没有必要执行”。(Ryuu：注意，一个对象的 finalize() 只会被调用一次。)</p>
-<p>若有必要执行 finalize()，那么该对象将会被放置在一个名为 F-Queue 的队列中，并在稍后由虚拟机自己建立的，低调度优先级的 Finalizer 线程去执行它们的 finalize()。这里的 “执行” 仅指虚拟机会触发这个的方法开始运行，并不承诺一定等待他们运行结束。这是因为，若 finalize() 执行的太慢，或者极端的发生了死循环，将导致 F-Queue 的其他对象永久处于等待，甚至导致整个内存回收子系统崩溃。finalize() 方法是对象逃脱死亡的最后机会，稍后收集器将对 F-Queue 中的对象进行二次标记，若对象要在 finalize() 中避免死亡 —— 只需重新与引用链上的任何一个对象建立关联即可，例如把 this 赋给某个类变量或者对象成员的成员变量，那么它将会在二次标记时被移除 “即将回收” 的集合；如果它没有这么做，那就真的会被回收了。</p>
-<p>如下是对象执行 finalize()，依然存活的示例：(Ryuu：当然，一般情况下没人会在 finalize() 里做除了释放资源以外的事。)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FinalizeEscapeGC</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">FinalizeEscapeGC</span> <span class="variable">SAVE_HOOK</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  <span class="keyword">void</span> <span class="title function_">isAlive</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;alive&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="built_in">super</span>.finalize();</span><br><span class="line">        System.out.println(<span class="string">&quot;finalize method executed!&quot;</span>);</span><br><span class="line">        FinalizeEscapeGC.SAVE_HOOK = <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * finalize method executed!</span></span><br><span class="line"><span class="comment">     * alive</span></span><br><span class="line"><span class="comment">     * dead</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        SAVE_HOOK = <span class="keyword">new</span> <span class="title class_">FinalizeEscapeGC</span>();</span><br><span class="line">        SAVE_HOOK = <span class="literal">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        <span class="comment">// 因为 GC 的优先级低, 先让此线程暂停，以等待 GC</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span>(SAVE_HOOK != <span class="literal">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;dead&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        SAVE_HOOK = <span class="literal">null</span>;</span><br><span class="line">        System.gc();</span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span>(SAVE_HOOK != <span class="literal">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;dead&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>见以上代码段，SAVE_HOOK 对象的 finalize() 的确被执行，并且成功逃脱回收了。</p>
-<p>另外一点是，一个对象的 finalize() 只会被调用一次，所以第二次的自救失败了。</p>
-<p>上文的代码不是让读者去用此方法拯救对象。应该尽量避免使用 finalize()，它并不等同于 C 和 C++ 中的析构函数，这是 Java 刚诞生时为了使传统 C、C++ 程序员更容易接受 Java 所做的妥协。其代价是极高的。 <strong>finalize() 能做的工作，使用 try-finally 或者其他的方式能够做的更好、更及时</strong>。</p>
-<p><strong>(Ryuu：finalize() 自 Java 9 被弃用。其运行代价高，可能导致死锁、挂起。即使不在需要 finalize()，finalize() 也无法取消。不同对象的 finalize() 执行顺序没有保证，并且执行完成时间也没有保证。)</strong></p>
-<h3 id="方法区回收"><a href="#方法区回收" class="headerlink" title="方法区回收"></a>方法区回收</h3><p>有人认为方法区 (如 HotSpot 虚拟机中的元空间或永久代) 是没有垃圾收集的，JLS 中提到，可以不要求虚拟机实现方法区中的垃圾收集，确实也有未实现或未完全实现方法区类型卸载的收集器存在 (如 JDK 11 时期的 ZGC 收集器就不支持类卸载)，方法区垃圾收集的付出&#x2F;收获比也通常是较低的：在 Java 堆中，尤其是新生代中，对与常规应用进行一次 GC 通常可以回收 70% - 99% 的内存空间，相比之下，方法区回收有着苛刻的判定条件，其垃圾收集效果却往往很低。</p>
-<p>方法区的垃圾收集主要回收两种内容：废弃的常量和不再使用的类型。回收废弃常量和回收 Java 堆中对象非常类似。例如字符串 “Java” 进入了常量池，但当前系统没有任何一个字符串对象的值是 “Java” (也就是说 “Java” 没有被任何字符串对象引用)，且虚拟机中也没有其他地方引用此字面量。如果此时发生 GC，若垃圾收集器判断有必要，这个 “Java” 将会被系统清理出常量池，常量池中的其他类 (接口)、方法、字段的符号引用也与此类似。</p>
-<p>判定一个类型是否属于 “不再被使用的类” 的条件就比较苛刻了。需同时满足条件：</p>
-<ol>
-<li>类所有的实例被回收，Java 堆中不存在该类及其派生子类的实例。</li>
-<li>加载该类的类加载器已被回收。(此条件一般很难满足，除非是精心设计的可替换类加载器的场景，如 OSGi、JSP 的重加载等)</li>
-<li>该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类方法。</li>
-</ol>
-<p>Java 虚拟机被允许对满足以上三个条件的无用类进行回收，仅是 “被允许”，并不是和对象一样，没有了引用就必然会回收。</p>
-<p>关于是否要进行类型回收，HotSpot 虚拟机提供了 -Xnoclassgc 参数进行控制，还可以通过 -verbose:class 以及 -XX:+TraceClass-Loading、 -XX:+TraceClassUnLoading 查看类加载和卸载信息，其中 -verbose:class 和 -XX:+TraceClass-Loading 可在 Product 版的虚拟机中使用，-XX:+TraceClassUnLoading 参数需要 FastDebug版虚拟机支持。</p>
-<p>在大量使用反射、动态代理、CGLib 等字节码框架，动态生成 JSP 以及 OSGi 这类频繁自定义类加载器的场景中，通常都需要 Java 虚拟机具备类型卸载的能力，以保证不对方法区造成过大的内存压力。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1536,7 +1487,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -1547,13 +1498,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">73k</span>
+    <span title="站点总字数">75k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:25</span>
+    <span title="站点阅读时长">4:33</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

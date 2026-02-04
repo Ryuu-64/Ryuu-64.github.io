@@ -137,18 +137,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -188,6 +188,143 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/08/Java-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/08/Java-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">Java-排序算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-08 14:56:05" itemprop="dateCreated datePublished" datetime="2021-07-08T14:56:05+08:00">2021-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p>外层循环次数为集合元素数 - 1 (两两比较)</p>
+<p>内层循环每次 -1 (每次循环确定最末尾数)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>; idx &lt; arr.length - <span class="number">1</span> - i; idx++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[idx] &gt; arr[idx + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[idx + <span class="number">1</span>];</span><br><span class="line">                arr[idx + <span class="number">1</span>] = arr[idx];</span><br><span class="line">                arr[idx] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><p>默认首位数为最小，遍历后续元素，确定最小索引，交换数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">selectSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">minIdx</span> <span class="operator">=</span> i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; arr.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIdx]) &#123;</span><br><span class="line">                minIdx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = arr[minIdx];</span><br><span class="line">        arr[minIdx] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p>默认从二号元素开始，左侧元素为有序列</p>
+<p>遍历时若较左侧小的数，进行移动(类冒泡)，否则直接进入下次外循环 (较左侧最近数大，则较有序列所有数大)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">insertionSort</span><span class="params">(<span class="type">int</span>[] a)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cur</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> a.length;</span><br><span class="line">    <span class="keyword">while</span> (++cur &lt; len) &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[cur] &lt; a[cur - <span class="number">1</span>]) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> a[cur];</span><br><span class="line">            <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> cur;</span><br><span class="line">            <span class="keyword">while</span> (--idx &gt;= <span class="number">0</span> &amp;&amp; val &lt; a[idx]) &#123;</span><br><span class="line">                a[idx + <span class="number">1</span>] = a[idx];</span><br><span class="line">            &#125;</span><br><span class="line">            a[idx + <span class="number">1</span>] = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><p>一种改进的插入排序</p>
+<p>最外层循环为步长</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">shellSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">step</span> <span class="operator">=</span> arr.length &gt;&gt;&gt; <span class="number">1</span>; step &gt; <span class="number">0</span>; step &gt;&gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> step; j &lt; arr.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> j; idx &gt; <span class="number">0</span> &amp;&amp; idx - step &gt;= <span class="number">0</span>; idx -= step) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[idx] &lt; arr[idx - step]) &#123;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[idx - step];</span><br><span class="line">                    arr[idx - step] = arr[idx];</span><br><span class="line">                    arr[idx] = temp;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>首先确定一个基数，将大于&#x2F;小于他的数置于其两侧，再对左右两侧集合进行递归</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">quickSort</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (start + <span class="number">1</span> &gt; end) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">isStartWithEnd</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> start;</span><br><span class="line">    <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> end;</span><br><span class="line">    <span class="type">int</span> <span class="variable">meanVal</span> <span class="operator">=</span> arr[start];</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isStartWithEnd) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[end] &gt;= meanVal) &#123;</span><br><span class="line">                end--;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (arr[end] &lt; meanVal) &#123;</span><br><span class="line">                arr[start] = arr[end];</span><br><span class="line">                start++;</span><br><span class="line">                isStartWithEnd = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="comment">/* if (!isStartWithHigh) */</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[start] &lt;= meanVal) &#123;</span><br><span class="line">                start++;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (arr[start] &gt; meanVal) &#123;</span><br><span class="line">                arr[end] = arr[start];</span><br><span class="line">                end--;</span><br><span class="line">                isStartWithEnd = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (start == end) &#123;</span><br><span class="line">            arr[start] = meanVal;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    quickSort(arr, left, start - <span class="number">1</span>);</span><br><span class="line">    quickSort(arr, start + <span class="number">1</span>, right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><p>先进行递归，将列表进行拆分，首先从最小的切分集合进行排序，之后进行合并排序，最终合并排序为一个有序表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">mergeSort</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (end &lt;= start) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (start + end) &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">    mergeSort(arr, start, mid);</span><br><span class="line">    mergeSort(arr, mid + <span class="number">1</span>, end);</span><br><span class="line">    <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> start;</span><br><span class="line">    <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> mid + <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>[] resArr = <span class="keyword">new</span> <span class="title class_">int</span>[end - start + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= mid &amp;&amp; right &lt;= end) &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr[left] &lt;= arr[right]) &#123;</span><br><span class="line">            resArr[idx] = arr[left];</span><br><span class="line">            left++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="comment">/* arr[left] &gt; arr[right] */</span> &#123;</span><br><span class="line">            resArr[idx] = arr[right];</span><br><span class="line">            right++;</span><br><span class="line">        &#125;</span><br><span class="line">        idx++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= mid || right &lt;= end) &#123;</span><br><span class="line">        <span class="keyword">if</span> (left &lt;= mid) &#123;</span><br><span class="line">            resArr[idx] = arr[left];</span><br><span class="line">            left++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="comment">/* right &lt;= end */</span> &#123;</span><br><span class="line">            resArr[idx] = arr[right];</span><br><span class="line">            right++;</span><br><span class="line">        &#125;</span><br><span class="line">        idx++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (end - start + <span class="number">1</span> &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        System.arraycopy(resArr, <span class="number">0</span>, arr, start, end - start + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>构建堆 (此处是升序排序，所以选择大顶堆)</p>
+<ol>
+<li>从第一个非叶子结点从下至上，从右至左调整，将大数置于根节点 (根节点 &gt; 子节点)</li>
+<li>调整堆结构，持续交换堆顶元素与末尾元素，从尾部向头部逐渐递归出一个有序表</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HeapSort</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> arr.length &gt;&gt;&gt; <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            adjustHeap(arr, i, arr.length);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> arr.length - <span class="number">1</span>; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> arr[<span class="number">0</span>];</span><br><span class="line">            arr[<span class="number">0</span>] = arr[j];</span><br><span class="line">            arr[j] = tmp;</span><br><span class="line">            adjustHeap(arr, <span class="number">0</span>, j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">adjustHeap</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> cur, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> arr[cur];</span><br><span class="line">        <span class="comment">// 若调整根节点，子节点需再调整 (idx = idx * 2 + 1)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> cur * <span class="number">2</span> + <span class="number">1</span>; idx &lt; len; idx = idx * <span class="number">2</span> + <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">// 判断 左/右子节点 中的最大子节点</span></span><br><span class="line">            <span class="keyword">if</span> (idx + <span class="number">1</span> &lt; len &amp;&amp; arr[idx + <span class="number">1</span>] &gt; arr[idx]) &#123;</span><br><span class="line">                idx++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (arr[idx] &gt; tmp) &#123;</span><br><span class="line">                arr[cur] = arr[idx];</span><br><span class="line">                cur = idx;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[cur] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h3><p>此处是<strong>最低位优先 (Least Significant Digit first，LSD) 法</strong>，从个位开始，对数组进行排序</p>
+<ol>
+<li><p>将对应位元素出现的次数存储在 buckets 中</p>
+</li>
+<li><p>buckets[i] +&#x3D; buckets[i - 1] 将 bucket 的值变为对应最后一个元素的索引 (此时buckets 为一个有序索引桶)，每确定一个索引的元素将对应 bucket 的值 -1，将 bucket 存储的索引移动到对应的下一个索引 </p>
+<p>(实际上是索引 + 1，因为默认没有元素的 bucket 的值为 0，之后从 bucket 中取得索引需要 -1)</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">radixSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> arr[<span class="number">0</span>];</span><br><span class="line">    <span class="type">int</span> exp;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> num : arr) &#123;</span><br><span class="line">        <span class="keyword">if</span> (num &gt; max) &#123;</span><br><span class="line">            max = num;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (exp = <span class="number">1</span>; max / exp &gt; <span class="number">0</span>; exp *= <span class="number">10</span>) &#123;</span><br><span class="line">        <span class="type">int</span>[] tmpArr = <span class="keyword">new</span> <span class="title class_">int</span>[arr.length];</span><br><span class="line">        <span class="type">int</span>[] buckets = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">10</span>]; <span class="comment">// 0 ~ 9</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> value : arr) &#123;</span><br><span class="line">            buckets[(value / exp) % <span class="number">10</span>]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            buckets[i] += buckets[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> arr.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            tmpArr[buckets[(arr[i] / exp) % <span class="number">10</span>] - <span class="number">1</span>] = arr[i];</span><br><span class="line">            buckets[(arr[i] / exp) % <span class="number">10</span>]--;</span><br><span class="line">        &#125;</span><br><span class="line">        System.arraycopy(tmpArr, <span class="number">0</span>, arr, <span class="number">0</span>, arr.length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1314,132 +1451,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/14/Effective-Java-18%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/14/Effective-Java-18%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF/" class="post-title-link" itemprop="url">Effective-Java-18复合优先于继承</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-14 17:15:09" itemprop="dateCreated datePublished" datetime="2021-05-14T17:15:09+08:00">2021-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-05 00:50:01" itemprop="dateModified" datetime="2023-06-05T00:50:01+08:00">2023-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>继承(inheritance)是实现代码重用的有力手段，但它并非永远是完成这项工作的最佳工具。</strong>使用不当会导致软件变得很脆弱。在包的内部使用继承是非常安全的，在那里子类和超类的实现都处在同一个程序员的控制下。对于专门为了继承而设计并且具有很好的文档说明的类来说(见19条)，使用继承也是非常安全的。然而，对于普通的具体类(concrete class)进行跨越包边界的继承，则是非常危险的。提示一下，本条目使用”继承”一词，含义是实现继承(当一个类扩展另一个类的时候)。本条目中讨论的问题并不指接口继承(类实现接口或接口扩展接口)。</p>
-<p><strong>与方法调用不同的是，继承打破了封装性[Snyder86]。</strong>子类依赖于其超类中特定功能的实现细节。超类的实现有可能会随着发行版本的不同而有所变化，如果发生了变化，子类可能会遭到破坏，即时是子类代码完全没有改变。因而，子类必须要跟着其超类的更新而演变，除非超类是专门为了扩展而设计的，并且具有很好的文档说明。</p>
-<p>为了说明得更加具体，我们建设有一个程序使用了 HashSet。为了调优该程序的性能需要查询 HashSet，看一看自从它被创建以来添加了多少个元素(不要与它当前的元素数目混淆起来，它会随着元素的删除而递减)。为了提供这种功能，需要基于 HashSet 编写一个变体，定义记录视图插入的元素的数量 addCount，并针对该计数值导出一个访问方法。HashSet 类包含两个可以郑家元素的方法：add 和 addAll，因此这两个方法都要被覆盖：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broken - Inappropriate use of inheritance!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InstrumentedHashSet</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">HashSet</span>&lt;E&gt; &#123;</span><br><span class="line">    <span class="comment">// The number of attempted element insertions</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">addCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAddCount</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> addCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addCount++;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.add(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        addCount += c.size();</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.addAll(c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个类看起来非常合理，但是它并不能正常工作。假设我们创建一个实例，并利用addAll方法添加了三个元素。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">InstrumentedHashSet&lt;String&gt; s = <span class="keyword">new</span> <span class="title class_">InstrumentedHashSet</span>&lt;&gt;();</span><br><span class="line">s.addAll(List.of(<span class="string">&quot;Snap&quot;</span>, <span class="string">&quot;Crackle&quot;</span>, <span class="string">&quot;Pop&quot;</span>));</span><br><span class="line">System.out.println(s.getAddCount()); <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
-
-<p>此时我我们期望 getAddCount 方法能返回3，但实际上它返回的是6。原因是，在 HashSet 的内部 addAll 方法是基于它的add 方法来实现的，即使 HashSet 的文档中并没有说明这样的实现细节。所以实际上在 addAll() 中的所有元素都使得 addCount 加了2。只需要去掉被覆盖的 addAll 方法。虽然这样可以正常工作，但其功能正确性依赖于这样的事实：HashSet 的 addAll 方法是在其 add 方法上实现的。 <strong>这种自用性（self-use）是实现细节，而不是承诺，不能保证在 java 平台的所有实现中都保持不变，不能保证随着上发行版本的不同而不发生变化</strong>。因此，InstrumentedHashSet 类将会是非常脆弱的。</p>
-<p>导致子类脆弱的一个原因是，它们的超类在后续的发行版本中可获得新方法。假设程序的安全性依赖于这一事实：所有被插入至某个集合的元素都满足某个先决条件。下面的做法将能保证这一点：对集合进行子类化，并覆盖掉所有的能够添加元素的方法。如果在后续的发行版本中，超类中没有增加能插入元素的新方法，那么这种做法能够正常工作。然而，<strong>一旦超类增加了这样的新方法，则很有可能因为调用了这个没有被覆写的新方法，而将”非法”的元素添加到子类的实例中</strong>。这不是一个纯粹的理论问题。在把 Hashtable 和 Vector 加入到 Collections Framework 中的时候，就修正了几个这类性质的安全漏洞。</p>
-<p>以上问题都来源于覆盖 (overriding) 方法。<strong>在扩展一个类时，增加新的方法，而不覆盖现有的方法只是相对的安全，并不是没有风险</strong>。如果超类在后续的发行版本中获得了一个新方法，并且和子类中的某一方法只是返回类型不同，这样的子类将无法通过编译 [JLS，8.4.8.3]。如果给子类提供的方法带有与新的超类方法完全相同的签名及返回类型，这就覆盖了超类中的方法。<strong>你的方法是否能遵守新超类方法，也是个问题。因为在编写子类方法时，超类新方法还并存在</strong>。</p>
-<p>幸运的是，有一种方法可以避免前文所述的所有问题。不扩展现有类，而是在新的类中增加一个私有域，引用现有类的一个实例。这种设计被称为 “复合” (composition)。因为现有类变成了新类的一个组件。新类中的每个实例方法都能调用被包含的现有实例中对应的方法，并返回其结果。这被称为转发 (forwarding)，新类中的方法被称为转发方法 (forwarding method)。这样的类将会非常的稳固，它不依赖于现有类的实现细节，即使是现有类增加了新的方法，也不会影响到新的类。</p>
-<p>如下示例用复合 &#x2F; 转发方法来代替 InstrumentedHashSet 类。注意这个实现分为两部分：类本身和可重用的转发类 (forwarding class)，其中包含了所有转发方法，没有任何的其他方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Wrapper class - uses composition in place of inheritance</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InstrumentedSet</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">ForwardingSet</span>&lt;E&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">addCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">InstrumentedSet</span><span class="params">(Set&lt;E&gt; s)</span> &#123; <span class="built_in">super</span>(s); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAddCount</span><span class="params">()</span> &#123; <span class="keyword">return</span> addCount; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addCount++;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.add(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        addCount += c.size();</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>.addAll(c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Reusable forwarding class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ForwardingSet</span>&lt;E&gt; <span class="keyword">implements</span> <span class="title class_">Set</span>&lt;E&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;E&gt; s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ForwardingSet</span><span class="params">(Set&lt;E&gt; s)</span> &#123; <span class="built_in">this</span>.s = s; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123; <span class="keyword">return</span> s.size(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123; <span class="keyword">return</span> s.isEmpty(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object o)</span> &#123; <span class="keyword">return</span> s.contains(o); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Iterator&lt;E&gt; <span class="title function_">iterator</span><span class="params">()</span> &#123; <span class="keyword">return</span> s.iterator(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object[] toArray() &#123; <span class="keyword">return</span> s.toArray(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T[] toArray(T[] a) &#123; <span class="keyword">return</span> s.toArray(a); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123; <span class="keyword">return</span> s.add(e); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object o)</span> &#123; <span class="keyword">return</span> s.remove(o); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">containsAll</span><span class="params">(Collection&lt;?&gt; c)</span> &#123; <span class="keyword">return</span> s.containsAll(c); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123; <span class="keyword">return</span> s.addAll(c); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">retainAll</span><span class="params">(Collection&lt;?&gt; c)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> s.retainAll(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">removeAll</span><span class="params">(Collection&lt;?&gt; c)</span> &#123; <span class="keyword">return</span> s.retainAll(c); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123; s.clear(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123; <span class="keyword">return</span> s.equals(o); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123; <span class="keyword">return</span> s.hashCode(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123; <span class="keyword">return</span> s.toString(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Set 接口的存在使得 InstrumentedSet 类的设计成为可能，因为 Set 接口保存了 HashSet 类的功能特性。前文的基于继承的方法只适用于单个具体类，并且对于超类中所支持的每个构造器都要求有一个单独的构造器，与此不同的是，这里的包装类 (wrapper class) 可以被用来包装任何 Set 实现，并且可以结合任何先前存在的构造器一起工作：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Instant&gt; times = <span class="keyword">new</span> <span class="title class_">InstrumentedSet</span>&lt;&gt;(<span class="keyword">new</span> <span class="title class_">TreeSet</span>&lt;&gt;(cmp));</span><br><span class="line">Set&lt;E&gt; s = <span class="keyword">new</span> <span class="title class_">InstrumentedSet</span>&lt;&gt;(<span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(INIT_CAPACITY));</span><br></pre></td></tr></table></figure>
-
-<p>因为每一个 InstrumentedSet 实例都把另一个 Set 实例包装，所以 InstrumentedSet 类被称为包装类 (wrapper class)。这也正是 Decorator (修饰者) 模式 [Gamma95] (InstrumentedSet 类对集合进行修饰，增加计数特性)。有时复合和转发的结合也被宽松的称为 “委托” (delegation)。从技术的角度而言，这不是委托，除非包装对象把自身传递给被包装的对象 [Liebermen86; Gamma95] (Ryuu：确实是有种委托的味道)。</p>
-<p>包装类几乎没有什么缺点。需要注意的是，**包装类不适合用于回调框架 (callback framework)**；在回调框架中，对象需要把自身的引用传递给其他对象，用于后续的调用 (“回调”)。因为被包装的类并不直到它外面的包装对象，它传递一个指向自身的引用 (this)，回调时避开了外面的包装对象。这被称为 SELF 问题 [Lieberman86]。有些人担心转发方法调用所带来的性能影响，或者包装对象导致的内存使用。在实践中，这两者都不会造成太大的影响。编写转发方法倒是有点繁琐，但只需给每个接口编写一次构造器，转发类则可以通过包含接口的包提供。如 Guava 就为所有的集合接口提供了转发类 [Guava]。</p>
-<p><strong>只有当子类真正是超类的子类型 (subtype) 时，才适合用继承</strong>。对于 A、B 两类，只有两个类有 “is-a” 的关系时，B 才应该扩展 A。若想用 B 扩展 A，就应该问问自己：每个 B 是否 is an A？如果不能肯定，那么就不应该进行扩展。如果没有 is-a 的关系，通常情况下，B 包含 A 的一个私有实例，并暴露一个较小的、较简单的 API：A 本质上不是 B 的一部分，只是它的实现细节。</p>
-<p>在 Java 平台类库中，有许多明显违反这条原则的地方。例如，栈 (stack) 并不是向量 (vector)，所以 Stack 不应扩展 Vector。同样的，属性列表也不是散列表，所以 Properties 不应扩展 Hashtable。这种情况下，复合模式才是恰当的。</p>
-<p><strong>若在适用复合的地方使用了继承，则会不必要地暴露实现细节</strong>。这样得到的 API 会把你限制在原始的实现上，不必要的局限该类。更为严重的是，由于暴露了内部的细节，客户端可能直接访问这些内部细节。至少会造成语义上的混淆。例如，如果 p 指向 Properties 实例，那么 p.getProperty(key) 就有可能产生与 p.get(key) 不同的结果：getProperty 考虑了默认的属性表，get 继承自 HashTable，未考虑默认的属性列表。最为严重的是，客户可能直接修改超类，从而破坏子类的约束条件。在 Properties 的情况中，设计者的目标是只允许字符串作为键 (key) 和值 (value)，但直接访问底层的 HashTable 就允许违反这种约束条件。一旦违反了约束，就不能再使用 Properties API 的其他部分了。等到发现这个问题的时，已经太迟，因为客户已经依赖于使用非字符串的键和值了。</p>
-<p>在使用继承而非复合前，<strong>考虑被扩展类的 API 是否有缺陷</strong>。是否愿意这些缺陷传播到类中 API？继承机制会把超类 API 的所有缺陷传播到子类中，而复合则允许设计新的 API 以隐藏这些缺陷。</p>
-<p><strong>继承违背了封装原则。只有当子类和超类有 “is-a” 的关系时，使用继承才是恰当的</strong>。并且，若子类与超类处于不同的包，并且超类并不是为继承而设计，那么继承将会导致脆弱性 (fragility)。为了避免这种脆弱性，<strong>可用复合转发机制来代替继承，尤其是当存在适当的接口可以实现包装类的时候</strong>。包装类不仅比子类更健壮，功能也更强大。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1452,7 +1463,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -1463,13 +1474,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">73k</span>
+    <span title="站点总字数">75k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:25</span>
+    <span title="站点阅读时长">4:33</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
