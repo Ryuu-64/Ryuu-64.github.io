@@ -28,7 +28,7 @@
 <meta property="og:description" content="在影响奖励结果的所有输入已经确定、且不再变化的那一刻。 这是确定订单奖励内容的唯一标准。 引子在一次业务设计讨论中，关于奖励的确定时机出现了不同意见。（我的真实经历） 一种观点认为，奖励应当在最终流程中再计算；另一种观点认为，只要奖励结果已经可以确定，就应该立即计算并固化。 这看起来只是计算时机的差异，但背后实际讨论的是：奖励结果在系统中什么时候才应当被视为事实。 什么时候确定奖励内容是合理的？奖">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-02-04T08:28:19.000Z">
-<meta property="article:modified_time" content="2026-07-06T14:00:34.060Z">
+<meta property="article:modified_time" content="2026-07-06T14:33:56.367Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="订单">
 <meta property="article:tag" content="奖励">
@@ -132,7 +132,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%A1%AE%E5%AE%9A%E5%A5%96%E5%8A%B1%E5%86%85%E5%AE%B9%E6%98%AF%E5%90%88%E7%90%86%E7%9A%84%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">什么时候确定奖励内容是合理的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%8F%AF%E7%A1%AE%E8%AE%A4%E6%97%B6%E9%97%B4%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">常见的可确认时间点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%B0%BD%E6%97%A9%E7%A1%AE%E5%AE%9A%E5%A5%96%E5%8A%B1%E5%86%85%E5%AE%B9%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">为什么要尽早确定奖励内容？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E4%B8%80%EF%BC%9A%E8%A7%84%E5%88%99%E6%98%AF%E5%8F%AF%E5%8F%98%E7%9A%84"><span class="nav-number">4.1.</span> <span class="nav-text">原因一：规则是可变的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E4%BA%8C%EF%BC%9A%E5%A5%96%E5%8A%B1%E9%9C%80%E8%A6%81%E5%8F%AF%E8%A7%A3%E9%87%8A%EF%BC%88%E5%AF%B9%E8%B4%A6-%E8%BF%BD%E8%B4%A3%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">原因二：奖励需要可解释（对账 &amp; 追责）</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%A1%AE%E5%AE%9A%E5%A5%96%E5%8A%B1%E5%86%85%E5%AE%B9%E6%98%AF%E5%90%88%E7%90%86%E7%9A%84%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">什么时候确定奖励内容是合理的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%8F%AF%E7%A1%AE%E8%AE%A4%E6%97%B6%E9%97%B4%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">常见的可确认时间点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%B0%BD%E6%97%A9%E7%A1%AE%E5%AE%9A%E5%A5%96%E5%8A%B1%E5%86%85%E5%AE%B9%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">为什么要尽早确定奖励内容？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E4%B8%80%EF%BC%9A%E8%A7%84%E5%88%99%E6%98%AF%E5%8F%AF%E5%8F%98%E7%9A%84"><span class="nav-number">4.1.</span> <span class="nav-text">原因一：规则是可变的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E4%BA%8C%EF%BC%9A%E5%A5%96%E5%8A%B1%E9%9C%80%E8%A6%81%E5%8F%AF%E8%A7%A3%E9%87%8A%EF%BC%88%E5%AF%B9%E8%B4%A6-%E8%BF%BD%E8%B4%A3%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">原因二：奖励需要可解释（对账 &amp; 追责）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -145,18 +145,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-06 22:00:34" itemprop="dateModified" datetime="2026-07-06T22:00:34+08:00">2026-07-06</time>
+      <time title="修改时间：2026-07-06 22:33:56" itemprop="dateModified" datetime="2026-07-06T22:33:56+08:00">2026-07-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>647</span>
+      <span>747</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -314,6 +314,9 @@
 <p>支持事后审计与对账</p>
 <p>支持客服明确解释“这笔奖励是如何算出来的”</p>
 <p>奖励内容一旦确认，就应当成为订单事实的一部分，而不是一个需要反复推导的结果。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>奖励可以晚发放，但不应该晚确定。</p>
+<p>确定奖励的本质，是把规则计算结果从“可推导结果”转为“订单事实”。</p>
+<p>系统应保存当时的输入、规则版本和计算结果。后续如果发生退款、取消、补偿等变化，应通过冲正或补偿流程处理，而不是重新解释历史订单。</p>
 
     </div>
 
@@ -337,6 +340,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" rel="next" title="代码、工具与人：AI 时代的程序员">
+                  代码、工具与人：AI 时代的程序员 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -367,13 +373,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">76k</span>
+    <span title="站点总字数">80k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:37</span>
+    <span title="站点阅读时长">4:51</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

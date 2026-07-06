@@ -137,18 +137,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -188,6 +188,163 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">Effective-CSharp-17实现标准的dispose模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-17 10:32:45" itemprop="dateCreated datePublished" datetime="2021-05-17T10:32:45+08:00">2021-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-06 22:00:34" itemprop="dateModified" datetime="2026-07-06T22:00:34+08:00">2026-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>如前文所说的，若对象包含非托管资源，那么一定要正确的清理。对于非托管型资源来说，.NET Framework 会采用一套标准的模式来完成清理工作，如果你所变写的类里也用到了非托管资源，那么该类的使用者就会认为这个类同样遵循这套模式。标准的 dispose (释放&#x2F;处置) 模式会实现 IDisposable 接口，又会提供 finalizer (终结器&#x2F;终止化器)，以便在客户端忘记调用 IDisposable.Dispose() 的情况下也可以释放资源。这样做虽然有可能令程序的性能因执行 finalizer 而下降，但毕竟可以保证垃圾回收器能够把资源回收掉。这是处理非托管资源的正确方式，开发者应该透彻地理解该方式。实际上，.NET 中的非托管资源还可以通过System.Runtime.Interop.SafeHandle 的派生类来访问，那个类也正确地实现了这套标准的 dispose 模式。</p>
+<p>在类的继承体系中，位于根部的那个基类应该做到如下几点</p>
+<ul>
+<li><p>实现 IDisposable 接口，以便释放资源。</p>
+</li>
+<li><p>若本身含有非托管资源，添加 finalizer，以防客户端忘记调用 Dispose() 方法。若是没有非托管资源，则不添加 finalizer。</p>
+</li>
+<li><p>Dispose 方法与 finalizer (如果有) 都把释放资源的工作委派给虚方法，使得子类能够重写该方法，以释放它们自己的资源。</p>
+</li>
+</ul>
+<p>继承体系中的子类应该做到以下几点：</p>
+<ul>
+<li>若子类有自己的资源需要释放，那就重写由基类所定义的那个虚方法，若没有，则不重写该方法。</li>
+<li>若子类自身的某个成员字段表示非托管资源，实现 finalizer，若没有这样的字段，则不用实现 finalizer。</li>
+<li>记得调用基类的同名函数。</li>
+</ul>
+<p>若类包含非托管资源，必须提供 finalizer，因为开发者不能保证使用者总是会调用 Dispose()。如果他们忘了，则会造成资源泄漏，尽管这是使用者的错误，但是受责备的是你 (因为你没有提前防范这种情况)。**(Ryuu：当然，作为使用者，应使用 Dispose()，而不是全部依赖于 finalizer (特别是在使用外部资源时)。finalizer 仅是保险手段，其确切的执行时间是不可知的 (作者下文有述)。Java 中也是如此。)**</p>
+<p>垃圾收集器每次运行时，都会把不带 finalizer 的垃圾对象立刻从内存中移除。而带有 finalizer 的对象则会继续留在内存中，并添加到队列中。GC 会安排线程在这些对象上运行其 finalizer，运行完毕后，通常可以像不带 finalizer 的垃圾对象一样被移除。但与那些对象相比，他们属于老一代的对象，因为只有当其 finalizer 执行过一次后， GC 才会将其视为可以直接释放的对象，他们需要在内存中停留更长的时间。这也是没有办法，因为必须通过 finalizer 来保证非托管资源得到释放。尽管程序的性能可能因此有所下降，但只要客户端记得调用 Dispose()，就不会有此问题。</p>
+<p>如果所编写的类使用了某些必须及时释放的资源，那么应按照广利实现 IDisposable 接口，以提醒此类使用者与运行系统注意。该接口只包含一个方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IDisposable</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Dispose</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现 IDisposable.Dispose() 时需要注意：</p>
+<ol>
+<li>释放所有的非托管资源</li>
+<li>释放所有的托管资源 (其中包括取消事件订阅)</li>
+<li>设定相关状态标志，表示该对象已被清理。若清理后还有对其成员的访问，可通过状态标志得知该情况，令这些操作抛出 ObjectDisposedException。</li>
+<li>阻止垃圾回收器对该对象的重复清除 (可以通过 GC.SuppressFinalize(this) 来完成)。</li>
+</ol>
+<p>正确实现 IDisposable 接口是一举两得的，因为它既提供了适当的机制使得托管资源能够及时释放，又令客户端可以通过标准的 Dispose() 来释放非托管类型的资源。如果你编写的类实现了 IDisposable 接口，并且客户端又能够记得调用其 Dispose()，那么程序将不必执行 finalizer，其性能也得到了保证，这将使得此类能顺利融入 .NET 环境中。</p>
+<p>但此机制依然有漏洞，因为子类在清理自身的资源时必须保证基类的资源也能得到清理。若子类要重写 finalizer 或是想根据自己的需要给 IDisposable.Dispose() 添加新的逻辑，那么必须调用基类的版本。否则，基类的资源无法正确释放。此外，由于 finalizer 和 Dispose() 都有类似的任务。因此，这两个方法几乎总是包含重复的代码。直接重写接口中的函数可能无法达到预期效果，因为这些函数默认的情况下是非虚的。为此，需要再做一点工作来解决问题：把  finalizer 和 Dispose() 中重复的代码提取到 protected 级别的虚函数中，使得子类能够重写该函数，以释放他们分配的资源，而基类则应在接口方法中把核心的逻辑实现好。该辅助函数可以声明为此以供子类重写，使得其能在 Dispose() 方法或 finalizer 得以执行时把相关的资源清理干净：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>IDisposable.Dispose() 和 finalizer 都可以调用此方法以清理相关资源。这个方法与 IDisposable.Dispose() 相互重载。由于其是虚方法，子类可以重写该方法，以便用适当的代码来清理自身的资源并调用基类版本。</p>
+<ul>
+<li><p>isDisposing：true</p>
+<p>清理托管资源与非托管资源 (这表明该方法是在 IDisposable.Dispose() 中调用的)</p>
+</li>
+<li><p>isDisposing：false</p>
+<p>仅清理非托管资源 (这表明该方法是在 finalizer 中调用的)</p>
+</li>
+</ul>
+<p>无论是哪种情况，都要调用基类的 Dispose(bool)，使得基类有机会清除其资源。</p>
+<p>如下示例演示了该模式所用的代码框架，其中，MyResourceHog 实现了 IDisposable 接口，并创建了 Dispose(bool) 的虚方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyResourceHog</span> : <span class="title">IDisposable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Flag for already disposed</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> alreadyDisposed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Implementation of IDisposable</span></span><br><span class="line">    <span class="comment">// Call the virtual Dispose method</span></span><br><span class="line">    <span class="comment">// Suppress Finalization</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispose</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Dispose(<span class="literal">true</span>);</span><br><span class="line">        GC.SuppressFinalize(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t dispose more than once.</span></span><br><span class="line">        <span class="keyword">if</span> (alreadyDisposed) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isDisposing)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// elided: free managed resources here.</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// elided: free managed resources here.</span></span><br><span class="line">        <span class="comment">// Set disposed flag:</span></span><br><span class="line">        alreadyDisposed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ExampleMethod</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (alreadyDisposed)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ObjectDisposedException(<span class="string">&quot;MyResourceHog&quot;</span>, <span class="string">&quot;Called Example Method on Disposed object&quot;</span>);</span><br><span class="line">        <span class="comment">// remainder elided.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DerivedResourceHog 继承了 MyResourceHog，并重写了基类中的 protected Dispose(bool)：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DerivedResourceHog</span> : <span class="title">MyResourceHog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Have its own disposed flag.</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> disposed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t dispose more than once.</span></span><br><span class="line">        <span class="keyword">if</span> (disposed) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (isDisposing)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> free managed resources here.</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> free unmanaged resources here.</span></span><br><span class="line">        <span class="comment">// Let the base class free its resource.</span></span><br><span class="line">        <span class="comment">// Base class is responsible for calling</span></span><br><span class="line">        <span class="comment">// GC.SuppressFinalize()</span></span><br><span class="line">        <span class="keyword">base</span>.Dispose(isDisposing);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Set derived class disposed flag:</span></span><br><span class="line">        disposed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请注意，基类和子类对象采用各自的 disposed 标志来表示其资源是否得到释放。若公用一个标志，那么子类可能率先将其设置为 true，而等到基类运行 Dispose(bool) 时，则会误认为其资源已释放。</p>
+<p><strong>Dispose(bool) 与 finalizer 需要具备 <em>幂等性 (idempotent)<em><strong>，多次调用 Dispose(bool) 的效果应与调用一次相同。由于各对象的 dispose 操作之间可能没有明确的顺序，因此在执行自身的 Dispose(bool) 时，或许其中某些成员已经被</strong></em>释放 (dispose)</em></strong> 了。这并不表示程序出了问题，因为 Dispose() 本身就可能多次被调用。对于该方法以外的其他 public 方法而言，如果在此对象已被释放后还有人要调用，那么应抛出 ObjectDisposedException ( Dispose() 是个例外)。在对象释放后调用该方法应该没有任何效果。当系统执行某个对象的 finalizer 时，该对象所引用的某些资源可能已经释放过，或是没有得到初始化。对于前者来说，不用检查其是否为 null，因为他所引用的资源还可以继续引用，只是有可能被释放，甚至其 finalizer 有可能已经执行过了。</p>
+<p>上文示例的两个类都没有 finalizer，示例代码根本不会以 false 为参数调用 Dispose(bool)。只有<strong>当该类型直接包含非托管资源时，才应实现 finalizer</strong>。否则不调用也会给该类带来负担，因为这有着较大的开销。若有，则必须添加 finalizer 才能正确的实现 dispose 模式，此时的 finalizer 应与 Dispose(bool) 相同，都可以适当地将非托管资源释放掉。</p>
+<p>在编写 Dispose 或 finalizer 等资源清理方法时，最重要的一点是：<strong>仅释放资源，不进行其他处理</strong>。否则就会产生一些涉及对象生存期的严重问题。一般的，对象在构造时诞生，在变成垃圾并回收时死亡。若程序不在访问某个对象，可以认为该对象已 *昏迷 (comatose)*，对象中的方法也不会得到调用，实际上等于已经消亡了，然而如果他包含 finalizer，那么系统在正式宣告其死亡前，会给他机会，使其能够将非托管资源清理。此时，如果 finalizer 令该对象可以重新为程序引用，那么他将复活，但是这种从昏迷中醒来的对象有其问题：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BadClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Store a reference to a global object:</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> List&lt;BadClass&gt; FinalizedList = <span class="keyword">new</span> List&lt;BadClass&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> msg;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BadClass</span>(<span class="params"><span class="built_in">string</span> msg</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~BadClass()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Add this object to the list.</span></span><br><span class="line">        <span class="comment">// This object is reachable, no longer garbage.</span></span><br><span class="line">        <span class="comment">// It&#x27;s back!</span></span><br><span class="line">        FinalizedList.Add(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>BadClass 对象执行其 finalizer 时，会将指向自身的引用添加到全局变量表中，使得程序能够再度访问该对象，使得此对象复活。这会造成很大问题。由于 finalizer 已经执行过了，因此垃圾回收器不会再执行其 finalizer ，于是这个复活的对象将不会被系统做终结 (finalize)。其次，该对象引用的资源可能无效了。对于那些只通过 finalizer 队列中对象访问的资源来说，GC 将不会把他们从内存中移除，但这些资源的 finalizer 可能已经执行过了，这些资源基本上不能再使用了。请不要采用此写法。</p>
+<p>应该不会有人在终结对象时故意将其复活。但此例说明，若想在 Dispose 和 finalizer 中调用其他的函数以执行一些工作，请仔细考虑，这些操作可能会导致 bug，最好是将其删除，使得 Dispose 和 finalizer 只用来释放资源。</p>
+<p>对于运行在托管环境的程序来说，开发者不需要给自己的每一个类都编写 finalizer。只有当其中包含了非托管资源或是带有实现了 IDisposable 接口的成员，才需要添加 finalizer。注意，在只需 IDisposable 接口但不需要 finalizer 的场合下，还是应该把整套模式写出，使得子类可轻松的实现标准的 dispose 方案。</p>
+<p>(<strong>Ryuu：</strong>作者所述许多要点，文档中都有具体实现，推荐查看 (本书作者也是 dotnet docs 的作者，<a target="_blank" rel="noopener" href="https://github.com/BillWagner">Bill wagner’s github overview</a>)。<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/destructors">终结器 - C# 编程指南</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/unmanaged-types">非托管类型 - C# 参考</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.idisposable?view=net-5.0">IDisposable 接口 (System)</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/standard/garbage-collection/implementing-dispose">实现 Dispose 方法</a>)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1267,137 +1424,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/" class="post-title-link" itemprop="url">Effective-Java-2遇到多个构造器参数时需要考虑用构建器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-30 12:57:23" itemprop="dateCreated datePublished" datetime="2021-04-30T12:57:23+08:00">2021-04-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-06 22:00:34" itemprop="dateModified" datetime="2026-07-06T22:00:34+08:00">2026-07-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>静态工厂和构造器有个共同的局限性：都不能很好地扩展大量的可选参数</strong></p>
-<p>例：</p>
-<p>考虑用一个类表示包装食品外面显示的营养成分标签。这些标签中有几个域是必需的：每份含量，每罐含量，每份卡路里，还有超过20个可选域：总脂肪量，饱和脂肪量，转化脂肪量，胆固醇，钠等等。大多数的产品在某几个可选域中都会有非0的值。</p>
-<p>对于这样的类，应该用哪种构造器或者静态方法来编写呢？</p>
-<h3 id="1-重叠构造器-telescoping-constructor"><a href="#1-重叠构造器-telescoping-constructor" class="headerlink" title="1. 重叠构造器 (telescoping constructor)"></a>1. <strong>重叠构造器 (telescoping constructor)</strong></h3><p>   提供第一个<strong>只有必要参数</strong>的构造器</p>
-<p>   提供第二个<strong>包含必要参数且包含一个可选参数</strong>的构造器</p>
-<p>   提供第三个<strong>包含必要参数且包含两个可选参数</strong>的构造器</p>
-<p>   以此类推，最后一个构造器包含所有参数</p>
-<p>   如下是个简单的示例</p>
-   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servingSize; <span class="comment">//(ml)          required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servings; <span class="comment">//(per container)  required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> calories; <span class="comment">//                 optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> fat;      <span class="comment">//(g)              optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> sodium;   <span class="comment">//(mg)             optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> carbohydrate; <span class="comment">//(g)          optional</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//必须的选项</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, fat, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat, <span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, fat, sodium, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//包含所有的选项</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat, <span class="type">int</span> sodium, <span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">        <span class="built_in">this</span>.servings = servings;</span><br><span class="line">        <span class="built_in">this</span>.calories = calories;</span><br><span class="line">        <span class="built_in">this</span>.fat = fat;</span><br><span class="line">        <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">        <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>仅仅想创建一个该类对象，使用最短的构造器即可</p>
-<p>但如果想要设置参数表中靠后的参数问题就来了</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>(<span class="number">240</span>,<span class="number">8</span>,<span class="number">100</span>,<span class="number">0</span>,<span class="number">35</span>,<span class="number">27</span>);</span><br></pre></td></tr></table></figure>
-
-<p>如上初始化中 fat 的值为0，这个参数本是不用初始化的，就6个参数的情况下，还说的过去，随着参数增加，这样就不行了。</p>
-<p><em><strong>重叠构造器是可行的，但当参数增多时，客户端的代码将变得很难编写，阅读性也较差，并且如果初始化时容易填错顺序，导致运行时的错误。</strong></em></p>
-<h3 id="2-JavaBeans模式"><a href="#2-JavaBeans模式" class="headerlink" title="2. JavaBeans模式"></a>2. <strong>JavaBeans模式</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JavaBeans Pattern - allows inconsistency, mandates mutability</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">servingSize</span> <span class="operator">=</span> -<span class="number">1</span>; <span class="comment">//(ml)          required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">servings</span> <span class="operator">=</span> -<span class="number">1</span>; <span class="comment">//(per container)  required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">calories</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">//                 optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">fat</span> <span class="operator">=</span> <span class="number">0</span>;      <span class="comment">//(g)              optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">sodium</span> <span class="operator">=</span> <span class="number">0</span>;   <span class="comment">//(mg)             optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">carbohydrate</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">//(g)          optional</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setServingSize</span><span class="params">(<span class="type">int</span> servingSize)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setServings</span><span class="params">(<span class="type">int</span> servings)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servings = servings;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCalories</span><span class="params">(<span class="type">int</span> calories)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.calories = calories;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setFat</span><span class="params">(<span class="type">int</span> fat)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.fat = fat;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSodium</span><span class="params">(<span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCarbohydrate</span><span class="params">(<span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化</span></span><br><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>();</span><br><span class="line">cocaCola.setServingSize(<span class="number">240</span>);</span><br><span class="line">cocaCola.setServings(<span class="number">8</span>);</span><br><span class="line">cocaCola.setCalories(<span class="number">100</span>);</span><br><span class="line">cocaCola.setSodium(<span class="number">35</span>);</span><br><span class="line">cocaCola.setCarbohydrate(<span class="number">27</span>);</span><br></pre></td></tr></table></figure>
-
-<p><em><strong>JavaBeans模式创建实例很容易，代码可读性也很强，但其有很严重的缺点:</strong></em></p>
-<ol>
-<li><p>构造的过程包含多个调用，在构造过程中JavaBeans可能处于不一致状态</p>
-<p>例如一个线程正在使用setter初始化值，而另一个线程正用getter取得该对象的字段</p>
-</li>
-<li><p>使用JavaBeans模式则该类不可成为不可变类 (因为有setter访问器)</p>
-</li>
-</ol>
-<h3 id="3-Builder模式"><a href="#3-Builder模式" class="headerlink" title="3. Builder模式"></a>3. <strong>Builder模式</strong></h3><p>此模式有重叠构造器的<strong>安全性</strong>，也有JavaBeans模式的<strong>高可读性</strong></p>
-<p>不直接生成需要的对象，而是得到一个builder对象，调用所有的必要的构造器或静态工厂，设置每一个需要设置的参数，最后调用一个无参数的build方法来生成一个不可变对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servingSize;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servings;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> calories;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> fat;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> sodium;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> carbohydrate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        servingSize = builder.servingSize;</span><br><span class="line">        servings = builder.servings;</span><br><span class="line">        calories = builder.calories;</span><br><span class="line">        fat = builder.fat;</span><br><span class="line">        sodium = builder.sodium;</span><br><span class="line">        carbohydrate = builder.carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="comment">// Required parameters</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> servingSize;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> servings;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> calories;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> fat;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> sodium;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> carbohydrate;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">            <span class="built_in">this</span>.servings = servings;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// builder的 setter 返回自身实现链接调用</span></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">calories</span><span class="params">(<span class="type">int</span> calories)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.calories = calories;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">fat</span><span class="params">(<span class="type">int</span> fat)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.fat = fat;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">sodium</span><span class="params">(<span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">carbohydrate</span><span class="params">(<span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> NutritionFacts <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化</span></span><br><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>.Builder(<span class="number">240</span>, <span class="number">8</span>).calories(<span class="number">100</span>).sodium(<span class="number">35</span>).carbohydrate(<span class="number">27</span>).build();</span><br></pre></td></tr></table></figure>
-
-<p>Builder 模式的可读性提高了很多，代码简易。Builder模式模拟了了<strong>具名可选参数</strong></p>
-<p><em><strong>如果该类包含多个字段，Builder模式就是种不错的选择，特别是当大多数参数都是可选的时候。与重叠构造器与JavaBeans相比要更加安全与易读。</strong></em></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1421,13 +1447,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">76k</span>
+    <span title="站点总字数">80k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:37</span>
+    <span title="站点阅读时长">4:51</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

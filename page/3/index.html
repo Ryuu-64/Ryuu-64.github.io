@@ -137,18 +137,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -188,6 +188,129 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/31/Java-CPU-Branch-Prediction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/31/Java-CPU-Branch-Prediction/" class="post-title-link" itemprop="url">Java-CPU-Branch-Prediction</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-31 19:03:00" itemprop="dateCreated datePublished" datetime="2021-07-31T19:03:00+08:00">2021-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-06 22:00:34" itemprop="dateModified" datetime="2026-07-06T22:00:34+08:00">2026-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">计算机组成原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>448</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">arraySize</span> <span class="operator">=</span> <span class="number">1</span> &lt;&lt; <span class="number">15</span>;</span><br><span class="line">    <span class="type">int</span>[] data = <span class="keyword">new</span> <span class="title class_">int</span>[arraySize];</span><br><span class="line">    <span class="type">Random</span> <span class="variable">rnd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">0</span>; c &lt; arraySize; ++c)</span><br><span class="line">        data[c] = rnd.nextInt() % <span class="number">256</span>;</span><br><span class="line">    </span><br><span class="line">    sum(data, arraySize); <span class="comment">// 2_506_570_100 ns</span></span><br><span class="line">    <span class="comment">// The next sum runs faster after sort</span></span><br><span class="line">    Arrays.sort(data);</span><br><span class="line">    sum(data, arraySize);<span class="comment">// _768_923_900 ns</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[j] &gt;= <span class="number">128</span>)</span><br><span class="line">                sum += array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上的示例初始化一个数组，以 256 的模数进行填充，后对其中大于等于 128 的元素求和。</p>
+<p>见注释结果，排序后的数组执行求和，比不排序的要快的多。这是在执行 if 语句时，CPU 的分支预测导致的。</p>
+<p>通过分支的历史选择记录进行分支预测，若预测命中，则指令能快速的执行；若未命中，则当前执行分支作废，转而执行另一分支 (未命中的预测会损耗性能)：</p>
+<p>T : 分支预测命中</p>
+<p>F : 分支预测未命中</p>
+<ul>
+<li><p>无序数组：</p>
+<p>-248, 7, -14, 241, 15, 112, 88, 246, 152, -200, 31, 180 …</p>
+<p>F F F T F F F T T F F T</p>
+</li>
+<li><p>有序数组：</p>
+<p>127, 127, 127, 127, 127, 127, 128, 128, 128, 128, 128, 128 …</p>
+<p>F F F F F F T T T T T T</p>
+</li>
+</ul>
+<p>无序数组难以保证预测命中率，而有序数组则极好判断。</p>
+<p>也可通过位运算优化，消除分支判断。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * no if statement in this method</span></span><br><span class="line"><span class="comment"> * use shift operators</span></span><br><span class="line"><span class="comment"> * if positive num : num &gt;&gt; 31 == 0</span></span><br><span class="line"><span class="comment"> * if negative num : num &gt;&gt; 31 == -1</span></span><br><span class="line"><span class="comment"> * ~0 = -1 (ffffffff)</span></span><br><span class="line"><span class="comment"> * ~-1 = 0 (0)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sumAvoidBranchPrediction</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            sum += ~((array[j] - <span class="number">128</span>) &gt;&gt; <span class="number">31</span>) &amp; array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>); <span class="comment">// _606_267_300 ns</span></span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原始地址：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34056162/article/details/89278427?utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.base&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.base">【Java深入学习系列】之CPU的分支预测(Branch Prediction)模型</a> </p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1494,117 +1617,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/14/Effective-Java-40%E5%9D%9A%E6%8C%81%E4%BD%BF%E7%94%A8Override%E6%B3%A8%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/14/Effective-Java-40%E5%9D%9A%E6%8C%81%E4%BD%BF%E7%94%A8Override%E6%B3%A8%E8%A7%A3/" class="post-title-link" itemprop="url">Effective-Java-40坚持使用Override注解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-14 13:24:41" itemprop="dateCreated datePublished" datetime="2021-07-14T13:24:41+08:00">2021-07-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-06 22:00:34" itemprop="dateModified" datetime="2026-07-06T22:00:34+08:00">2026-07-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>507</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Java 类库中包含了几种注解类型。一般来说，其中最重要的是 @Override 注解。该注解仅能用于方法声明，表示被注解的方法声明覆盖了超类中的一个方法声明。坚持使用该注解，可以防止一大类的非法错误。请看代码段</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Can you spot the bug?</span></span><br><span class="line"><span class="comment"> * result: 260</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Bigram</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">char</span> first;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">char</span> second;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Bigram</span><span class="params">(<span class="type">char</span> first, <span class="type">char</span> second)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.first = first;</span><br><span class="line">        <span class="built_in">this</span>.second = second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Bigram b)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> first == b.first &amp;&amp; second == b.second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">31</span> * first + second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        Set&lt;Bigram&gt; s = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="string">&#x27;a&#x27;</span>; ch &lt;= <span class="string">&#x27;z&#x27;</span>; ch++) &#123;</span><br><span class="line">                s.add(<span class="keyword">new</span> <span class="title class_">Bigram</span>(ch, ch));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(s.size());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>该程序将反复的把 26 个双字母组合添加进集合中 (每个字母组合都由两个相同的小写字母组成)，随后打印该集合的大小。结果见注释，期望的结果是 26 ，因为存在重复添加相同字母组合的情况。</p>
-<p>显然 Bigram 类的创建者原本想覆盖 equals 方法(见第10条)，同时还记得覆盖 hashCode。实际上 equals 没有被重写，而是被重载了。重写 Object.equals 必须定义一个参数为 Object 类型的 equals 方法，但Bigram 类中定义的是 Bigram 类型，因此 Bigram 类从Object 类继承了equals ，该 equals 比较对象的同一性 (identity)，就像 &#x3D;&#x3D; 操作符一样。所以对于每一个 bigram 的重复添加，都被看做是不同的，这就是结果为 260 的原因。</p>
-<p>幸运的是，编译器可以可以帮助你发现这个错误，但是需要告知编译器想要重写 Object.equals才行。用 @Override 标注Bigram.equals，如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">* Error: Method does not override method from its superclass</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Bigram b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> first == b.first &amp;&amp; second == b.second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果插入这个注解，会发现错误信息。将其改正为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Bigram))</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">Bigram</span> <span class="variable">b</span> <span class="operator">=</span> (Bigram) o;</span><br><span class="line">    <span class="keyword">return</span> first == b.first &amp;&amp; second == b.second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因此，应<strong>在想要重写超类声明的每个方法中使用 Override 注解</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1628,13 +1640,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">76k</span>
+    <span title="站点总字数">80k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:37</span>
+    <span title="站点阅读时长">4:51</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
