@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="C# 有两种常量，一种是**编译期 (compile-time)的，另一种是运行期 (runtime)**的。 12345&#x2F;&#x2F; Compile-time constant:public const int Millennium &#x3D; 2000;&#x2F;&#x2F; Runtime constant:public static readonly int ThisYear &#x3D; 2004;  以上代码展示了如何在 cla">
+    <meta name="description" content="C# 有两种常量，一种是**编译期 (compile-time)的，另一种是运行期 (runtime)**的。 12345&#x2F;&#x2F; Compile-time constant:public const int Millennium &#x3D; 2000;&#x2F;&#x2F; Runtime constant:public static readonly int ThisYear &#x3D; 2004; 以上代码展示了如何在 clas">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-CSharp-2考虑用readonly代替const">
 <meta property="og:url" content="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="C# 有两种常量，一种是**编译期 (compile-time)的，另一种是运行期 (runtime)**的。 12345&#x2F;&#x2F; Compile-time constant:public const int Millennium &#x3D; 2000;&#x2F;&#x2F; Runtime constant:public static readonly int ThisYear &#x3D; 2004;  以上代码展示了如何在 cla">
+<meta property="og:description" content="C# 有两种常量，一种是**编译期 (compile-time)的，另一种是运行期 (runtime)**的。 12345&#x2F;&#x2F; Compile-time constant:public const int Millennium &#x3D; 2000;&#x2F;&#x2F; Runtime constant:public static readonly int ThisYear &#x3D; 2004; 以上代码展示了如何在 clas">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-01T15:01:08.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:19:59.996Z">
@@ -280,20 +280,16 @@
     
     <div class="post-body" itemprop="articleBody"><p>C# 有两种常量，一种是**编译期 (compile-time)<strong>的，另一种是</strong>运行期 (runtime)**的。</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Compile-time constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="built_in">int</span> Millennium = <span class="number">2000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Runtime constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ThisYear = <span class="number">2004</span>;</span><br></pre></td></tr></table></figure>
-
 <p>以上代码展示了如何在 class 或 struct 的范围内声明这两种常量 此外编译期常量还能在方法中声明，而 readyonly 常量则不行。</p>
 <p>编译器的常量取值嵌入目标代码中。例如</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == Millennium)</span><br></pre></td></tr></table></figure>
-
 <p>编译成 IL 之后，与直接使用字面量2000是一样的</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == <span class="number">2000</span>)</span><br></pre></td></tr></table></figure>
-
 <p>运行期常量与之不同，如果代码中使用到了运行期常量，那么其生成的 IL 的、也会同样<strong>引用</strong>该变量，而不会直接使用字面量。</p>
 <p>这两种变量支持的值也不一样。编译期的常量只能用来表示内置的 int, float, enum, string。非基本变量不能使用编译期常量声明，需要使用 readonly。在生成 IL 的过程中，只有用来表示这些原始类型的编译期常量才会替换成字面量。</p>
 <p>无法编译，试图使用 new 操作符进行初始化: (Ryuu: 即使是参数是值类型也不行，其对象在编译期不存在)</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">// Does not compile ,use readonly instead:</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> DateTime classCreation = <span class="keyword">new</span> DateTime(<span class="number">2000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>编译期常量只能用数字，字符串或 null 初始化。</strong>readonly 常量在执行完构造函数 (constructor) 之后不可以再修改。(和编译期常量不同，他的值是在执行完构造函数后才初始化的)</p>
+<p>**编译期常量只能用数字，字符串或 null 初始化。**readonly 常量在执行完构造函数 (constructor) 之后不可以再修改。(和编译期常量不同，他的值是在执行完构造函数后才初始化的)</p>
 <p>在生成 IL 的时候，代码中的编译期常量会直接以其常量值写入，如果在制作另外的程序集 (assembly) 的时候用到了该程序集中的编译期常量，那么这个常量将会以字面值写入另外的程序集。</p>
 <p>有的时候开发者确实想把某个值固定在编译期，比如程序版本记录，如果更新整个项目，那么里面每个版本号都会变为最新，如果仅更新其中某些程序集，那么只有更新的程序集的版本号会变为最新值。</p>
 <p>const 的性能比 readonly 的要好。由于程序集可以直接访问值，而不用查询变量，因此性能稍高。但是，开发者需要考虑是否值得为了这点性能而使得代码变得僵硬。在决定这么做之前，您应该先通过 profile 工具做性能测试。(可以试试 BenchmarkDotNet)</p>

@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLAI">
+    <meta name="description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象 这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="任务进度为什么会倒退">
 <meta property="og:url" content="http://example.com/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLAI">
+<meta property="og:description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象 这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLA">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-11T07:31:58.000Z">
 <meta property="article:modified_time" content="2026-07-16T15:21:03.112Z">
@@ -290,7 +290,8 @@
 <p>比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。</p>
 <p>更诡异的是，更新时间是新的，进度却是旧的。</p>
 <p>这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。</p>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>这次问题的表现大概是这样：</p>
+<h2 id="现象">现象</h2>
+<p>这次问题的表现大概是这样：</p>
 <ol>
 <li>玩家在游戏内做了一次兑换。</li>
 <li>数据库里的任务记录一度变成了完成状态：<code>progress=1</code>，<code>status=CAN_CLAIM</code>。</li>
@@ -299,7 +300,8 @@
 </ol>
 <p>如果只看兑换流程，会觉得它没有问题。兑换完成后，平台服务通知任务服务更新进度，数据库也确实写成功了。</p>
 <p>真正的问题发生在退出游戏的时候。</p>
-<h2 id="三个模块各自都很合理"><a href="#三个模块各自都很合理" class="headerlink" title="三个模块各自都很合理"></a>三个模块各自都很合理</h2><p>这个任务系统被拆在三个模块里：</p>
+<h2 id="三个模块各自都很合理">三个模块各自都很合理</h2>
+<p>这个任务系统被拆在三个模块里：</p>
 <table>
 <thead>
 <tr>
@@ -307,7 +309,8 @@
 <th>职责</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>平台服务</td>
 <td>平台事件入口，比如支付、兑换这类不直接发生在游戏循环里的操作</td>
 </tr>
@@ -319,7 +322,8 @@
 <td>游戏服务</td>
 <td>游戏内实时任务进度，负责内存缓存、客户端推送、退出时 flush</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>它们的职责单独看都很自然：</p>
 <ul>
 <li>平台事件发生在平台服务，所以兑换后由平台服务通知任务服务。</li>
@@ -327,29 +331,28 @@
 <li>游戏中需要实时显示任务进度，所以游戏服务会在玩家进游戏时加载任务进度到内存。</li>
 </ul>
 <p>问题就出在最后一点：游戏服务里有一份任务进度缓存。</p>
-<h2 id="两条写路径"><a href="#两条写路径" class="headerlink" title="两条写路径"></a>两条写路径</h2><p>这个系统里，任务进度至少有两条更新路径。</p>
+<h2 id="两条写路径">两条写路径</h2>
+<p>这个系统里，任务进度至少有两条更新路径。</p>
 <p>第一条是游戏内事件。</p>
 <p>例如射击、开宝箱、赚金币这种行为，本来就发生在游戏服里：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">游戏内事件</span><br><span class="line">  -&gt; 更新游戏服务内存缓存</span><br><span class="line">  -&gt; 推送客户端任务进度变化</span><br><span class="line">  -&gt; 退出或阶段性 flush</span><br><span class="line">  -&gt; 任务服务写 DB</span><br></pre></td></tr></table></figure>
-
 <p>这条路径是自洽的。内存先更新，DB 后更新，客户端也能收到推送。</p>
 <p>第二条是平台事件。</p>
 <p>兑换不是游戏服自己完成的，而是平台服务处理的：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">平台服务完成兑换</span><br><span class="line">  -&gt; 通知任务服务更新进度</span><br><span class="line">  -&gt; 任务服务按条件更新任务</span><br><span class="line">  -&gt; 写 DB</span><br></pre></td></tr></table></figure>
-
 <p>这条路径也自洽。兑换成功后，任务服务把 DB 里的进度加上去。</p>
 <p>但它少了一件事：没有通知游戏服务里的任务缓存。</p>
-<h2 id="脏缓存是怎么覆盖正确数据的"><a href="#脏缓存是怎么覆盖正确数据的" class="headerlink" title="脏缓存是怎么覆盖正确数据的"></a>脏缓存是怎么覆盖正确数据的</h2><p>把时间线连起来，就能看到问题：</p>
+<h2 id="脏缓存是怎么覆盖正确数据的">脏缓存是怎么覆盖正确数据的</h2>
+<p>把时间线连起来，就能看到问题：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">玩家进入游戏</span><br><span class="line">  -&gt; 游戏服务从任务服务加载任务进度</span><br><span class="line">  -&gt; 缓存在游戏服务内存中</span><br><span class="line">  -&gt; 此时 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家在游戏内兑换</span><br><span class="line">  -&gt; 平台服务完成兑换</span><br><span class="line">  -&gt; 任务服务写 DB</span><br><span class="line">  -&gt; DB 变为 progress=1, status=CAN_CLAIM</span><br><span class="line">  -&gt; 游戏服务缓存仍然是 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家退出游戏</span><br><span class="line">  -&gt; 游戏服务 flush 玩家任务缓存</span><br><span class="line">  -&gt; 把内存里的旧进度 flush 到任务服务</span><br><span class="line">  -&gt; 任务服务用旧 progress/status 覆盖 DB</span><br></pre></td></tr></table></figure>
-
 <p>所以，数据库不是没有更新成功。</p>
 <p>它是先被正确更新了，然后又被旧缓存覆盖了。</p>
-<p>这就是这个问题最容易误判的地方：如果只查兑换那一刻的数据库，会看到正确结果；如果查退出后的数据库，会看到错误结果。中间缺的不是一次写入，而是一次来自旧状态的覆盖写入。这个形态和并发控制里常说的 lost update 很接近：不是没有写入，而是后来的旧快照把已经成立的新事实覆盖掉了。[^optimistic-lock]</p>
-<h2 id="为什么更新时间是对的"><a href="#为什么更新时间是对的" class="headerlink" title="为什么更新时间是对的"></a>为什么更新时间是对的</h2><p>这个现象也很迷惑：<code>upd_time</code> 看起来是对的，但 <code>progress</code> 和 <code>status</code> 是错的。</p>
+<p>这就是这个问题最容易误判的地方：如果只查兑换那一刻的数据库，会看到正确结果；如果查退出后的数据库，会看到错误结果。中间缺的不是一次写入，而是一次来自旧状态的覆盖写入。这个形态和并发控制里常说的 lost update 很接近：不是没有写入，而是后来的旧快照把已经成立的新事实覆盖掉了。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h2 id="为什么更新时间是对的">为什么更新时间是对的</h2>
+<p>这个现象也很迷惑：<code>upd_time</code> 看起来是对的，但 <code>progress</code> 和 <code>status</code> 是错的。</p>
 <p>原因在 SQL 写法里。</p>
 <p>任务更新时，<code>progress</code>、<code>upd_time</code>、<code>status</code> 是一起 SET 的：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> task_progress</span><br><span class="line"><span class="keyword">set</span> progress <span class="operator">=</span> ?,</span><br><span class="line">    upd_time <span class="operator">=</span> ?,</span><br><span class="line">    status <span class="operator">=</span> ?</span><br><span class="line"><span class="keyword">where</span> role_id <span class="operator">=</span> ?</span><br><span class="line">  <span class="keyword">and</span> task_id <span class="operator">=</span> ?</span><br></pre></td></tr></table></figure>
-
 <p>退出 flush 那条路径在写之前会先查一次 DB。此时 DB 里已经有新的 <code>upd_time</code>，但内存缓存里还是旧的进度和状态。</p>
 <p>于是它写回去的是：</p>
 <ul>
@@ -359,7 +362,8 @@
 </ul>
 <p>这就造成了一个很有迷惑性的现场：时间像是更新过，数据却像是回滚了。</p>
 <p>它不是事务回滚，而是旧状态覆盖。</p>
-<h2 id="根因不是缓存，而是缓存的所有权不清楚"><a href="#根因不是缓存，而是缓存的所有权不清楚" class="headerlink" title="根因不是缓存，而是缓存的所有权不清楚"></a>根因不是缓存，而是缓存的所有权不清楚</h2><p>看到这里，很容易得出一个简单结论：缓存有问题。</p>
+<h2 id="根因不是缓存，而是缓存的所有权不清楚">根因不是缓存，而是缓存的所有权不清楚</h2>
+<p>看到这里，很容易得出一个简单结论：缓存有问题。</p>
 <p>但更准确地说，是这份缓存的所有权和写入边界不够清楚。</p>
 <p>游戏服务里的任务缓存适合处理游戏内事件，因为这些事件天然发生在游戏服务，并且需要实时推送客户端。</p>
 <p>但兑换任务不是游戏内事件。它的事实来源在平台服务，最终状态在任务服务，游戏服务只是曾经加载过一份旧快照。</p>
@@ -368,9 +372,10 @@
 <li>它不是事实来源。</li>
 <li>它可以在退出、定时任务、补偿流程里反向覆盖事实来源。</li>
 </ol>
-<p>这时候缓存就不只是缓存了，它变成了另一个写入者。Microsoft 的 Cache-Aside pattern 文档也明确提醒：cache-aside 本身并不保证缓存和数据源一致，外部进程更新数据源时，缓存要等重新加载或失效后才会反映变化。[^cache-aside]</p>
+<p>这时候缓存就不只是缓存了，它变成了另一个写入者。Microsoft 的 Cache-Aside pattern 文档也明确提醒：cache-aside 本身并不保证缓存和数据源一致，外部进程更新数据源时，缓存要等重新加载或失效后才会反映变化。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>而多个写入者最怕的，就是每个人都以为自己手上的状态是最新的。</p>
-<h2 id="修复为什么不是加一次同步"><a href="#修复为什么不是加一次同步" class="headerlink" title="修复为什么不是加一次同步"></a>修复为什么不是加一次同步</h2><p>直觉上的修复是：兑换后通知游戏服务，把任务缓存也更新掉。</p>
+<h2 id="修复为什么不是加一次同步">修复为什么不是加一次同步</h2>
+<p>直觉上的修复是：兑换后通知游戏服务，把任务缓存也更新掉。</p>
 <p>这当然是一种方案，但它会引入新的问题：</p>
 <ul>
 <li>要给游戏服务增加更新任务进度的 RPC 能力。</li>
@@ -378,20 +383,19 @@
 <li>要保证 DB 更新和游戏服务缓存更新之间的失败补偿。</li>
 <li>以后所有平台任务都要想清楚要不要同步游戏服务缓存。</li>
 </ul>
-<p>这不是不能做，而是成本更高。AWS 对 cache-aside 和 write-through 的区分可以解释这里的取舍：如果选择 write-through，应用就要在更新主数据库后同步维护缓存；如果选择 cache-aside，就要承认缓存是按需加载的副本，并明确它的失效和回源机制。[^aws-caching]</p>
+<p>这不是不能做，而是成本更高。AWS 对 cache-aside 和 write-through 的区分可以解释这里的取舍：如果选择 write-through，应用就要在更新主数据库后同步维护缓存；如果选择 cache-aside，就要承认缓存是按需加载的副本，并明确它的失效和回源机制。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>这次采用的是更小的修复：不要把兑换任务加载到游戏服务缓存里。</p>
 <p>原因很简单：兑换任务不需要游戏内实时追踪。</p>
 <p>玩家做兑换时，事实发生在平台服务；任务完成状态也由任务服务写 DB。它不需要由游戏服内存来参与生命周期。</p>
 <p>所以把兑换任务加入一个“非游戏内追踪任务”的排除列表：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">EXCHANGE_TASK_ID</span> <span class="operator">=</span> <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Integer&gt; NON_GAMEPLAY_TASK_IDS = set(</span><br><span class="line">    BIND_PHONE_TASK_ID,</span><br><span class="line">    DAILY_RECHARGE_TASK_ID,</span><br><span class="line">    EXCHANGE_TASK_ID</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
 <p>这样玩家进入游戏时，这类任务不会进入游戏服务的内存缓存：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">不加载到游戏服务</span><br><span class="line">  -&gt; 不产生游戏服务缓存</span><br><span class="line">  -&gt; 退出时不 flush</span><br><span class="line">  -&gt; 不会用旧缓存覆盖 DB</span><br></pre></td></tr></table></figure>
-
 <p>这个修复的关键不是“少写一段同步代码”，而是重新划清了任务的归属。</p>
 <p>游戏内任务交给游戏服务缓存追踪。</p>
 <p>平台任务不要进入游戏服务缓存。</p>
-<h2 id="什么时候应该让缓存参与写入"><a href="#什么时候应该让缓存参与写入" class="headerlink" title="什么时候应该让缓存参与写入"></a>什么时候应该让缓存参与写入</h2><p>这次问题给我的提醒是：不要只问“要不要缓存”，还要问“缓存有没有资格写回”。</p>
+<h2 id="什么时候应该让缓存参与写入">什么时候应该让缓存参与写入</h2>
+<p>这次问题给我的提醒是：不要只问“要不要缓存”，还要问“缓存有没有资格写回”。</p>
 <p>如果缓存只是读优化，它失效或过期最多影响性能。</p>
 <p>如果缓存会写回数据库，它就进入了 <a href="/2025/08/21/%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/" title="缓存一致性">缓存一致性</a> 的核心路径。此时至少要回答几个问题：</p>
 <ol>
@@ -401,21 +405,35 @@
 <li>如果 DB 已经被其他路径更新，缓存写回应该跳过、合并，还是报错？</li>
 <li>哪些业务根本不应该进入这份缓存？</li>
 </ol>
-<p>这几个问题里，最后一个经常被忽略。乐观并发控制给出的思路是：保存前比较“我当初读到的版本”和“数据库当前版本”，如果已经变化，就不要静默覆盖，而是进入冲突处理。EF Core 的 concurrency token 和 Fowler 的 Optimistic Offline Lock 都是在解决这类“旧副本写回”问题。[^concurrency-token]</p>
+<p>这几个问题里，最后一个经常被忽略。乐观并发控制给出的思路是：保存前比较“我当初读到的版本”和“数据库当前版本”，如果已经变化，就不要静默覆盖，而是进入冲突处理。EF Core 的 concurrency token 和 Fowler 的 Optimistic Offline Lock 都是在解决这类“旧副本写回”问题。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>很多时候，最稳的修复不是让所有状态同步到所有地方，而是减少不该拥有状态的地方。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个 Bug 表面上是“任务进度倒退”，本质上是两条写路径竞争同一行数据：</p>
+<h2 id="小结">小结</h2>
+<p>这个 Bug 表面上是“任务进度倒退”，本质上是两条写路径竞争同一行数据：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">平台服务路径：写入正确进度</span><br><span class="line">游戏服务路径：退出时 flush 旧缓存</span><br><span class="line">最终结果：旧缓存覆盖新 DB</span><br></pre></td></tr></table></figure>
-
 <p>它提醒我一件事：</p>
 <p>缓存不是只要命中率高就算设计完成。只要缓存能写回，它就是一个数据作者。</p>
 <p>一个系统里可以有多个读者，但最好不要有太多自以为拥有事实的作者。</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^optimistic-lock]: Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里借用的是“检测并阻止并发业务事务互相覆盖”的思路，不是说这个事故一定发生在 ORM 或长事务场景。<br>[^cache-aside]: Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a>。这里引用它来支撑“cache-aside 不自动保证缓存和数据源一致，外部写路径会让缓存变旧”的判断。<br>[^aws-caching]: AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a>。这里引用它来区分 cache-aside &#x2F; lazy loading 和 write-through：前者按需填充，后者要求应用在主库更新后主动维护缓存。<br>[^concurrency-token]: Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a>；Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里引用它们来支撑“旧快照写回应带版本判断或冲突处理，而不是无条件覆盖”的设计原则。</p>
-<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<h2 id="注释">注释</h2>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
 <li>Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a></li>
 <li>AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a></li>
 <li>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a></li>
 <li>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a></li>
 </ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里借用的是“检测并阻止并发业务事务互相覆盖”的思路，不是说这个事故一定发生在 ORM 或长事务场景。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a>。这里引用它来支撑“cache-aside 不自动保证缓存和数据源一致，外部写路径会让缓存变旧”的判断。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a>。这里引用它来区分 cache-aside / lazy loading 和 write-through：前者按需填充，后者要求应用在主库更新后主动维护缓存。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a>；Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里引用它们来支撑“旧快照写回应带版本判断或冲突处理，而不是无条件覆盖”的设计原则。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 

@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content=".NET 平台的头两个版本 (1.1 及 1.2) 不支持泛型 System.Object 是所有类型的最终基类 为何要使用泛型代码？  健壮性     将 Object 作为 参数或返回类型 难免会出现意外的类型 导致运行时的错误  性能 1.1 版本的弱类型系统需要在代码中添加检验代码以保证参数或返回类型的正确 ，当检验失败时还会执行更多的其他代码，这不可避免的导致了更大的性能开销   “总体">
+    <meta name="description" content=".NET 平台的头两个版本 (1.1 及 1.2) 不支持泛型 System.Object 是所有类型的最终基类 为何要使用泛型代码？  健壮性  将 Object 作为 参数或返回类型 难免会出现意外的类型 导致运行时的错误   性能 1.1 版本的弱类型系统需要在代码中添加检验代码以保证参数或返回类型的正确 ，当检验失败时还会执行更多的其他代码，这不可避免的导致了更大的性能开销   “总体说来">
 <meta property="og:type" content="article">
 <meta property="og:title" content="More-Effective-CSharp-1.1使用 1.x 框架 API 的泛型版本">
 <meta property="og:url" content="http://example.com/2021/04/29/More-Effective-CSharp-1.1%E4%BD%BF%E7%94%A8%201.x%20%E6%A1%86%E6%9E%B6%20API%20%E7%9A%84%E6%B3%9B%E5%9E%8B%E7%89%88%E6%9C%AC/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content=".NET 平台的头两个版本 (1.1 及 1.2) 不支持泛型 System.Object 是所有类型的最终基类 为何要使用泛型代码？  健壮性     将 Object 作为 参数或返回类型 难免会出现意外的类型 导致运行时的错误  性能 1.1 版本的弱类型系统需要在代码中添加检验代码以保证参数或返回类型的正确 ，当检验失败时还会执行更多的其他代码，这不可避免的导致了更大的性能开销   “总体">
+<meta property="og:description" content=".NET 平台的头两个版本 (1.1 及 1.2) 不支持泛型 System.Object 是所有类型的最终基类 为何要使用泛型代码？  健壮性  将 Object 作为 参数或返回类型 难免会出现意外的类型 导致运行时的错误   性能 1.1 版本的弱类型系统需要在代码中添加检验代码以保证参数或返回类型的正确 ，当检验失败时还会执行更多的其他代码，这不可避免的导致了更大的性能开销   “总体说来">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-29T08:00:15.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.021Z">
@@ -283,9 +283,10 @@
 <ol>
 <li><strong>健壮性</strong></li>
 </ol>
-<p>   将 Object 作为 参数或返回类型 难免会出现意外的类型 导致运行时的错误</p>
+<p>将 Object 作为 参数或返回类型 难免会出现意外的类型 导致运行时的错误</p>
 <ol start="2">
-<li><p><strong>性能</strong></p>
+<li>
+<p><strong>性能</strong></p>
 <p>1.1 版本的弱类型系统需要在代码中添加检验代码以保证参数或返回类型的正确</p>
 <p>，当检验失败时还会执行更多的其他代码，这不可避免的导致了更大的性能开销</p>
 </li>
@@ -294,12 +295,11 @@
 <p>自 .NET 2.0 引入了泛型</p>
 <p>以 System.IComparable<T> 为例比较泛型版本的优势</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IComparable</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="built_in">int</span> <span class="title">CompareTo</span>(<span class="params">T other</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1.1版本</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IComparable</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="built_in">int</span> <span class="title">CompareTo</span>(<span class="params"><span class="built_in">object</span> obj</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">CompareTo</span>(<span class="params">Customer right</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Name.CompareTo(right.Name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">CompareTo</span>(<span class="params"><span class="built_in">object</span> right</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!(right <span class="keyword">is</span> Customer))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="string">&quot;Argument not a customer&quot;</span>,<span class="string">&quot;right&quot;</span>);</span><br><span class="line">    Customer rightCustomer = (Customer)right;</span><br><span class="line">    <span class="keyword">return</span> Name.CompareTo(rightCustomer.Name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>使用泛型接口的四个优势</strong></p>
 <ol>
 <li>简洁</li>
 <li>高效</li>
-<li>避免了所有的装箱&#x2F;拆箱以及类型转换操作 (个人认为这点其实包含在1与2中)</li>
+<li>避免了所有的装箱/拆箱以及类型转换操作 (个人认为这点其实包含在1与2中)</li>
 <li>不会抛出异常 (非泛型版本中运行时可能出现的异常变为可由编辑器捕获的异常</li>
 </ol>
 <p><strong>个人总结: 用基类传来传去固然是不怎么安全,并且还会增加代码量与更多性能开销,一般情况下用泛型约束确实是最好的选择 (参数不继承自同一基类另说)</strong></p>

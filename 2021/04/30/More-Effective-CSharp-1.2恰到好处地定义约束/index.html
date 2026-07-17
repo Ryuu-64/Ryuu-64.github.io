@@ -278,12 +278,13 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>​		<strong>类型参数的约束指出了能完成该泛型类工作的类必须具有的行为。</strong>若是某一类型无法满足约束，那么自然无法用于该泛型类型中。不过这也意味着，每次在泛型类型中引入新的的束，都会给该类型的使用者增加更多的工作。实际情况各不相同，因此并<strong>没有万能的解决方案</strong>，不过太过极端总归是不好的。若是不给出任何约束，那么则必须在运行时进行过多检查，比如使用强制转换。反射并抛出运行时异常等来保证程序的正确性。而若是约束过多，那么也会让类的使用者觉得麻烦。因此你要<strong>找到那个恰到好处的中间点，精确地时类型参数给出约束</strong>，不多也不少。<br>​		<strong>约束能让编译器了解某个类型参数更具体的信息，而不仅限于极为笼统的System.Object。</strong>在创建泛型类型时，<strong>C# 编译器将要为泛型类型的定义生成合法的IL</strong>。而在进行编译时，虽然编译器对今后可能用来替换类型参数的具体类型了解甚少，但你需要生成合法的程序集。若是不添加任何约束，那么编译器只能假设这些类型仅具有最基本的特性，即System.Object中定义的方法。<br>​		编译器无法猜测出你对类型的假设，唯一能够确认的就是该类型继承于System.Object(因此我们无法创建不安全的泛型，也无法将指针作为类型参数。）我们知道。System.Object的功能非常有限，因此若是使用到了任何非System.Object的功能，编译器均会抛出异常。你甚至都无法使用最基础的构造函数new T()，因为若某个类型仅提供了有参数的构造函数，那么该构造函数将会被隐藏。</p>
+    <div class="post-body" itemprop="articleBody"><p>​		<strong>类型参数的约束指出了能完成该泛型类工作的类必须具有的行为。<strong>若是某一类型无法满足约束，那么自然无法用于该泛型类型中。不过这也意味着，每次在泛型类型中引入新的的束，都会给该类型的使用者增加更多的工作。实际情况各不相同，因此并</strong>没有万能的解决方案</strong>，不过太过极端总归是不好的。若是不给出任何约束，那么则必须在运行时进行过多检查，比如使用强制转换。反射并抛出运行时异常等来保证程序的正确性。而若是约束过多，那么也会让类的使用者觉得麻烦。因此你要<strong>找到那个恰到好处的中间点，精确地时类型参数给出约束</strong>，不多也不少。<br>
+​		**约束能让编译器了解某个类型参数更具体的信息，而不仅限于极为笼统的System.Object。**在创建泛型类型时，<strong>C# 编译器将要为泛型类型的定义生成合法的IL</strong>。而在进行编译时，虽然编译器对今后可能用来替换类型参数的具体类型了解甚少，但你需要生成合法的程序集。若是不添加任何约束，那么编译器只能假设这些类型仅具有最基本的特性，即System.Object中定义的方法。<br>
+​		编译器无法猜测出你对类型的假设，唯一能够确认的就是该类型继承于System.Object(因此我们无法创建不安全的泛型，也无法将指针作为类型参数。）我们知道。System.Object的功能非常有限，因此若是使用到了任何非System.Object的功能，编译器均会抛出异常。你甚至都无法使用最基础的构造函数new T()，因为若某个类型仅提供了有参数的构造函数，那么该构造函数将会被隐藏。</p>
 <p><strong>最小化约束方法有很多种.其中最常见的一种是,确保泛型类型不要求其不需要的功能</strong></p>
 <p>以IEquatable<T>为例,这个是个很常用的接口,且创建新类型时也经常用到.</p>
 <p>我们可以重写AreEqual方法,让其调用Equals方法.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">AreEqual</span>&lt;<span class="title">T</span>&gt;(<span class="params">T left, T right</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> left.Equals(right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在上述代码中,若AreEqual<T>()定义在一个带有IEquatable<T>约束的泛型类中,那么AreEqual将调用IEquatable<T>.Equals.否则, C#编译器则不会假设具体类型一定会实现IEquatable<T>,因此唯一可用的Equals()就是System.Object.Equals().</p>
 <p>上述示例可以看到C#泛型和C++模板之间的主要区别.</p>
 <p><strong>在C#中,编译器仅能使用约束给出的信息来生成IL. 即使为某个特定的实例指定的类型拥有更好的方法,也不会在运行时使用,除非在该泛型类型编译时就给出限定.</strong></p>

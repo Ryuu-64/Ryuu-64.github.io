@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Singleton 指仅仅被实例化一次的类。Singleton 通常被用来代表那些本质上唯一的系统组件，比如窗口管理器或者文件系统。(单例模式) 在 Java 1.5 发行版本之前，实现Singleton有两种方法。这两种方法都要把构造器保持为私有的，并指定一个共有的静态成员。  在第一个方法中，共有静态成员是个 final 域： 123456&#x2F;&#x2F; Singleton with public fi">
+    <meta name="description" content="Singleton 指仅仅被实例化一次的类。Singleton 通常被用来代表那些本质上唯一的系统组件，比如窗口管理器或者文件系统。(单例模式) 在 Java 1.5 发行版本之前，实现Singleton有两种方法。这两种方法都要把构造器保持为私有的，并指定一个共有的静态成员。   在第一个方法中，共有静态成员是个 final 域： 123456&#x2F;&#x2F; Singleton with public f">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-Java-3用私有构造器或枚举类型强化Singleton属性">
 <meta property="og:url" content="http://example.com/2021/05/09/Effective-Java-3%E7%94%A8%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E6%88%96%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%BC%BA%E5%8C%96Singleton%E5%B1%9E%E6%80%A7/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="Singleton 指仅仅被实例化一次的类。Singleton 通常被用来代表那些本质上唯一的系统组件，比如窗口管理器或者文件系统。(单例模式) 在 Java 1.5 发行版本之前，实现Singleton有两种方法。这两种方法都要把构造器保持为私有的，并指定一个共有的静态成员。  在第一个方法中，共有静态成员是个 final 域： 123456&#x2F;&#x2F; Singleton with public fi">
+<meta property="og:description" content="Singleton 指仅仅被实例化一次的类。Singleton 通常被用来代表那些本质上唯一的系统组件，比如窗口管理器或者文件系统。(单例模式) 在 Java 1.5 发行版本之前，实现Singleton有两种方法。这两种方法都要把构造器保持为私有的，并指定一个共有的静态成员。   在第一个方法中，共有静态成员是个 final 域： 123456&#x2F;&#x2F; Singleton with public f">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-09T11:42:23.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.007Z">
@@ -281,23 +281,22 @@
     <div class="post-body" itemprop="articleBody"><p>Singleton 指仅仅被实例化一次的类。Singleton 通常被用来代表那些本质上唯一的系统组件，比如窗口管理器或者文件系统。(单例模式)</p>
 <p>在 Java 1.5 发行版本之前，实现Singleton有两种方法。这两种方法都要把构造器保持为私有的，并指定一个共有的静态成员。</p>
 <ol>
-<li><p>在第一个方法中，共有静态成员是个 final 域：</p>
+<li>
+<p>在第一个方法中，共有静态成员是个 final 域：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Singleton with public final field</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Elvis</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">final</span> <span class="type">Elvis</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Elvis</span>();</span><br><span class="line">	<span class="keyword">private</span> <span class="title function_">Elvis</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">leaveTheBuilding</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p> 私有的构造器仅被调用一次，用来实例化共有的静态 final 域 Elvis.INSTANCE。由于缺少共有的或者受保护的构造器，所以保证了Elvis的全局唯一性：一旦 Elvis 类被实例化，只会存在一个Elvis实例，不多也不少。</p>
+<p>私有的构造器仅被调用一次，用来实例化共有的静态 final 域 Elvis.INSTANCE。由于缺少共有的或者受保护的构造器，所以保证了Elvis的全局唯一性：一旦 Elvis 类被实例化，只会存在一个Elvis实例，不多也不少。</p>
 <p>但要提醒一点：享有特权的客户端可以借助AccessibleObject.setAccessible方法，通过反射机制调用私有构造器 (java 反射攻击) 。如果需要抵御这种攻击，可以修改构造器，让他在被要求创建第二个实例的时候抛出异常。</p>
 </li>
-<li><p>在第二种方法中，共有的成员是个静态工厂方法：</p>
+<li>
+<p>在第二种方法中，共有的成员是个静态工厂方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Singleton with static factory</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Elvis</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">final</span> <span class="type">Elvis</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Elvis</span>();</span><br><span class="line">	<span class="keyword">private</span> <span class="title function_">Elvis</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Elvis <span class="title function_">getInstance</span><span class="params">()</span> &#123; <span class="keyword">return</span> INSTANCE; &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">leaveTheBuilding</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>为了使利用这其中一种方法实现的Singleton类变成可序列化的(Serializable)，仅仅在声明中加上”implements Serializable” 是不够的。为了维护并保证Singleton，必须声明所有实例域都是顺时的(transient) 的，并提供一个readResolve方法。否则，每次反序列化一个序列化的实例时，都会创建一个新的实例。</p>
-<p>在如下的例子中会导致”假的Elvis”出现。为了防止这种情况，要在Elvis类中加入下面这个readResovle方法：</p>
+<p>为了使利用这其中一种方法实现的Singleton类变成可序列化的(Serializable)，仅仅在声明中加上&quot;implements Serializable&quot; 是不够的。为了维护并保证Singleton，必须声明所有实例域都是顺时的(transient) 的，并提供一个readResolve方法。否则，每次反序列化一个序列化的实例时，都会创建一个新的实例。</p>
+<p>在如下的例子中会导致&quot;假的Elvis&quot;出现。为了防止这种情况，要在Elvis类中加入下面这个readResovle方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// readResovle method to preserve singleton property</span></span><br><span class="line"><span class="keyword">private</span> Object <span class="title function_">readResolve</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">// Return the one true Elvis and let the garbage collector take care of the Elvis impersonator</span></span><br><span class="line">    <span class="keyword">return</span> INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 </li>
-<li><p>从 Java 1.5 发行版本起，实现Singleton还有第三种方法。只需要编写一个包含单个元素的枚举类型：(推荐方法)</p>
+<li>
+<p>从 Java 1.5 发行版本起，实现Singleton还有第三种方法。只需要编写一个包含单个元素的枚举类型：(推荐方法)</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Enum singleton - the preferred approch</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Elvis</span>&#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">leaveTheBuilding</span><span class="params">()</span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这种方法在功能上域共有域方法相近，但是他更加简洁，无偿的提供了序列化机制，绝对防止多次实例化，即使是在面对复杂序列化或者反射攻击的时候。虽然这种方法还没有广泛的采用，但是<em><strong>单元素的枚举类型已经成为实现Singleton的最佳方法。</strong></em></p>
 </li>
 </ol>

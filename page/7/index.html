@@ -274,7 +274,6 @@
     <div class="post-body" itemprop="articleBody">
           <p>在当前网页按下 F12，转至 Console 输入并回车：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置文档body元素内容可编辑性为 true</span></span><br><span class="line"><span class="attr">javascript</span>:<span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">contentEditable</span>=<span class="string">&#x27;true&#x27;</span></span><br><span class="line"><span class="comment">// 打开文档设计模式</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">designMode</span>=<span class="string">&#x27;on&#x27;</span></span><br></pre></td></tr></table></figure>
-
 <p>便可操作网页中的文本 (如删除，剪切，粘贴，输入操作)</p>
 
       
@@ -375,33 +374,31 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="Hexo-小姿势"><a href="#Hexo-小姿势" class="headerlink" title="Hexo 小姿势"></a>Hexo 小姿势</h2><p>在本地启动 hexo server</p>
-<p>(ctrl + c 停止) </p>
+          <h2 id="Hexo-小姿势">Hexo 小姿势</h2>
+<p>在本地启动 hexo server</p>
+<p>(ctrl + c 停止)</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
 <p>创建新的博客文章 new blog</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
-
-<p> 生成文件并部署至仓库 deploy</p>
+<p>生成文件并部署至仓库 deploy</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
 <p>部署的信息在 _config.yml 文件最下的 deploy</p>
-<p>&#x2F;&#x2F;  _config.yml 示例 (记得冒号后要有空格)</p>
+<p>//  _config.yml 示例 (记得冒号后要有空格)</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/deployment.html</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span> </span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/Ryuu-64/Ryuu-64.github.io</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="hexo-小问题"><a href="#hexo-小问题" class="headerlink" title="hexo  小问题"></a>hexo  小问题</h2><p>当node 版本过高时会产生以下 Warning</p>
+<h2 id="hexo-小问题">hexo  小问题</h2>
+<p>当node 版本过高时会产生以下 Warning</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="title class_">Use</span> <span class="string">`node --trace-warnings ...`</span> to show where the warning was created)</span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">13888</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;column&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;filename&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular <span class="title function_">dependency</span></span><br><span class="line">(<span class="attr">node</span>:<span class="number">10816</span>) <span class="title class_">Warning</span>: <span class="title class_">Accessing</span> non-existent property <span class="string">&#x27;lineno&#x27;</span> <span class="keyword">of</span> <span class="variable language_">module</span> <span class="built_in">exports</span> inside circular dependency</span><br></pre></td></tr></table></figure>
-
 <p>官方的 issues <a target="_blank" rel="noopener" href="https://github.com/stylus/stylus/issues/2534">https://github.com/stylus/stylus/issues/2534</a></p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>不用改变node的版本</p>
+<h3 id="解决方案">解决方案</h3>
+<p>不用改变node的版本</p>
 <p>找到项目中的此文件: \node_modules\stylus\lib\nodes\index.js 在最前处添加如下代码即可</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exports</span>.<span class="property">lineno</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="built_in">exports</span>.<span class="property">column</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="built_in">exports</span>.<span class="property">filename</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="后续问题"><a href="#后续问题" class="headerlink" title="后续问题"></a>后续问题</h3><p>结果还是有问题</p>
+<h3 id="后续问题">后续问题</h3>
+<p>结果还是有问题</p>
 <p>博客部署出错了 详情如下</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FATAL Something&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span><br><span class="line">TypeError [ERR_INVALID_ARG_TYPE]: The &quot;mode&quot; argument must be integer. Received an instance of Object</span><br><span class="line">    at copyFile (fs.js:1972:10)</span><br><span class="line">    at tryCatcher (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at ret (eval at makeNodePromisifiedEval (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promisify.js:184:12), &lt;anonymous&gt;:13:39)</span><br><span class="line">    at F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\hexo-fs\lib\fs.js:144:39</span><br><span class="line">    at tryCatcher (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at Promise._settlePromiseFromHandler (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:547:31)</span><br><span class="line">    at Promise._settlePromise (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:604:18)</span><br><span class="line">    at Promise._settlePromise0 (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:649:10)</span><br><span class="line">    at Promise._settlePromises (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:729:18)</span><br><span class="line">    at Promise._fulfill (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:673:18)</span><br><span class="line">    at Promise._resolveCallback (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:466:57)</span><br><span class="line">    at Promise._settlePromiseFromHandler (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:559:17)</span><br><span class="line">    at Promise._settlePromise (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:604:18)</span><br><span class="line">    at Promise._settlePromise0 (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:649:10)</span><br><span class="line">    at Promise._settlePromises (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:729:18)</span><br><span class="line">    at Promise._fulfill (F:\Users\Ryuu\Documents\GitWork\MyBlog\HexoBlogLib\node_modules\bluebird\js\release\promise.js:673:18)</span><br></pre></td></tr></table></figure>
-
-<h3 id="最终方案"><a href="#最终方案" class="headerlink" title="最终方案"></a>最终方案</h3><p>下载一个 nodejs 的 12.x 的版本</p>
+<h3 id="最终方案">最终方案</h3>
+<p>下载一个 nodejs 的 12.x 的版本</p>
 <p>再部署就没有任何问题了</p>
 <p>还有问题就把高版本的 nodejs 删除</p>
 
@@ -503,11 +500,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="我的博客搭建详细步骤"><a href="#我的博客搭建详细步骤" class="headerlink" title="我的博客搭建详细步骤"></a>我的博客搭建详细步骤</h1><h2 id="事前准备"><a href="#事前准备" class="headerlink" title="事前准备"></a>事前准备</h2><h3 id="1-安装-Node-js"><a href="#1-安装-Node-js" class="headerlink" title="1.安装 Node.js"></a>1.安装 Node.js</h3><p>Node.js® 是一个基于 <a target="_blank" rel="noopener" href="https://v8.dev/">Chrome V8 引擎</a> 的 JavaScript 运行时环境<br>建议下载 LTS 版本 (Long Term Support | 长期支持)<br>从<a target="_blank" rel="noopener" href="https://nodejs.org/">官网</a>上下载安装包，然后跟着提示进行操作即可<br>下载完毕后可以进入控制台<br>输入 node -v 查看 node 版本<br>输入 npm -v 查看 npm 版本 (node package manager | node包管理器)</p>
-<h3 id="2-安装-git"><a href="#2-安装-git" class="headerlink" title="2.安装 git"></a>2.安装 git</h3><p>Git 是一个免费的开源分布式版本控制系统<br>从<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">官网</a>上下载安装包，然后跟着提示进行操作即可，步骤较多，可参考各种安装教程<br>下载完毕后可以进入控制台，输入 git –version 查看 git 版本，确认安装成功</p>
-<p>git config –global user.name “输入你的名称”<br>git config –global user.email “输入你的邮箱地址”<br>设置自己的名称和电子邮箱</p>
-<h3 id="3-安装淘宝镜像-可选步骤"><a href="#3-安装淘宝镜像-可选步骤" class="headerlink" title="3.安装淘宝镜像 (可选步骤)"></a>3.安装淘宝镜像 (可选步骤)</h3><p>如果使用 npm 安装依赖过慢<br>进入控制台输入如下命令安装淘宝镜像<br>npm install -g cnpm –registry&#x3D;<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a><br>使用 cnpm 代替 npm 以提升速度</p>
-<h2 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h2>
+          <h1>我的博客搭建详细步骤</h1>
+<h2 id="事前准备">事前准备</h2>
+<h3 id="1-安装-Node-js">1.安装 Node.js</h3>
+<p>Node.js® 是一个基于 <a target="_blank" rel="noopener" href="https://v8.dev/">Chrome V8 引擎</a> 的 JavaScript 运行时环境<br>
+建议下载 LTS 版本 (Long Term Support | 长期支持)<br>
+从<a target="_blank" rel="noopener" href="https://nodejs.org">官网</a>上下载安装包，然后跟着提示进行操作即可<br>
+下载完毕后可以进入控制台<br>
+输入 node -v 查看 node 版本<br>
+输入 npm -v 查看 npm 版本 (node package manager | node包管理器)</p>
+<h3 id="2-安装-git">2.安装 git</h3>
+<p>Git 是一个免费的开源分布式版本控制系统<br>
+从<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">官网</a>上下载安装包，然后跟着提示进行操作即可，步骤较多，可参考各种安装教程<br>
+下载完毕后可以进入控制台，输入 git --version 查看 git 版本，确认安装成功</p>
+<p>git config --global <a target="_blank" rel="noopener" href="http://user.name">user.name</a> “输入你的名称”<br>
+git config --global user.email “输入你的邮箱地址”<br>
+设置自己的名称和电子邮箱</p>
+<h3 id="3-安装淘宝镜像-可选步骤">3.安装淘宝镜像 (可选步骤)</h3>
+<p>如果使用 npm 安装依赖过慢<br>
+进入控制台输入如下命令安装淘宝镜像<br>
+npm install -g cnpm --registry=<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org">https://registry.npm.taobao.org</a><br>
+使用 cnpm 代替 npm 以提升速度</p>
+<h2 id="开始搭建">开始搭建</h2>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/03/03/%E6%88%91%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/#more" rel="contents">

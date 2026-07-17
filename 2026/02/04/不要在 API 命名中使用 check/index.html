@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位check 是可以用的，但是它只能在一个非常窄的语义里使用。在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。  返回类型是 void 而不是 boolean。">
+    <meta name="description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位 check 是可以用的，但是它只能在一个非常窄的语义里使用。 在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。  返回类型是 void 而不是 boolean">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不要在 API 命名中使用 check">
 <meta property="og:url" content="http://example.com/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位check 是可以用的，但是它只能在一个非常窄的语义里使用。在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。  返回类型是 void 而不是 boolean。">
+<meta property="og:description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位 check 是可以用的，但是它只能在一个非常窄的语义里使用。 在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。  返回类型是 void 而不是 boolean">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-02-04T07:58:28.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.027Z">
@@ -282,7 +282,9 @@
     
     <div class="post-body" itemprop="articleBody"><p>本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。</p>
 <p>在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。</p>
-<h2 id="check-的定位"><a href="#check-的定位" class="headerlink" title="check 的定位"></a>check 的定位</h2><p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<br>在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。</p>
+<h2 id="check-的定位">check 的定位</h2>
+<p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<br>
+在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。</p>
 <ol>
 <li>返回类型<strong>是</strong> <code>void</code> 而<strong>不是</strong> <code>boolean</code>。</li>
 <li>失败时抛出异常。</li>
@@ -290,8 +292,8 @@
 </ol>
 <p>例如：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkStatus</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkPermission</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkConfig</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-
-<h2 id="check-的滥用"><a href="#check-的滥用" class="headerlink" title="check 的滥用"></a>check 的滥用</h2><p>对 check 的最严重最常见的滥用出现在命名 API 时。</p>
+<h2 id="check-的滥用">check 的滥用</h2>
+<p>对 check 的最严重最常见的滥用出现在命名 API 时。</p>
 <p>命名 API 时，我们的目标是<strong>消除惊讶</strong>，而 check 在 API 语境下是语义不稳定的命名。 对外的 API 一旦叫 <code>checkXxxx</code>，使用者就会在多种猜测中不知所措：</p>
 <ol>
 <li>成功时返回的是一个 <code>boolean</code>还是一个结果？</li>
@@ -305,8 +307,8 @@
 <p>check 就像一个黑色盲盒，不看实现永远不知道它会静默失败还是原地爆炸。 因此，它只适合作为类内部的辅助方法（Helper methods）。</p>
 <p>正确命名 API 的方式是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">validateXxx()    <span class="comment">// 有结果</span></span><br><span class="line">verifyXxx()      <span class="comment">// 鉴权 / 第三方</span></span><br><span class="line">ensureXxx()      <span class="comment">// 业务保障（失败抛异常）</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。</p>
+<h2 id="总结">总结</h2>
+<p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。</p>
 <table>
 <thead>
 <tr>
@@ -314,16 +316,17 @@
 <th>用 check 吗</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>返回 boolean</td>
 <td>❌</td>
 </tr>
 <tr>
-<td>返回 Result &#x2F; Error</td>
+<td>返回 Result / Error</td>
 <td>❌</td>
 </tr>
 <tr>
-<td>Controller &#x2F; API</td>
+<td>Controller / API</td>
 <td>❌</td>
 </tr>
 <tr>
@@ -339,14 +342,15 @@
 <td>✅</td>
 </tr>
 <tr>
-<td>private &#x2F; protected</td>
+<td>private / protected</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>Domain 规则校验</td>
 <td>✅</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 
     </div>
 

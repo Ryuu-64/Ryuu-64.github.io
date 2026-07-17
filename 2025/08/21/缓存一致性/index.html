@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="背景在 缓存 + 数据库 的经典架构里，缓存通常作为加速层来缓解数据库压力。但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。 常见的更新顺序有两种：  先写数据库，再写缓存  优点：简单直观，能保证数据库最终一致性。 缺点：在删除缓存和数据库更新之间的时间差，可能有请求先查到老数据，一致性弱。   先写缓存，再写数据库  优点：能一定程度上减少脏读。 缺点：如果数">
+    <meta name="description" content="背景 在 缓存 + 数据库 的经典架构里，缓存通常作为加速层来缓解数据库压力。 但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。 常见的更新顺序有两种：   先写数据库，再写缓存  优点：简单直观，能保证数据库最终一致性。 缺点：在删除缓存和数据库更新之间的时间差，可能有请求先查到老数据，一致性弱。    先写缓存，再写数据库  优点：能一定程度上减少脏读。 缺点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="缓存一致性">
 <meta property="og:url" content="http://example.com/2025/08/21/%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="背景在 缓存 + 数据库 的经典架构里，缓存通常作为加速层来缓解数据库压力。但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。 常见的更新顺序有两种：  先写数据库，再写缓存  优点：简单直观，能保证数据库最终一致性。 缺点：在删除缓存和数据库更新之间的时间差，可能有请求先查到老数据，一致性弱。   先写缓存，再写数据库  优点：能一定程度上减少脏读。 缺点：如果数">
+<meta property="og:description" content="背景 在 缓存 + 数据库 的经典架构里，缓存通常作为加速层来缓解数据库压力。 但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。 常见的更新顺序有两种：   先写数据库，再写缓存  优点：简单直观，能保证数据库最终一致性。 缺点：在删除缓存和数据库更新之间的时间差，可能有请求先查到老数据，一致性弱。    先写缓存，再写数据库  优点：能一定程度上减少脏读。 缺点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-08-21T14:37:26.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.033Z">
@@ -278,16 +278,20 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在 <strong>缓存 + 数据库</strong> 的经典架构里，缓存通常作为加速层来缓解数据库压力。<br>但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="背景">背景</h2>
+<p>在 <strong>缓存 + 数据库</strong> 的经典架构里，缓存通常作为加速层来缓解数据库压力。<br>
+但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。</p>
 <p>常见的更新顺序有两种：</p>
 <ol>
-<li><p><strong>先写数据库，再写缓存</strong></p>
+<li>
+<p><strong>先写数据库，再写缓存</strong></p>
 <ul>
 <li>优点：简单直观，能保证数据库最终一致性。</li>
 <li>缺点：在删除缓存和数据库更新之间的时间差，可能有请求先查到老数据，一致性弱。</li>
 </ul>
 </li>
-<li><p><strong>先写缓存，再写数据库</strong></p>
+<li>
+<p><strong>先写缓存，再写数据库</strong></p>
 <ul>
 <li>优点：能一定程度上减少脏读。</li>
 <li>缺点：如果数据库更新失败，就会丢掉缓存，反而更糟。</li>
@@ -295,44 +299,49 @@
 </li>
 </ol>
 <p>因此我们大多时候会选择先写数据库再写缓存。</p>
-<h2 id="删除与更新"><a href="#删除与更新" class="headerlink" title="删除与更新"></a>删除与更新</h2><p>在写缓存的时候我们可以选择删除或者更新，大多数时候我们会选择更新，因为[1]：</p>
+<h2 id="删除与更新">删除与更新</h2>
+<p>在写缓存的时候我们可以选择删除或者更新，大多数时候我们会选择更新，因为[1]：</p>
 <table>
 <thead>
 <tr>
-<th align="left"></th>
-<th align="left">删除缓存 (Cache-Aside)</th>
-<th align="left">更新缓存</th>
+<th style="text-align:left"></th>
+<th style="text-align:left">删除缓存 (Cache-Aside)</th>
+<th style="text-align:left">更新缓存</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">复杂程度</td>
-<td align="left">简单</td>
-<td align="left">复杂</td>
+<tbody>
+<tr>
+<td style="text-align:left">复杂程度</td>
+<td style="text-align:left">简单</td>
+<td style="text-align:left">复杂</td>
 </tr>
 <tr>
-<td align="left">幂等性</td>
-<td align="left">天然幂等（无论怎么删，最终结果都是缓存被删除了）</td>
-<td align="left">非幂等操作</td>
+<td style="text-align:left">幂等性</td>
+<td style="text-align:left">天然幂等（无论怎么删，最终结果都是缓存被删除了）</td>
+<td style="text-align:left">非幂等操作</td>
 </tr>
 <tr>
-<td align="left">并发写安全</td>
-<td align="left">安全 (删除顺序不影响最终状态)</td>
-<td align="left">不安全 (并发更新可能导致缓存数据错乱或覆盖，即使是redis也只保证单个命令是安全的)</td>
+<td style="text-align:left">并发写安全</td>
+<td style="text-align:left">安全 (删除顺序不影响最终状态)</td>
+<td style="text-align:left">不安全 (并发更新可能导致缓存数据错乱或覆盖，即使是redis也只保证单个命令是安全的)</td>
 </tr>
 <tr>
-<td align="left">效率</td>
-<td align="left">高 (直接删除，不关心数据)</td>
-<td align="left">低 (可能频繁更新一个后续无人读取的值，消耗CPU和带宽，特别是当你在维护一个复杂的缓存时)</td>
+<td style="text-align:left">效率</td>
+<td style="text-align:left">高 (直接删除，不关心数据)</td>
+<td style="text-align:left">低 (可能频繁更新一个后续无人读取的值，消耗CPU和带宽，特别是当你在维护一个复杂的缓存时)</td>
 </tr>
 <tr>
-<td align="left">数据最终一致性</td>
-<td align="left">更易保证 (删除不依赖数据)</td>
-<td align="left">更难保证 (依赖数据，若顺序错误可能脏甚至是错误)</td>
+<td style="text-align:left">数据最终一致性</td>
+<td style="text-align:left">更易保证 (删除不依赖数据)</td>
+<td style="text-align:left">更难保证 (依赖数据，若顺序错误可能脏甚至是错误)</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
-<h2 id="缓存失效策略（Cache-Aside-Lazy-Loading）"><a href="#缓存失效策略（Cache-Aside-Lazy-Loading）" class="headerlink" title="缓存失效策略（Cache-Aside &#x2F; Lazy-Loading）"></a>缓存失效策略（Cache-Aside &#x2F; Lazy-Loading）</h2><p>写数据库，删除缓存，下次请求重建缓存，简单可靠。</p>
-<h3 id="双删"><a href="#双删" class="headerlink" title="双删"></a>双删</h3><p>双删也是经常提到的办法，属于一种增强版的写数据库后删除缓存，能够减少不一致窗口期。</p>
+<h2 id="缓存失效策略（Cache-Aside-Lazy-Loading）">缓存失效策略（Cache-Aside / Lazy-Loading）</h2>
+<p>写数据库，删除缓存，下次请求重建缓存，简单可靠。</p>
+<h3 id="双删">双删</h3>
+<p>双删也是经常提到的办法，属于一种增强版的写数据库后删除缓存，能够减少不一致窗口期。</p>
 <p><strong>在更新数据库之后，执行两次缓存删除操作</strong>：</p>
 <table>
 <thead>
@@ -341,7 +350,8 @@
 <th>事务B</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>更新数据库</td>
 <td></td>
 </tr>
@@ -365,7 +375,8 @@
 <td>延时一段时间后删除缓存（第二次）</td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>第二次删除缓存通常会延迟，目的是解决以下问题：</p>
 <table>
 <thead>
@@ -374,28 +385,33 @@
 <th>事务B</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>写数据库 val &#x3D; 37</td>
+<tbody>
+<tr>
+<td>写数据库 val = 37</td>
 <td></td>
 </tr>
 <tr>
 <td></td>
-<td>写数据库 val &#x3D; 42</td>
+<td>写数据库 val = 42</td>
 </tr>
 <tr>
 <td></td>
-<td>写缓存 val &#x3D; 42</td>
+<td>写缓存 val = 42</td>
 </tr>
 <tr>
-<td>写缓存 val &#x3D; 37</td>
+<td>写缓存 val = 37</td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol>
-<li><strong>延迟时间的选择</strong><br>延迟需要大于业务中可能的并发请求处理时间。</li>
-<li><strong>幂等性</strong><br>删除缓存操作需要是幂等的，即多删几次不会有副作用。</li>
+<li><strong>延迟时间的选择</strong><br>
+延迟需要大于业务中可能的并发请求处理时间。</li>
+<li><strong>幂等性</strong><br>
+删除缓存操作需要是幂等的，即多删几次不会有副作用。</li>
 </ol>
-<h4 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h4><p><strong>弱一致性</strong></p>
+<h4 id="缺陷">缺陷</h4>
+<p><strong>弱一致性</strong></p>
 <ul>
 <li>在第一次删除和第二次删除之间，如果有读请求访问数据，还是可能会从数据库加载旧数据回填缓存 → <strong>读到脏数据</strong>。</li>
 <li>因此双删保证的只是 <strong>最终一致性</strong>，<strong>无法保证</strong>请求级别的<strong>强一致性</strong>。</li>
@@ -410,7 +426,8 @@
 <li>频繁的缓存失效可能会导致惊群，会有多个请求导致请求访问数据库</li>
 </ul>
 <p>实际上，延迟双删更多是工程<strong>妥协</strong>：在读多写少、对短时间不一致可容忍的业务场景下适用（个人感觉有点骚操作，要么就别这么写，要写就干脆写更稳妥的租约或版本号方案）。</p>
-<h3 id="租约（Lease）"><a href="#租约（Lease）" class="headerlink" title="租约（Lease）"></a>租约（Lease）</h3><p>这是由 <strong>Meta</strong> 分享的方案。</p>
+<h3 id="租约（Lease）">租约（Lease）</h3>
+<p>这是由 <strong>Meta</strong> 分享的方案。</p>
 <table>
 <thead>
 <tr>
@@ -420,7 +437,8 @@
 <th>租约</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>请求 A 访问缓存，等待缓存更新</td>
 <td>失效，触发更新</td>
 <td>创建 token 与失效的缓存的 key 绑定</td>
@@ -444,9 +462,11 @@
 <td>token 失效</td>
 <td>租期结束</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>这里的 A 作为更新者触发了缓存的更新，其他的请求在租期内时会等待更新完毕。A，B，C 会拿着 token 等待缓存更新完毕。</p>
-<h4 id="等待"><a href="#等待" class="headerlink" title="等待"></a>等待</h4><p>请求 A，B，C 等待时一般会使用带抖动（避免惊群效应）的指数退避算法进行主动重试。</p>
+<h4 id="等待">等待</h4>
+<p>请求 A，B，C 等待时一般会使用带抖动（避免惊群效应）的指数退避算法进行主动重试。</p>
 <p>为什么不用其他的方法？</p>
 <ol>
 <li>立即重试：这样会加重了访问压力。</li>
@@ -454,29 +474,34 @@
 <li>线性退避：分散负载减少冲突的效果不如指数退避。</li>
 <li>随机重试：缺乏不断增长的延迟，无法应对如微服务一段时间不可用或是数据库错误这种时间较长的场景。</li>
 </ol>
-<h3 id="版本号（Version）"><a href="#版本号（Version）" class="headerlink" title="版本号（Version）"></a>版本号（Version）</h3><p>这是由 <a target="_blank" rel="noopener" href="https://www.uber.com/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/">Uber 分享过的方案</a>。</p>
+<h3 id="版本号（Version）">版本号（Version）</h3>
+<p>这是由 <a target="_blank" rel="noopener" href="https://www.uber.com/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/">Uber 分享过的方案</a>。</p>
 <p>数据库每行数据都有一个时间戳作为版本号。数据变更时时间戳会被更新。数据写入缓存时会将要写入的版本号和缓存中已有的版本号进行比较，更新的版本号才会被写入缓存。</p>
-<h4 id="原子化操作-redis"><a href="#原子化操作-redis" class="headerlink" title="原子化操作 redis"></a>原子化操作 redis</h4><p>使用 redis eval 执行 lua 脚本，脚本可以原子[2]化的执行操作：</p>
+<h4 id="原子化操作-redis">原子化操作 redis</h4>
+<p>使用 redis eval 执行 lua 脚本，脚本可以原子[2]化的执行操作：</p>
 <ol>
 <li>读取缓存已有的版本号</li>
 <li>比较已有的版本号和想要写入的版本号</li>
 <li>当要写入的数据的版本号大于已有版本号时，写入数据和版本号至内存</li>
 </ol>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> key = KEYS[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">local</span> value = ARGV[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">local</span> current_version = ARGV[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">local</span> version_key = <span class="string">&#x27;version:&#x27;</span>..key</span><br><span class="line"><span class="keyword">local</span> version_value = redis.call(<span class="string">&#x27;get&#x27;</span>, version_key)</span><br><span class="line"><span class="keyword">if</span> version_value == <span class="literal">false</span> <span class="keyword">or</span> version_value &lt; current_version <span class="keyword">then</span></span><br><span class="line">    redis.call(<span class="string">&#x27;mset&#x27;</span>, version_key, current_version, key, value)</span><br><span class="line">    <span class="keyword">return</span> &#123;value, <span class="literal">true</span>&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="literal">false</span>, <span class="literal">false</span>&#125;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="变更数据捕获（Change-Data-Capture，CDC）"><a href="#变更数据捕获（Change-Data-Capture，CDC）" class="headerlink" title="变更数据捕获（Change Data Capture，CDC）"></a>变更数据捕获（Change Data Capture，CDC）</h4><p>变更数据捕获是一种用于<strong>捕获和记录数据库中数据变化</strong><br>的机制。当数据库数据发生变化（增删改）时，不通过业务代码或是主动查询&#x2F;触发，而是直接在数据库或日志层面去自动捕获这种变化，并将内容记录下来给其他系统使用。</p>
+<h4 id="变更数据捕获（Change-Data-Capture，CDC）">变更数据捕获（Change Data Capture，CDC）</h4>
+<p>变更数据捕获是一种用于<strong>捕获和记录数据库中数据变化</strong><br>
+的机制。当数据库数据发生变化（增删改）时，不通过业务代码或是主动查询/触发，而是直接在数据库或日志层面去自动捕获这种变化，并将内容记录下来给其他系统使用。</p>
 <p>例如 Uber 基于 每个集群的 mysql binlog 实现了 CDC [3]。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<h2 id="总结">总结</h2>
+<table>
 <thead>
 <tr>
 <th>维度</th>
 <th>删除（单删）</th>
 <th>延迟双删</th>
-<th>版本号机制（Version-based &#x2F; 乐观锁）</th>
-<th>租约机制（Lease-based &#x2F; 悲观锁）</th>
+<th>版本号机制（Version-based / 乐观锁）</th>
+<th>租约机制（Lease-based / 悲观锁）</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>核心思想</td>
 <td>更新 DB 后直接删缓存，依赖后续请求重建</td>
 <td>更新 DB 后先删缓存 → 延迟一段时间再删一次，降低并发不一致风险</td>
@@ -500,7 +525,7 @@
 <tr>
 <td>工程实现复杂度</td>
 <td><strong>低</strong>：最常见做法，但一致性弱</td>
-<td><strong>低-中</strong>：需要可靠的延迟任务机制（消息队列 &#x2F; 定时任务），处理好失败重试</td>
+<td><strong>低-中</strong>：需要可靠的延迟任务机制（消息队列 / 定时任务），处理好失败重试</td>
 <td><strong>高</strong>：分布式缓存场景下，需要 CDC 捕获数据库变更，还要用 Redis + Lua 脚本保证缓存原子更新，整体链路复杂</td>
 <td><strong>中</strong>：可以依赖 Redis Redlock、ZooKeeper、Etcd 等现成分布式锁库，流程直接（获取租约 → 执行业务 → 释放租约）</td>
 </tr>
@@ -539,14 +564,20 @@
 <td>冲突重试成本高</td>
 <td>租约管理复杂，过期设置敏感（例如租期太短可能导致操作频繁中断），依赖外部锁系统</td>
 </tr>
-</tbody></table>
-<h2 id="另请参阅"><a href="#另请参阅" class="headerlink" title="另请参阅"></a>另请参阅</h2><p><a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf">Scaling Memcache at Facebook</a></p>
+</tbody>
+</table>
+<h2 id="另请参阅">另请参阅</h2>
+<p><a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf">Scaling Memcache at Facebook</a></p>
 <p><a target="_blank" rel="noopener" href="https://pegasus.incubator.apache.org/2017/11/21/meta-server-design.html">meta-server-design</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.uber.com/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/">How Uber Serves Over 40 Million Reads Per Second from Online Storage Using an Integrated Cache</a></p>
-<h2 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h2><p>[1] 删除是 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/KISS_principle">KISS原则</a><br>和 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">YAGNI原则</a><br>的体现。简单并不是简陋，好的设计是对需求的精准把握，我们作为设计师要从需求考虑，找出需求中的关键因素。</p>
+<h2 id="脚注">脚注</h2>
+<p>[1] 删除是 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/KISS_principle">KISS原则</a><br>
+和 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">YAGNI原则</a><br>
+的体现。简单并不是简陋，好的设计是对需求的精准把握，我们作为设计师要从需求考虑，找出需求中的关键因素。</p>
 <p>[2] redis 执行 lua 并非完全的原子性，详情请见 <a href="/2025/09/16/redis-lua/" title="redis lua">redis lua</a>。</p>
 <p>[3] Flux 会 tail MySQL binlog，监视数据库的数据变更实现 CDC（使用 binlog 是一个较好的选择，这样不会让CDC被未提交的脏事务影响）。</p>
-<p>Flux 是 Uber 的一个中间件，它不止会把数据发送给CDC还会发送给 replication, materialized views, data lake<br>ingestion，还会为验证集群中节点之间的数据一致性提供支持。 </p>
+<p>Flux 是 Uber 的一个中间件，它不止会把数据发送给CDC还会发送给 replication, materialized views, data lake<br>
+ingestion，还会为验证集群中节点之间的数据一致性提供支持。</p>
 
     </div>
 

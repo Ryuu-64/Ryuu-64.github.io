@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。 执行隔离性（Isolation Guarantee）redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。 这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。 请看如下无执行隔离的时序图示例：    时序 客户端A 客户端B    t1 客户端A 执行 GET token:42→ 返">
+    <meta name="description" content="很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。 执行隔离性（Isolation Guarantee） redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。 这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。 请看如下无执行隔离的时序图示例：    时序 客户端A 客户端B     t1 客户端A 执行 GET token:42→">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis lua">
 <meta property="og:url" content="http://example.com/2025/09/16/redis-lua/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。 执行隔离性（Isolation Guarantee）redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。 这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。 请看如下无执行隔离的时序图示例：    时序 客户端A 客户端B    t1 客户端A 执行 GET token:42→ 返">
+<meta property="og:description" content="很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。 执行隔离性（Isolation Guarantee） redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。 这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。 请看如下无执行隔离的时序图示例：    时序 客户端A 客户端B     t1 客户端A 执行 GET token:42→">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-16T15:43:32.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.027Z">
@@ -279,82 +279,93 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。</p>
-<h2 id="执行隔离性（Isolation-Guarantee）"><a href="#执行隔离性（Isolation-Guarantee）" class="headerlink" title="执行隔离性（Isolation Guarantee）"></a>执行隔离性（Isolation Guarantee）</h2><p>redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。</p>
+<h2 id="执行隔离性（Isolation-Guarantee）">执行隔离性（Isolation Guarantee）</h2>
+<p>redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。</p>
 <p>这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。</p>
 <p>请看如下无执行隔离的<strong>时序图</strong>示例：</p>
 <table>
 <thead>
 <tr>
-<th align="left">时序</th>
-<th align="left">客户端A</th>
+<th style="text-align:left">时序</th>
+<th style="text-align:left">客户端A</th>
 <th>客户端B</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">t1</td>
-<td align="left"><strong>客户端A</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
+<tbody>
+<tr>
+<td style="text-align:left">t1</td>
+<td style="text-align:left"><strong>客户端A</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
 <td></td>
 </tr>
 <tr>
-<td align="left">t2</td>
-<td align="left"></td>
+<td style="text-align:left">t2</td>
+<td style="text-align:left"></td>
 <td><strong>客户端B</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
 </tr>
 <tr>
-<td align="left">t3</td>
-<td align="left"><strong>客户端A</strong> 执行 <code>DEL token:42</code>(成功)</td>
+<td style="text-align:left">t3</td>
+<td style="text-align:left"><strong>客户端A</strong> 执行 <code>DEL token:42</code>(成功)</td>
 <td></td>
 </tr>
 <tr>
-<td align="left">t4</td>
-<td align="left"></td>
+<td style="text-align:left">t4</td>
+<td style="text-align:left"></td>
 <td><strong>客户端B</strong> 执行 <code>DEL token:42</code>(因 token 已被A删除，此操作实际无效，但B仍会继续下单)</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>可见A和B都成功执行了下单操作，出现重复下单错误。</p>
 <p>再看如下有执行隔离的<strong>时序图</strong>示例：</p>
 <table>
 <thead>
 <tr>
-<th align="left">时序</th>
-<th align="left">客户端A</th>
-<th align="left">客户端B</th>
+<th style="text-align:left">时序</th>
+<th style="text-align:left">客户端A</th>
+<th style="text-align:left">客户端B</th>
 <th>Lua</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">t1</td>
-<td align="left">发送 <code>EVAL &quot;if redis.call(&#39;GET&#39;, KEYS[1]) then return redis.call(&#39;DEL&#39;, KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left">t1</td>
+<td style="text-align:left">发送 <code>EVAL &quot;if redis.call('GET', KEYS[1]) then return redis.call('DEL', KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
+<td style="text-align:left"></td>
 <td></td>
 </tr>
 <tr>
-<td align="left">t2</td>
-<td align="left"></td>
-<td align="left">发送 <code>EVAL &quot;if redis.call(&#39;GET&#39;, KEYS[1]) then return redis.call(&#39;DEL&#39;, KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
+<td style="text-align:left">t2</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">发送 <code>EVAL &quot;if redis.call('GET', KEYS[1]) then return redis.call('DEL', KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
 <td></td>
 </tr>
 <tr>
-<td align="left">t3</td>
-<td align="left"></td>
-<td align="left"></td>
+<td style="text-align:left">t3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
 <td>执行<strong>客户端A</strong>的脚本： 1. <code>GET token:42</code>(存在) 2. <code>DEL token:42</code>(成功删除)</td>
 </tr>
 <tr>
-<td align="left">t4</td>
-<td align="left"></td>
-<td align="left"></td>
+<td style="text-align:left">t4</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
 <td><strong>客户端B</strong> 的请求此时才被处理。执行同样的脚本： 1. <code>GET token:42</code>(已不存在) 脚本返回 0，拒绝操作。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>可见只有A成功了，B的操作失败了，未出现重复下单错误。</p>
-<h2 id="不满足全有或全无原则（all-or-nothing）"><a href="#不满足全有或全无原则（all-or-nothing）" class="headerlink" title="不满足全有或全无原则（all-or-nothing）"></a>不满足全有或全无原则（all-or-nothing）</h2><p><a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/tutorial-transactions.html">all-or-nothing</a><br>指事务要么完全发生，要么根本不发生。例如A向B转账100元，B已收到100元，但A并非扣除100元，这是不可接受的。</p>
-<h3 id="原子提交-回滚机制（Atomic-Commit-Rollback）"><a href="#原子提交-回滚机制（Atomic-Commit-Rollback）" class="headerlink" title="原子提交&#x2F;回滚机制（Atomic Commit&#x2F;Rollback）"></a>原子提交&#x2F;回滚机制（Atomic Commit&#x2F;Rollback）</h3><p>在数据库的实现中一般会使用原子提交&#x2F;回滚实现全有或全无原则。</p>
-<h4 id="原子提交"><a href="#原子提交" class="headerlink" title="原子提交"></a>原子提交</h4><p>当事务中的所有操作都成功执行，并且验证没有违反约束时，系统会 一次性把事务的所有修改写入数据库（这一批操作完成了）。</p>
+<h2 id="不满足全有或全无原则（all-or-nothing）">不满足全有或全无原则（all-or-nothing）</h2>
+<p><a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/tutorial-transactions.html">all-or-nothing</a><br>
+指事务要么完全发生，要么根本不发生。例如A向B转账100元，B已收到100元，但A并非扣除100元，这是不可接受的。</p>
+<h3 id="原子提交-回滚机制（Atomic-Commit-Rollback）">原子提交/回滚机制（Atomic Commit/Rollback）</h3>
+<p>在数据库的实现中一般会使用原子提交/回滚实现全有或全无原则。</p>
+<h4 id="原子提交">原子提交</h4>
+<p>当事务中的所有操作都成功执行，并且验证没有违反约束时，系统会 一次性把事务的所有修改写入数据库（这一批操作完成了）。</p>
 <p>提交之后，所有事务产生的更改对其他事务可见。</p>
-<h4 id="原子回滚"><a href="#原子回滚" class="headerlink" title="原子回滚"></a>原子回滚</h4><p>如果事务中某个环节失败，或者用户&#x2F;系统主动要求撤销，就必须 <strong>撤回事务中已做的所有修改</strong>，让数据库回到事务开始之前的状态（这一批已做的操作都不算数）。</p>
+<h4 id="原子回滚">原子回滚</h4>
+<p>如果事务中某个环节失败，或者用户/系统主动要求撤销，就必须 <strong>撤回事务中已做的所有修改</strong>，让数据库回到事务开始之前的状态（这一批已做的操作都不算数）。</p>
 <p>一般会使用 <code>undo log</code> 来实现，保证把执行的操作撤销掉。</p>
-<h2 id="请保持脚本的轻量"><a href="#请保持脚本的轻量" class="headerlink" title="请保持脚本的轻量"></a>请保持脚本的轻量</h2><p>由于脚本执行期间会阻塞整个 Redis 的执行，<strong>避免在脚本中编写复杂循环或耗时操作</strong>是关键。否则会严重影响 Redis 的响应性能。</p>
+<h2 id="请保持脚本的轻量">请保持脚本的轻量</h2>
+<p>由于脚本执行期间会阻塞整个 Redis 的执行，<strong>避免在脚本中编写复杂循环或耗时操作</strong>是关键。否则会严重影响 Redis 的响应性能。</p>
 
     </div>
 

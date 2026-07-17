@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="文章名称不需要后缀名 1&#123;% post_link 文章名称 %&#125;  如 1&#123;% post_link Hello-World %&#125;  文章链接配置位于 _config.yml 中 permalink 123456789# URL## If your site is put in a subdirectory, set url as &#x27;http:&#x2F;&#x2F;y">
+    <meta name="description" content="文章名称不需要后缀名 1&#123;% post_link 文章名称 %&#125; 如 1&#123;% post_link Hello-World %&#125; 文章链接配置位于 _config.yml 中 permalink 123456789# URL## If your site is put in a subdirectory, set url as &#x27;http:&#x2F;&#x2F;you">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo-引用自己的文章">
 <meta property="og:url" content="http://example.com/2021/08/30/Hexo-%E5%BC%95%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%87%E7%AB%A0/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="文章名称不需要后缀名 1&#123;% post_link 文章名称 %&#125;  如 1&#123;% post_link Hello-World %&#125;  文章链接配置位于 _config.yml 中 permalink 123456789# URL## If your site is put in a subdirectory, set url as &#x27;http:&#x2F;&#x2F;y">
+<meta property="og:description" content="文章名称不需要后缀名 1&#123;% post_link 文章名称 %&#125; 如 1&#123;% post_link Hello-World %&#125; 文章链接配置位于 _config.yml 中 permalink 123456789# URL## If your site is put in a subdirectory, set url as &#x27;http:&#x2F;&#x2F;you">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-30T08:47:15.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.013Z">
@@ -279,13 +279,10 @@
     
     <div class="post-body" itemprop="articleBody"><p>文章名称不需要后缀名</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post<span class="emphasis">_link 文章名称 %&#125;</span></span><br></pre></td></tr></table></figure>
-
 <p>如</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post<span class="emphasis">_link Hello-World %&#125;</span></span><br></pre></td></tr></table></figure>
-
 <p>文章链接配置位于 _config.yml 中 permalink</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as &#x27;http://yoursite.com/child&#x27; and root as &#x27;/child/&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://yoursite.com</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
-
 
     </div>
 

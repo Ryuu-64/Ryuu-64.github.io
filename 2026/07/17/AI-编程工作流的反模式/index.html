@@ -281,11 +281,13 @@
 <p>这篇想反过来看：如果工作流没有设计好，AI 编程会怎样失控？</p>
 <p>这里说的“反模式”，不是指 AI 不该参与编程，也不是指某个模型能力不够。相反，很多问题正是因为 AI 太能生成、太会解释、太容易把一个还没被确认的想法变成完整代码。它不是慢吞吞地失败，而是很流畅地失败。</p>
 <p>所以本文讨论的不是 prompt 技巧，也不是模型排行榜，而是 AI 进入软件开发流程以后，在任务定义、上下文管理、变更控制、诊断、验证和责任边界上常见的工作流问题。</p>
-<h2 id="把局部提速误认为整体提速"><a href="#把局部提速误认为整体提速" class="headerlink" title="把局部提速误认为整体提速"></a>把局部提速误认为整体提速</h2><p>AI 确实能降低很多局部任务的成本。查资料、解释代码、生成样板、起草测试、补充边界、整理日志，这些事情都可以变快。问题在于，局部实现变快，不等于整体交付变稳。</p>
+<h2 id="把局部提速误认为整体提速">把局部提速误认为整体提速</h2>
+<p>AI 确实能降低很多局部任务的成本。查资料、解释代码、生成样板、起草测试、补充边界、整理日志，这些事情都可以变快。问题在于，局部实现变快，不等于整体交付变稳。</p>
 <p>软件开发不是只由“写出代码”组成的。一个变更能不能进入系统，还取决于需求是否收敛、上下文是否正确、测试是否覆盖真实风险、review 是否能承受变更规模、发布后是否可回滚。AI 加快的是其中一部分环节。如果其他环节没有同步升级，生成速度反而会把压力传导到 review、测试、CI 和发布流程里。</p>
-<p>DORA 关于生成式 AI 的研究里也提示过类似现象：AI adoption 可以和个人生产率、flow、满意度提升相关，但也可能伴随交付吞吐和交付稳定性的下降。[^dora-2024][^dora-genai] 这并不说明 AI 对工程有害，而是说明“更快生成”必须被接入更强的验证和交付系统。</p>
+<p>DORA 关于生成式 AI 的研究里也提示过类似现象：AI adoption 可以和个人生产率、flow、满意度提升相关，但也可能伴随交付吞吐和交付稳定性的下降。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 这并不说明 AI 对工程有害，而是说明“更快生成”必须被接入更强的验证和交付系统。</p>
 <p>第一个反模式就是：只看见 AI 带来的局部提速，没有看见它对整体工作流提出的新要求。</p>
-<h2 id="任务没有收敛就进入实现"><a href="#任务没有收敛就进入实现" class="headerlink" title="任务没有收敛就进入实现"></a>任务没有收敛就进入实现</h2><p>最常见的反模式，是需求还没收敛，就让 AI 直接实现。</p>
+<h2 id="任务没有收敛就进入实现">任务没有收敛就进入实现</h2>
+<p>最常见的反模式，是需求还没收敛，就让 AI 直接实现。</p>
 <p>表现通常很熟悉：</p>
 <ul>
 <li>只有一句模糊需求，就让 AI “做一下”。</li>
@@ -306,7 +308,8 @@
 <li>什么证据可以说明完成？</li>
 </ul>
 <p>复杂任务可以先让 AI 调查和整理，而不是直接改代码。AI 可以帮我们建立问题地图，但不应该替我们决定问题边界。</p>
-<h2 id="上下文管理失控"><a href="#上下文管理失控" class="headerlink" title="上下文管理失控"></a>上下文管理失控</h2><p>第二个反模式，是把上下文当成资料仓库。</p>
+<h2 id="上下文管理失控">上下文管理失控</h2>
+<p>第二个反模式，是把上下文当成资料仓库。</p>
 <p>有些人使用 AI 时，会把大量文件、历史讨论、日志、旧计划、失败尝试一次性塞进上下文里。背后的想法很自然：给得越多，AI 知道得越全。可在真实工作里，上下文不是越多越好。</p>
 <p>上下文是一种工作资源。它有容量限制，也有注意力分布问题。即使模型还没有撞上 token 上限，也可能已经开始忽略中间区域的关键约束，或者被无关信息带偏。长任务里常见的漂移、重复、遗忘和自相矛盾，很多都和上下文污染有关。</p>
 <p>在 AI 编程里，上下文管理至少要区分阶段：</p>
@@ -314,9 +317,10 @@
 <p>Plan 阶段要窄一些。这个阶段的目标是做设计取舍，所以应该聚焦关键模块、关键约束和验证方式。</p>
 <p>Implement 阶段应该更窄。真正改代码时，最好只保留当前变更所需的文件、接口、测试和约束。</p>
 <p>如果把这三个阶段混在同一个不断膨胀的对话里，AI 很容易进入一种“看起来还在工作，但已经不再稳定利用关键信息”的状态。</p>
-<p>所以稳定规则不应该长期留在聊天记录里。构建命令、测试命令、命名约定、禁止事项、目录边界、review 习惯，这些应该进入 <code>AGENTS.md</code>、项目文档、测试、lint、CI 或脚本。OpenAI 的 Codex 实践也强调把项目上下文和重复指导沉淀到仓库里，而不是每次都靠临时 prompt 重新说明。[^codex-best-practices]</p>
+<p>所以稳定规则不应该长期留在聊天记录里。构建命令、测试命令、命名约定、禁止事项、目录边界、review 习惯，这些应该进入 <code>AGENTS.md</code>、项目文档、测试、lint、CI 或脚本。OpenAI 的 Codex 实践也强调把项目上下文和重复指导沉淀到仓库里，而不是每次都靠临时 prompt 重新说明。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>好的上下文管理，不是把所有东西都给 AI，而是让 AI 在正确阶段看到正确材料。</p>
-<h2 id="变更范围自然膨胀"><a href="#变更范围自然膨胀" class="headerlink" title="变更范围自然膨胀"></a>变更范围自然膨胀</h2><p>第三个反模式，是让变更范围自然膨胀。</p>
+<h2 id="变更范围自然膨胀">变更范围自然膨胀</h2>
+<p>第三个反模式，是让变更范围自然膨胀。</p>
 <p>AI 很容易给出完整方案。它会顺手整理命名，顺手改接口，顺手抽象一层，顺手重构附近代码。很多时候，这些改动单独看并不糟糕，甚至局部上更漂亮。但工程变更不只看局部漂亮，还要看任务边界、review 成本、回归风险和长期一致性。</p>
 <p>典型表现包括：</p>
 <ul>
@@ -337,10 +341,11 @@
 <li>大改动先 review plan，再进入实现。</li>
 </ul>
 <p>AI 生成速度越快，越需要人为压住变更批次。</p>
-<h2 id="诊断过程被跳过"><a href="#诊断过程被跳过" class="headerlink" title="诊断过程被跳过"></a>诊断过程被跳过</h2><p>第四个反模式，是 debug 时直接让 AI 猜根因。</p>
+<h2 id="诊断过程被跳过">诊断过程被跳过</h2>
+<p>第四个反模式，是 debug 时直接让 AI 猜根因。</p>
 <p>这件事很诱人。把错误日志、代码片段丢给 AI，它很快就能给出一个解释和修复方案。很多时候这个方案还挺像回事。但诊断的核心不是“给出一个合理叙述”，而是“用证据收敛假设”。</p>
 <p>没有复现，就不知道问题是否真的存在于当前观察里。没有假设列表，就不知道自己排除了什么。没有能区分假设的证据，就不知道改动是不是只碰巧修到了附近。</p>
-<p>AI 在这里的风险，是它会很快生成一个故事：因为 A，所以 B，应该改 C。这个故事可能正确，也可能只是流畅。OpenAI 关于 hallucination 的讨论提醒过我们，模型的流畅输出和事实正确性不是同一件事。[^openai-hallucination]</p>
+<p>AI 在这里的风险，是它会很快生成一个故事：因为 A，所以 B，应该改 C。这个故事可能正确，也可能只是流畅。OpenAI 关于 hallucination 的讨论提醒过我们，模型的流畅输出和事实正确性不是同一件事。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>更稳的诊断流程应该是：</p>
 <ol>
 <li>先复现问题。</li>
@@ -353,7 +358,8 @@
 </ol>
 <p>AI 可以参与这个过程。它可以帮我们读日志、找相关代码、提出假设、设计插桩点、解释测试失败。但它不应该跳过证据，直接进入修复。</p>
 <p>debug 中最坏的情况，不是 AI 没有给出答案，而是它给了一个足够像答案的答案，让人停止收集证据。</p>
-<h2 id="同一个-Agent-自写自验"><a href="#同一个-Agent-自写自验" class="headerlink" title="同一个 Agent 自写自验"></a>同一个 Agent 自写自验</h2><p>第五个反模式，是让同一个 AI 自己写实现、自己写测试、自己修改测试、自己宣布通过。</p>
+<h2 id="同一个-Agent-自写自验">同一个 Agent 自写自验</h2>
+<p>第五个反模式，是让同一个 AI 自己写实现、自己写测试、自己修改测试、自己宣布通过。</p>
 <p>这看起来像闭环，实际上可能是闭门造车。</p>
 <p>如果测试来自同一个模型对需求的即兴理解，它测到的可能不是外部规格，而是模型自己的解释。更糟的是，实现失败以后，AI 可能会为了绿灯去修改断言、放宽条件、删除不方便的用例，或者把当前错误行为写进测试里。</p>
 <p>这就是我在 <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" title="TDD 让 AI 可靠，AI 让 TDD 可行">TDD 让 AI 可靠，AI 让 TDD 可行</a> 里反复强调的点：AI-TDD 的关键不是“让 AI 先写测试”，而是先有外部行为规格，再让测试约束实现。</p>
@@ -367,7 +373,8 @@
 </ul>
 <p>新测试最好先失败，而且失败原因应该是目标行为缺失，而不是测试本身写错、环境缺失或依赖问题。通过以后，也要防止 AI 为了绿灯修改测试语义。</p>
 <p>实现写错了，可以重写。测试写错了，会把错误规格固化下来。</p>
-<h2 id="完成声明没有验证证据"><a href="#完成声明没有验证证据" class="headerlink" title="完成声明没有验证证据"></a>完成声明没有验证证据</h2><p>第六个反模式，是把 AI 的完成声明当成工程事实。</p>
+<h2 id="完成声明没有验证证据">完成声明没有验证证据</h2>
+<p>第六个反模式，是把 AI 的完成声明当成工程事实。</p>
 <p>“已完成”“已修复”“测试通过”“应该可以了”，这些都是文本。工程上的完成必须绑定证据。</p>
 <p>证据可以是：</p>
 <ul>
@@ -381,9 +388,10 @@
 </ul>
 <p>如果没有这些证据，AI 的完成声明只是它对自己输出的总结。这个总结可能有帮助，但不能替代验证。</p>
 <p>这里最容易出现的问题，是 AI 用语气弥补证据。它会写得很确定，甚至列出“已完成事项”。但如果没有实际命令和结果，这些文字并不能说明系统状态已经改变。</p>
-<p>所以我现在更倾向于把完成判断写成固定要求：完成之前必须说明运行了什么检查，结果如何，哪些检查没有运行，为什么没有运行，剩余风险是什么。Codex 的最佳实践也把测试、检查、行为确认和 review 放在可靠性收口里。[^codex-test-review]</p>
+<p>所以我现在更倾向于把完成判断写成固定要求：完成之前必须说明运行了什么检查，结果如何，哪些检查没有运行，为什么没有运行，剩余风险是什么。Codex 的最佳实践也把测试、检查、行为确认和 review 放在可靠性收口里。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <p>AI 可以宣布候选结论，但工程完成需要证据。</p>
-<h2 id="人工介入退化成橡皮图章"><a href="#人工介入退化成橡皮图章" class="headerlink" title="人工介入退化成橡皮图章"></a>人工介入退化成橡皮图章</h2><p>第七个反模式，是所谓人在环只剩下“点继续”。</p>
+<h2 id="人工介入退化成橡皮图章">人工介入退化成橡皮图章</h2>
+<p>第七个反模式，是所谓人在环只剩下“点继续”。</p>
 <p>很多 AI 工具会在关键时刻请求用户确认。这个机制本身是必要的，但如果只给一个确认按钮，而不给足够上下文，人工介入就会退化成橡皮图章。</p>
 <p>有效的人工介入，至少要让人看到：</p>
 <ul>
@@ -396,9 +404,10 @@
 <li>当前证据支持到什么程度。</li>
 </ul>
 <p>人在环不是让人频繁打断 AI，也不是让人最后兜底。它应该出现在高杠杆位置：计划确认、风险动作、测试规格、发布决策、证据不足时的暂停。</p>
-<p>Microsoft 的 Human-AI Interaction Guidelines 强调 AI 系统应该让用户能够理解、纠正和恢复；NIST 的 AI Risk Management Framework 也把风险放进治理、度量和管理结构里看。[^human-ai-guidelines][^nist-ai-rmf] 这对应到日常 AI 编程，就是不要把责任模糊地推给“用户已确认”。确认必须基于上下文，反馈也要能沉淀。</p>
+<p>Microsoft 的 Human-AI Interaction Guidelines 强调 AI 系统应该让用户能够理解、纠正和恢复；NIST 的 AI Risk Management Framework 也把风险放进治理、度量和管理结构里看。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup> 这对应到日常 AI 编程，就是不要把责任模糊地推给“用户已确认”。确认必须基于上下文，反馈也要能沉淀。</p>
 <p>如果用户纠正了 AI 的行为，这个纠正不应该只停留在一次对话里。它应该尽量进入规则、测试、文档、模板或脚本。否则同样的问题下次还会发生。</p>
-<h2 id="一个更稳的工作流"><a href="#一个更稳的工作流" class="headerlink" title="一个更稳的工作流"></a>一个更稳的工作流</h2><p>把这些反模式放在一起看，它们其实都指向同一个问题：AI 编程不能只围绕“生成”设计，而要围绕“可验证交付”设计。</p>
+<h2 id="一个更稳的工作流">一个更稳的工作流</h2>
+<p>把这些反模式放在一起看，它们其实都指向同一个问题：AI 编程不能只围绕“生成”设计，而要围绕“可验证交付”设计。</p>
 <p>一个更稳的流程可以很简单：</p>
 <ol>
 <li>Research：先理解现有代码、测试、约束和风险。</li>
@@ -411,14 +420,34 @@
 <p>关键在于，任务一旦涉及模糊需求、存量系统、跨模块变更、生产风险、测试缺口或长期维护，就不能只依赖 AI 的生成能力。越是复杂任务，越需要阶段化、上下文压缩、小批次变更和验证证据。</p>
 <p>AI 编程成熟度的标志，不是让模型一次生成更多代码，而是让生成结果更容易被约束、审查、验证和回滚。</p>
 <p>真正需要升级的，不只是 prompt，而是工作流。</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^dora-2024]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 对个人体验和团队交付系统可能产生不同方向影响”的边界判断。<br>[^dora-genai]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。<br>[^codex-best-practices]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“项目上下文、重复指导和验证命令应该沉淀到仓库和工作流中”的实践判断。<br>[^openai-hallucination]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它来提醒：模型输出的流畅性不能直接等同于事实可靠性。<br>[^codex-test-review]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“完成断言需要测试、检查、行为确认和 review 收口”。<br>[^human-ai-guidelines]: Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>。这里引用它来支撑“人需要能够理解、纠正和恢复 AI 输出”的交互原则。<br>[^nist-ai-rmf]: NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它来支撑“AI 风险需要进入治理、度量和管理结构，而不是由模型或单次确认承担”的边界。</p>
-<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<h2 id="注释">注释</h2>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
 <li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness Engineering</a>：适合理解为什么 AI coding 的关键不只是提示词，而是环境、工具、反馈和知识系统。</li>
 <li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>：适合理解项目上下文、plan-first、测试验证和 review 如何进入日常工作流。</li>
 <li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective Agents</a>：适合理解 workflow、agent、自主性、测试反馈和 guardrails 的边界。</li>
 <li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/">Guidelines for Human-AI Interaction</a>：适合理解人在 AI 系统中的控制、纠错和恢复位置。</li>
 <li>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/">Accelerate State of DevOps Report 2024</a> 和 <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/">Impact of Generative AI in Software Development</a>：适合理解 AI 对个人生产率和团队交付系统的不同影响。</li>
 </ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 对个人体验和团队交付系统可能产生不同方向影响”的边界判断。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“项目上下文、重复指导和验证命令应该沉淀到仓库和工作流中”的实践判断。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它来提醒：模型输出的流畅性不能直接等同于事实可靠性。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“完成断言需要测试、检查、行为确认和 review 收口”。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>。这里引用它来支撑“人需要能够理解、纠正和恢复 AI 输出”的交互原则。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它来支撑“AI 风险需要进入治理、度量和管理结构，而不是由模型或单次确认承担”的边界。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 

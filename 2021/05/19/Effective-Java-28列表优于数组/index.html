@@ -280,18 +280,15 @@
     
     <div class="post-body" itemprop="articleBody"><p>数组与泛型相比，有两个重要的不同点。首先，数组是协变的(covariant)。这个词听起来有点吓人，其实只是表示，如果Sub为Super的子类型，那么数组类型Sub[]就是Super[]子类型。相反，泛型则是可变的(invariant)：对于任意两个不同的类型Type1和Type2，List<Type1>既不是List<Type2>的子类型，也不是List<Type2>的超类型[JLS,4.10; Naftalin07, 2.5]。你可能认为，这意味着泛型是有缺陷的，但实际上可以说数组才是有缺陷的。下面的代码片段是合法的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fails at runtime!</span></span><br><span class="line">Object[] objectArray = <span class="keyword">new</span> <span class="title class_">Long</span>[<span class="number">1</span>];</span><br><span class="line">objectArray[<span class="number">0</span>] = <span class="string">&quot;I don&#x27;t fit in&quot;</span>; <span class="comment">// Throws ArrayStoreException</span></span><br><span class="line"><span class="comment">// Ryuu : 这竟然编译期不报错，C# 里编译期肯定报错了</span></span><br></pre></td></tr></table></figure>
-
 <p>但下面这段代码则不合法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Won&#x27;t compile!</span></span><br><span class="line">List&lt;Object&gt; objectList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Long&gt;(); <span class="comment">// Incompatible types</span></span><br><span class="line">objectList.add(<span class="string">&quot;I don&#x27;t fit in&quot;</span>);</span><br></pre></td></tr></table></figure>
-
 <p>这其中无论哪一种方法，都不能将 String 放进 Long 容器中，但是使用数组，你会在运行时才发现所犯的错误；而使用列表，则可以在编译时就发现错误。</p>
-<p>数组与泛型的第二大区别：数组是具象化的 (reified)[JLS, 4.7]。因此数组会在运行时知道和强化它们的元素类型。如上所述，将 String 保存到 Long 数组中，就会得到一个 ArrayStoreException 异常。泛型则是通过擦除(erasure)[JLS, 4.6]来实现的。<strong>泛型只会在编译时强化它们的类型信息，运行时丢弃(或者擦除)它们的元素信息。</strong>擦除就是使泛型可以与没有使用泛型的代码随意进行互用(见26条)，以确保在Java5中平滑过渡到泛型。</p>
+<p>数组与泛型的第二大区别：数组是具象化的 (reified)[JLS, 4.7]。因此数组会在运行时知道和强化它们的元素类型。如上所述，将 String 保存到 Long 数组中，就会得到一个 ArrayStoreException 异常。泛型则是通过擦除(erasure)[JLS, 4.6]来实现的。**泛型只会在编译时强化它们的类型信息，运行时丢弃(或者擦除)它们的元素信息。**擦除就是使泛型可以与没有使用泛型的代码随意进行互用(见26条)，以确保在Java5中平滑过渡到泛型。</p>
 <p>因为以上这些根本的区别，<strong>数组和泛型不能很好地混合使用</strong>。例如，创建泛型、参数化类型或者类型参数的数组是非法的。</p>
 <p>以下数组创建表达式<strong>没有一个是合法的</strong>：</p>
 <p>这些在编译期会产生一个泛型数组创建(generic array creation)错误。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">List</span>&lt;String&gt;[];</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">List</span>&lt;E&gt;[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">E</span>[<span class="number">1</span>];</span><br><span class="line"><span class="comment">// Ryuu : 这竟然编译期报错，C# 里肯定没有错</span></span><br></pre></td></tr></table></figure>
-
-<p>从技术角度上来说，E、List<E>和List<String>这样的型应称作**不可具体化(nonreifiable)类型[JLS, 4.7]**。不可具体化类型是指其运行时表示法包含的信息比它编译时表示包含的信息比它的编译时表示法包含的信息更少的类型。唯一可具体化的(reifiable)参数化类型是无限制的通配符类型如List<?>和Map<?,?>(见26条)。创建无限制通配类型的数组是合法的。</p>
+<p>从技术角度上来说，E、List<E>和List<String>这样的型应称作<strong>不可具体化(nonreifiable)类型[JLS, 4.7]</strong>。不可具体化类型是指其运行时表示法包含的信息比它编译时表示包含的信息比它的编译时表示法包含的信息更少的类型。唯一可具体化的(reifiable)参数化类型是无限制的通配符类型如List<?>和Map<?,?>(见26条)。创建无限制通配类型的数组是合法的。</p>
 
     </div>
 

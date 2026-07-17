@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="本条目将告诉你什么时候应该使用哪种嵌套类，以及这样做的原因。 嵌套类(nested class)是指定义在另一个类内部的类。嵌套类存在的目的应该只是为他的外围类(enclosing class)提供服务。如果嵌套类将来可能会用于其他的某个环境中，它就应该是顶层类(top-level class)。嵌套类有四种：  静态成员类 (static member class)  非静态成员类 (nonst">
+    <meta name="description" content="本条目将告诉你什么时候应该使用哪种嵌套类，以及这样做的原因。 嵌套类(nested class)是指定义在另一个类内部的类。嵌套类存在的目的应该只是为他的外围类(enclosing class)提供服务。如果嵌套类将来可能会用于其他的某个环境中，它就应该是顶层类(top-level class)。 嵌套类有四种：   静态成员类 (static member class)   非静态成员类 (no">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-Java-24静态成员类优于非静态成员类">
 <meta property="og:url" content="http://example.com/2021/05/31/Effective-Java-24%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E7%B1%BB%E4%BC%98%E4%BA%8E%E9%9D%9E%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E7%B1%BB/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="本条目将告诉你什么时候应该使用哪种嵌套类，以及这样做的原因。 嵌套类(nested class)是指定义在另一个类内部的类。嵌套类存在的目的应该只是为他的外围类(enclosing class)提供服务。如果嵌套类将来可能会用于其他的某个环境中，它就应该是顶层类(top-level class)。嵌套类有四种：  静态成员类 (static member class)  非静态成员类 (nonst">
+<meta property="og:description" content="本条目将告诉你什么时候应该使用哪种嵌套类，以及这样做的原因。 嵌套类(nested class)是指定义在另一个类内部的类。嵌套类存在的目的应该只是为他的外围类(enclosing class)提供服务。如果嵌套类将来可能会用于其他的某个环境中，它就应该是顶层类(top-level class)。 嵌套类有四种：   静态成员类 (static member class)   非静态成员类 (no">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-31T14:25:34.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.004Z">
@@ -279,15 +279,20 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>本条目将告诉你什么时候应该使用哪种嵌套类，以及这样做的原因。</p>
-<p>嵌套类(nested class)是指定义在另一个类内部的类。嵌套类存在的目的应该只是为他的外围类(enclosing class)提供服务。如果嵌套类将来可能会用于其他的某个环境中，它就应该是顶层类(top-level class)。<br>嵌套类有四种：</p>
+<p>嵌套类(nested class)是指定义在另一个类内部的类。嵌套类存在的目的应该只是为他的外围类(enclosing class)提供服务。如果嵌套类将来可能会用于其他的某个环境中，它就应该是顶层类(top-level class)。<br>
+嵌套类有四种：</p>
 <ol>
-<li><p>静态成员类 (static member class)</p>
+<li>
+<p>静态成员类 (static member class)</p>
 </li>
-<li><p>非静态成员类 (nonstatic member class)</p>
+<li>
+<p>非静态成员类 (nonstatic member class)</p>
 </li>
-<li><p>匿名类 (anonymous class)</p>
+<li>
+<p>匿名类 (anonymous class)</p>
 </li>
-<li><p>局部类 (local class)</p>
+<li>
+<p>局部类 (local class)</p>
 </li>
 </ol>
 <p>除了第一种之外，其他三种都称为内部类(inner class)</p>

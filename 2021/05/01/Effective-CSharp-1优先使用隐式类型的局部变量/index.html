@@ -284,13 +284,10 @@
 <p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。</p>
 <p>如下情况变量类型是显而易见的 (构造函数与工厂方法</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> MyType();</span><br><span class="line"><span class="keyword">var</span> thing = AccountFactory.CreateSavingAccount();</span><br></pre></td></tr></table></figure>
-
 <p>如下情况变量类型没有清晰的指出</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
-
 <p>在这种情况下应当在变量声明时指定清晰的名称，尽管方法并没有指出返回类型，但这样就能让开发者推断出变量类型，例如：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> HighestSellingProduct = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
-
 <p>查看代码的人会根据自己的理解认定该变量类型，可能恰好与变量在运行期的真实类型相符。但编译器不会像人那样思考，而是根据声明判定其在编译期的类型。若用 var 进行声明，编译器会推断其类型，而开发者看不到编译器推断的类型。因此，他们所认定的类型可能不符，这会在代码的维护中导致错误的修改，并产生一些本来可以避免的 Bug。</p>
 <p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。</p>
 <p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em></p>

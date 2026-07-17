@@ -282,7 +282,8 @@
 <p><strong>TDD 让 AI 可靠，AI 让 TDD 可行。</strong></p>
 <p>这句话的前半句比较容易理解。AI 写代码很快，但越快越需要验证；TDD 提供的失败测试、最小实现和重构反馈，能把 AI 的生成能力拉回到具体行为上。</p>
 <p>后半句也同样重要。过去很多人不是不知道 TDD 有价值，而是很难坚持。写测试、补边界、维护反馈回路，这些都是真实成本。AI 出现以后，这些成本被压低了。它可以帮我们起草测试、补充边界、迁移既有风格、解释失败原因、推进小步重构。也就是说，AI 不只是需要 TDD，AI 也让 TDD 更容易被执行。</p>
-<h2 id="AI-让错误也变快了"><a href="#AI-让错误也变快了" class="headerlink" title="AI 让错误也变快了"></a>AI 让错误也变快了</h2><p>AI 时代写代码，最明显的变化当然是快。</p>
+<h2 id="AI-让错误也变快了">AI 让错误也变快了</h2>
+<p>AI 时代写代码，最明显的变化当然是快。</p>
 <p>过去实现一个需求，我们要自己读代码、想接口、写逻辑、补测试、跑验证。这个过程不一定优雅，但它有一种天然的摩擦。人写得慢，所以每一步多少都会停一下，想一想这段逻辑是不是对的，边界有没有漏，和现有系统是否合得上。</p>
 <p>现在不一样了。你可以把需求丢给 AI，它很快就能给出一整套实现。更厉害的是，它不只会写实现，还会写解释，甚至还能顺手补几条测试。</p>
 <p>这当然是好事。很多重复劳动、样板代码、边界枚举、失败排查，都可以被大幅加速。</p>
@@ -290,21 +291,23 @@
 <p>过去错误可能只是一个想法。现在错误可以很快变成代码，变成测试，变成提交，甚至变成一段看起来很合理的说明。</p>
 <p>比如一个订单系统里，奖励到底是在“订单创建时确定”，还是在“支付成功时确定”，这是业务事实，不是代码风格。AI 如果一开始理解错了，它照样可以写出完整的字段、状态流转、单元测试和说明文档。问题不在于这些代码不像工程代码，而在于它们可能从第一步就把错误业务事实固定下来了。</p>
 <p>所以 AI 改变的不只是开发效率，也改变了错误扩散的速度。</p>
-<h2 id="TDD-难，不是因为它没价值"><a href="#TDD-难，不是因为它没价值" class="headerlink" title="TDD 难，不是因为它没价值"></a>TDD 难，不是因为它没价值</h2><p>说到 TDD，很多讨论容易走向两个极端。</p>
+<h2 id="TDD-难，不是因为它没价值">TDD 难，不是因为它没价值</h2>
+<p>说到 TDD，很多讨论容易走向两个极端。</p>
 <p>一种是把 TDD 当成某种纯粹正确的工程道德：不先写测试就是不专业。另一种是把 TDD 当成过时的仪式：现实项目哪有时间红绿重构，先把需求做出来再说。</p>
 <p>我不太喜欢这两种说法。</p>
-<p>TDD 的价值一直在那里。先写测试，意味着先把期望行为说清楚；看到测试失败，意味着确认当前系统确实缺少这个行为；写最小实现让测试通过，意味着先解决具体问题，而不是顺手扩大战场；在测试保护下重构，意味着结构调整有反馈网兜。Kent Beck 在《Test-Driven Development: By Example》里反复强调的也是这个节奏：用很小的步长，在测试、实现和重构之间建立反馈。[^beck-tdd]</p>
+<p>TDD 的价值一直在那里。先写测试，意味着先把期望行为说清楚；看到测试失败，意味着确认当前系统确实缺少这个行为；写最小实现让测试通过，意味着先解决具体问题，而不是顺手扩大战场；在测试保护下重构，意味着结构调整有反馈网兜。Kent Beck 在《Test-Driven Development: By Example》里反复强调的也是这个节奏：用很小的步长，在测试、实现和重构之间建立反馈。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>这些东西并不过时。</p>
 <p>但 TDD 的成本也一直在那里。写测试要花时间，想边界要花时间，理解测试框架要花时间，维护 fixture 和 mock 要花时间。尤其在存量项目里，最难的往往不是“写一个测试”，而是写一个符合当前项目习惯、能稳定运行、以后别人愿意维护的测试。</p>
-<p>这也是很多 TDD 书籍真正花篇幅讨论的部分。《xUnit Test Patterns》不是只讲“要写测试”，而是系统整理 fixture、stub、mock、test smell 和可维护测试结构；《Growing Object-Oriented Software, Guided by Tests》也不是把测试当成附属物，而是把测试放进对象设计和系统演进里看。换句话说，TDD 的难点从来不只是“先写测试”这个动作，而是如何长期维护一套有表达力、可定位、可演进的反馈系统。[^xunit-patterns][^goos]</p>
+<p>这也是很多 TDD 书籍真正花篇幅讨论的部分。《xUnit Test Patterns》不是只讲“要写测试”，而是系统整理 fixture、stub、mock、test smell 和可维护测试结构；《Growing Object-Oriented Software, Guided by Tests》也不是把测试当成附属物，而是把测试放进对象设计和系统演进里看。换句话说，TDD 的难点从来不只是“先写测试”这个动作，而是如何长期维护一套有表达力、可定位、可演进的反馈系统。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>很多人不做 TDD，不一定是反对它的价值，而是抗不过它的成本。</p>
 <p>至少在我现在的使用里，AI 在这里带来了一个很有意思的变化：它降低了 TDD 的执行成本。</p>
 <p>它可以帮我们从需求里拆出输入、输出、状态变化和错误路径；可以根据已有测试补出相似用例；可以把重复的断言整理成 helper；可以在测试失败时快速定位失败原因；可以在红绿循环中承担大量机械推进。</p>
-<p>这个判断不只是体感，也有一些旁证。Microsoft Research 和 GitHub 关于 Copilot 的受控实验里，使用 Copilot 的开发者在一个 JavaScript HTTP server 任务中完成速度快了 55.8%。[^copilot-productivity] GitHub 2024 年针对软件开发团队的 AI 调查也显示，超过 98% 的受访者表示所在组织已经尝试用 AI coding tools 生成测试用例。[^github-ai-survey] Stack Overflow 2025 年开发者调查里，约 70% 的 AI agent 用户同意 agent 减少了特定开发任务耗时，69% 同意它提高了个人生产率。[^stackoverflow-2025]</p>
+<p>这个判断不只是体感，也有一些旁证。Microsoft Research 和 GitHub 关于 Copilot 的受控实验里，使用 Copilot 的开发者在一个 JavaScript HTTP server 任务中完成速度快了 55.8%。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> GitHub 2024 年针对软件开发团队的 AI 调查也显示，超过 98% 的受访者表示所在组织已经尝试用 AI coding tools 生成测试用例。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> Stack Overflow 2025 年开发者调查里，约 70% 的 AI agent 用户同意 agent 减少了特定开发任务耗时，69% 同意它提高了个人生产率。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <p>这些数据不能直接证明“AI 让 TDD 变简单了”。它们支持的是一个更窄的结论：在编码、测试起草、重复修改这些局部任务上，AI 确实在降低摩擦。TDD 过去最难坚持的部分，恰好有不少落在这些局部任务上。</p>
 <p>过去 TDD 像是一件“知道应该做，但经常做不动”的事。AI 出现以后，它变得更容易启动，也更容易坚持小步反馈。</p>
 <p>这就是“AI 让 TDD 可行”的部分。</p>
-<h2 id="AI-更需要-TDD"><a href="#AI-更需要-TDD" class="headerlink" title="AI 更需要 TDD"></a>AI 更需要 TDD</h2><p>但另一面更关键：AI 也更需要 TDD。</p>
+<h2 id="AI-更需要-TDD">AI 更需要 TDD</h2>
+<p>但另一面更关键：AI 也更需要 TDD。</p>
 <p>因为 AI 很容易给出一个看起来完整的答案。它会解释需求，会写实现，会补测试，会总结自己做了什么。如果没有外部约束，这个过程很容易变成一个封闭叙事：它先生成一个理解，再根据这个理解写测试，然后根据这个测试写实现，最后宣布一切通过。</p>
 <p>表面上看，这像是一个完整闭环。实际上，闭环里最重要的问题可能没有被回答：</p>
 <p>这个测试测的是我们真正想要的行为吗？</p>
@@ -317,9 +320,10 @@
 <p>AI 可以解释自己，但验证结果比解释更重要。</p>
 <p>AI 可以快速尝试方案，但红绿反馈能告诉我们哪些尝试真的成立。</p>
 <p>所以 TDD 在 AI 时代不是变轻了，而是变得更关键了。生成能力越强，越需要验证结构。</p>
-<p>这里也有反方向的证据提醒我们别太乐观。2024 年一项关于 GitHub Copilot 生成 Python 测试的实证研究评估了 290 个生成测试：在已有测试套件上下文中，只有 45.28% 是可直接通过的非空测试；如果没有已有测试套件上下文，92.45% 的生成结果是失败、损坏或空测试。[^copilot-test-generation] 也就是说，AI 确实能帮我们写测试，但“有上下文”和“需要人工修正”不是细节，而是成败条件。</p>
-<p>另一项关于生成式 AI 和 TDD 的早期实验也给出了类似提醒：GenAI 可以参与 TDD 流程，但代码质量监督不能省掉，模型有时会为了给出答案而误导非专家。[^genai-tdd] 越是想把 TDD 自动化，越要明确哪些地方必须由人或外部反馈接管。</p>
-<h2 id="先定义行为，而不是先写测试"><a href="#先定义行为，而不是先写测试" class="headerlink" title="先定义行为，而不是先写测试"></a>先定义行为，而不是先写测试</h2><p>不过，这里有一个容易误解的地方。</p>
+<p>这里也有反方向的证据提醒我们别太乐观。2024 年一项关于 GitHub Copilot 生成 Python 测试的实证研究评估了 290 个生成测试：在已有测试套件上下文中，只有 45.28% 是可直接通过的非空测试；如果没有已有测试套件上下文，92.45% 的生成结果是失败、损坏或空测试。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup> 也就是说，AI 确实能帮我们写测试，但“有上下文”和“需要人工修正”不是细节，而是成败条件。</p>
+<p>另一项关于生成式 AI 和 TDD 的早期实验也给出了类似提醒：GenAI 可以参与 TDD 流程，但代码质量监督不能省掉，模型有时会为了给出答案而误导非专家。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup> 越是想把 TDD 自动化，越要明确哪些地方必须由人或外部反馈接管。</p>
+<h2 id="先定义行为，而不是先写测试">先定义行为，而不是先写测试</h2>
+<p>不过，这里有一个容易误解的地方。</p>
 <p>AI 时代的 TDD，不能简单理解成“让 AI 先写测试”。如果需求本身还没说清楚，AI 先写测试也只是先写一份猜测。</p>
 <p>真正应该先出现的，不是测试代码，而是行为规格。</p>
 <p>也就是说，在让 AI 动手之前，最好先把这些东西说清楚：</p>
@@ -335,19 +339,28 @@
 </ul>
 <p>这一步不一定要写成长篇文档。很多时候，几条清楚的 bullet 就够了。关键是要把“对不对”从聊天感觉变成可执行的标准。</p>
 <p>测试不是让 AI 猜我们想要什么，而是把人的判断翻译成可以运行的东西。</p>
-<p>从 AI 的角度看，测试还不只是验收条件，它也是一种上下文。WebApp1K 这类 TDD benchmark 直接把测试用例同时当作 prompt 和 verification，评估模型能不能从测试中读出需求、实现功能并通过验证。它的结论很有启发：TDD 场景里，模型能力不只取决于一般代码能力，还取决于 instruction following、in-context learning，以及长上下文下是否丢失约束。[^tests-as-prompt]</p>
+<p>从 AI 的角度看，测试还不只是验收条件，它也是一种上下文。WebApp1K 这类 TDD benchmark 直接把测试用例同时当作 prompt 和 verification，评估模型能不能从测试中读出需求、实现功能并通过验证。它的结论很有启发：TDD 场景里，模型能力不只取决于一般代码能力，还取决于 instruction following、in-context learning，以及长上下文下是否丢失约束。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>这也是为什么我觉得 AI-TDD 里，人的位置并没有后退。人少写了一些样板代码，但更需要负责定义行为、判断边界和审查测试是否表达了正确规格。</p>
 <p>如果行为定义错了，AI 写得越快，只会错得越完整。</p>
-<h2 id="最危险的是自写自验"><a href="#最危险的是自写自验" class="headerlink" title="最危险的是自写自验"></a>最危险的是自写自验</h2><p>AI-TDD 里最危险的反模式，是让同一个 AI 自写自验。</p>
+<h2 id="最危险的是自写自验">最危险的是自写自验</h2>
+<p>AI-TDD 里最危险的反模式，是让同一个 AI 自写自验。</p>
 <p>它自己理解需求，自己设计测试，自己写实现，自己修改断言，自己宣布通过。整个过程看起来很顺，但问题是：没有外部规格，也没有独立审查。</p>
 <p>这会产生一些很隐蔽的问题。</p>
-<p>比如实现失败了，它可能不是停下来问规格是否理解错了，而是把断言改松一点。<br>比如原来有一个 bug，它可能把当前错误行为写进测试里，让 bug 变成“被保护的期望”。<br>比如它为了让单元测试容易写，把数据库、时间、权限、队列这些真正有风险的边界全部 mock 掉。<br>比如它写了很多测试，但测试复刻了生产逻辑，所以实现错了，测试也跟着错。<br>比如它新建一套横向切片测试，看起来覆盖很完整，却完全不符合项目已有 fixture、helper 和目录习惯。</p>
+<p>比如实现失败了，它可能不是停下来问规格是否理解错了，而是把断言改松一点。<br>
+比如原来有一个 bug，它可能把当前错误行为写进测试里，让 bug 变成“被保护的期望”。<br>
+比如它为了让单元测试容易写，把数据库、时间、权限、队列这些真正有风险的边界全部 mock 掉。<br>
+比如它写了很多测试，但测试复刻了生产逻辑，所以实现错了，测试也跟着错。<br>
+比如它新建一套横向切片测试，看起来覆盖很完整，却完全不符合项目已有 fixture、helper 和目录习惯。</p>
 <p>这些问题比“实现代码写错”更麻烦。</p>
 <p>代码写错了，测试可能会抓出来。测试写错了，就会把错误规格长期固化下来。它不只是没发现问题，还会给人一种已经验证过的错觉。</p>
 <p>所以在 AI-TDD 里，测试 review 甚至比实现 review 更重要。</p>
 <p>实现可以重写，错误测试会污染反馈回路。</p>
-<h2 id="更好的分工"><a href="#更好的分工" class="headerlink" title="更好的分工"></a>更好的分工</h2><p>我现在更倾向于把 AI-TDD 看成一种分工，而不是一种仪式。这一节只回答一个问题：一次需求从行为规格到完成断言，应该由谁负责哪一段。</p>
-<p>人负责定义行为和验收边界。<br>AI 负责起草测试、生成实现、修复失败、整理重复。<br>自动化工具负责持续给出反馈。<br>人再回来判断这些反馈是否足以说明任务完成。</p>
+<h2 id="更好的分工">更好的分工</h2>
+<p>我现在更倾向于把 AI-TDD 看成一种分工，而不是一种仪式。这一节只回答一个问题：一次需求从行为规格到完成断言，应该由谁负责哪一段。</p>
+<p>人负责定义行为和验收边界。<br>
+AI 负责起草测试、生成实现、修复失败、整理重复。<br>
+自动化工具负责持续给出反馈。<br>
+人再回来判断这些反馈是否足以说明任务完成。</p>
 <p>放到实际流程里，可以是这样：</p>
 <ol>
 <li>先写清楚行为规格和不覆盖范围。</li>
@@ -362,10 +375,13 @@
 <li>用验证结果，而不是 AI 的语气，判断是否完成。</li>
 </ol>
 <p>这里最重要的不是步骤数量，而是反馈方向。</p>
-<p>测试要先约束实现，而不是实现失败以后反过来改测试。<br>验证命令要约束完成判断，而不是 AI 说完成就完成。<br>现有测试生态要约束新增测试，而不是每次需求都新建一套自己的小世界。</p>
+<p>测试要先约束实现，而不是实现失败以后反过来改测试。<br>
+验证命令要约束完成判断，而不是 AI 说完成就完成。<br>
+现有测试生态要约束新增测试，而不是每次需求都新建一套自己的小世界。</p>
 <p>这个流程看起来慢一点，但它实际上是在把 AI 的速度导入一个更可靠的轨道。</p>
 <p>没有轨道，速度越快越危险。</p>
-<h2 id="存量项目里，先研究测试生态"><a href="#存量项目里，先研究测试生态" class="headerlink" title="存量项目里，先研究测试生态"></a>存量项目里，先研究测试生态</h2><p>如果是在一个新项目里，TDD 的启动成本相对低一点。测试框架、目录结构、fixture 习惯都还可以一起塑造。</p>
+<h2 id="存量项目里，先研究测试生态">存量项目里，先研究测试生态</h2>
+<p>如果是在一个新项目里，TDD 的启动成本相对低一点。测试框架、目录结构、fixture 习惯都还可以一起塑造。</p>
 <p>但大多数真实工作不是这样。真实项目里已经有历史包袱，有旧测试，有命名习惯，有各种 helper 和 mock 边界。AI 如果一上来就新建测试文件，很容易写出一种“看起来没问题，但不像这个项目”的测试。</p>
 <p>这种测试短期可能能跑，长期很难维护。</p>
 <p>如果上一节讲的是“流程分工”，这一节讲的就是“进入项目之前先认路”。对存量项目，我觉得 AI-TDD 的第一步不是写测试，而是研究测试生态。</p>
@@ -382,7 +398,8 @@
 </ul>
 <p>这一步很像我前面说的“先把 AI 放进工作流”。AI 不是凭空开始写，而是先进入项目已有的规则系统。</p>
 <p>越是存量项目，越不能只追求“有测试”。真正有价值的是“这个测试属于这个项目”。</p>
-<h2 id="测试策略应该写进仓库"><a href="#测试策略应该写进仓库" class="headerlink" title="测试策略应该写进仓库"></a>测试策略应该写进仓库</h2><p>研究一次测试生态还不够。如果我们希望 AI 稳定地做对这些事，就不能每次都靠临时提醒。</p>
+<h2 id="测试策略应该写进仓库">测试策略应该写进仓库</h2>
+<p>研究一次测试生态还不够。如果我们希望 AI 稳定地做对这些事，就不能每次都靠临时提醒。</p>
 <p>对 AI 来说，不在上下文里的规则就等于不存在。你心里知道这个项目不喜欢过度 mock，知道端到端测试只覆盖关键路径，知道某些数据库行为必须走集成测试，但如果这些规则没有写出来，AI 不会天然知道。</p>
 <p>所以测试策略应该进入仓库。</p>
 <p>它可以在 <code>AGENTS.md</code>，可以在 <code>docs/testing.md</code>，可以在测试目录的 README，也可以在团队约定的其他位置。关键是让 AI 和人都能看到：</p>
@@ -399,16 +416,20 @@
 </ul>
 <p>这些内容看起来像文档，其实也是 harness 的一部分。它们把人的偏好和经验变成环境约束，让 AI 不需要每次都从零猜测。</p>
 <p>这也是 AI 时代软件工程很重要的一个变化：项目不只是给人读的，项目也要能被 AI 读懂。</p>
-<h2 id="不是更多测试，而是更好的反馈"><a href="#不是更多测试，而是更好的反馈" class="headerlink" title="不是更多测试，而是更好的反馈"></a>不是更多测试，而是更好的反馈</h2><p>AI 可以很快生成很多测试，但更多测试不一定意味着更可靠。</p>
+<h2 id="不是更多测试，而是更好的反馈">不是更多测试，而是更好的反馈</h2>
+<p>AI 可以很快生成很多测试，但更多测试不一定意味着更可靠。</p>
 <p>如果测试很慢、很脆、定位困难，AI 的迭代效率反而会下降。它可能开始绕过测试，或者为了让测试通过去修改断言。端到端测试尤其如此。它们有价值，但不应该因为 AI 写得快就无限膨胀。</p>
 <p>健康的测试组合仍然需要层次。</p>
-<p>快速的单元测试和组件测试，适合覆盖纯逻辑、边界计算、解析校验和状态转换。<br>集成测试适合覆盖数据库、队列、权限、时间、事务这些真实风险。<br>少量端到端测试适合保护关键用户路径和系统级冒烟。</p>
+<p>快速的单元测试和组件测试，适合覆盖纯逻辑、边界计算、解析校验和状态转换。<br>
+集成测试适合覆盖数据库、队列、权限、时间、事务这些真实风险。<br>
+少量端到端测试适合保护关键用户路径和系统级冒烟。</p>
 <p>AI 降低了起草测试和重复修改的成本，但没有取消测试设计的判断。</p>
 <p>我们仍然要问：这个风险应该在哪一层验证？这个测试失败后能不能快速定位？这个 mock 是隔离噪音，还是遮住了真正风险？这个用例是在测行为，还是在测实现细节？</p>
 <p>TDD 的目标不是堆测试数量，而是建立有效反馈。</p>
-<h2 id="生成越便宜，验证越重要"><a href="#生成越便宜，验证越重要" class="headerlink" title="生成越便宜，验证越重要"></a>生成越便宜，验证越重要</h2><p>AI 让软件开发里的生成变得便宜了。</p>
+<h2 id="生成越便宜，验证越重要">生成越便宜，验证越重要</h2>
+<p>AI 让软件开发里的生成变得便宜了。</p>
 <p>代码可以更快生成，测试可以更快生成，文档可以更快生成，方案也可以更快生成。生成变便宜以后，真正稀缺的东西就变了。</p>
-<p>DORA 关于生成式 AI 的研究也提示了同一个方向：AI 会提升个人生产率、flow 和满意度，但如果团队的 review、测试和交付机制没有跟上，交付稳定性和吞吐反而可能下降。DORA 的 GenAI 报告进一步指出，AI adoption 增加和 delivery throughput、delivery stability 下降存在关联，其中一个解释是 AI 让代码生成更快，容易带来更大的 batch size，而大 batch 更慢 review，也更容易造成系统不稳定。[^dora-2024][^dora-genai]</p>
+<p>DORA 关于生成式 AI 的研究也提示了同一个方向：AI 会提升个人生产率、flow 和满意度，但如果团队的 review、测试和交付机制没有跟上，交付稳定性和吞吐反而可能下降。DORA 的 GenAI 报告进一步指出，AI adoption 增加和 delivery throughput、delivery stability 下降存在关联，其中一个解释是 AI 让代码生成更快，容易带来更大的 batch size，而大 batch 更慢 review，也更容易造成系统不稳定。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup><sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
 <p>这说明 AI 把瓶颈从“能不能写出来”推到了“能不能及时 review、测试和交付”。TDD 在这里就不只是个人习惯，而是让生成速度进入可控反馈回路的一部分。</p>
 <p>稀缺的不再只是“谁能把代码写出来”，而是：</p>
 <ul>
@@ -426,8 +447,9 @@
 <p>这就是我现在更愿意相信的开发方式：</p>
 <p>不是把 AI 当成一个可以直接交付答案的人，也不是把 TDD 当成一个必须机械执行的仪式，而是让 AI 的生成能力和 TDD 的验证结构形成闭环。</p>
 <p>生成能力越强，越需要验证结构。验证结构越清楚，AI 的生成能力才越值得放心使用。</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^beck-tdd]: Kent Beck, <a target="_blank" rel="noopener" href="https://www.informit.com/store/test-driven-development-by-example-9780321146533"><em>Test-Driven Development: By Example</em></a>。本文借用的是其中“用小步反馈推动设计”的 TDD 基本结构，而不是把书中的全部实践等同于 AI-TDD。<br>[^xunit-patterns]: Gerard Meszaros, <a target="_blank" rel="noopener" href="https://martinfowler.com/books/meszaros.html"><em>xUnit Test Patterns: Refactoring Test Code</em></a>。这里引用它来支撑“测试可维护性本身是一门工程实践”，尤其是 fixture、test double 和 test smell。<br>[^goos]: Steve Freeman, Nat Pryce, <a target="_blank" rel="noopener" href="https://growing-object-oriented-software.com/"><em>Growing Object-Oriented Software, Guided by Tests</em></a>。这里引用它来支撑“测试可以参与系统设计，而不只是事后验收”。<br>[^copilot-productivity]: Eirini Kalliamvakou, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/the-impact-of-ai-on-developer-productivity-evidence-from-github-copilot/"><em>The Impact of AI on Developer Productivity: Evidence from GitHub Copilot</em></a>，Microsoft Research。55.8% 是特定实验任务中的结果，不应外推为所有开发任务的通用提升。<br>[^github-ai-survey]: GitHub Blog, <a target="_blank" rel="noopener" href="https://github.blog/news-insights/research/survey-ai-wave-grows/"><em>Survey: The AI wave continues to grow on software development teams</em></a>。这里用来说明团队已经在尝试用 AI 生成测试用例，而不是证明生成测试天然可靠。<br>[^stackoverflow-2025]: Stack Overflow, <a target="_blank" rel="noopener" href="https://survey.stackoverflow.co/2025"><em>2025 Developer Survey</em></a>。这里引用的是开发者对 AI agent 节省局部任务时间和提高个人生产率的自报告数据。<br>[^copilot-test-generation]: Khalid El Haji, Carolin Brandt, Andy Zaidman, <a target="_blank" rel="noopener" href="https://carolin-brandt.de/publications/elhaji-ast24.pdf"><em>Using GitHub Copilot for Test Generation in Python: An Empirical Study</em></a>。这里引用它来支撑“AI 生成测试高度依赖已有测试上下文，且需要人工修正”。<br>[^genai-tdd]: Davide Falessi et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.10849"><em>Generative AI for Test Driven Development: Preliminary Results</em></a>。这是一项早期实验，适合作为“GenAI 可以参与 TDD，但质量监督不能省”的边界证据。<br>[^tests-as-prompt]: Yi Cui, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.09027"><em>Tests as Prompt: A Test-Driven-Development Benchmark for LLM Code Generation</em></a>。这里引用它来支撑“测试同时可以作为 prompt 和 verification”的视角。<br>[^dora-2024]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 提升个人层面体验和生产率，但对交付稳定性和吞吐有意外 tradeoff”的系统视角。<br>[^dora-genai]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。</p>
-<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<h2 id="注释">注释</h2>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
 <li>Kent Beck, <a target="_blank" rel="noopener" href="https://tidyfirst.substack.com/p/canon-tdd">Canon TDD</a>：适合回到 TDD 的红、绿、重构基本循环。</li>
 <li>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/TestPyramid.html">Test Pyramid</a>：适合理解为什么测试组合需要层次，而不是只堆端到端测试。</li>
 <li>Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/common-workflows">Claude Code common workflows</a>：其中包含生成测试、补充边界、运行并修复测试失败的工作流示例。</li>
@@ -441,6 +463,33 @@
 <li>Yi Cui, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.09027">Tests as Prompt: A Test-Driven-Development Benchmark for LLM Code Generation</a>：适合理解测试作为 prompt 与 verification 的双重角色。</li>
 <li>Stack Overflow, <a target="_blank" rel="noopener" href="https://survey.stackoverflow.co/2025">2025 Developer Survey</a>：适合理解开发者对 AI agent 节省局部任务时间和提升个人生产率的自报告数据。</li>
 </ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Kent Beck, <a target="_blank" rel="noopener" href="https://www.informit.com/store/test-driven-development-by-example-9780321146533"><em>Test-Driven Development: By Example</em></a>。本文借用的是其中“用小步反馈推动设计”的 TDD 基本结构，而不是把书中的全部实践等同于 AI-TDD。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Gerard Meszaros, <a target="_blank" rel="noopener" href="https://martinfowler.com/books/meszaros.html"><em>xUnit Test Patterns: Refactoring Test Code</em></a>。这里引用它来支撑“测试可维护性本身是一门工程实践”，尤其是 fixture、test double 和 test smell。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Steve Freeman, Nat Pryce, <a target="_blank" rel="noopener" href="https://growing-object-oriented-software.com/"><em>Growing Object-Oriented Software, Guided by Tests</em></a>。这里引用它来支撑“测试可以参与系统设计，而不只是事后验收”。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Eirini Kalliamvakou, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/the-impact-of-ai-on-developer-productivity-evidence-from-github-copilot/"><em>The Impact of AI on Developer Productivity: Evidence from GitHub Copilot</em></a>，Microsoft Research。55.8% 是特定实验任务中的结果，不应外推为所有开发任务的通用提升。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>GitHub Blog, <a target="_blank" rel="noopener" href="https://github.blog/news-insights/research/survey-ai-wave-grows/"><em>Survey: The AI wave continues to grow on software development teams</em></a>。这里用来说明团队已经在尝试用 AI 生成测试用例，而不是证明生成测试天然可靠。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Stack Overflow, <a target="_blank" rel="noopener" href="https://survey.stackoverflow.co/2025"><em>2025 Developer Survey</em></a>。这里引用的是开发者对 AI agent 节省局部任务时间和提高个人生产率的自报告数据。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Khalid El Haji, Carolin Brandt, Andy Zaidman, <a target="_blank" rel="noopener" href="https://carolin-brandt.de/publications/elhaji-ast24.pdf"><em>Using GitHub Copilot for Test Generation in Python: An Empirical Study</em></a>。这里引用它来支撑“AI 生成测试高度依赖已有测试上下文，且需要人工修正”。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Davide Falessi et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.10849"><em>Generative AI for Test Driven Development: Preliminary Results</em></a>。这是一项早期实验，适合作为“GenAI 可以参与 TDD，但质量监督不能省”的边界证据。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Yi Cui, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.09027"><em>Tests as Prompt: A Test-Driven-Development Benchmark for LLM Code Generation</em></a>。这里引用它来支撑“测试同时可以作为 prompt 和 verification”的视角。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 提升个人层面体验和生产率，但对交付稳定性和吞吐有意外 tradeoff”的系统视角。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 

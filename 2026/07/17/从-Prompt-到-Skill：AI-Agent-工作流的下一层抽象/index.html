@@ -281,7 +281,8 @@
 <p>如果一个同事还不知道什么是 Agent Skill，我不太想一上来就告诉他：它是一个包含 <code>SKILL.md</code> 的目录，里面有 YAML front matter、说明正文、<code>references/</code>、<code>scripts/</code> 和 <code>assets/</code>。</p>
 <p>这当然是事实，但这不是最重要的事实。</p>
 <p>更重要的是：为什么我们已经会写 Prompt 了，还需要 Skill？</p>
-<h2 id="Prompt-适合表达这一次，Skill-适合沉淀下一次"><a href="#Prompt-适合表达这一次，Skill-适合沉淀下一次" class="headerlink" title="Prompt 适合表达这一次，Skill 适合沉淀下一次"></a>Prompt 适合表达这一次，Skill 适合沉淀下一次</h2><p>我们平时和 AI 协作，最自然的方式是写 Prompt。</p>
+<h2 id="Prompt-适合表达这一次，Skill-适合沉淀下一次">Prompt 适合表达这一次，Skill 适合沉淀下一次</h2>
+<p>我们平时和 AI 协作，最自然的方式是写 Prompt。</p>
 <p>“帮我看一下这段代码。”</p>
 <p>“按 TDD 的方式实现这个功能。”</p>
 <p>“先不要动手，先读项目结构。”</p>
@@ -300,7 +301,8 @@
 <p>人会忘记说。对话会变长。上下文会变脏。AI 会在后半段逐渐回到它熟悉的生成模式里。更麻烦的是，这些做法一旦只存在于聊天记录里，就很难被复用、修改、审查和传给团队里的其他人。</p>
 <p>所以 Prompt 的问题不是“不够强”，而是它天然偏向一次性沟通。</p>
 <p>Skill 要解决的是另一类问题：把反复出现的工作方式，沉淀成可复用、可触发、可维护的上下文。</p>
-<h2 id="Skill-不是更长的-Prompt"><a href="#Skill-不是更长的-Prompt" class="headerlink" title="Skill 不是更长的 Prompt"></a>Skill 不是更长的 Prompt</h2><p>很容易把 Agent Skill 理解成“高级提示词”。</p>
+<h2 id="Skill-不是更长的-Prompt">Skill 不是更长的 Prompt</h2>
+<p>很容易把 Agent Skill 理解成“高级提示词”。</p>
 <p>这个理解只对了一半。</p>
 <p>Skill 里面确实有自然语言指令，Agent 也确实会读这些指令。但一个好的 Skill 不只是把一大段 Prompt 存起来。它至少多解决了三个问题。</p>
 <p>第一，它解决“什么时候用”的问题。</p>
@@ -311,7 +313,8 @@
 <p>不常用的背景资料、长检查清单、示例、脚本、模板，不一定要全部塞进主文件。它们可以放进 <code>references/</code>、<code>scripts/</code> 或 <code>assets/</code>。Agent 需要时再读，需要执行时再调用。</p>
 <p>所以 Skill 和 Prompt 的差别，不只是“短”和“长”的差别。</p>
 <p>Prompt 更像一次对话里的意图表达。Skill 更像某类任务的工作协议。</p>
-<h2 id="Skill、Prompt-和-Tool-各自解决不同问题"><a href="#Skill、Prompt-和-Tool-各自解决不同问题" class="headerlink" title="Skill、Prompt 和 Tool 各自解决不同问题"></a>Skill、Prompt 和 Tool 各自解决不同问题</h2><p>这三个概念很容易混在一起。</p>
+<h2 id="Skill、Prompt-和-Tool-各自解决不同问题">Skill、Prompt 和 Tool 各自解决不同问题</h2>
+<p>这三个概念很容易混在一起。</p>
 <p>可以先粗略地区分一下：</p>
 <table>
 <thead>
@@ -321,7 +324,8 @@
 <th>例子</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Prompt</td>
 <td>这一次要做什么</td>
 <td>“帮我写一篇解释 Agent Skill 的文章”</td>
@@ -336,26 +340,28 @@
 <td>某类任务应该怎么做</td>
 <td>写文章前先确认读者、目的、论点、材料和声音</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>比如我说：“帮我写测试。”</p>
 <p>这是一句 Prompt。</p>
 <p>Agent 能调用测试命令、编辑器、文件系统，这些是 Tool。</p>
 <p>如果我希望它按 TDD 的节奏推进，先写失败测试，再写最小实现，再重构，并且不要为了让测试通过反过来放松断言，那就是 Skill 要表达的工作方式。</p>
 <p>Skill 不替代 Prompt，也不替代 Tool。</p>
 <p>Prompt 提供当前目标。Tool 提供行动能力。Skill 提供可复用的判断和流程。</p>
-<h2 id="Skill-的核心是渐进式披露"><a href="#Skill-的核心是渐进式披露" class="headerlink" title="Skill 的核心是渐进式披露"></a>Skill 的核心是渐进式披露</h2><p>Agent Skill 背后的关键设计，不是“把更多说明交给 AI”，而是“只在需要时加载正确说明”。</p>
+<h2 id="Skill-的核心是渐进式披露">Skill 的核心是渐进式披露</h2>
+<p>Agent Skill 背后的关键设计，不是“把更多说明交给 AI”，而是“只在需要时加载正确说明”。</p>
 <p>这叫渐进式披露。</p>
 <p>Agent 不应该在每次任务里都读完所有规则。那样上下文会很快变成垃圾桶。真正可持续的方式是分层：</p>
 <p>第一层，启动时只让 Agent 看到 skill 的名字、描述和位置。它知道“有这么一个能力”，但还没有把全文塞进上下文。</p>
 <p>第二层，当任务匹配时，Agent 才读取对应的 <code>SKILL.md</code>。</p>
 <p>第三层，如果 <code>SKILL.md</code> 指向更细的参考资料、脚本或模板，Agent 再按需要继续读取或执行。</p>
-<p>OpenAI 的 Codex 文档把 skill 描述为可复用的工作流格式，并明确提到 Codex 先看到 skill 的名称、描述和路径，只有决定使用时才读取完整 <code>SKILL.md</code>。Anthropic 在介绍 Agent Skills 时也用了同样的思路：先加载 <code>name</code> 和 <code>description</code>，任务相关时再读正文，更细的文件继续按需展开。[^openai-build-skills][^anthropic-skills]</p>
+<p>OpenAI 的 Codex 文档把 skill 描述为可复用的工作流格式，并明确提到 Codex 先看到 skill 的名称、描述和路径，只有决定使用时才读取完整 <code>SKILL.md</code>。Anthropic 在介绍 Agent Skills 时也用了同样的思路：先加载 <code>name</code> 和 <code>description</code>，任务相关时再读正文，更细的文件继续按需展开。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>这件事很重要。</p>
 <p>因为上下文窗口不是越满越好。把所有规范、示例、异常情况、脚本说明都塞进去，短期看像是“资料齐全”，长期看却会稀释真正关键的约束。Agent 可能读了很多字，却更难抓住当前任务最应该遵守的那几条规则。</p>
 <p>好 Skill 不是让 Agent 多读字，而是让 Agent 少想错。</p>
-<h2 id="一个-Skill-通常长什么样"><a href="#一个-Skill-通常长什么样" class="headerlink" title="一个 Skill 通常长什么样"></a>一个 Skill 通常长什么样</h2><p>从格式上看，一个 Skill 通常是一个目录。</p>
+<h2 id="一个-Skill-通常长什么样">一个 Skill 通常长什么样</h2>
+<p>从格式上看，一个 Skill 通常是一个目录。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my-skill/</span><br><span class="line">├── SKILL.md</span><br><span class="line">├── references/</span><br><span class="line">├── scripts/</span><br><span class="line">└── assets/</span><br></pre></td></tr></table></figure>
-
 <p><code>SKILL.md</code> 是入口。它通常包含 <code>name</code> 和 <code>description</code>，然后是一段给 Agent 的任务说明。</p>
 <p><code>references/</code> 放更细的材料，比如写作检查清单、项目规范、领域背景、案例、边界说明。</p>
 <p><code>scripts/</code> 放可以执行的脚本。能机械化的东西，尽量不要长期停留在自然语言里。脚本比口头规则更稳定，也更容易验证。</p>
@@ -363,14 +369,13 @@
 <p>但格式只是外壳。真正决定 Skill 质量的，是它有没有把边界和判断写清楚。</p>
 <p>一个坏的 <code>description</code> 可能是：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">Help</span> <span class="string">with</span> <span class="string">project</span> <span class="string">work.</span></span><br></pre></td></tr></table></figure>
-
 <p>这句话几乎没用。它太宽了，什么都像能触发。</p>
 <p>一个更好的写法会像这样：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">Use</span> <span class="string">when</span> <span class="string">drafting</span> <span class="string">or</span> <span class="string">revising</span> <span class="string">public-facing</span> <span class="string">technical</span> <span class="string">articles.</span> <span class="string">Identify</span> <span class="string">reader,</span> <span class="string">purpose,</span> <span class="string">thesis,</span> <span class="string">evidence,</span> <span class="string">structure,</span> <span class="string">and</span> <span class="string">voice</span> <span class="string">before</span> <span class="string">drafting.</span> <span class="string">Prefer</span> <span class="string">project-docs-writing</span> <span class="string">for</span> <span class="string">durable</span> <span class="string">internal</span> <span class="string">project</span> <span class="string">documentation.</span></span><br></pre></td></tr></table></figure>
-
 <p>它说清楚了三件事：什么时候用，做什么，和相邻 skill 的边界在哪里。</p>
 <p>这就是 Skill 和普通说明文档的差别。Skill 首先要能被正确触发，其次才是触发后写得多完整。</p>
-<h2 id="好-Skill-先教判断，再教步骤"><a href="#好-Skill-先教判断，再教步骤" class="headerlink" title="好 Skill 先教判断，再教步骤"></a>好 Skill 先教判断，再教步骤</h2><p>很多人第一次写 Skill，容易把它写成操作手册。</p>
+<h2 id="好-Skill-先教判断，再教步骤">好 Skill 先教判断，再教步骤</h2>
+<p>很多人第一次写 Skill，容易把它写成操作手册。</p>
 <p>第一步做什么，第二步做什么，第三步做什么。再加一大堆命令示例、注意事项、边界情况。最后 <code>SKILL.md</code> 越写越长，像一份很努力但很臃肿的说明书。</p>
 <p>这不一定有效。</p>
 <p>Agent 很多基础操作本来就会。它会读文件，会看 <code>--help</code>，会根据项目里的 package scripts 推断测试命令，会模仿现有代码风格。Skill 不应该把这些 baseline 能力重新讲一遍。</p>
@@ -387,7 +392,8 @@
 <p>比如一个诊断 skill，不需要教 Agent “可以打印日志”。它真正应该写的是：先建立反馈循环，先复现，再提出可证伪假设，用观察结果更新判断，不要直接跳到最像答案的修复。</p>
 <p>比如一个验证 skill，不需要教 Agent “测试命令怎么运行”。它真正应该写的是：不要在没有新鲜证据的情况下宣布完成；验证失败时要报告失败，而不是把语气改得更肯定。</p>
 <p>好的 Skill 不是把 Agent 当新手，而是把 Agent 拉回正确的判断结构里。</p>
-<h2 id="坏-Skill-会把-Agent-推进噪声里"><a href="#坏-Skill-会把-Agent-推进噪声里" class="headerlink" title="坏 Skill 会把 Agent 推进噪声里"></a>坏 Skill 会把 Agent 推进噪声里</h2><p>Skill 写坏了，会比没有 Skill 更糟。</p>
+<h2 id="坏-Skill-会把-Agent-推进噪声里">坏 Skill 会把 Agent 推进噪声里</h2>
+<p>Skill 写坏了，会比没有 Skill 更糟。</p>
 <p>最常见的坏法，是把 Skill 写成“万能入口”。</p>
 <p>比如一个叫 <code>engineering</code> 的 Skill，里面同时包含代码审查、TDD、架构设计、文档同步、Git 提交、发布流程和故障诊断。它看起来很完整，但每次触发都把一大堆当前任务用不到的内容塞进上下文。最后 Agent 反而更容易抓错重点。</p>
 <p>第二种坏法，是复制工具文档。</p>
@@ -403,7 +409,8 @@
 <p>第四种坏法，是边界不清。</p>
 <p>两个 Skill 如果都像能处理同一个任务，Agent 就会犹豫，或者选错。Skill 的边界应该写在 <code>description</code> 里，而不是藏在正文深处。</p>
 <p>所以评估一个 Skill，不只要问它“能不能用”，还要问它有没有制造新的上下文噪声。</p>
-<h2 id="什么时候该把-Prompt-升级成-Skill"><a href="#什么时候该把-Prompt-升级成-Skill" class="headerlink" title="什么时候该把 Prompt 升级成 Skill"></a>什么时候该把 Prompt 升级成 Skill</h2><p>不是所有 Prompt 都值得变成 Skill。</p>
+<h2 id="什么时候该把-Prompt-升级成-Skill">什么时候该把 Prompt 升级成 Skill</h2>
+<p>不是所有 Prompt 都值得变成 Skill。</p>
 <p>一次性需求没有必要 Skill 化。还在探索中的偏好也不急着沉淀。只有当一段提示开始反复出现，并且忘记它会导致稳定的质量问题时，才值得考虑升级。</p>
 <p>我会用这几个问题判断：</p>
 <p>第一，它是不是高频出现？</p>
@@ -417,14 +424,13 @@
 <p>第五，它是不是会从版本化中获益？</p>
 <p>如果这个工作方式需要被审查、迭代、共享、回滚，那它就更像工程资产，而不是一次聊天里的提醒。</p>
 <p>当这些问题的答案大多是“是”，Prompt 就可以升级成 Skill。</p>
-<h2 id="从最小-Skill-开始"><a href="#从最小-Skill-开始" class="headerlink" title="从最小 Skill 开始"></a>从最小 Skill 开始</h2><p>写 Skill 不应该从设计一个完整体系开始。</p>
+<h2 id="从最小-Skill-开始">从最小 Skill 开始</h2>
+<p>写 Skill 不应该从设计一个完整体系开始。</p>
 <p>更好的方式是从一个真实任务开始。</p>
 <p>先选一个你最常重复的工作流，比如“写技术文章”“修 bug”“做 TDD”“同步项目文档”。然后只写最小入口：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">article-writing</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">Use</span> <span class="string">when</span> <span class="string">drafting,</span> <span class="string">outlining,</span> <span class="string">rewriting,</span> <span class="string">editing,</span> <span class="string">or</span> <span class="string">reviewing</span> <span class="string">public-facing</span> <span class="string">articles.</span> <span class="string">Identify</span> <span class="string">reader,</span> <span class="string">purpose,</span> <span class="string">thesis,</span> <span class="string">material,</span> <span class="string">voice,</span> <span class="string">and</span> <span class="string">venue</span> <span class="string">before</span> <span class="string">drafting.</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
-
 <p>正文也先保持短：</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Article Writing</span></span><br><span class="line"></span><br><span class="line">Before drafting, identify reader, purpose, thesis, material, voice, and venue.</span><br><span class="line"></span><br><span class="line">Choose a structure before writing.</span><br><span class="line"></span><br><span class="line">Separate sourced facts from author experience and invention.</span><br><span class="line"></span><br><span class="line">Draft with a visible through-line: every section should advance the thesis.</span><br></pre></td></tr></table></figure>
-
 <p>然后用它做真实任务。</p>
 <p>如果 Agent 误触发，就改 <code>description</code>。</p>
 <p>如果 Agent 触发后仍然忘记关键边界，就把边界前置。</p>
@@ -432,7 +438,8 @@
 <p>如果某些步骤可以机械化，就写脚本。</p>
 <p>如果某条规则只是你临时想到的，不要急着加进去。等它在真实任务里反复证明有用，再沉淀。</p>
 <p>这和写代码有点像。不要一开始就抽象一个庞大的框架。先从一个代表性任务开始，让真实失败告诉你这个 Skill 缺什么。</p>
-<h2 id="Skill-让-AI-协作更像工程资产"><a href="#Skill-让-AI-协作更像工程资产" class="headerlink" title="Skill 让 AI 协作更像工程资产"></a>Skill 让 AI 协作更像工程资产</h2><p>Prompt 仍然重要。</p>
+<h2 id="Skill-让-AI-协作更像工程资产">Skill 让 AI 协作更像工程资产</h2>
+<p>Prompt 仍然重要。</p>
 <p>我们不可能把所有意图都提前写成 Skill。每一次任务仍然需要人说明目标、提供上下文、判断结果。Skill 不是为了取代 Prompt，而是为了让那些稳定、重复、可复用的部分不再每次从零开始。</p>
 <p>这也是我觉得“从 Prompt 到 Skill”重要的原因。</p>
 <p>它不是提示词技巧的升级，而是工作流抽象的升级。</p>
@@ -444,14 +451,24 @@
 <p>Prompt 表达这一次我要什么。</p>
 <p>Skill 沉淀下一次仍然要遵守什么。</p>
 <p>这就是从 Prompt 到 Skill 的那一层抽象。</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^openai-build-skills]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>。这里引用的是 Codex Skills 对可复用工作流、渐进式披露、<code>SKILL.md</code>、<code>scripts/</code> 和 <code>references/</code> 的说明。<br>[^anthropic-skills]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>。这里引用的是 Agent Skills 的目录结构、<code>name</code> &#x2F; <code>description</code> 路由、渐进式披露和按需加载参考文件的设计。</p>
-<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<h2 id="注释">注释</h2>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
 <li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a></li>
 <li>OpenAI API Docs, <a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/tools-skills">Skills</a></li>
 <li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a></li>
 <li>Agent Skills, <a target="_blank" rel="noopener" href="https://agentskills.io/home">Agent Skills Overview</a></li>
 <li>本博客：<a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a></li>
 </ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>。这里引用的是 Codex Skills 对可复用工作流、渐进式披露、<code>SKILL.md</code>、<code>scripts/</code> 和 <code>references/</code> 的说明。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>。这里引用的是 Agent Skills 的目录结构、<code>name</code> / <code>description</code> 路由、渐进式披露和按需加载参考文件的设计。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 

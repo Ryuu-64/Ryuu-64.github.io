@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="事务是一组原子性的SQL查询，一个独立的工作单元。如果数据库引擎能够成功对数据库应用该组查询的全部语句，那么就执行该组查询。如果其中任何一条因为崩溃或其他原因无法执行，那么所有的语句都不会被执行。事务内的语句，要么全部执行成功，要么全部执行失败。  原子性(atomicity) 一个事务必须被视为一个不可分割的最小单元。 整个事务中所有的操作要么全部提交(成功)，要么全部回滚(失败)。 对于单一事">
+    <meta name="description" content="事务是一组原子性的SQL查询，一个独立的工作单元。如果数据库引擎能够成功对数据库应用该组查询的全部语句，那么就执行该组查询。如果其中任何一条因为崩溃或其他原因无法执行，那么所有的语句都不会被执行。事务内的语句，要么全部执行成功，要么全部执行失败。   原子性(atomicity) 一个事务必须被视为一个不可分割的最小单元。 整个事务中所有的操作要么全部提交(成功)，要么全部回滚(失败)。 对于单一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="事务ACID特性">
 <meta property="og:url" content="http://example.com/2021/06/27/%E4%BA%8B%E5%8A%A1ACID%E7%89%B9%E6%80%A7/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="事务是一组原子性的SQL查询，一个独立的工作单元。如果数据库引擎能够成功对数据库应用该组查询的全部语句，那么就执行该组查询。如果其中任何一条因为崩溃或其他原因无法执行，那么所有的语句都不会被执行。事务内的语句，要么全部执行成功，要么全部执行失败。  原子性(atomicity) 一个事务必须被视为一个不可分割的最小单元。 整个事务中所有的操作要么全部提交(成功)，要么全部回滚(失败)。 对于单一事">
+<meta property="og:description" content="事务是一组原子性的SQL查询，一个独立的工作单元。如果数据库引擎能够成功对数据库应用该组查询的全部语句，那么就执行该组查询。如果其中任何一条因为崩溃或其他原因无法执行，那么所有的语句都不会被执行。事务内的语句，要么全部执行成功，要么全部执行失败。   原子性(atomicity) 一个事务必须被视为一个不可分割的最小单元。 整个事务中所有的操作要么全部提交(成功)，要么全部回滚(失败)。 对于单一">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-27T08:13:31.000Z">
 <meta property="article:modified_time" content="2026-07-17T13:20:00.028Z">
@@ -270,20 +270,24 @@
     
     <div class="post-body" itemprop="articleBody"><p>事务是一组原子性的SQL查询，一个独立的工作单元。如果数据库引擎能够成功对数据库应用该组查询的全部语句，那么就执行该组查询。如果其中任何一条因为崩溃或其他原因无法执行，那么所有的语句都不会被执行。事务内的语句，要么全部执行成功，要么全部执行失败。</p>
 <ol>
-<li><p><strong>原子性(atomicity)</strong></p>
+<li>
+<p><strong>原子性(atomicity)</strong></p>
 <p>一个事务必须被视为一个不可分割的最小单元。</p>
 <p>整个事务中所有的操作要么全部提交(成功)，要么全部回滚(失败)。</p>
 <p>对于单一事务而言，不可能只执行其中的一部分操作。</p>
 </li>
-<li><p><strong>一致性(consistency)</strong></p>
+<li>
+<p><strong>一致性(consistency)</strong></p>
 <p>总是从一个一致的状态转换到另一个一致的状态。</p>
 <p>若在事务执行过程中系统崩溃，因事务的修改还未提交，事务的修改不会被保存。</p>
 </li>
-<li><p><strong>隔离性(isolation)</strong></p>
+<li>
+<p><strong>隔离性(isolation)</strong></p>
 <p>一个事务所做的修改在提交前，对于其他的事务是不可见的。</p>
 <p>是否可见与**隔离级别(Isolation level)**相关。</p>
 </li>
-<li><p><strong>持久性(durability)</strong></p>
+<li>
+<p><strong>持久性(durability)</strong></p>
 <p>一旦事务提交，修改将永久保存。即使系统崩溃修改的数据也不会丢失。</p>
 <p>持久性的表现与持久性级别相关。</p>
 </li>
