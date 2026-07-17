@@ -28,7 +28,7 @@
 <meta property="og:description" content="前面几篇文章里，我一直在绕着同一个问题打转：AI 到底应该放在软件开发的什么位置？ 在 代码、工具与人：AI 时代的程序员 里，我谈的是程序员的职责并没有因为 AI 消失；在 GPT 有智能，但不是责任主体 里，我谈的是 GPT 可以有智能，但不能替我们承担判断后果；在 把 AI 放进工作流 里，我又进一步谈到，AI 不是靠一次漂亮提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-16T14:37:26.346Z">
+<meta property="article:modified_time" content="2026-07-17T14:39:01.963Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="软件开发">
@@ -135,7 +135,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-%E8%AE%A9%E9%94%99%E8%AF%AF%E4%B9%9F%E5%8F%98%E5%BF%AB%E4%BA%86"><span class="nav-number">1.</span> <span class="nav-text">AI 让错误也变快了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TDD-%E9%9A%BE%EF%BC%8C%E4%B8%8D%E6%98%AF%E5%9B%A0%E4%B8%BA%E5%AE%83%E6%B2%A1%E4%BB%B7%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">TDD 难，不是因为它没价值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-%E6%9B%B4%E9%9C%80%E8%A6%81-TDD"><span class="nav-number">3.</span> <span class="nav-text">AI 更需要 TDD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%85%88%E5%86%99%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">先定义行为，而不是先写测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%8D%B1%E9%99%A9%E7%9A%84%E6%98%AF%E8%87%AA%E5%86%99%E8%87%AA%E9%AA%8C"><span class="nav-number">5.</span> <span class="nav-text">最危险的是自写自验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%88%86%E5%B7%A5"><span class="nav-number">6.</span> <span class="nav-text">更好的分工</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E9%87%8F%E9%A1%B9%E7%9B%AE%E9%87%8C%EF%BC%8C%E5%85%88%E7%A0%94%E7%A9%B6%E6%B5%8B%E8%AF%95%E7%94%9F%E6%80%81"><span class="nav-number">7.</span> <span class="nav-text">存量项目里，先研究测试生态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5%E5%BA%94%E8%AF%A5%E5%86%99%E8%BF%9B%E4%BB%93%E5%BA%93"><span class="nav-number">8.</span> <span class="nav-text">测试策略应该写进仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%98%AF%E6%9B%B4%E5%A4%9A%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%80%8C%E6%98%AF%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%8F%8D%E9%A6%88"><span class="nav-number">9.</span> <span class="nav-text">不是更多测试，而是更好的反馈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E8%B6%8A%E4%BE%BF%E5%AE%9C%EF%BC%8C%E9%AA%8C%E8%AF%81%E8%B6%8A%E9%87%8D%E8%A6%81"><span class="nav-number">10.</span> <span class="nav-text">生成越便宜，验证越重要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">11.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">12.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-%E8%AE%A9%E9%94%99%E8%AF%AF%E4%B9%9F%E5%8F%98%E5%BF%AB%E4%BA%86"><span class="nav-number">1.</span> <span class="nav-text">AI 让错误也变快了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TDD-%E9%9A%BE%EF%BC%8C%E4%B8%8D%E6%98%AF%E5%9B%A0%E4%B8%BA%E5%AE%83%E6%B2%A1%E4%BB%B7%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">TDD 难，不是因为它没价值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-%E6%9B%B4%E9%9C%80%E8%A6%81-TDD"><span class="nav-number">3.</span> <span class="nav-text">AI 更需要 TDD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%85%88%E5%86%99%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">先定义行为，而不是先写测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%8D%B1%E9%99%A9%E7%9A%84%E6%98%AF%E8%87%AA%E5%86%99%E8%87%AA%E9%AA%8C"><span class="nav-number">5.</span> <span class="nav-text">最危险的是自写自验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%88%86%E5%B7%A5"><span class="nav-number">6.</span> <span class="nav-text">更好的分工</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E9%87%8F%E9%A1%B9%E7%9B%AE%E9%87%8C%EF%BC%8C%E5%85%88%E7%A0%94%E7%A9%B6%E6%B5%8B%E8%AF%95%E7%94%9F%E6%80%81"><span class="nav-number">7.</span> <span class="nav-text">存量项目里，先研究测试生态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5%E5%BA%94%E8%AF%A5%E5%86%99%E8%BF%9B%E4%BB%93%E5%BA%93"><span class="nav-number">8.</span> <span class="nav-text">测试策略应该写进仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%98%AF%E6%9B%B4%E5%A4%9A%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%80%8C%E6%98%AF%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%8F%8D%E9%A6%88"><span class="nav-number">9.</span> <span class="nav-text">不是更多测试，而是更好的反馈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E8%B6%8A%E4%BE%BF%E5%AE%9C%EF%BC%8C%E9%AA%8C%E8%AF%81%E8%B6%8A%E9%87%8D%E8%A6%81"><span class="nav-number">10.</span> <span class="nav-text">生成越便宜，验证越重要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">11.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -237,9 +237,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-07-16 00:00:00 / 修改时间：22:37:26" itemprop="dateCreated datePublished" datetime="2026-07-16T00:00:00+08:00">2026-07-16</time>
+      <time title="创建时间：2026-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-16T00:00:00+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 22:39:01" itemprop="dateModified" datetime="2026-07-17T22:39:01+08:00">2026-07-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -447,7 +453,6 @@ AI 负责起草测试、生成实现、修复失败、整理重复。<br>
 <p>这就是我现在更愿意相信的开发方式：</p>
 <p>不是把 AI 当成一个可以直接交付答案的人，也不是把 TDD 当成一个必须机械执行的仪式，而是让 AI 的生成能力和 TDD 的验证结构形成闭环。</p>
 <p>生成能力越强，越需要验证结构。验证结构越清楚，AI 的生成能力才越值得放心使用。</p>
-<h2 id="注释">注释</h2>
 <h2 id="参考与延伸阅读">参考与延伸阅读</h2>
 <ul>
 <li>Kent Beck, <a target="_blank" rel="noopener" href="https://tidyfirst.substack.com/p/canon-tdd">Canon TDD</a>：适合回到 TDD 的红、绿、重构基本循环。</li>
