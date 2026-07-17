@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="前面几篇文章里，我一直在谈同一个问题的不同侧面。 在 代码、工具与人：AI 时代的程序员 里，我谈的是 AI 并没有让程序员的责任消失；在 GPT 有智能，但不是责任主体 里，我谈的是 GPT 可以参与理解和判断，但不能成为责任主体；在 把 AI 放进工作流 里，我进一步谈到，AI 不是靠一次漂亮提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里；在 TDD 让 AI 可靠，AI 让">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 编程工作流的反模式">
+<meta property="og:url" content="http://example.com/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="前面几篇文章里，我一直在谈同一个问题的不同侧面。 在 代码、工具与人：AI 时代的程序员 里，我谈的是 AI 并没有让程序员的责任消失；在 GPT 有智能，但不是责任主体 里，我谈的是 GPT 可以参与理解和判断，但不能成为责任主体；在 把 AI 放进工作流 里，我进一步谈到，AI 不是靠一次漂亮提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里；在 TDD 让 AI 可靠，AI 让">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-17T13:08:27.931Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="程序员">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="软件开发">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/","path":"2026/07/17/AI-编程工作流的反模式/","title":"AI 编程工作流的反模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AI 编程工作流的反模式 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E5%B1%80%E9%83%A8%E6%8F%90%E9%80%9F%E8%AF%AF%E8%AE%A4%E4%B8%BA%E6%95%B4%E4%BD%93%E6%8F%90%E9%80%9F"><span class="nav-number">1.</span> <span class="nav-text">把局部提速误认为整体提速</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%B2%A1%E6%9C%89%E6%94%B6%E6%95%9B%E5%B0%B1%E8%BF%9B%E5%85%A5%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">任务没有收敛就进入实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%A4%B1%E6%8E%A7"><span class="nav-number">3.</span> <span class="nav-text">上下文管理失控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E6%9B%B4%E8%8C%83%E5%9B%B4%E8%87%AA%E7%84%B6%E8%86%A8%E8%83%80"><span class="nav-number">4.</span> <span class="nav-text">变更范围自然膨胀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8A%E6%96%AD%E8%BF%87%E7%A8%8B%E8%A2%AB%E8%B7%B3%E8%BF%87"><span class="nav-number">5.</span> <span class="nav-text">诊断过程被跳过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E4%B8%80%E4%B8%AA-Agent-%E8%87%AA%E5%86%99%E8%87%AA%E9%AA%8C"><span class="nav-number">6.</span> <span class="nav-text">同一个 Agent 自写自验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E5%A3%B0%E6%98%8E%E6%B2%A1%E6%9C%89%E9%AA%8C%E8%AF%81%E8%AF%81%E6%8D%AE"><span class="nav-number">7.</span> <span class="nav-text">完成声明没有验证证据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%BA%E5%B7%A5%E4%BB%8B%E5%85%A5%E9%80%80%E5%8C%96%E6%88%90%E6%A9%A1%E7%9A%AE%E5%9B%BE%E7%AB%A0"><span class="nav-number">8.</span> <span class="nav-text">人工介入退化成橡皮图章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%9B%B4%E7%A8%B3%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">9.</span> <span class="nav-text">一个更稳的工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">10.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">11.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AI 编程工作流的反模式 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AI 编程工作流的反模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-17 00:00:00 / 修改时间：21:08:27" itemprop="dateCreated datePublished" datetime="2026-07-17T00:00:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>前面几篇文章里，我一直在谈同一个问题的不同侧面。</p>
+<p>在 <a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" title="代码、工具与人：AI 时代的程序员">代码、工具与人：AI 时代的程序员</a> 里，我谈的是 AI 并没有让程序员的责任消失；在 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a> 里，我谈的是 GPT 可以参与理解和判断，但不能成为责任主体；在 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a> 里，我进一步谈到，AI 不是靠一次漂亮提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里；在 <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" title="TDD 让 AI 可靠，AI 让 TDD 可行">TDD 让 AI 可靠，AI 让 TDD 可行</a> 里，我又专门写了测试如何约束 AI 的生成能力。</p>
+<p>这篇想反过来看：如果工作流没有设计好，AI 编程会怎样失控？</p>
+<p>这里说的“反模式”，不是指 AI 不该参与编程，也不是指某个模型能力不够。相反，很多问题正是因为 AI 太能生成、太会解释、太容易把一个还没被确认的想法变成完整代码。它不是慢吞吞地失败，而是很流畅地失败。</p>
+<p>所以本文讨论的不是 prompt 技巧，也不是模型排行榜，而是 AI 进入软件开发流程以后，在任务定义、上下文管理、变更控制、诊断、验证和责任边界上常见的工作流问题。</p>
+<h2 id="把局部提速误认为整体提速"><a href="#把局部提速误认为整体提速" class="headerlink" title="把局部提速误认为整体提速"></a>把局部提速误认为整体提速</h2><p>AI 确实能降低很多局部任务的成本。查资料、解释代码、生成样板、起草测试、补充边界、整理日志，这些事情都可以变快。问题在于，局部实现变快，不等于整体交付变稳。</p>
+<p>软件开发不是只由“写出代码”组成的。一个变更能不能进入系统，还取决于需求是否收敛、上下文是否正确、测试是否覆盖真实风险、review 是否能承受变更规模、发布后是否可回滚。AI 加快的是其中一部分环节。如果其他环节没有同步升级，生成速度反而会把压力传导到 review、测试、CI 和发布流程里。</p>
+<p>DORA 关于生成式 AI 的研究里也提示过类似现象：AI adoption 可以和个人生产率、flow、满意度提升相关，但也可能伴随交付吞吐和交付稳定性的下降。[^dora-2024][^dora-genai] 这并不说明 AI 对工程有害，而是说明“更快生成”必须被接入更强的验证和交付系统。</p>
+<p>第一个反模式就是：只看见 AI 带来的局部提速，没有看见它对整体工作流提出的新要求。</p>
+<h2 id="任务没有收敛就进入实现"><a href="#任务没有收敛就进入实现" class="headerlink" title="任务没有收敛就进入实现"></a>任务没有收敛就进入实现</h2><p>最常见的反模式，是需求还没收敛，就让 AI 直接实现。</p>
+<p>表现通常很熟悉：</p>
+<ul>
+<li>只有一句模糊需求，就让 AI “做一下”。</li>
+<li>没有定义非目标。</li>
+<li>没有说明兼容性、权限、性能、异常路径和边界条件。</li>
+<li>没有说清楚哪些行为不能被破坏。</li>
+<li>把 AI 给出的方案解释，当成需求澄清结果。</li>
+</ul>
+<p>AI 很擅长补全缺失信息。问题是，它补出来的东西不一定是业务真实意图。任务越模糊，AI 越容易用“合理默认值”填空。它会根据常见模式生成一个看起来完整的实现，但这个实现可能从第一步就偏离了真实目标。</p>
+<p>这类问题在业务规则里尤其危险。比如一个订单系统里，奖励是在订单创建时确定，还是在支付成功时确定，这不是代码风格问题，而是业务事实。如果这个事实没有先被确认，AI 仍然可以写出字段、状态流转、测试和说明文档。越完整，越容易让人误以为它是对的。</p>
+<p>更稳的做法，是先把任务压缩成可讨论、可验证的形式：</p>
+<ul>
+<li>目标是什么？</li>
+<li>非目标是什么？</li>
+<li>输入、输出和状态变化是什么？</li>
+<li>哪些旧行为不能变？</li>
+<li>哪些异常和边界必须覆盖？</li>
+<li>什么证据可以说明完成？</li>
+</ul>
+<p>复杂任务可以先让 AI 调查和整理，而不是直接改代码。AI 可以帮我们建立问题地图，但不应该替我们决定问题边界。</p>
+<h2 id="上下文管理失控"><a href="#上下文管理失控" class="headerlink" title="上下文管理失控"></a>上下文管理失控</h2><p>第二个反模式，是把上下文当成资料仓库。</p>
+<p>有些人使用 AI 时，会把大量文件、历史讨论、日志、旧计划、失败尝试一次性塞进上下文里。背后的想法很自然：给得越多，AI 知道得越全。可在真实工作里，上下文不是越多越好。</p>
+<p>上下文是一种工作资源。它有容量限制，也有注意力分布问题。即使模型还没有撞上 token 上限，也可能已经开始忽略中间区域的关键约束，或者被无关信息带偏。长任务里常见的漂移、重复、遗忘和自相矛盾，很多都和上下文污染有关。</p>
+<p>在 AI 编程里，上下文管理至少要区分阶段：</p>
+<p>Research 阶段可以宽一点。这个阶段的目标是找相关代码、相关测试、历史约束和可能风险，所以需要广泛浏览。</p>
+<p>Plan 阶段要窄一些。这个阶段的目标是做设计取舍，所以应该聚焦关键模块、关键约束和验证方式。</p>
+<p>Implement 阶段应该更窄。真正改代码时，最好只保留当前变更所需的文件、接口、测试和约束。</p>
+<p>如果把这三个阶段混在同一个不断膨胀的对话里，AI 很容易进入一种“看起来还在工作，但已经不再稳定利用关键信息”的状态。</p>
+<p>所以稳定规则不应该长期留在聊天记录里。构建命令、测试命令、命名约定、禁止事项、目录边界、review 习惯，这些应该进入 <code>AGENTS.md</code>、项目文档、测试、lint、CI 或脚本。OpenAI 的 Codex 实践也强调把项目上下文和重复指导沉淀到仓库里，而不是每次都靠临时 prompt 重新说明。[^codex-best-practices]</p>
+<p>好的上下文管理，不是把所有东西都给 AI，而是让 AI 在正确阶段看到正确材料。</p>
+<h2 id="变更范围自然膨胀"><a href="#变更范围自然膨胀" class="headerlink" title="变更范围自然膨胀"></a>变更范围自然膨胀</h2><p>第三个反模式，是让变更范围自然膨胀。</p>
+<p>AI 很容易给出完整方案。它会顺手整理命名，顺手改接口，顺手抽象一层，顺手重构附近代码。很多时候，这些改动单独看并不糟糕，甚至局部上更漂亮。但工程变更不只看局部漂亮，还要看任务边界、review 成本、回归风险和长期一致性。</p>
+<p>典型表现包括：</p>
+<ul>
+<li>修一个 bug，顺手重构多个模块。</li>
+<li>为了适配新实现，改变既有接口。</li>
+<li>把功能修改、重构、测试迁移、文档调整混在一个 diff 里。</li>
+<li>生成大批量代码，但没有明确分层。</li>
+<li>代码看起来更现代，但破坏了项目既有风格。</li>
+</ul>
+<p>这类问题的根源，是 AI 的生成倾向和工程变更的审查需求并不天然一致。AI 倾向于补齐、扩展、圆满化；工程上却经常需要局部、保守、可回滚。</p>
+<p>所以在 AI 编程里，review 不能只问“这段代码写得好不好”，还要先问“这些代码是否应该出现在本次变更里”。</p>
+<p>更稳的做法是：</p>
+<ul>
+<li>明确允许修改哪些文件。</li>
+<li>明确哪些模块只读。</li>
+<li>把重构和功能修改拆开。</li>
+<li>优先小批次提交。</li>
+<li>大改动先 review plan，再进入实现。</li>
+</ul>
+<p>AI 生成速度越快，越需要人为压住变更批次。</p>
+<h2 id="诊断过程被跳过"><a href="#诊断过程被跳过" class="headerlink" title="诊断过程被跳过"></a>诊断过程被跳过</h2><p>第四个反模式，是 debug 时直接让 AI 猜根因。</p>
+<p>这件事很诱人。把错误日志、代码片段丢给 AI，它很快就能给出一个解释和修复方案。很多时候这个方案还挺像回事。但诊断的核心不是“给出一个合理叙述”，而是“用证据收敛假设”。</p>
+<p>没有复现，就不知道问题是否真的存在于当前观察里。没有假设列表，就不知道自己排除了什么。没有能区分假设的证据，就不知道改动是不是只碰巧修到了附近。</p>
+<p>AI 在这里的风险，是它会很快生成一个故事：因为 A，所以 B，应该改 C。这个故事可能正确，也可能只是流畅。OpenAI 关于 hallucination 的讨论提醒过我们，模型的流畅输出和事实正确性不是同一件事。[^openai-hallucination]</p>
+<p>更稳的诊断流程应该是：</p>
+<ol>
+<li>先复现问题。</li>
+<li>明确当前已知事实。</li>
+<li>列出可能假设。</li>
+<li>找能区分假设的证据。</li>
+<li>根据证据更新判断。</li>
+<li>最后再修改代码。</li>
+<li>修复后留下回归测试或最小验证命令。</li>
+</ol>
+<p>AI 可以参与这个过程。它可以帮我们读日志、找相关代码、提出假设、设计插桩点、解释测试失败。但它不应该跳过证据，直接进入修复。</p>
+<p>debug 中最坏的情况，不是 AI 没有给出答案，而是它给了一个足够像答案的答案，让人停止收集证据。</p>
+<h2 id="同一个-Agent-自写自验"><a href="#同一个-Agent-自写自验" class="headerlink" title="同一个 Agent 自写自验"></a>同一个 Agent 自写自验</h2><p>第五个反模式，是让同一个 AI 自己写实现、自己写测试、自己修改测试、自己宣布通过。</p>
+<p>这看起来像闭环，实际上可能是闭门造车。</p>
+<p>如果测试来自同一个模型对需求的即兴理解，它测到的可能不是外部规格，而是模型自己的解释。更糟的是，实现失败以后，AI 可能会为了绿灯去修改断言、放宽条件、删除不方便的用例，或者把当前错误行为写进测试里。</p>
+<p>这就是我在 <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" title="TDD 让 AI 可靠，AI 让 TDD 可行">TDD 让 AI 可靠，AI 让 TDD 可行</a> 里反复强调的点：AI-TDD 的关键不是“让 AI 先写测试”，而是先有外部行为规格，再让测试约束实现。</p>
+<p>测试在 AI 编程里有双重身份。对 CI 来说，它是验证；对 AI 来说，它也是上下文。好的测试可以把需求稳定地暴露给模型；坏的测试则会同时污染上下文和反馈回路。</p>
+<p>更稳的分工应该是：</p>
+<ul>
+<li>人定义行为规格和验收边界。</li>
+<li>AI 起草测试和实现。</li>
+<li>自动化工具给出反馈。</li>
+<li>人或独立 review 审查测试是否表达了正确规格。</li>
+</ul>
+<p>新测试最好先失败，而且失败原因应该是目标行为缺失，而不是测试本身写错、环境缺失或依赖问题。通过以后，也要防止 AI 为了绿灯修改测试语义。</p>
+<p>实现写错了，可以重写。测试写错了，会把错误规格固化下来。</p>
+<h2 id="完成声明没有验证证据"><a href="#完成声明没有验证证据" class="headerlink" title="完成声明没有验证证据"></a>完成声明没有验证证据</h2><p>第六个反模式，是把 AI 的完成声明当成工程事实。</p>
+<p>“已完成”“已修复”“测试通过”“应该可以了”，这些都是文本。工程上的完成必须绑定证据。</p>
+<p>证据可以是：</p>
+<ul>
+<li>实际运行过的测试命令。</li>
+<li>lint、typecheck、build 的输出。</li>
+<li>失败用例从红到绿的记录。</li>
+<li>diff review 的结果。</li>
+<li>UI 截图或手工验证步骤。</li>
+<li>CI 状态。</li>
+<li>明确说明未验证部分和剩余风险。</li>
+</ul>
+<p>如果没有这些证据，AI 的完成声明只是它对自己输出的总结。这个总结可能有帮助，但不能替代验证。</p>
+<p>这里最容易出现的问题，是 AI 用语气弥补证据。它会写得很确定，甚至列出“已完成事项”。但如果没有实际命令和结果，这些文字并不能说明系统状态已经改变。</p>
+<p>所以我现在更倾向于把完成判断写成固定要求：完成之前必须说明运行了什么检查，结果如何，哪些检查没有运行，为什么没有运行，剩余风险是什么。Codex 的最佳实践也把测试、检查、行为确认和 review 放在可靠性收口里。[^codex-test-review]</p>
+<p>AI 可以宣布候选结论，但工程完成需要证据。</p>
+<h2 id="人工介入退化成橡皮图章"><a href="#人工介入退化成橡皮图章" class="headerlink" title="人工介入退化成橡皮图章"></a>人工介入退化成橡皮图章</h2><p>第七个反模式，是所谓人在环只剩下“点继续”。</p>
+<p>很多 AI 工具会在关键时刻请求用户确认。这个机制本身是必要的，但如果只给一个确认按钮，而不给足够上下文，人工介入就会退化成橡皮图章。</p>
+<p>有效的人工介入，至少要让人看到：</p>
+<ul>
+<li>当前目标是什么。</li>
+<li>AI 准备做什么。</li>
+<li>影响范围是什么。</li>
+<li>风险在哪里。</li>
+<li>是否可回滚。</li>
+<li>有哪些替代选项。</li>
+<li>当前证据支持到什么程度。</li>
+</ul>
+<p>人在环不是让人频繁打断 AI，也不是让人最后兜底。它应该出现在高杠杆位置：计划确认、风险动作、测试规格、发布决策、证据不足时的暂停。</p>
+<p>Microsoft 的 Human-AI Interaction Guidelines 强调 AI 系统应该让用户能够理解、纠正和恢复；NIST 的 AI Risk Management Framework 也把风险放进治理、度量和管理结构里看。[^human-ai-guidelines][^nist-ai-rmf] 这对应到日常 AI 编程，就是不要把责任模糊地推给“用户已确认”。确认必须基于上下文，反馈也要能沉淀。</p>
+<p>如果用户纠正了 AI 的行为，这个纠正不应该只停留在一次对话里。它应该尽量进入规则、测试、文档、模板或脚本。否则同样的问题下次还会发生。</p>
+<h2 id="一个更稳的工作流"><a href="#一个更稳的工作流" class="headerlink" title="一个更稳的工作流"></a>一个更稳的工作流</h2><p>把这些反模式放在一起看，它们其实都指向同一个问题：AI 编程不能只围绕“生成”设计，而要围绕“可验证交付”设计。</p>
+<p>一个更稳的流程可以很简单：</p>
+<ol>
+<li>Research：先理解现有代码、测试、约束和风险。</li>
+<li>Plan：定义改动范围、非目标、验证方式和人工介入点。</li>
+<li>Implement：小步修改，避免混入无关重构。</li>
+<li>Verify：运行测试、lint、build，必要时做人工检查。</li>
+<li>Document：把稳定结论沉淀到项目规则、文档或知识库。</li>
+</ol>
+<p>这不是为了把流程变重。简单任务当然不需要完整仪式。改一个拼写、补一个小配置、调整一个局部样式，没有必要强行走完整流程。</p>
+<p>关键在于，任务一旦涉及模糊需求、存量系统、跨模块变更、生产风险、测试缺口或长期维护，就不能只依赖 AI 的生成能力。越是复杂任务，越需要阶段化、上下文压缩、小批次变更和验证证据。</p>
+<p>AI 编程成熟度的标志，不是让模型一次生成更多代码，而是让生成结果更容易被约束、审查、验证和回滚。</p>
+<p>真正需要升级的，不只是 prompt，而是工作流。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^dora-2024]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 对个人体验和团队交付系统可能产生不同方向影响”的边界判断。<br>[^dora-genai]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。<br>[^codex-best-practices]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“项目上下文、重复指导和验证命令应该沉淀到仓库和工作流中”的实践判断。<br>[^openai-hallucination]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它来提醒：模型输出的流畅性不能直接等同于事实可靠性。<br>[^codex-test-review]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“完成断言需要测试、检查、行为确认和 review 收口”。<br>[^human-ai-guidelines]: Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>。这里引用它来支撑“人需要能够理解、纠正和恢复 AI 输出”的交互原则。<br>[^nist-ai-rmf]: NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它来支撑“AI 风险需要进入治理、度量和管理结构，而不是由模型或单次确认承担”的边界。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness Engineering</a>：适合理解为什么 AI coding 的关键不只是提示词，而是环境、工具、反馈和知识系统。</li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>：适合理解项目上下文、plan-first、测试验证和 review 如何进入日常工作流。</li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective Agents</a>：适合理解 workflow、agent、自主性、测试反馈和 guardrails 的边界。</li>
+<li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/">Guidelines for Human-AI Interaction</a>：适合理解人在 AI 系统中的控制、纠错和恢复位置。</li>
+<li>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/">Accelerate State of DevOps Report 2024</a> 和 <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/">Impact of Generative AI in Software Development</a>：适合理解 AI 对个人生产率和团队交付系统的不同影响。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/" rel="tag"># 程序员</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag"># 软件开发</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/" rel="prev" title="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象">
+                  <i class="fa fa-angle-left"></i> 从 Prompt 到 Skill：AI Agent 工作流的下一层抽象
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">104k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:18</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

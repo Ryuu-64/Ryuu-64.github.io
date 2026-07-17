@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在 把 AI 放进工作流 里，我写过一个判断：AI 不是靠一次漂亮的提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。 这篇继续往下走，专门谈这个工作流里越来越重要的一层东西：Agent Skill。 如果一个同事还不知道什么是 Agent Skill，我不太想一上来就告诉他：它是一个包含 SKILL.md 的目录，里面有 YAML front matter、说明正文、referen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象">
+<meta property="og:url" content="http://example.com/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="在 把 AI 放进工作流 里，我写过一个判断：AI 不是靠一次漂亮的提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。 这篇继续往下走，专门谈这个工作流里越来越重要的一层东西：Agent Skill。 如果一个同事还不知道什么是 Agent Skill，我不太想一上来就告诉他：它是一个包含 SKILL.md 的目录，里面有 YAML front matter、说明正文、referen">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-17T13:08:30.387Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Skill">
+<meta property="article:tag" content="Prompt">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/","path":"2026/07/17/从-Prompt-到-Skill：AI-Agent-工作流的下一层抽象/","title":"从 Prompt 到 Skill：AI Agent 工作流的下一层抽象"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从 Prompt 到 Skill：AI Agent 工作流的下一层抽象 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prompt-%E9%80%82%E5%90%88%E8%A1%A8%E8%BE%BE%E8%BF%99%E4%B8%80%E6%AC%A1%EF%BC%8CSkill-%E9%80%82%E5%90%88%E6%B2%89%E6%B7%80%E4%B8%8B%E4%B8%80%E6%AC%A1"><span class="nav-number">1.</span> <span class="nav-text">Prompt 适合表达这一次，Skill 适合沉淀下一次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skill-%E4%B8%8D%E6%98%AF%E6%9B%B4%E9%95%BF%E7%9A%84-Prompt"><span class="nav-number">2.</span> <span class="nav-text">Skill 不是更长的 Prompt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skill%E3%80%81Prompt-%E5%92%8C-Tool-%E5%90%84%E8%87%AA%E8%A7%A3%E5%86%B3%E4%B8%8D%E5%90%8C%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">Skill、Prompt 和 Tool 各自解决不同问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skill-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%98%AF%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%8A%AB%E9%9C%B2"><span class="nav-number">4.</span> <span class="nav-text">Skill 的核心是渐进式披露</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA-Skill-%E9%80%9A%E5%B8%B8%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="nav-number">5.</span> <span class="nav-text">一个 Skill 通常长什么样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD-Skill-%E5%85%88%E6%95%99%E5%88%A4%E6%96%AD%EF%BC%8C%E5%86%8D%E6%95%99%E6%AD%A5%E9%AA%A4"><span class="nav-number">6.</span> <span class="nav-text">好 Skill 先教判断，再教步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%8F-Skill-%E4%BC%9A%E6%8A%8A-Agent-%E6%8E%A8%E8%BF%9B%E5%99%AA%E5%A3%B0%E9%87%8C"><span class="nav-number">7.</span> <span class="nav-text">坏 Skill 会把 Agent 推进噪声里</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8A%8A-Prompt-%E5%8D%87%E7%BA%A7%E6%88%90-Skill"><span class="nav-number">8.</span> <span class="nav-text">什么时候该把 Prompt 升级成 Skill</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E6%9C%80%E5%B0%8F-Skill-%E5%BC%80%E5%A7%8B"><span class="nav-number">9.</span> <span class="nav-text">从最小 Skill 开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skill-%E8%AE%A9-AI-%E5%8D%8F%E4%BD%9C%E6%9B%B4%E5%83%8F%E5%B7%A5%E7%A8%8B%E8%B5%84%E4%BA%A7"><span class="nav-number">10.</span> <span class="nav-text">Skill 让 AI 协作更像工程资产</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">11.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">12.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从 Prompt 到 Skill：AI Agent 工作流的下一层抽象
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-17 00:00:00 / 修改时间：21:08:30" itemprop="dateCreated datePublished" datetime="2026-07-17T00:00:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a> 里，我写过一个判断：AI 不是靠一次漂亮的提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。</p>
+<p>这篇继续往下走，专门谈这个工作流里越来越重要的一层东西：Agent Skill。</p>
+<p>如果一个同事还不知道什么是 Agent Skill，我不太想一上来就告诉他：它是一个包含 <code>SKILL.md</code> 的目录，里面有 YAML front matter、说明正文、<code>references/</code>、<code>scripts/</code> 和 <code>assets/</code>。</p>
+<p>这当然是事实，但这不是最重要的事实。</p>
+<p>更重要的是：为什么我们已经会写 Prompt 了，还需要 Skill？</p>
+<h2 id="Prompt-适合表达这一次，Skill-适合沉淀下一次"><a href="#Prompt-适合表达这一次，Skill-适合沉淀下一次" class="headerlink" title="Prompt 适合表达这一次，Skill 适合沉淀下一次"></a>Prompt 适合表达这一次，Skill 适合沉淀下一次</h2><p>我们平时和 AI 协作，最自然的方式是写 Prompt。</p>
+<p>“帮我看一下这段代码。”</p>
+<p>“按 TDD 的方式实现这个功能。”</p>
+<p>“先不要动手，先读项目结构。”</p>
+<p>“写完以后跑测试，不要只说完成。”</p>
+<p>这些话都很有用。Prompt 的优势就在这里：它直接、灵活、贴近当前任务。你脑子里刚形成一个意图，就可以把它说出来，让 AI 立刻参与。</p>
+<p>但问题也在这里。</p>
+<p>很多要求并不是只对这一次有用。比如：</p>
+<ul>
+<li>修 bug 前要先复现。</li>
+<li>不熟悉代码时要先 zoom out，而不是盯着当前文件解释。</li>
+<li>写文章前要先确定读者、目的、论点和材料。</li>
+<li>改完代码后要用新鲜证据验证，不能靠语气宣布完成。</li>
+<li>重要结论要写回项目文档或知识库，而不是散落在聊天记录里。</li>
+</ul>
+<p>如果这些要求每次都靠临时 Prompt 提醒，它们就很容易失效。</p>
+<p>人会忘记说。对话会变长。上下文会变脏。AI 会在后半段逐渐回到它熟悉的生成模式里。更麻烦的是，这些做法一旦只存在于聊天记录里，就很难被复用、修改、审查和传给团队里的其他人。</p>
+<p>所以 Prompt 的问题不是“不够强”，而是它天然偏向一次性沟通。</p>
+<p>Skill 要解决的是另一类问题：把反复出现的工作方式，沉淀成可复用、可触发、可维护的上下文。</p>
+<h2 id="Skill-不是更长的-Prompt"><a href="#Skill-不是更长的-Prompt" class="headerlink" title="Skill 不是更长的 Prompt"></a>Skill 不是更长的 Prompt</h2><p>很容易把 Agent Skill 理解成“高级提示词”。</p>
+<p>这个理解只对了一半。</p>
+<p>Skill 里面确实有自然语言指令，Agent 也确实会读这些指令。但一个好的 Skill 不只是把一大段 Prompt 存起来。它至少多解决了三个问题。</p>
+<p>第一，它解决“什么时候用”的问题。</p>
+<p>Skill 的 <code>description</code> 不只是给人看的简介。对 Agent 来说，它是路由线索。一个好的 <code>description</code> 要说清楚：这个 skill 适用于什么任务，不适用于什么任务，和相邻 skill 的边界在哪里。</p>
+<p>第二，它解决“触发后先判断什么”的问题。</p>
+<p><code>SKILL.md</code> 不应该像百科全书，也不应该复制工具教程。它更应该告诉 Agent：当前任务先确认什么，哪些边界不能越过，什么时候需要继续读 <code>references/</code>，什么结果才算完成。</p>
+<p>第三，它解决“细节如何按需加载”的问题。</p>
+<p>不常用的背景资料、长检查清单、示例、脚本、模板，不一定要全部塞进主文件。它们可以放进 <code>references/</code>、<code>scripts/</code> 或 <code>assets/</code>。Agent 需要时再读，需要执行时再调用。</p>
+<p>所以 Skill 和 Prompt 的差别，不只是“短”和“长”的差别。</p>
+<p>Prompt 更像一次对话里的意图表达。Skill 更像某类任务的工作协议。</p>
+<h2 id="Skill、Prompt-和-Tool-各自解决不同问题"><a href="#Skill、Prompt-和-Tool-各自解决不同问题" class="headerlink" title="Skill、Prompt 和 Tool 各自解决不同问题"></a>Skill、Prompt 和 Tool 各自解决不同问题</h2><p>这三个概念很容易混在一起。</p>
+<p>可以先粗略地区分一下：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解决的问题</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prompt</td>
+<td>这一次要做什么</td>
+<td>“帮我写一篇解释 Agent Skill 的文章”</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Agent 能执行什么动作</td>
+<td>读写文件、运行测试、搜索网页、调用浏览器</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td>某类任务应该怎么做</td>
+<td>写文章前先确认读者、目的、论点、材料和声音</td>
+</tr>
+</tbody></table>
+<p>比如我说：“帮我写测试。”</p>
+<p>这是一句 Prompt。</p>
+<p>Agent 能调用测试命令、编辑器、文件系统，这些是 Tool。</p>
+<p>如果我希望它按 TDD 的节奏推进，先写失败测试，再写最小实现，再重构，并且不要为了让测试通过反过来放松断言，那就是 Skill 要表达的工作方式。</p>
+<p>Skill 不替代 Prompt，也不替代 Tool。</p>
+<p>Prompt 提供当前目标。Tool 提供行动能力。Skill 提供可复用的判断和流程。</p>
+<h2 id="Skill-的核心是渐进式披露"><a href="#Skill-的核心是渐进式披露" class="headerlink" title="Skill 的核心是渐进式披露"></a>Skill 的核心是渐进式披露</h2><p>Agent Skill 背后的关键设计，不是“把更多说明交给 AI”，而是“只在需要时加载正确说明”。</p>
+<p>这叫渐进式披露。</p>
+<p>Agent 不应该在每次任务里都读完所有规则。那样上下文会很快变成垃圾桶。真正可持续的方式是分层：</p>
+<p>第一层，启动时只让 Agent 看到 skill 的名字、描述和位置。它知道“有这么一个能力”，但还没有把全文塞进上下文。</p>
+<p>第二层，当任务匹配时，Agent 才读取对应的 <code>SKILL.md</code>。</p>
+<p>第三层，如果 <code>SKILL.md</code> 指向更细的参考资料、脚本或模板，Agent 再按需要继续读取或执行。</p>
+<p>OpenAI 的 Codex 文档把 skill 描述为可复用的工作流格式，并明确提到 Codex 先看到 skill 的名称、描述和路径，只有决定使用时才读取完整 <code>SKILL.md</code>。Anthropic 在介绍 Agent Skills 时也用了同样的思路：先加载 <code>name</code> 和 <code>description</code>，任务相关时再读正文，更细的文件继续按需展开。[^openai-build-skills][^anthropic-skills]</p>
+<p>这件事很重要。</p>
+<p>因为上下文窗口不是越满越好。把所有规范、示例、异常情况、脚本说明都塞进去，短期看像是“资料齐全”，长期看却会稀释真正关键的约束。Agent 可能读了很多字，却更难抓住当前任务最应该遵守的那几条规则。</p>
+<p>好 Skill 不是让 Agent 多读字，而是让 Agent 少想错。</p>
+<h2 id="一个-Skill-通常长什么样"><a href="#一个-Skill-通常长什么样" class="headerlink" title="一个 Skill 通常长什么样"></a>一个 Skill 通常长什么样</h2><p>从格式上看，一个 Skill 通常是一个目录。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my-skill/</span><br><span class="line">├── SKILL.md</span><br><span class="line">├── references/</span><br><span class="line">├── scripts/</span><br><span class="line">└── assets/</span><br></pre></td></tr></table></figure>
+
+<p><code>SKILL.md</code> 是入口。它通常包含 <code>name</code> 和 <code>description</code>，然后是一段给 Agent 的任务说明。</p>
+<p><code>references/</code> 放更细的材料，比如写作检查清单、项目规范、领域背景、案例、边界说明。</p>
+<p><code>scripts/</code> 放可以执行的脚本。能机械化的东西，尽量不要长期停留在自然语言里。脚本比口头规则更稳定，也更容易验证。</p>
+<p><code>assets/</code> 放模板、图片、样例文件或其他资源。</p>
+<p>但格式只是外壳。真正决定 Skill 质量的，是它有没有把边界和判断写清楚。</p>
+<p>一个坏的 <code>description</code> 可能是：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">Help</span> <span class="string">with</span> <span class="string">project</span> <span class="string">work.</span></span><br></pre></td></tr></table></figure>
+
+<p>这句话几乎没用。它太宽了，什么都像能触发。</p>
+<p>一个更好的写法会像这样：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">Use</span> <span class="string">when</span> <span class="string">drafting</span> <span class="string">or</span> <span class="string">revising</span> <span class="string">public-facing</span> <span class="string">technical</span> <span class="string">articles.</span> <span class="string">Identify</span> <span class="string">reader,</span> <span class="string">purpose,</span> <span class="string">thesis,</span> <span class="string">evidence,</span> <span class="string">structure,</span> <span class="string">and</span> <span class="string">voice</span> <span class="string">before</span> <span class="string">drafting.</span> <span class="string">Prefer</span> <span class="string">project-docs-writing</span> <span class="string">for</span> <span class="string">durable</span> <span class="string">internal</span> <span class="string">project</span> <span class="string">documentation.</span></span><br></pre></td></tr></table></figure>
+
+<p>它说清楚了三件事：什么时候用，做什么，和相邻 skill 的边界在哪里。</p>
+<p>这就是 Skill 和普通说明文档的差别。Skill 首先要能被正确触发，其次才是触发后写得多完整。</p>
+<h2 id="好-Skill-先教判断，再教步骤"><a href="#好-Skill-先教判断，再教步骤" class="headerlink" title="好 Skill 先教判断，再教步骤"></a>好 Skill 先教判断，再教步骤</h2><p>很多人第一次写 Skill，容易把它写成操作手册。</p>
+<p>第一步做什么，第二步做什么，第三步做什么。再加一大堆命令示例、注意事项、边界情况。最后 <code>SKILL.md</code> 越写越长，像一份很努力但很臃肿的说明书。</p>
+<p>这不一定有效。</p>
+<p>Agent 很多基础操作本来就会。它会读文件，会看 <code>--help</code>，会根据项目里的 package scripts 推断测试命令，会模仿现有代码风格。Skill 不应该把这些 baseline 能力重新讲一遍。</p>
+<p>Skill 最值得写的是 Agent 默认不知道、但对这类任务很关键的东西：</p>
+<ul>
+<li>这个团队的特殊约定。</li>
+<li>这个任务的判断边界。</li>
+<li>常见错误路径。</li>
+<li>完成定义。</li>
+<li>失败时应该回退到哪里。</li>
+<li>哪些信息必须来自外部证据，而不是猜测。</li>
+</ul>
+<p>比如一个写作 skill，不需要教 Agent “Markdown 用 <code>#</code> 表示标题”。它真正应该写的是：先确认读者是谁，文章要解决什么问题，中心论点是什么，材料哪些来自事实，哪些只是作者经验，哪些地方不能编造。</p>
+<p>比如一个诊断 skill，不需要教 Agent “可以打印日志”。它真正应该写的是：先建立反馈循环，先复现，再提出可证伪假设，用观察结果更新判断，不要直接跳到最像答案的修复。</p>
+<p>比如一个验证 skill，不需要教 Agent “测试命令怎么运行”。它真正应该写的是：不要在没有新鲜证据的情况下宣布完成；验证失败时要报告失败，而不是把语气改得更肯定。</p>
+<p>好的 Skill 不是把 Agent 当新手，而是把 Agent 拉回正确的判断结构里。</p>
+<h2 id="坏-Skill-会把-Agent-推进噪声里"><a href="#坏-Skill-会把-Agent-推进噪声里" class="headerlink" title="坏 Skill 会把 Agent 推进噪声里"></a>坏 Skill 会把 Agent 推进噪声里</h2><p>Skill 写坏了，会比没有 Skill 更糟。</p>
+<p>最常见的坏法，是把 Skill 写成“万能入口”。</p>
+<p>比如一个叫 <code>engineering</code> 的 Skill，里面同时包含代码审查、TDD、架构设计、文档同步、Git 提交、发布流程和故障诊断。它看起来很完整，但每次触发都把一大堆当前任务用不到的内容塞进上下文。最后 Agent 反而更容易抓错重点。</p>
+<p>第二种坏法，是复制工具文档。</p>
+<p>比如在 Skill 里长篇解释 <code>git status</code>、<code>npm test</code>、<code>pytest</code>、<code>curl</code> 怎么用。这些东西大多可以由 Agent 自己发现，或者应该交给脚本、README、package scripts、CI 配置处理。自然语言 Skill 应该保留给不能机械化的判断。</p>
+<p>第三种坏法，是只有反模式，没有替代方案。</p>
+<p>“不要乱改文件。”</p>
+<p>“不要跳过测试。”</p>
+<p>“不要写太长。”</p>
+<p>这些话单独看都对，但只写“不要”很容易让 Agent 锚定在错误动作上，又不知道正确路径是什么。更好的写法是同时给出替代方案：</p>
+<p>不要直接改实现。先复现问题，记录可观察现象，再提出假设。</p>
+<p>不要把所有细节塞进 <code>SKILL.md</code>。主文件只保留路由和关键判断，长案例放到 <code>references/</code>。</p>
+<p>不要只说完成。先运行和任务相关的验证命令，再用验证结果说明完成状态。</p>
+<p>第四种坏法，是边界不清。</p>
+<p>两个 Skill 如果都像能处理同一个任务，Agent 就会犹豫，或者选错。Skill 的边界应该写在 <code>description</code> 里，而不是藏在正文深处。</p>
+<p>所以评估一个 Skill，不只要问它“能不能用”，还要问它有没有制造新的上下文噪声。</p>
+<h2 id="什么时候该把-Prompt-升级成-Skill"><a href="#什么时候该把-Prompt-升级成-Skill" class="headerlink" title="什么时候该把 Prompt 升级成 Skill"></a>什么时候该把 Prompt 升级成 Skill</h2><p>不是所有 Prompt 都值得变成 Skill。</p>
+<p>一次性需求没有必要 Skill 化。还在探索中的偏好也不急着沉淀。只有当一段提示开始反复出现，并且忘记它会导致稳定的质量问题时，才值得考虑升级。</p>
+<p>我会用这几个问题判断：</p>
+<p>第一，它是不是高频出现？</p>
+<p>如果每周都在重复同一类要求，比如写文章、诊断 bug、做代码审查、同步项目文档，那它有可能适合 Skill。</p>
+<p>第二，它是不是代表稳定的团队约定？</p>
+<p>比如“这个项目所有文档结论要区分事实、计划和猜测”，“修改支付逻辑必须补对账视角”，“发布前必须跑某几个验证命令”。这些不只是个人偏好，而是团队工作方式。</p>
+<p>第三，它有没有明确触发边界？</p>
+<p>如果你说不清什么时候该用、什么时候不该用，那它还不适合写成 Skill。边界模糊的 Skill 很容易误触发。</p>
+<p>第四，它是不是包含判断规则，而不只是命令清单？</p>
+<p>命令清单更适合脚本、Makefile、package scripts 或 CI。Skill 适合承载“什么时候该走哪条路”的判断。</p>
+<p>第五，它是不是会从版本化中获益？</p>
+<p>如果这个工作方式需要被审查、迭代、共享、回滚，那它就更像工程资产，而不是一次聊天里的提醒。</p>
+<p>当这些问题的答案大多是“是”，Prompt 就可以升级成 Skill。</p>
+<h2 id="从最小-Skill-开始"><a href="#从最小-Skill-开始" class="headerlink" title="从最小 Skill 开始"></a>从最小 Skill 开始</h2><p>写 Skill 不应该从设计一个完整体系开始。</p>
+<p>更好的方式是从一个真实任务开始。</p>
+<p>先选一个你最常重复的工作流，比如“写技术文章”“修 bug”“做 TDD”“同步项目文档”。然后只写最小入口：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">article-writing</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">Use</span> <span class="string">when</span> <span class="string">drafting,</span> <span class="string">outlining,</span> <span class="string">rewriting,</span> <span class="string">editing,</span> <span class="string">or</span> <span class="string">reviewing</span> <span class="string">public-facing</span> <span class="string">articles.</span> <span class="string">Identify</span> <span class="string">reader,</span> <span class="string">purpose,</span> <span class="string">thesis,</span> <span class="string">material,</span> <span class="string">voice,</span> <span class="string">and</span> <span class="string">venue</span> <span class="string">before</span> <span class="string">drafting.</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<p>正文也先保持短：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Article Writing</span></span><br><span class="line"></span><br><span class="line">Before drafting, identify reader, purpose, thesis, material, voice, and venue.</span><br><span class="line"></span><br><span class="line">Choose a structure before writing.</span><br><span class="line"></span><br><span class="line">Separate sourced facts from author experience and invention.</span><br><span class="line"></span><br><span class="line">Draft with a visible through-line: every section should advance the thesis.</span><br></pre></td></tr></table></figure>
+
+<p>然后用它做真实任务。</p>
+<p>如果 Agent 误触发，就改 <code>description</code>。</p>
+<p>如果 Agent 触发后仍然忘记关键边界，就把边界前置。</p>
+<p>如果正文越来越长，就把细节拆进 <code>references/</code>。</p>
+<p>如果某些步骤可以机械化，就写脚本。</p>
+<p>如果某条规则只是你临时想到的，不要急着加进去。等它在真实任务里反复证明有用，再沉淀。</p>
+<p>这和写代码有点像。不要一开始就抽象一个庞大的框架。先从一个代表性任务开始，让真实失败告诉你这个 Skill 缺什么。</p>
+<h2 id="Skill-让-AI-协作更像工程资产"><a href="#Skill-让-AI-协作更像工程资产" class="headerlink" title="Skill 让 AI 协作更像工程资产"></a>Skill 让 AI 协作更像工程资产</h2><p>Prompt 仍然重要。</p>
+<p>我们不可能把所有意图都提前写成 Skill。每一次任务仍然需要人说明目标、提供上下文、判断结果。Skill 不是为了取代 Prompt，而是为了让那些稳定、重复、可复用的部分不再每次从零开始。</p>
+<p>这也是我觉得“从 Prompt 到 Skill”重要的原因。</p>
+<p>它不是提示词技巧的升级，而是工作流抽象的升级。</p>
+<p>当我们只写 Prompt 时，AI 协作更像一场场临时对话。对话当然有价值，但它很难沉淀。</p>
+<p>当我们开始写 Skill 时，一部分经验会变成可版本化的资产：团队怎么写文章，怎么修 bug，怎么做测试，怎么验证完成，怎么把结论写回文档。</p>
+<p>这些东西过去可能藏在资深同事的脑子里，藏在 code review 的评论里，藏在一次次会议和聊天记录里。Skill 把它们转成 Agent 能按需读取的工作上下文。</p>
+<p>所以，Agent Skill 不是为了让 AI 替我们判断。</p>
+<p>恰恰相反，它是把人的判断边界写得更清楚，让 AI 在这些边界里更稳定地工作。</p>
+<p>Prompt 表达这一次我要什么。</p>
+<p>Skill 沉淀下一次仍然要遵守什么。</p>
+<p>这就是从 Prompt 到 Skill 的那一层抽象。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^openai-build-skills]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>。这里引用的是 Codex Skills 对可复用工作流、渐进式披露、<code>SKILL.md</code>、<code>scripts/</code> 和 <code>references/</code> 的说明。<br>[^anthropic-skills]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>。这里引用的是 Agent Skills 的目录结构、<code>name</code> &#x2F; <code>description</code> 路由、渐进式披露和按需加载参考文件的设计。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a></li>
+<li>OpenAI API Docs, <a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/tools-skills">Skills</a></li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a></li>
+<li>Agent Skills, <a target="_blank" rel="noopener" href="https://agentskills.io/home">Agent Skills Overview</a></li>
+<li>本博客：<a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/Skill/" rel="tag"># Skill</a>
+              <a href="/tags/Prompt/" rel="tag"># Prompt</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" rel="prev" title="TDD 让 AI 可靠，AI 让 TDD 可行">
+                  <i class="fa fa-angle-left"></i> TDD 让 AI 可靠，AI 让 TDD 可行
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/" rel="next" title="AI 编程工作流的反模式">
+                  AI 编程工作流的反模式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">104k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:18</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

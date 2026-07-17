@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Ryuu 的个人博客">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Ryuu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ryuu 的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">AI 编程工作流的反模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-17 00:00:00 / 修改时间：21:08:27" itemprop="dateCreated datePublished" datetime="2026-07-17T00:00:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面几篇文章里，我一直在谈同一个问题的不同侧面。</p>
+<p>在 <a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" title="代码、工具与人：AI 时代的程序员">代码、工具与人：AI 时代的程序员</a> 里，我谈的是 AI 并没有让程序员的责任消失；在 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a> 里，我谈的是 GPT 可以参与理解和判断，但不能成为责任主体；在 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a> 里，我进一步谈到，AI 不是靠一次漂亮提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里；在 <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" title="TDD 让 AI 可靠，AI 让 TDD 可行">TDD 让 AI 可靠，AI 让 TDD 可行</a> 里，我又专门写了测试如何约束 AI 的生成能力。</p>
+<p>这篇想反过来看：如果工作流没有设计好，AI 编程会怎样失控？</p>
+<p>这里说的“反模式”，不是指 AI 不该参与编程，也不是指某个模型能力不够。相反，很多问题正是因为 AI 太能生成、太会解释、太容易把一个还没被确认的想法变成完整代码。它不是慢吞吞地失败，而是很流畅地失败。</p>
+<p>所以本文讨论的不是 prompt 技巧，也不是模型排行榜，而是 AI 进入软件开发流程以后，在任务定义、上下文管理、变更控制、诊断、验证和责任边界上常见的工作流问题。</p>
+<h2 id="把局部提速误认为整体提速"><a href="#把局部提速误认为整体提速" class="headerlink" title="把局部提速误认为整体提速"></a>把局部提速误认为整体提速</h2><p>AI 确实能降低很多局部任务的成本。查资料、解释代码、生成样板、起草测试、补充边界、整理日志，这些事情都可以变快。问题在于，局部实现变快，不等于整体交付变稳。</p>
+<p>软件开发不是只由“写出代码”组成的。一个变更能不能进入系统，还取决于需求是否收敛、上下文是否正确、测试是否覆盖真实风险、review 是否能承受变更规模、发布后是否可回滚。AI 加快的是其中一部分环节。如果其他环节没有同步升级，生成速度反而会把压力传导到 review、测试、CI 和发布流程里。</p>
+<p>DORA 关于生成式 AI 的研究里也提示过类似现象：AI adoption 可以和个人生产率、flow、满意度提升相关，但也可能伴随交付吞吐和交付稳定性的下降。[^dora-2024][^dora-genai] 这并不说明 AI 对工程有害，而是说明“更快生成”必须被接入更强的验证和交付系统。</p>
+<p>第一个反模式就是：只看见 AI 带来的局部提速，没有看见它对整体工作流提出的新要求。</p>
+<h2 id="任务没有收敛就进入实现"><a href="#任务没有收敛就进入实现" class="headerlink" title="任务没有收敛就进入实现"></a>任务没有收敛就进入实现</h2><p>最常见的反模式，是需求还没收敛，就让 AI 直接实现。</p>
+<p>表现通常很熟悉：</p>
+<ul>
+<li>只有一句模糊需求，就让 AI “做一下”。</li>
+<li>没有定义非目标。</li>
+<li>没有说明兼容性、权限、性能、异常路径和边界条件。</li>
+<li>没有说清楚哪些行为不能被破坏。</li>
+<li>把 AI 给出的方案解释，当成需求澄清结果。</li>
+</ul>
+<p>AI 很擅长补全缺失信息。问题是，它补出来的东西不一定是业务真实意图。任务越模糊，AI 越容易用“合理默认值”填空。它会根据常见模式生成一个看起来完整的实现，但这个实现可能从第一步就偏离了真实目标。</p>
+<p>这类问题在业务规则里尤其危险。比如一个订单系统里，奖励是在订单创建时确定，还是在支付成功时确定，这不是代码风格问题，而是业务事实。如果这个事实没有先被确认，AI 仍然可以写出字段、状态流转、测试和说明文档。越完整，越容易让人误以为它是对的。</p>
+<p>更稳的做法，是先把任务压缩成可讨论、可验证的形式：</p>
+<ul>
+<li>目标是什么？</li>
+<li>非目标是什么？</li>
+<li>输入、输出和状态变化是什么？</li>
+<li>哪些旧行为不能变？</li>
+<li>哪些异常和边界必须覆盖？</li>
+<li>什么证据可以说明完成？</li>
+</ul>
+<p>复杂任务可以先让 AI 调查和整理，而不是直接改代码。AI 可以帮我们建立问题地图，但不应该替我们决定问题边界。</p>
+<h2 id="上下文管理失控"><a href="#上下文管理失控" class="headerlink" title="上下文管理失控"></a>上下文管理失控</h2><p>第二个反模式，是把上下文当成资料仓库。</p>
+<p>有些人使用 AI 时，会把大量文件、历史讨论、日志、旧计划、失败尝试一次性塞进上下文里。背后的想法很自然：给得越多，AI 知道得越全。可在真实工作里，上下文不是越多越好。</p>
+<p>上下文是一种工作资源。它有容量限制，也有注意力分布问题。即使模型还没有撞上 token 上限，也可能已经开始忽略中间区域的关键约束，或者被无关信息带偏。长任务里常见的漂移、重复、遗忘和自相矛盾，很多都和上下文污染有关。</p>
+<p>在 AI 编程里，上下文管理至少要区分阶段：</p>
+<p>Research 阶段可以宽一点。这个阶段的目标是找相关代码、相关测试、历史约束和可能风险，所以需要广泛浏览。</p>
+<p>Plan 阶段要窄一些。这个阶段的目标是做设计取舍，所以应该聚焦关键模块、关键约束和验证方式。</p>
+<p>Implement 阶段应该更窄。真正改代码时，最好只保留当前变更所需的文件、接口、测试和约束。</p>
+<p>如果把这三个阶段混在同一个不断膨胀的对话里，AI 很容易进入一种“看起来还在工作，但已经不再稳定利用关键信息”的状态。</p>
+<p>所以稳定规则不应该长期留在聊天记录里。构建命令、测试命令、命名约定、禁止事项、目录边界、review 习惯，这些应该进入 <code>AGENTS.md</code>、项目文档、测试、lint、CI 或脚本。OpenAI 的 Codex 实践也强调把项目上下文和重复指导沉淀到仓库里，而不是每次都靠临时 prompt 重新说明。[^codex-best-practices]</p>
+<p>好的上下文管理，不是把所有东西都给 AI，而是让 AI 在正确阶段看到正确材料。</p>
+<h2 id="变更范围自然膨胀"><a href="#变更范围自然膨胀" class="headerlink" title="变更范围自然膨胀"></a>变更范围自然膨胀</h2><p>第三个反模式，是让变更范围自然膨胀。</p>
+<p>AI 很容易给出完整方案。它会顺手整理命名，顺手改接口，顺手抽象一层，顺手重构附近代码。很多时候，这些改动单独看并不糟糕，甚至局部上更漂亮。但工程变更不只看局部漂亮，还要看任务边界、review 成本、回归风险和长期一致性。</p>
+<p>典型表现包括：</p>
+<ul>
+<li>修一个 bug，顺手重构多个模块。</li>
+<li>为了适配新实现，改变既有接口。</li>
+<li>把功能修改、重构、测试迁移、文档调整混在一个 diff 里。</li>
+<li>生成大批量代码，但没有明确分层。</li>
+<li>代码看起来更现代，但破坏了项目既有风格。</li>
+</ul>
+<p>这类问题的根源，是 AI 的生成倾向和工程变更的审查需求并不天然一致。AI 倾向于补齐、扩展、圆满化；工程上却经常需要局部、保守、可回滚。</p>
+<p>所以在 AI 编程里，review 不能只问“这段代码写得好不好”，还要先问“这些代码是否应该出现在本次变更里”。</p>
+<p>更稳的做法是：</p>
+<ul>
+<li>明确允许修改哪些文件。</li>
+<li>明确哪些模块只读。</li>
+<li>把重构和功能修改拆开。</li>
+<li>优先小批次提交。</li>
+<li>大改动先 review plan，再进入实现。</li>
+</ul>
+<p>AI 生成速度越快，越需要人为压住变更批次。</p>
+<h2 id="诊断过程被跳过"><a href="#诊断过程被跳过" class="headerlink" title="诊断过程被跳过"></a>诊断过程被跳过</h2><p>第四个反模式，是 debug 时直接让 AI 猜根因。</p>
+<p>这件事很诱人。把错误日志、代码片段丢给 AI，它很快就能给出一个解释和修复方案。很多时候这个方案还挺像回事。但诊断的核心不是“给出一个合理叙述”，而是“用证据收敛假设”。</p>
+<p>没有复现，就不知道问题是否真的存在于当前观察里。没有假设列表，就不知道自己排除了什么。没有能区分假设的证据，就不知道改动是不是只碰巧修到了附近。</p>
+<p>AI 在这里的风险，是它会很快生成一个故事：因为 A，所以 B，应该改 C。这个故事可能正确，也可能只是流畅。OpenAI 关于 hallucination 的讨论提醒过我们，模型的流畅输出和事实正确性不是同一件事。[^openai-hallucination]</p>
+<p>更稳的诊断流程应该是：</p>
+<ol>
+<li>先复现问题。</li>
+<li>明确当前已知事实。</li>
+<li>列出可能假设。</li>
+<li>找能区分假设的证据。</li>
+<li>根据证据更新判断。</li>
+<li>最后再修改代码。</li>
+<li>修复后留下回归测试或最小验证命令。</li>
+</ol>
+<p>AI 可以参与这个过程。它可以帮我们读日志、找相关代码、提出假设、设计插桩点、解释测试失败。但它不应该跳过证据，直接进入修复。</p>
+<p>debug 中最坏的情况，不是 AI 没有给出答案，而是它给了一个足够像答案的答案，让人停止收集证据。</p>
+<h2 id="同一个-Agent-自写自验"><a href="#同一个-Agent-自写自验" class="headerlink" title="同一个 Agent 自写自验"></a>同一个 Agent 自写自验</h2><p>第五个反模式，是让同一个 AI 自己写实现、自己写测试、自己修改测试、自己宣布通过。</p>
+<p>这看起来像闭环，实际上可能是闭门造车。</p>
+<p>如果测试来自同一个模型对需求的即兴理解，它测到的可能不是外部规格，而是模型自己的解释。更糟的是，实现失败以后，AI 可能会为了绿灯去修改断言、放宽条件、删除不方便的用例，或者把当前错误行为写进测试里。</p>
+<p>这就是我在 <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" title="TDD 让 AI 可靠，AI 让 TDD 可行">TDD 让 AI 可靠，AI 让 TDD 可行</a> 里反复强调的点：AI-TDD 的关键不是“让 AI 先写测试”，而是先有外部行为规格，再让测试约束实现。</p>
+<p>测试在 AI 编程里有双重身份。对 CI 来说，它是验证；对 AI 来说，它也是上下文。好的测试可以把需求稳定地暴露给模型；坏的测试则会同时污染上下文和反馈回路。</p>
+<p>更稳的分工应该是：</p>
+<ul>
+<li>人定义行为规格和验收边界。</li>
+<li>AI 起草测试和实现。</li>
+<li>自动化工具给出反馈。</li>
+<li>人或独立 review 审查测试是否表达了正确规格。</li>
+</ul>
+<p>新测试最好先失败，而且失败原因应该是目标行为缺失，而不是测试本身写错、环境缺失或依赖问题。通过以后，也要防止 AI 为了绿灯修改测试语义。</p>
+<p>实现写错了，可以重写。测试写错了，会把错误规格固化下来。</p>
+<h2 id="完成声明没有验证证据"><a href="#完成声明没有验证证据" class="headerlink" title="完成声明没有验证证据"></a>完成声明没有验证证据</h2><p>第六个反模式，是把 AI 的完成声明当成工程事实。</p>
+<p>“已完成”“已修复”“测试通过”“应该可以了”，这些都是文本。工程上的完成必须绑定证据。</p>
+<p>证据可以是：</p>
+<ul>
+<li>实际运行过的测试命令。</li>
+<li>lint、typecheck、build 的输出。</li>
+<li>失败用例从红到绿的记录。</li>
+<li>diff review 的结果。</li>
+<li>UI 截图或手工验证步骤。</li>
+<li>CI 状态。</li>
+<li>明确说明未验证部分和剩余风险。</li>
+</ul>
+<p>如果没有这些证据，AI 的完成声明只是它对自己输出的总结。这个总结可能有帮助，但不能替代验证。</p>
+<p>这里最容易出现的问题，是 AI 用语气弥补证据。它会写得很确定，甚至列出“已完成事项”。但如果没有实际命令和结果，这些文字并不能说明系统状态已经改变。</p>
+<p>所以我现在更倾向于把完成判断写成固定要求：完成之前必须说明运行了什么检查，结果如何，哪些检查没有运行，为什么没有运行，剩余风险是什么。Codex 的最佳实践也把测试、检查、行为确认和 review 放在可靠性收口里。[^codex-test-review]</p>
+<p>AI 可以宣布候选结论，但工程完成需要证据。</p>
+<h2 id="人工介入退化成橡皮图章"><a href="#人工介入退化成橡皮图章" class="headerlink" title="人工介入退化成橡皮图章"></a>人工介入退化成橡皮图章</h2><p>第七个反模式，是所谓人在环只剩下“点继续”。</p>
+<p>很多 AI 工具会在关键时刻请求用户确认。这个机制本身是必要的，但如果只给一个确认按钮，而不给足够上下文，人工介入就会退化成橡皮图章。</p>
+<p>有效的人工介入，至少要让人看到：</p>
+<ul>
+<li>当前目标是什么。</li>
+<li>AI 准备做什么。</li>
+<li>影响范围是什么。</li>
+<li>风险在哪里。</li>
+<li>是否可回滚。</li>
+<li>有哪些替代选项。</li>
+<li>当前证据支持到什么程度。</li>
+</ul>
+<p>人在环不是让人频繁打断 AI，也不是让人最后兜底。它应该出现在高杠杆位置：计划确认、风险动作、测试规格、发布决策、证据不足时的暂停。</p>
+<p>Microsoft 的 Human-AI Interaction Guidelines 强调 AI 系统应该让用户能够理解、纠正和恢复；NIST 的 AI Risk Management Framework 也把风险放进治理、度量和管理结构里看。[^human-ai-guidelines][^nist-ai-rmf] 这对应到日常 AI 编程，就是不要把责任模糊地推给“用户已确认”。确认必须基于上下文，反馈也要能沉淀。</p>
+<p>如果用户纠正了 AI 的行为，这个纠正不应该只停留在一次对话里。它应该尽量进入规则、测试、文档、模板或脚本。否则同样的问题下次还会发生。</p>
+<h2 id="一个更稳的工作流"><a href="#一个更稳的工作流" class="headerlink" title="一个更稳的工作流"></a>一个更稳的工作流</h2><p>把这些反模式放在一起看，它们其实都指向同一个问题：AI 编程不能只围绕“生成”设计，而要围绕“可验证交付”设计。</p>
+<p>一个更稳的流程可以很简单：</p>
+<ol>
+<li>Research：先理解现有代码、测试、约束和风险。</li>
+<li>Plan：定义改动范围、非目标、验证方式和人工介入点。</li>
+<li>Implement：小步修改，避免混入无关重构。</li>
+<li>Verify：运行测试、lint、build，必要时做人工检查。</li>
+<li>Document：把稳定结论沉淀到项目规则、文档或知识库。</li>
+</ol>
+<p>这不是为了把流程变重。简单任务当然不需要完整仪式。改一个拼写、补一个小配置、调整一个局部样式，没有必要强行走完整流程。</p>
+<p>关键在于，任务一旦涉及模糊需求、存量系统、跨模块变更、生产风险、测试缺口或长期维护，就不能只依赖 AI 的生成能力。越是复杂任务，越需要阶段化、上下文压缩、小批次变更和验证证据。</p>
+<p>AI 编程成熟度的标志，不是让模型一次生成更多代码，而是让生成结果更容易被约束、审查、验证和回滚。</p>
+<p>真正需要升级的，不只是 prompt，而是工作流。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^dora-2024]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 对个人体验和团队交付系统可能产生不同方向影响”的边界判断。<br>[^dora-genai]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。<br>[^codex-best-practices]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“项目上下文、重复指导和验证命令应该沉淀到仓库和工作流中”的实践判断。<br>[^openai-hallucination]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它来提醒：模型输出的流畅性不能直接等同于事实可靠性。<br>[^codex-test-review]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用它来支撑“完成断言需要测试、检查、行为确认和 review 收口”。<br>[^human-ai-guidelines]: Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>。这里引用它来支撑“人需要能够理解、纠正和恢复 AI 输出”的交互原则。<br>[^nist-ai-rmf]: NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它来支撑“AI 风险需要进入治理、度量和管理结构，而不是由模型或单次确认承担”的边界。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness Engineering</a>：适合理解为什么 AI coding 的关键不只是提示词，而是环境、工具、反馈和知识系统。</li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>：适合理解项目上下文、plan-first、测试验证和 review 如何进入日常工作流。</li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective Agents</a>：适合理解 workflow、agent、自主性、测试反馈和 guardrails 的边界。</li>
+<li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/">Guidelines for Human-AI Interaction</a>：适合理解人在 AI 系统中的控制、纠错和恢复位置。</li>
+<li>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/">Accelerate State of DevOps Report 2024</a> 和 <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/">Impact of Generative AI in Software Development</a>：适合理解 AI 对个人生产率和团队交付系统的不同影响。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/" class="post-title-link" itemprop="url">从 Prompt 到 Skill：AI Agent 工作流的下一层抽象</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-17 00:00:00 / 修改时间：21:08:30" itemprop="dateCreated datePublished" datetime="2026-07-17T00:00:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a> 里，我写过一个判断：AI 不是靠一次漂亮的提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。</p>
+<p>这篇继续往下走，专门谈这个工作流里越来越重要的一层东西：Agent Skill。</p>
+<p>如果一个同事还不知道什么是 Agent Skill，我不太想一上来就告诉他：它是一个包含 <code>SKILL.md</code> 的目录，里面有 YAML front matter、说明正文、<code>references/</code>、<code>scripts/</code> 和 <code>assets/</code>。</p>
+<p>这当然是事实，但这不是最重要的事实。</p>
+<p>更重要的是：为什么我们已经会写 Prompt 了，还需要 Skill？</p>
+<h2 id="Prompt-适合表达这一次，Skill-适合沉淀下一次"><a href="#Prompt-适合表达这一次，Skill-适合沉淀下一次" class="headerlink" title="Prompt 适合表达这一次，Skill 适合沉淀下一次"></a>Prompt 适合表达这一次，Skill 适合沉淀下一次</h2><p>我们平时和 AI 协作，最自然的方式是写 Prompt。</p>
+<p>“帮我看一下这段代码。”</p>
+<p>“按 TDD 的方式实现这个功能。”</p>
+<p>“先不要动手，先读项目结构。”</p>
+<p>“写完以后跑测试，不要只说完成。”</p>
+<p>这些话都很有用。Prompt 的优势就在这里：它直接、灵活、贴近当前任务。你脑子里刚形成一个意图，就可以把它说出来，让 AI 立刻参与。</p>
+<p>但问题也在这里。</p>
+<p>很多要求并不是只对这一次有用。比如：</p>
+<ul>
+<li>修 bug 前要先复现。</li>
+<li>不熟悉代码时要先 zoom out，而不是盯着当前文件解释。</li>
+<li>写文章前要先确定读者、目的、论点和材料。</li>
+<li>改完代码后要用新鲜证据验证，不能靠语气宣布完成。</li>
+<li>重要结论要写回项目文档或知识库，而不是散落在聊天记录里。</li>
+</ul>
+<p>如果这些要求每次都靠临时 Prompt 提醒，它们就很容易失效。</p>
+<p>人会忘记说。对话会变长。上下文会变脏。AI 会在后半段逐渐回到它熟悉的生成模式里。更麻烦的是，这些做法一旦只存在于聊天记录里，就很难被复用、修改、审查和传给团队里的其他人。</p>
+<p>所以 Prompt 的问题不是“不够强”，而是它天然偏向一次性沟通。</p>
+<p>Skill 要解决的是另一类问题：把反复出现的工作方式，沉淀成可复用、可触发、可维护的上下文。</p>
+<h2 id="Skill-不是更长的-Prompt"><a href="#Skill-不是更长的-Prompt" class="headerlink" title="Skill 不是更长的 Prompt"></a>Skill 不是更长的 Prompt</h2><p>很容易把 Agent Skill 理解成“高级提示词”。</p>
+<p>这个理解只对了一半。</p>
+<p>Skill 里面确实有自然语言指令，Agent 也确实会读这些指令。但一个好的 Skill 不只是把一大段 Prompt 存起来。它至少多解决了三个问题。</p>
+<p>第一，它解决“什么时候用”的问题。</p>
+<p>Skill 的 <code>description</code> 不只是给人看的简介。对 Agent 来说，它是路由线索。一个好的 <code>description</code> 要说清楚：这个 skill 适用于什么任务，不适用于什么任务，和相邻 skill 的边界在哪里。</p>
+<p>第二，它解决“触发后先判断什么”的问题。</p>
+<p><code>SKILL.md</code> 不应该像百科全书，也不应该复制工具教程。它更应该告诉 Agent：当前任务先确认什么，哪些边界不能越过，什么时候需要继续读 <code>references/</code>，什么结果才算完成。</p>
+<p>第三，它解决“细节如何按需加载”的问题。</p>
+<p>不常用的背景资料、长检查清单、示例、脚本、模板，不一定要全部塞进主文件。它们可以放进 <code>references/</code>、<code>scripts/</code> 或 <code>assets/</code>。Agent 需要时再读，需要执行时再调用。</p>
+<p>所以 Skill 和 Prompt 的差别，不只是“短”和“长”的差别。</p>
+<p>Prompt 更像一次对话里的意图表达。Skill 更像某类任务的工作协议。</p>
+<h2 id="Skill、Prompt-和-Tool-各自解决不同问题"><a href="#Skill、Prompt-和-Tool-各自解决不同问题" class="headerlink" title="Skill、Prompt 和 Tool 各自解决不同问题"></a>Skill、Prompt 和 Tool 各自解决不同问题</h2><p>这三个概念很容易混在一起。</p>
+<p>可以先粗略地区分一下：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解决的问题</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prompt</td>
+<td>这一次要做什么</td>
+<td>“帮我写一篇解释 Agent Skill 的文章”</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Agent 能执行什么动作</td>
+<td>读写文件、运行测试、搜索网页、调用浏览器</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td>某类任务应该怎么做</td>
+<td>写文章前先确认读者、目的、论点、材料和声音</td>
+</tr>
+</tbody></table>
+<p>比如我说：“帮我写测试。”</p>
+<p>这是一句 Prompt。</p>
+<p>Agent 能调用测试命令、编辑器、文件系统，这些是 Tool。</p>
+<p>如果我希望它按 TDD 的节奏推进，先写失败测试，再写最小实现，再重构，并且不要为了让测试通过反过来放松断言，那就是 Skill 要表达的工作方式。</p>
+<p>Skill 不替代 Prompt，也不替代 Tool。</p>
+<p>Prompt 提供当前目标。Tool 提供行动能力。Skill 提供可复用的判断和流程。</p>
+<h2 id="Skill-的核心是渐进式披露"><a href="#Skill-的核心是渐进式披露" class="headerlink" title="Skill 的核心是渐进式披露"></a>Skill 的核心是渐进式披露</h2><p>Agent Skill 背后的关键设计，不是“把更多说明交给 AI”，而是“只在需要时加载正确说明”。</p>
+<p>这叫渐进式披露。</p>
+<p>Agent 不应该在每次任务里都读完所有规则。那样上下文会很快变成垃圾桶。真正可持续的方式是分层：</p>
+<p>第一层，启动时只让 Agent 看到 skill 的名字、描述和位置。它知道“有这么一个能力”，但还没有把全文塞进上下文。</p>
+<p>第二层，当任务匹配时，Agent 才读取对应的 <code>SKILL.md</code>。</p>
+<p>第三层，如果 <code>SKILL.md</code> 指向更细的参考资料、脚本或模板，Agent 再按需要继续读取或执行。</p>
+<p>OpenAI 的 Codex 文档把 skill 描述为可复用的工作流格式，并明确提到 Codex 先看到 skill 的名称、描述和路径，只有决定使用时才读取完整 <code>SKILL.md</code>。Anthropic 在介绍 Agent Skills 时也用了同样的思路：先加载 <code>name</code> 和 <code>description</code>，任务相关时再读正文，更细的文件继续按需展开。[^openai-build-skills][^anthropic-skills]</p>
+<p>这件事很重要。</p>
+<p>因为上下文窗口不是越满越好。把所有规范、示例、异常情况、脚本说明都塞进去，短期看像是“资料齐全”，长期看却会稀释真正关键的约束。Agent 可能读了很多字，却更难抓住当前任务最应该遵守的那几条规则。</p>
+<p>好 Skill 不是让 Agent 多读字，而是让 Agent 少想错。</p>
+<h2 id="一个-Skill-通常长什么样"><a href="#一个-Skill-通常长什么样" class="headerlink" title="一个 Skill 通常长什么样"></a>一个 Skill 通常长什么样</h2><p>从格式上看，一个 Skill 通常是一个目录。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my-skill/</span><br><span class="line">├── SKILL.md</span><br><span class="line">├── references/</span><br><span class="line">├── scripts/</span><br><span class="line">└── assets/</span><br></pre></td></tr></table></figure>
+
+<p><code>SKILL.md</code> 是入口。它通常包含 <code>name</code> 和 <code>description</code>，然后是一段给 Agent 的任务说明。</p>
+<p><code>references/</code> 放更细的材料，比如写作检查清单、项目规范、领域背景、案例、边界说明。</p>
+<p><code>scripts/</code> 放可以执行的脚本。能机械化的东西，尽量不要长期停留在自然语言里。脚本比口头规则更稳定，也更容易验证。</p>
+<p><code>assets/</code> 放模板、图片、样例文件或其他资源。</p>
+<p>但格式只是外壳。真正决定 Skill 质量的，是它有没有把边界和判断写清楚。</p>
+<p>一个坏的 <code>description</code> 可能是：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">Help</span> <span class="string">with</span> <span class="string">project</span> <span class="string">work.</span></span><br></pre></td></tr></table></figure>
+
+<p>这句话几乎没用。它太宽了，什么都像能触发。</p>
+<p>一个更好的写法会像这样：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">Use</span> <span class="string">when</span> <span class="string">drafting</span> <span class="string">or</span> <span class="string">revising</span> <span class="string">public-facing</span> <span class="string">technical</span> <span class="string">articles.</span> <span class="string">Identify</span> <span class="string">reader,</span> <span class="string">purpose,</span> <span class="string">thesis,</span> <span class="string">evidence,</span> <span class="string">structure,</span> <span class="string">and</span> <span class="string">voice</span> <span class="string">before</span> <span class="string">drafting.</span> <span class="string">Prefer</span> <span class="string">project-docs-writing</span> <span class="string">for</span> <span class="string">durable</span> <span class="string">internal</span> <span class="string">project</span> <span class="string">documentation.</span></span><br></pre></td></tr></table></figure>
+
+<p>它说清楚了三件事：什么时候用，做什么，和相邻 skill 的边界在哪里。</p>
+<p>这就是 Skill 和普通说明文档的差别。Skill 首先要能被正确触发，其次才是触发后写得多完整。</p>
+<h2 id="好-Skill-先教判断，再教步骤"><a href="#好-Skill-先教判断，再教步骤" class="headerlink" title="好 Skill 先教判断，再教步骤"></a>好 Skill 先教判断，再教步骤</h2><p>很多人第一次写 Skill，容易把它写成操作手册。</p>
+<p>第一步做什么，第二步做什么，第三步做什么。再加一大堆命令示例、注意事项、边界情况。最后 <code>SKILL.md</code> 越写越长，像一份很努力但很臃肿的说明书。</p>
+<p>这不一定有效。</p>
+<p>Agent 很多基础操作本来就会。它会读文件，会看 <code>--help</code>，会根据项目里的 package scripts 推断测试命令，会模仿现有代码风格。Skill 不应该把这些 baseline 能力重新讲一遍。</p>
+<p>Skill 最值得写的是 Agent 默认不知道、但对这类任务很关键的东西：</p>
+<ul>
+<li>这个团队的特殊约定。</li>
+<li>这个任务的判断边界。</li>
+<li>常见错误路径。</li>
+<li>完成定义。</li>
+<li>失败时应该回退到哪里。</li>
+<li>哪些信息必须来自外部证据，而不是猜测。</li>
+</ul>
+<p>比如一个写作 skill，不需要教 Agent “Markdown 用 <code>#</code> 表示标题”。它真正应该写的是：先确认读者是谁，文章要解决什么问题，中心论点是什么，材料哪些来自事实，哪些只是作者经验，哪些地方不能编造。</p>
+<p>比如一个诊断 skill，不需要教 Agent “可以打印日志”。它真正应该写的是：先建立反馈循环，先复现，再提出可证伪假设，用观察结果更新判断，不要直接跳到最像答案的修复。</p>
+<p>比如一个验证 skill，不需要教 Agent “测试命令怎么运行”。它真正应该写的是：不要在没有新鲜证据的情况下宣布完成；验证失败时要报告失败，而不是把语气改得更肯定。</p>
+<p>好的 Skill 不是把 Agent 当新手，而是把 Agent 拉回正确的判断结构里。</p>
+<h2 id="坏-Skill-会把-Agent-推进噪声里"><a href="#坏-Skill-会把-Agent-推进噪声里" class="headerlink" title="坏 Skill 会把 Agent 推进噪声里"></a>坏 Skill 会把 Agent 推进噪声里</h2><p>Skill 写坏了，会比没有 Skill 更糟。</p>
+<p>最常见的坏法，是把 Skill 写成“万能入口”。</p>
+<p>比如一个叫 <code>engineering</code> 的 Skill，里面同时包含代码审查、TDD、架构设计、文档同步、Git 提交、发布流程和故障诊断。它看起来很完整，但每次触发都把一大堆当前任务用不到的内容塞进上下文。最后 Agent 反而更容易抓错重点。</p>
+<p>第二种坏法，是复制工具文档。</p>
+<p>比如在 Skill 里长篇解释 <code>git status</code>、<code>npm test</code>、<code>pytest</code>、<code>curl</code> 怎么用。这些东西大多可以由 Agent 自己发现，或者应该交给脚本、README、package scripts、CI 配置处理。自然语言 Skill 应该保留给不能机械化的判断。</p>
+<p>第三种坏法，是只有反模式，没有替代方案。</p>
+<p>“不要乱改文件。”</p>
+<p>“不要跳过测试。”</p>
+<p>“不要写太长。”</p>
+<p>这些话单独看都对，但只写“不要”很容易让 Agent 锚定在错误动作上，又不知道正确路径是什么。更好的写法是同时给出替代方案：</p>
+<p>不要直接改实现。先复现问题，记录可观察现象，再提出假设。</p>
+<p>不要把所有细节塞进 <code>SKILL.md</code>。主文件只保留路由和关键判断，长案例放到 <code>references/</code>。</p>
+<p>不要只说完成。先运行和任务相关的验证命令，再用验证结果说明完成状态。</p>
+<p>第四种坏法，是边界不清。</p>
+<p>两个 Skill 如果都像能处理同一个任务，Agent 就会犹豫，或者选错。Skill 的边界应该写在 <code>description</code> 里，而不是藏在正文深处。</p>
+<p>所以评估一个 Skill，不只要问它“能不能用”，还要问它有没有制造新的上下文噪声。</p>
+<h2 id="什么时候该把-Prompt-升级成-Skill"><a href="#什么时候该把-Prompt-升级成-Skill" class="headerlink" title="什么时候该把 Prompt 升级成 Skill"></a>什么时候该把 Prompt 升级成 Skill</h2><p>不是所有 Prompt 都值得变成 Skill。</p>
+<p>一次性需求没有必要 Skill 化。还在探索中的偏好也不急着沉淀。只有当一段提示开始反复出现，并且忘记它会导致稳定的质量问题时，才值得考虑升级。</p>
+<p>我会用这几个问题判断：</p>
+<p>第一，它是不是高频出现？</p>
+<p>如果每周都在重复同一类要求，比如写文章、诊断 bug、做代码审查、同步项目文档，那它有可能适合 Skill。</p>
+<p>第二，它是不是代表稳定的团队约定？</p>
+<p>比如“这个项目所有文档结论要区分事实、计划和猜测”，“修改支付逻辑必须补对账视角”，“发布前必须跑某几个验证命令”。这些不只是个人偏好，而是团队工作方式。</p>
+<p>第三，它有没有明确触发边界？</p>
+<p>如果你说不清什么时候该用、什么时候不该用，那它还不适合写成 Skill。边界模糊的 Skill 很容易误触发。</p>
+<p>第四，它是不是包含判断规则，而不只是命令清单？</p>
+<p>命令清单更适合脚本、Makefile、package scripts 或 CI。Skill 适合承载“什么时候该走哪条路”的判断。</p>
+<p>第五，它是不是会从版本化中获益？</p>
+<p>如果这个工作方式需要被审查、迭代、共享、回滚，那它就更像工程资产，而不是一次聊天里的提醒。</p>
+<p>当这些问题的答案大多是“是”，Prompt 就可以升级成 Skill。</p>
+<h2 id="从最小-Skill-开始"><a href="#从最小-Skill-开始" class="headerlink" title="从最小 Skill 开始"></a>从最小 Skill 开始</h2><p>写 Skill 不应该从设计一个完整体系开始。</p>
+<p>更好的方式是从一个真实任务开始。</p>
+<p>先选一个你最常重复的工作流，比如“写技术文章”“修 bug”“做 TDD”“同步项目文档”。然后只写最小入口：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">article-writing</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">Use</span> <span class="string">when</span> <span class="string">drafting,</span> <span class="string">outlining,</span> <span class="string">rewriting,</span> <span class="string">editing,</span> <span class="string">or</span> <span class="string">reviewing</span> <span class="string">public-facing</span> <span class="string">articles.</span> <span class="string">Identify</span> <span class="string">reader,</span> <span class="string">purpose,</span> <span class="string">thesis,</span> <span class="string">material,</span> <span class="string">voice,</span> <span class="string">and</span> <span class="string">venue</span> <span class="string">before</span> <span class="string">drafting.</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<p>正文也先保持短：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Article Writing</span></span><br><span class="line"></span><br><span class="line">Before drafting, identify reader, purpose, thesis, material, voice, and venue.</span><br><span class="line"></span><br><span class="line">Choose a structure before writing.</span><br><span class="line"></span><br><span class="line">Separate sourced facts from author experience and invention.</span><br><span class="line"></span><br><span class="line">Draft with a visible through-line: every section should advance the thesis.</span><br></pre></td></tr></table></figure>
+
+<p>然后用它做真实任务。</p>
+<p>如果 Agent 误触发，就改 <code>description</code>。</p>
+<p>如果 Agent 触发后仍然忘记关键边界，就把边界前置。</p>
+<p>如果正文越来越长，就把细节拆进 <code>references/</code>。</p>
+<p>如果某些步骤可以机械化，就写脚本。</p>
+<p>如果某条规则只是你临时想到的，不要急着加进去。等它在真实任务里反复证明有用，再沉淀。</p>
+<p>这和写代码有点像。不要一开始就抽象一个庞大的框架。先从一个代表性任务开始，让真实失败告诉你这个 Skill 缺什么。</p>
+<h2 id="Skill-让-AI-协作更像工程资产"><a href="#Skill-让-AI-协作更像工程资产" class="headerlink" title="Skill 让 AI 协作更像工程资产"></a>Skill 让 AI 协作更像工程资产</h2><p>Prompt 仍然重要。</p>
+<p>我们不可能把所有意图都提前写成 Skill。每一次任务仍然需要人说明目标、提供上下文、判断结果。Skill 不是为了取代 Prompt，而是为了让那些稳定、重复、可复用的部分不再每次从零开始。</p>
+<p>这也是我觉得“从 Prompt 到 Skill”重要的原因。</p>
+<p>它不是提示词技巧的升级，而是工作流抽象的升级。</p>
+<p>当我们只写 Prompt 时，AI 协作更像一场场临时对话。对话当然有价值，但它很难沉淀。</p>
+<p>当我们开始写 Skill 时，一部分经验会变成可版本化的资产：团队怎么写文章，怎么修 bug，怎么做测试，怎么验证完成，怎么把结论写回文档。</p>
+<p>这些东西过去可能藏在资深同事的脑子里，藏在 code review 的评论里，藏在一次次会议和聊天记录里。Skill 把它们转成 Agent 能按需读取的工作上下文。</p>
+<p>所以，Agent Skill 不是为了让 AI 替我们判断。</p>
+<p>恰恰相反，它是把人的判断边界写得更清楚，让 AI 在这些边界里更稳定地工作。</p>
+<p>Prompt 表达这一次我要什么。</p>
+<p>Skill 沉淀下一次仍然要遵守什么。</p>
+<p>这就是从 Prompt 到 Skill 的那一层抽象。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^openai-build-skills]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>。这里引用的是 Codex Skills 对可复用工作流、渐进式披露、<code>SKILL.md</code>、<code>scripts/</code> 和 <code>references/</code> 的说明。<br>[^anthropic-skills]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>。这里引用的是 Agent Skills 的目录结构、<code>name</code> &#x2F; <code>description</code> 路由、渐进式披露和按需加载参考文件的设计。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a></li>
+<li>OpenAI API Docs, <a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/tools-skills">Skills</a></li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a></li>
+<li>Agent Skills, <a target="_blank" rel="noopener" href="https://agentskills.io/home">Agent Skills Overview</a></li>
+<li>本博客：<a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" class="post-title-link" itemprop="url">TDD 让 AI 可靠，AI 让 TDD 可行</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-16 00:00:00 / 修改时间：22:37:26" itemprop="dateCreated datePublished" datetime="2026-07-16T00:00:00+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>23 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面几篇文章里，我一直在绕着同一个问题打转：AI 到底应该放在软件开发的什么位置？</p>
+<p>在 <a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" title="代码、工具与人：AI 时代的程序员">代码、工具与人：AI 时代的程序员</a> 里，我谈的是程序员的职责并没有因为 AI 消失；在 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a> 里，我谈的是 GPT 可以有智能，但不能替我们承担判断后果；在 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a> 里，我又进一步谈到，AI 不是靠一次漂亮提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。</p>
+<p>这篇想继续往下走，谈一个更具体的实践：TDD。</p>
+<p>我越来越觉得，AI 和 TDD 不是谁取代谁的关系。恰恰相反，它们有一种相互成就的关系：</p>
+<p><strong>TDD 让 AI 可靠，AI 让 TDD 可行。</strong></p>
+<p>这句话的前半句比较容易理解。AI 写代码很快，但越快越需要验证；TDD 提供的失败测试、最小实现和重构反馈，能把 AI 的生成能力拉回到具体行为上。</p>
+<p>后半句也同样重要。过去很多人不是不知道 TDD 有价值，而是很难坚持。写测试、补边界、维护反馈回路，这些都是真实成本。AI 出现以后，这些成本被压低了。它可以帮我们起草测试、补充边界、迁移既有风格、解释失败原因、推进小步重构。也就是说，AI 不只是需要 TDD，AI 也让 TDD 更容易被执行。</p>
+<h2 id="AI-让错误也变快了"><a href="#AI-让错误也变快了" class="headerlink" title="AI 让错误也变快了"></a>AI 让错误也变快了</h2><p>AI 时代写代码，最明显的变化当然是快。</p>
+<p>过去实现一个需求，我们要自己读代码、想接口、写逻辑、补测试、跑验证。这个过程不一定优雅，但它有一种天然的摩擦。人写得慢，所以每一步多少都会停一下，想一想这段逻辑是不是对的，边界有没有漏，和现有系统是否合得上。</p>
+<p>现在不一样了。你可以把需求丢给 AI，它很快就能给出一整套实现。更厉害的是，它不只会写实现，还会写解释，甚至还能顺手补几条测试。</p>
+<p>这当然是好事。很多重复劳动、样板代码、边界枚举、失败排查，都可以被大幅加速。</p>
+<p>但风险也在这里。AI 的问题很多时候不是“写不出来”，而是“写得太像真的”。它可以把一个还没有被确认的理解，快速变成一段结构完整、命名像样、测试齐全的代码。它的输出越流畅，人越容易误以为事情已经成立。</p>
+<p>过去错误可能只是一个想法。现在错误可以很快变成代码，变成测试，变成提交，甚至变成一段看起来很合理的说明。</p>
+<p>比如一个订单系统里，奖励到底是在“订单创建时确定”，还是在“支付成功时确定”，这是业务事实，不是代码风格。AI 如果一开始理解错了，它照样可以写出完整的字段、状态流转、单元测试和说明文档。问题不在于这些代码不像工程代码，而在于它们可能从第一步就把错误业务事实固定下来了。</p>
+<p>所以 AI 改变的不只是开发效率，也改变了错误扩散的速度。</p>
+<h2 id="TDD-难，不是因为它没价值"><a href="#TDD-难，不是因为它没价值" class="headerlink" title="TDD 难，不是因为它没价值"></a>TDD 难，不是因为它没价值</h2><p>说到 TDD，很多讨论容易走向两个极端。</p>
+<p>一种是把 TDD 当成某种纯粹正确的工程道德：不先写测试就是不专业。另一种是把 TDD 当成过时的仪式：现实项目哪有时间红绿重构，先把需求做出来再说。</p>
+<p>我不太喜欢这两种说法。</p>
+<p>TDD 的价值一直在那里。先写测试，意味着先把期望行为说清楚；看到测试失败，意味着确认当前系统确实缺少这个行为；写最小实现让测试通过，意味着先解决具体问题，而不是顺手扩大战场；在测试保护下重构，意味着结构调整有反馈网兜。Kent Beck 在《Test-Driven Development: By Example》里反复强调的也是这个节奏：用很小的步长，在测试、实现和重构之间建立反馈。[^beck-tdd]</p>
+<p>这些东西并不过时。</p>
+<p>但 TDD 的成本也一直在那里。写测试要花时间，想边界要花时间，理解测试框架要花时间，维护 fixture 和 mock 要花时间。尤其在存量项目里，最难的往往不是“写一个测试”，而是写一个符合当前项目习惯、能稳定运行、以后别人愿意维护的测试。</p>
+<p>这也是很多 TDD 书籍真正花篇幅讨论的部分。《xUnit Test Patterns》不是只讲“要写测试”，而是系统整理 fixture、stub、mock、test smell 和可维护测试结构；《Growing Object-Oriented Software, Guided by Tests》也不是把测试当成附属物，而是把测试放进对象设计和系统演进里看。换句话说，TDD 的难点从来不只是“先写测试”这个动作，而是如何长期维护一套有表达力、可定位、可演进的反馈系统。[^xunit-patterns][^goos]</p>
+<p>很多人不做 TDD，不一定是反对它的价值，而是抗不过它的成本。</p>
+<p>至少在我现在的使用里，AI 在这里带来了一个很有意思的变化：它降低了 TDD 的执行成本。</p>
+<p>它可以帮我们从需求里拆出输入、输出、状态变化和错误路径；可以根据已有测试补出相似用例；可以把重复的断言整理成 helper；可以在测试失败时快速定位失败原因；可以在红绿循环中承担大量机械推进。</p>
+<p>这个判断不只是体感，也有一些旁证。Microsoft Research 和 GitHub 关于 Copilot 的受控实验里，使用 Copilot 的开发者在一个 JavaScript HTTP server 任务中完成速度快了 55.8%。[^copilot-productivity] GitHub 2024 年针对软件开发团队的 AI 调查也显示，超过 98% 的受访者表示所在组织已经尝试用 AI coding tools 生成测试用例。[^github-ai-survey] Stack Overflow 2025 年开发者调查里，约 70% 的 AI agent 用户同意 agent 减少了特定开发任务耗时，69% 同意它提高了个人生产率。[^stackoverflow-2025]</p>
+<p>这些数据不能直接证明“AI 让 TDD 变简单了”。它们支持的是一个更窄的结论：在编码、测试起草、重复修改这些局部任务上，AI 确实在降低摩擦。TDD 过去最难坚持的部分，恰好有不少落在这些局部任务上。</p>
+<p>过去 TDD 像是一件“知道应该做，但经常做不动”的事。AI 出现以后，它变得更容易启动，也更容易坚持小步反馈。</p>
+<p>这就是“AI 让 TDD 可行”的部分。</p>
+<h2 id="AI-更需要-TDD"><a href="#AI-更需要-TDD" class="headerlink" title="AI 更需要 TDD"></a>AI 更需要 TDD</h2><p>但另一面更关键：AI 也更需要 TDD。</p>
+<p>因为 AI 很容易给出一个看起来完整的答案。它会解释需求，会写实现，会补测试，会总结自己做了什么。如果没有外部约束，这个过程很容易变成一个封闭叙事：它先生成一个理解，再根据这个理解写测试，然后根据这个测试写实现，最后宣布一切通过。</p>
+<p>表面上看，这像是一个完整闭环。实际上，闭环里最重要的问题可能没有被回答：</p>
+<p>这个测试测的是我们真正想要的行为吗？</p>
+<p>它有没有把 bug 固化成期望？</p>
+<p>它有没有只覆盖 happy path？</p>
+<p>它有没有 mock 掉真正有风险的边界？</p>
+<p>它是不是为了让实现通过，顺手放宽了断言？</p>
+<p>TDD 在 AI 时代的价值，不只是“先写测试”这个动作，而是把 AI 的生成能力接入工程反馈回路。失败测试不是装饰，它要证明目标行为当前确实不存在；通过测试也不是表演，它要证明实现满足了我们事先定义的行为。</p>
+<p>AI 可以生成代码，但测试把它拉回到行为。</p>
+<p>AI 可以解释自己，但验证结果比解释更重要。</p>
+<p>AI 可以快速尝试方案，但红绿反馈能告诉我们哪些尝试真的成立。</p>
+<p>所以 TDD 在 AI 时代不是变轻了，而是变得更关键了。生成能力越强，越需要验证结构。</p>
+<p>这里也有反方向的证据提醒我们别太乐观。2024 年一项关于 GitHub Copilot 生成 Python 测试的实证研究评估了 290 个生成测试：在已有测试套件上下文中，只有 45.28% 是可直接通过的非空测试；如果没有已有测试套件上下文，92.45% 的生成结果是失败、损坏或空测试。[^copilot-test-generation] 也就是说，AI 确实能帮我们写测试，但“有上下文”和“需要人工修正”不是细节，而是成败条件。</p>
+<p>另一项关于生成式 AI 和 TDD 的早期实验也给出了类似提醒：GenAI 可以参与 TDD 流程，但代码质量监督不能省掉，模型有时会为了给出答案而误导非专家。[^genai-tdd] 越是想把 TDD 自动化，越要明确哪些地方必须由人或外部反馈接管。</p>
+<h2 id="先定义行为，而不是先写测试"><a href="#先定义行为，而不是先写测试" class="headerlink" title="先定义行为，而不是先写测试"></a>先定义行为，而不是先写测试</h2><p>不过，这里有一个容易误解的地方。</p>
+<p>AI 时代的 TDD，不能简单理解成“让 AI 先写测试”。如果需求本身还没说清楚，AI 先写测试也只是先写一份猜测。</p>
+<p>真正应该先出现的，不是测试代码，而是行为规格。</p>
+<p>也就是说，在让 AI 动手之前，最好先把这些东西说清楚：</p>
+<ul>
+<li>输入是什么？</li>
+<li>输出是什么？</li>
+<li>哪些状态会变化？</li>
+<li>哪些业务规则不能被破坏？</li>
+<li>哪些边界情况必须覆盖？</li>
+<li>权限、幂等、并发、兼容性有没有要求？</li>
+<li>哪些情况不属于本次范围？</li>
+<li>最后应该运行哪些验证命令？</li>
+</ul>
+<p>这一步不一定要写成长篇文档。很多时候，几条清楚的 bullet 就够了。关键是要把“对不对”从聊天感觉变成可执行的标准。</p>
+<p>测试不是让 AI 猜我们想要什么，而是把人的判断翻译成可以运行的东西。</p>
+<p>从 AI 的角度看，测试还不只是验收条件，它也是一种上下文。WebApp1K 这类 TDD benchmark 直接把测试用例同时当作 prompt 和 verification，评估模型能不能从测试中读出需求、实现功能并通过验证。它的结论很有启发：TDD 场景里，模型能力不只取决于一般代码能力，还取决于 instruction following、in-context learning，以及长上下文下是否丢失约束。[^tests-as-prompt]</p>
+<p>这也是为什么我觉得 AI-TDD 里，人的位置并没有后退。人少写了一些样板代码，但更需要负责定义行为、判断边界和审查测试是否表达了正确规格。</p>
+<p>如果行为定义错了，AI 写得越快，只会错得越完整。</p>
+<h2 id="最危险的是自写自验"><a href="#最危险的是自写自验" class="headerlink" title="最危险的是自写自验"></a>最危险的是自写自验</h2><p>AI-TDD 里最危险的反模式，是让同一个 AI 自写自验。</p>
+<p>它自己理解需求，自己设计测试，自己写实现，自己修改断言，自己宣布通过。整个过程看起来很顺，但问题是：没有外部规格，也没有独立审查。</p>
+<p>这会产生一些很隐蔽的问题。</p>
+<p>比如实现失败了，它可能不是停下来问规格是否理解错了，而是把断言改松一点。<br>比如原来有一个 bug，它可能把当前错误行为写进测试里，让 bug 变成“被保护的期望”。<br>比如它为了让单元测试容易写，把数据库、时间、权限、队列这些真正有风险的边界全部 mock 掉。<br>比如它写了很多测试，但测试复刻了生产逻辑，所以实现错了，测试也跟着错。<br>比如它新建一套横向切片测试，看起来覆盖很完整，却完全不符合项目已有 fixture、helper 和目录习惯。</p>
+<p>这些问题比“实现代码写错”更麻烦。</p>
+<p>代码写错了，测试可能会抓出来。测试写错了，就会把错误规格长期固化下来。它不只是没发现问题，还会给人一种已经验证过的错觉。</p>
+<p>所以在 AI-TDD 里，测试 review 甚至比实现 review 更重要。</p>
+<p>实现可以重写，错误测试会污染反馈回路。</p>
+<h2 id="更好的分工"><a href="#更好的分工" class="headerlink" title="更好的分工"></a>更好的分工</h2><p>我现在更倾向于把 AI-TDD 看成一种分工，而不是一种仪式。这一节只回答一个问题：一次需求从行为规格到完成断言，应该由谁负责哪一段。</p>
+<p>人负责定义行为和验收边界。<br>AI 负责起草测试、生成实现、修复失败、整理重复。<br>自动化工具负责持续给出反馈。<br>人再回来判断这些反馈是否足以说明任务完成。</p>
+<p>放到实际流程里，可以是这样：</p>
+<ol>
+<li>先写清楚行为规格和不覆盖范围。</li>
+<li>让 AI 先阅读相关代码和现有测试。</li>
+<li>让 AI 总结测试框架、fixture、mock 边界和运行命令。</li>
+<li>新增测试。</li>
+<li>先运行测试，确认它因为目标行为缺失而失败。</li>
+<li>先 review 测试，再写实现。</li>
+<li>写最小实现，让测试通过。</li>
+<li>运行相关测试、typecheck、lint 和构建。</li>
+<li>在测试保护下重构。</li>
+<li>用验证结果，而不是 AI 的语气，判断是否完成。</li>
+</ol>
+<p>这里最重要的不是步骤数量，而是反馈方向。</p>
+<p>测试要先约束实现，而不是实现失败以后反过来改测试。<br>验证命令要约束完成判断，而不是 AI 说完成就完成。<br>现有测试生态要约束新增测试，而不是每次需求都新建一套自己的小世界。</p>
+<p>这个流程看起来慢一点，但它实际上是在把 AI 的速度导入一个更可靠的轨道。</p>
+<p>没有轨道，速度越快越危险。</p>
+<h2 id="存量项目里，先研究测试生态"><a href="#存量项目里，先研究测试生态" class="headerlink" title="存量项目里，先研究测试生态"></a>存量项目里，先研究测试生态</h2><p>如果是在一个新项目里，TDD 的启动成本相对低一点。测试框架、目录结构、fixture 习惯都还可以一起塑造。</p>
+<p>但大多数真实工作不是这样。真实项目里已经有历史包袱，有旧测试，有命名习惯，有各种 helper 和 mock 边界。AI 如果一上来就新建测试文件，很容易写出一种“看起来没问题，但不像这个项目”的测试。</p>
+<p>这种测试短期可能能跑，长期很难维护。</p>
+<p>如果上一节讲的是“流程分工”，这一节讲的就是“进入项目之前先认路”。对存量项目，我觉得 AI-TDD 的第一步不是写测试，而是研究测试生态。</p>
+<p>可以先让 AI 回答这些问题：</p>
+<ul>
+<li>相关模块已有测试在哪里？</li>
+<li>用的是什么测试框架？</li>
+<li>fixture、factory、mock helper 怎么组织？</li>
+<li>单元测试、集成测试、端到端测试各自负责什么？</li>
+<li>哪些外部依赖通常 mock，哪些边界通常走真实集成？</li>
+<li>本地快速验证命令是什么？</li>
+<li>CI 必跑命令是什么？</li>
+<li>有没有最接近本次需求的既有测试？</li>
+</ul>
+<p>这一步很像我前面说的“先把 AI 放进工作流”。AI 不是凭空开始写，而是先进入项目已有的规则系统。</p>
+<p>越是存量项目，越不能只追求“有测试”。真正有价值的是“这个测试属于这个项目”。</p>
+<h2 id="测试策略应该写进仓库"><a href="#测试策略应该写进仓库" class="headerlink" title="测试策略应该写进仓库"></a>测试策略应该写进仓库</h2><p>研究一次测试生态还不够。如果我们希望 AI 稳定地做对这些事，就不能每次都靠临时提醒。</p>
+<p>对 AI 来说，不在上下文里的规则就等于不存在。你心里知道这个项目不喜欢过度 mock，知道端到端测试只覆盖关键路径，知道某些数据库行为必须走集成测试，但如果这些规则没有写出来，AI 不会天然知道。</p>
+<p>所以测试策略应该进入仓库。</p>
+<p>它可以在 <code>AGENTS.md</code>，可以在 <code>docs/testing.md</code>，可以在测试目录的 README，也可以在团队约定的其他位置。关键是让 AI 和人都能看到：</p>
+<ul>
+<li>常用测试命令是什么？</li>
+<li>什么情况写单元测试？</li>
+<li>什么情况写集成测试？</li>
+<li>什么情况才需要端到端测试？</li>
+<li>fixture、factory 和 helper 应该怎么复用？</li>
+<li>哪些边界不要随便 mock？</li>
+<li>测试命名有什么约定？</li>
+<li>flaky test 怎么处理？</li>
+<li>CI 上哪些检查必须通过？</li>
+</ul>
+<p>这些内容看起来像文档，其实也是 harness 的一部分。它们把人的偏好和经验变成环境约束，让 AI 不需要每次都从零猜测。</p>
+<p>这也是 AI 时代软件工程很重要的一个变化：项目不只是给人读的，项目也要能被 AI 读懂。</p>
+<h2 id="不是更多测试，而是更好的反馈"><a href="#不是更多测试，而是更好的反馈" class="headerlink" title="不是更多测试，而是更好的反馈"></a>不是更多测试，而是更好的反馈</h2><p>AI 可以很快生成很多测试，但更多测试不一定意味着更可靠。</p>
+<p>如果测试很慢、很脆、定位困难，AI 的迭代效率反而会下降。它可能开始绕过测试，或者为了让测试通过去修改断言。端到端测试尤其如此。它们有价值，但不应该因为 AI 写得快就无限膨胀。</p>
+<p>健康的测试组合仍然需要层次。</p>
+<p>快速的单元测试和组件测试，适合覆盖纯逻辑、边界计算、解析校验和状态转换。<br>集成测试适合覆盖数据库、队列、权限、时间、事务这些真实风险。<br>少量端到端测试适合保护关键用户路径和系统级冒烟。</p>
+<p>AI 降低了起草测试和重复修改的成本，但没有取消测试设计的判断。</p>
+<p>我们仍然要问：这个风险应该在哪一层验证？这个测试失败后能不能快速定位？这个 mock 是隔离噪音，还是遮住了真正风险？这个用例是在测行为，还是在测实现细节？</p>
+<p>TDD 的目标不是堆测试数量，而是建立有效反馈。</p>
+<h2 id="生成越便宜，验证越重要"><a href="#生成越便宜，验证越重要" class="headerlink" title="生成越便宜，验证越重要"></a>生成越便宜，验证越重要</h2><p>AI 让软件开发里的生成变得便宜了。</p>
+<p>代码可以更快生成，测试可以更快生成，文档可以更快生成，方案也可以更快生成。生成变便宜以后，真正稀缺的东西就变了。</p>
+<p>DORA 关于生成式 AI 的研究也提示了同一个方向：AI 会提升个人生产率、flow 和满意度，但如果团队的 review、测试和交付机制没有跟上，交付稳定性和吞吐反而可能下降。DORA 的 GenAI 报告进一步指出，AI adoption 增加和 delivery throughput、delivery stability 下降存在关联，其中一个解释是 AI 让代码生成更快，容易带来更大的 batch size，而大 batch 更慢 review，也更容易造成系统不稳定。[^dora-2024][^dora-genai]</p>
+<p>这说明 AI 把瓶颈从“能不能写出来”推到了“能不能及时 review、测试和交付”。TDD 在这里就不只是个人习惯，而是让生成速度进入可控反馈回路的一部分。</p>
+<p>稀缺的不再只是“谁能把代码写出来”，而是：</p>
+<ul>
+<li>谁能定义正确的问题？</li>
+<li>谁能说清楚行为边界？</li>
+<li>谁能判断测试是否表达了规格？</li>
+<li>谁能确认反馈是否可信？</li>
+<li>谁能为最终结果负责？</li>
+</ul>
+<p>TDD 正好站在这个位置上。</p>
+<p>它不是为了抵抗 AI，也不是为了保留某种旧时代的开发仪式。它是在 AI 时代重新变得重要的一种工程结构：用测试把意图固定下来，用失败证明问题存在，用通过证明行为成立，用重构保护长期演进。</p>
+<p>所以我不觉得 AI 会让 TDD 过时。</p>
+<p>更准确地说，AI 和 TDD 在补足彼此。</p>
+<p>AI 让我们更容易抵达绿灯，但 TDD 提醒我们先确认红灯是真的。AI 让生成变快，TDD 让验证跟上。AI 降低了 TDD 的执行成本，TDD 降低了 AI 的工程风险。</p>
+<p>这就是我现在更愿意相信的开发方式：</p>
+<p>不是把 AI 当成一个可以直接交付答案的人，也不是把 TDD 当成一个必须机械执行的仪式，而是让 AI 的生成能力和 TDD 的验证结构形成闭环。</p>
+<p>生成能力越强，越需要验证结构。验证结构越清楚，AI 的生成能力才越值得放心使用。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^beck-tdd]: Kent Beck, <a target="_blank" rel="noopener" href="https://www.informit.com/store/test-driven-development-by-example-9780321146533"><em>Test-Driven Development: By Example</em></a>。本文借用的是其中“用小步反馈推动设计”的 TDD 基本结构，而不是把书中的全部实践等同于 AI-TDD。<br>[^xunit-patterns]: Gerard Meszaros, <a target="_blank" rel="noopener" href="https://martinfowler.com/books/meszaros.html"><em>xUnit Test Patterns: Refactoring Test Code</em></a>。这里引用它来支撑“测试可维护性本身是一门工程实践”，尤其是 fixture、test double 和 test smell。<br>[^goos]: Steve Freeman, Nat Pryce, <a target="_blank" rel="noopener" href="https://growing-object-oriented-software.com/"><em>Growing Object-Oriented Software, Guided by Tests</em></a>。这里引用它来支撑“测试可以参与系统设计，而不只是事后验收”。<br>[^copilot-productivity]: Eirini Kalliamvakou, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/the-impact-of-ai-on-developer-productivity-evidence-from-github-copilot/"><em>The Impact of AI on Developer Productivity: Evidence from GitHub Copilot</em></a>，Microsoft Research。55.8% 是特定实验任务中的结果，不应外推为所有开发任务的通用提升。<br>[^github-ai-survey]: GitHub Blog, <a target="_blank" rel="noopener" href="https://github.blog/news-insights/research/survey-ai-wave-grows/"><em>Survey: The AI wave continues to grow on software development teams</em></a>。这里用来说明团队已经在尝试用 AI 生成测试用例，而不是证明生成测试天然可靠。<br>[^stackoverflow-2025]: Stack Overflow, <a target="_blank" rel="noopener" href="https://survey.stackoverflow.co/2025"><em>2025 Developer Survey</em></a>。这里引用的是开发者对 AI agent 节省局部任务时间和提高个人生产率的自报告数据。<br>[^copilot-test-generation]: Khalid El Haji, Carolin Brandt, Andy Zaidman, <a target="_blank" rel="noopener" href="https://carolin-brandt.de/publications/elhaji-ast24.pdf"><em>Using GitHub Copilot for Test Generation in Python: An Empirical Study</em></a>。这里引用它来支撑“AI 生成测试高度依赖已有测试上下文，且需要人工修正”。<br>[^genai-tdd]: Davide Falessi et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.10849"><em>Generative AI for Test Driven Development: Preliminary Results</em></a>。这是一项早期实验，适合作为“GenAI 可以参与 TDD，但质量监督不能省”的边界证据。<br>[^tests-as-prompt]: Yi Cui, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.09027"><em>Tests as Prompt: A Test-Driven-Development Benchmark for LLM Code Generation</em></a>。这里引用它来支撑“测试同时可以作为 prompt 和 verification”的视角。<br>[^dora-2024]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/"><em>Accelerate State of DevOps Report 2024</em></a>。这里引用它来支撑“AI 提升个人层面体验和生产率，但对交付稳定性和吞吐有意外 tradeoff”的系统视角。<br>[^dora-genai]: DORA, <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/"><em>Impact of Generative AI in Software Development</em></a>。这里引用它来支撑“生成速度可能通过更大 batch size 压力传导到 review、测试和交付系统”的解释。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>Kent Beck, <a target="_blank" rel="noopener" href="https://tidyfirst.substack.com/p/canon-tdd">Canon TDD</a>：适合回到 TDD 的红、绿、重构基本循环。</li>
+<li>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/TestPyramid.html">Test Pyramid</a>：适合理解为什么测试组合需要层次，而不是只堆端到端测试。</li>
+<li>Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/common-workflows">Claude Code common workflows</a>：其中包含生成测试、补充边界、运行并修复测试失败的工作流示例。</li>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness Engineering</a>：适合理解为什么 AI coding 需要可见的上下文、工具、检查和反馈回路。</li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>：适合理解为什么仓库中的项目说明和验证命令会影响 agent 的工作质量。</li>
+<li>DORA, <a target="_blank" rel="noopener" href="https://dora.dev/research/2024/dora-report/">Accelerate State of DevOps Report 2024</a> 和 <a target="_blank" rel="noopener" href="https://dora.dev/ai/gen-ai-report/">Impact of Generative AI in Software Development</a>：适合理解 AI 对个人生产率和团队交付系统的不同影响。</li>
+<li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/the-impact-of-ai-on-developer-productivity-evidence-from-github-copilot/">The Impact of AI on Developer Productivity: Evidence from GitHub Copilot</a>：适合理解 AI coding tools 对局部开发任务耗时的实证影响。</li>
+<li>GitHub Blog, <a target="_blank" rel="noopener" href="https://github.blog/news-insights/research/survey-ai-wave-grows/">Survey: The AI wave continues to grow on software development teams</a>：适合理解团队对 AI 生成测试用例的使用现状。</li>
+<li>Khalid El Haji, Carolin Brandt, Andy Zaidman, <a target="_blank" rel="noopener" href="https://carolin-brandt.de/publications/elhaji-ast24.pdf">Using GitHub Copilot for Test Generation in Python: An Empirical Study</a>：适合理解 AI 生成测试的上下文依赖和人工修正成本。</li>
+<li>Davide Falessi et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.10849">Generative AI for Test Driven Development: Preliminary Results</a>：适合理解 GenAI 参与 TDD 的早期实验和质量监督边界。</li>
+<li>Yi Cui, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.09027">Tests as Prompt: A Test-Driven-Development Benchmark for LLM Code Generation</a>：适合理解测试作为 prompt 与 verification 的双重角色。</li>
+<li>Stack Overflow, <a target="_blank" rel="noopener" href="https://survey.stackoverflow.co/2025">2025 Developer Survey</a>：适合理解开发者对 AI agent 节省局部任务时间和提升个人生产率的自报告数据。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/" class="post-title-link" itemprop="url">任务进度为什么会倒退</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-11 15:31:58" itemprop="dateCreated datePublished" datetime="2026-07-11T15:31:58+08:00">2026-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-16 23:21:03" itemprop="dateModified" datetime="2026-07-16T23:21:03+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">分布式系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/%E4%B8%80%E8%87%B4%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">一致性</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>有些 Bug 很反直觉。</p>
+<p>比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。</p>
+<p>更诡异的是，更新时间是新的，进度却是旧的。</p>
+<p>这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>这次问题的表现大概是这样：</p>
+<ol>
+<li>玩家在游戏内做了一次兑换。</li>
+<li>数据库里的任务记录一度变成了完成状态：<code>progress=1</code>，<code>status=CAN_CLAIM</code>。</li>
+<li>玩家退出游戏后重新登录。</li>
+<li>同一条任务又变回了未完成：<code>progress=0</code>，<code>status=INIT</code>。</li>
+</ol>
+<p>如果只看兑换流程，会觉得它没有问题。兑换完成后，平台服务通知任务服务更新进度，数据库也确实写成功了。</p>
+<p>真正的问题发生在退出游戏的时候。</p>
+<h2 id="三个模块各自都很合理"><a href="#三个模块各自都很合理" class="headerlink" title="三个模块各自都很合理"></a>三个模块各自都很合理</h2><p>这个任务系统被拆在三个模块里：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>平台服务</td>
+<td>平台事件入口，比如支付、兑换这类不直接发生在游戏循环里的操作</td>
+</tr>
+<tr>
+<td>任务服务</td>
+<td>任务系统核心，负责 DB 读写、进度计算、任务刷新</td>
+</tr>
+<tr>
+<td>游戏服务</td>
+<td>游戏内实时任务进度，负责内存缓存、客户端推送、退出时 flush</td>
+</tr>
+</tbody></table>
+<p>它们的职责单独看都很自然：</p>
+<ul>
+<li>平台事件发生在平台服务，所以兑换后由平台服务通知任务服务。</li>
+<li>任务数据落在任务服务，所以最终由任务服务写数据库。</li>
+<li>游戏中需要实时显示任务进度，所以游戏服务会在玩家进游戏时加载任务进度到内存。</li>
+</ul>
+<p>问题就出在最后一点：游戏服务里有一份任务进度缓存。</p>
+<h2 id="两条写路径"><a href="#两条写路径" class="headerlink" title="两条写路径"></a>两条写路径</h2><p>这个系统里，任务进度至少有两条更新路径。</p>
+<p>第一条是游戏内事件。</p>
+<p>例如射击、开宝箱、赚金币这种行为，本来就发生在游戏服里：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">游戏内事件</span><br><span class="line">  -&gt; 更新游戏服务内存缓存</span><br><span class="line">  -&gt; 推送客户端任务进度变化</span><br><span class="line">  -&gt; 退出或阶段性 flush</span><br><span class="line">  -&gt; 任务服务写 DB</span><br></pre></td></tr></table></figure>
+
+<p>这条路径是自洽的。内存先更新，DB 后更新，客户端也能收到推送。</p>
+<p>第二条是平台事件。</p>
+<p>兑换不是游戏服自己完成的，而是平台服务处理的：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">平台服务完成兑换</span><br><span class="line">  -&gt; 通知任务服务更新进度</span><br><span class="line">  -&gt; 任务服务按条件更新任务</span><br><span class="line">  -&gt; 写 DB</span><br></pre></td></tr></table></figure>
+
+<p>这条路径也自洽。兑换成功后，任务服务把 DB 里的进度加上去。</p>
+<p>但它少了一件事：没有通知游戏服务里的任务缓存。</p>
+<h2 id="脏缓存是怎么覆盖正确数据的"><a href="#脏缓存是怎么覆盖正确数据的" class="headerlink" title="脏缓存是怎么覆盖正确数据的"></a>脏缓存是怎么覆盖正确数据的</h2><p>把时间线连起来，就能看到问题：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">玩家进入游戏</span><br><span class="line">  -&gt; 游戏服务从任务服务加载任务进度</span><br><span class="line">  -&gt; 缓存在游戏服务内存中</span><br><span class="line">  -&gt; 此时 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家在游戏内兑换</span><br><span class="line">  -&gt; 平台服务完成兑换</span><br><span class="line">  -&gt; 任务服务写 DB</span><br><span class="line">  -&gt; DB 变为 progress=1, status=CAN_CLAIM</span><br><span class="line">  -&gt; 游戏服务缓存仍然是 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家退出游戏</span><br><span class="line">  -&gt; 游戏服务 flush 玩家任务缓存</span><br><span class="line">  -&gt; 把内存里的旧进度 flush 到任务服务</span><br><span class="line">  -&gt; 任务服务用旧 progress/status 覆盖 DB</span><br></pre></td></tr></table></figure>
+
+<p>所以，数据库不是没有更新成功。</p>
+<p>它是先被正确更新了，然后又被旧缓存覆盖了。</p>
+<p>这就是这个问题最容易误判的地方：如果只查兑换那一刻的数据库，会看到正确结果；如果查退出后的数据库，会看到错误结果。中间缺的不是一次写入，而是一次来自旧状态的覆盖写入。这个形态和并发控制里常说的 lost update 很接近：不是没有写入，而是后来的旧快照把已经成立的新事实覆盖掉了。[^optimistic-lock]</p>
+<h2 id="为什么更新时间是对的"><a href="#为什么更新时间是对的" class="headerlink" title="为什么更新时间是对的"></a>为什么更新时间是对的</h2><p>这个现象也很迷惑：<code>upd_time</code> 看起来是对的，但 <code>progress</code> 和 <code>status</code> 是错的。</p>
+<p>原因在 SQL 写法里。</p>
+<p>任务更新时，<code>progress</code>、<code>upd_time</code>、<code>status</code> 是一起 SET 的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> task_progress</span><br><span class="line"><span class="keyword">set</span> progress <span class="operator">=</span> ?,</span><br><span class="line">    upd_time <span class="operator">=</span> ?,</span><br><span class="line">    status <span class="operator">=</span> ?</span><br><span class="line"><span class="keyword">where</span> role_id <span class="operator">=</span> ?</span><br><span class="line">  <span class="keyword">and</span> task_id <span class="operator">=</span> ?</span><br></pre></td></tr></table></figure>
+
+<p>退出 flush 那条路径在写之前会先查一次 DB。此时 DB 里已经有新的 <code>upd_time</code>，但内存缓存里还是旧的进度和状态。</p>
+<p>于是它写回去的是：</p>
+<ul>
+<li><code>progress</code>: 来自旧缓存，变回 0</li>
+<li><code>status</code>: 来自旧缓存，变回 INIT</li>
+<li><code>upd_time</code>: 来自刚查出来的 DB 记录，看起来还是新的</li>
+</ul>
+<p>这就造成了一个很有迷惑性的现场：时间像是更新过，数据却像是回滚了。</p>
+<p>它不是事务回滚，而是旧状态覆盖。</p>
+<h2 id="根因不是缓存，而是缓存的所有权不清楚"><a href="#根因不是缓存，而是缓存的所有权不清楚" class="headerlink" title="根因不是缓存，而是缓存的所有权不清楚"></a>根因不是缓存，而是缓存的所有权不清楚</h2><p>看到这里，很容易得出一个简单结论：缓存有问题。</p>
+<p>但更准确地说，是这份缓存的所有权和写入边界不够清楚。</p>
+<p>游戏服务里的任务缓存适合处理游戏内事件，因为这些事件天然发生在游戏服务，并且需要实时推送客户端。</p>
+<p>但兑换任务不是游戏内事件。它的事实来源在平台服务，最终状态在任务服务，游戏服务只是曾经加载过一份旧快照。</p>
+<p>如果一份缓存满足下面两个条件，它就很危险：</p>
+<ol>
+<li>它不是事实来源。</li>
+<li>它可以在退出、定时任务、补偿流程里反向覆盖事实来源。</li>
+</ol>
+<p>这时候缓存就不只是缓存了，它变成了另一个写入者。Microsoft 的 Cache-Aside pattern 文档也明确提醒：cache-aside 本身并不保证缓存和数据源一致，外部进程更新数据源时，缓存要等重新加载或失效后才会反映变化。[^cache-aside]</p>
+<p>而多个写入者最怕的，就是每个人都以为自己手上的状态是最新的。</p>
+<h2 id="修复为什么不是加一次同步"><a href="#修复为什么不是加一次同步" class="headerlink" title="修复为什么不是加一次同步"></a>修复为什么不是加一次同步</h2><p>直觉上的修复是：兑换后通知游戏服务，把任务缓存也更新掉。</p>
+<p>这当然是一种方案，但它会引入新的问题：</p>
+<ul>
+<li>要给游戏服务增加更新任务进度的 RPC 能力。</li>
+<li>要考虑玩家是否在线、在哪个游戏服、通知失败怎么办。</li>
+<li>要保证 DB 更新和游戏服务缓存更新之间的失败补偿。</li>
+<li>以后所有平台任务都要想清楚要不要同步游戏服务缓存。</li>
+</ul>
+<p>这不是不能做，而是成本更高。AWS 对 cache-aside 和 write-through 的区分可以解释这里的取舍：如果选择 write-through，应用就要在更新主数据库后同步维护缓存；如果选择 cache-aside，就要承认缓存是按需加载的副本，并明确它的失效和回源机制。[^aws-caching]</p>
+<p>这次采用的是更小的修复：不要把兑换任务加载到游戏服务缓存里。</p>
+<p>原因很简单：兑换任务不需要游戏内实时追踪。</p>
+<p>玩家做兑换时，事实发生在平台服务；任务完成状态也由任务服务写 DB。它不需要由游戏服内存来参与生命周期。</p>
+<p>所以把兑换任务加入一个“非游戏内追踪任务”的排除列表：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">EXCHANGE_TASK_ID</span> <span class="operator">=</span> <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Integer&gt; NON_GAMEPLAY_TASK_IDS = set(</span><br><span class="line">    BIND_PHONE_TASK_ID,</span><br><span class="line">    DAILY_RECHARGE_TASK_ID,</span><br><span class="line">    EXCHANGE_TASK_ID</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>这样玩家进入游戏时，这类任务不会进入游戏服务的内存缓存：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">不加载到游戏服务</span><br><span class="line">  -&gt; 不产生游戏服务缓存</span><br><span class="line">  -&gt; 退出时不 flush</span><br><span class="line">  -&gt; 不会用旧缓存覆盖 DB</span><br></pre></td></tr></table></figure>
+
+<p>这个修复的关键不是“少写一段同步代码”，而是重新划清了任务的归属。</p>
+<p>游戏内任务交给游戏服务缓存追踪。</p>
+<p>平台任务不要进入游戏服务缓存。</p>
+<h2 id="什么时候应该让缓存参与写入"><a href="#什么时候应该让缓存参与写入" class="headerlink" title="什么时候应该让缓存参与写入"></a>什么时候应该让缓存参与写入</h2><p>这次问题给我的提醒是：不要只问“要不要缓存”，还要问“缓存有没有资格写回”。</p>
+<p>如果缓存只是读优化，它失效或过期最多影响性能。</p>
+<p>如果缓存会写回数据库，它就进入了 <a href="/2025/08/21/%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/" title="缓存一致性">缓存一致性</a> 的核心路径。此时至少要回答几个问题：</p>
+<ol>
+<li>缓存里的数据是谁更新的？</li>
+<li>还有没有其他路径会更新同一份 DB 数据？</li>
+<li>缓存写回时，是覆盖写、增量写，还是带版本判断的写？</li>
+<li>如果 DB 已经被其他路径更新，缓存写回应该跳过、合并，还是报错？</li>
+<li>哪些业务根本不应该进入这份缓存？</li>
+</ol>
+<p>这几个问题里，最后一个经常被忽略。乐观并发控制给出的思路是：保存前比较“我当初读到的版本”和“数据库当前版本”，如果已经变化，就不要静默覆盖，而是进入冲突处理。EF Core 的 concurrency token 和 Fowler 的 Optimistic Offline Lock 都是在解决这类“旧副本写回”问题。[^concurrency-token]</p>
+<p>很多时候，最稳的修复不是让所有状态同步到所有地方，而是减少不该拥有状态的地方。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个 Bug 表面上是“任务进度倒退”，本质上是两条写路径竞争同一行数据：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">平台服务路径：写入正确进度</span><br><span class="line">游戏服务路径：退出时 flush 旧缓存</span><br><span class="line">最终结果：旧缓存覆盖新 DB</span><br></pre></td></tr></table></figure>
+
+<p>它提醒我一件事：</p>
+<p>缓存不是只要命中率高就算设计完成。只要缓存能写回，它就是一个数据作者。</p>
+<p>一个系统里可以有多个读者，但最好不要有太多自以为拥有事实的作者。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^optimistic-lock]: Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里借用的是“检测并阻止并发业务事务互相覆盖”的思路，不是说这个事故一定发生在 ORM 或长事务场景。<br>[^cache-aside]: Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a>。这里引用它来支撑“cache-aside 不自动保证缓存和数据源一致，外部写路径会让缓存变旧”的判断。<br>[^aws-caching]: AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a>。这里引用它来区分 cache-aside &#x2F; lazy loading 和 write-through：前者按需填充，后者要求应用在主库更新后主动维护缓存。<br>[^concurrency-token]: Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a>；Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里引用它们来支撑“旧快照写回应带版本判断或冲突处理，而不是无条件覆盖”的设计原则。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a></li>
+<li>AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a></li>
+<li>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a></li>
+<li>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" class="post-title-link" itemprop="url">把 AI 放进工作流</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-11T00:00:00+08:00">2026-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-16 22:53:19" itemprop="dateModified" datetime="2026-07-16T22:53:19+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面两篇文章分别谈了程序员的职责和 GPT 的能力边界：<a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" title="代码、工具与人：AI 时代的程序员">代码、工具与人：AI 时代的程序员</a>，以及 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a>。</p>
+<p>这一篇继续往下走，谈一个更具体的问题：日常工作里，我到底应该怎样使用 AI？</p>
+<p>我现在越来越觉得，AI 不是靠一次提示词用好的。</p>
+<p>提示词当然重要。但真正决定效果的，往往不是某一句话写得多漂亮，而是 AI 被放进了什么样的工作方式里：什么时候先澄清，什么时候先读上下文，什么时候可以动手，什么时候必须验证，什么时候应该把结论写回文档。OpenAI 在谈 Codex 的 agent-first 实践时，把工程师的角色描述为设计环境、指定意图和建立反馈循环；Anthropic 在讨论 agentic systems 时，也区分了预定义路径的 workflow 和由模型动态决定步骤的 agent。[^harness-engineering][^anthropic-agents]</p>
+<p>也就是说，问题不是“怎么让 AI 回答得更像一个聪明人”，而是“怎么让 AI 参与一个可靠的工作流”。</p>
+<h2 id="不要只和-AI-聊天"><a href="#不要只和-AI-聊天" class="headerlink" title="不要只和 AI 聊天"></a>不要只和 AI 聊天</h2><p>很多时候，我们会反复对 AI 说同样的东西：先理解上下文，不要急着改；修 bug 前先复现；写完以后要验证；不要随便宣布完成；重要结论要沉淀到文档里。</p>
+<p>如果每次都靠临时提醒，这件事很容易失效。因为对话会变长，上下文会变脏，人的注意力也会松。AI 可能这次听进去了，下次又回到它更熟悉的生成模式里：先给一个看起来合理的答案。</p>
+<p>所以我把这些重复要求整理成了 skill：<a target="_blank" rel="noopener" href="https://cnb.cool/ryuu64/skills%E3%80%82">https://cnb.cool/ryuu64/skills。</a></p>
+<p>skill 对我来说，不是“更长的提示词”，而是一种协作协议。它把那些反复出现的工程判断写成可复用流程，让 AI 知道在什么场景下该采用什么工作方式。这个判断也和 Codex、Claude Code 的官方建议相近：稳定的项目偏好应该进入 <code>AGENTS.md</code>、skill 或项目文档，而不是每次都靠临时 prompt 重复。[^codex-best-practices][^claude-skills]</p>
+<h2 id="先决定当前阶段"><a href="#先决定当前阶段" class="headerlink" title="先决定当前阶段"></a>先决定当前阶段</h2><p>AI 很擅长生成内容，但它不一定天然知道什么时候该停下来理解上下文，什么时候该先验证假设，什么时候该把结论写回文档。</p>
+<p>所以我更倾向于先判断当前需求处在哪个阶段。对复杂、模糊或多步骤任务，先 plan 再动手，比直接进入实现更稳；对简单任务，则没有必要把流程做重。[^codex-plan-first]</p>
+<p>当我还没有想清楚方案时，<code>grill-then-docs</code> 对我很重要。它先用 <code>grill</code> 的方式把一个决策点问透：有哪些选项，各自的代价是什么，推荐哪一个，为什么。等结论稳定以后，再把这些结论写回项目文档。这样 AI 不只是陪我聊了一轮方案，而是把这轮讨论变成项目之后还能复用的上下文。</p>
+<p>比如看不懂一段代码时，我不希望 AI 直接解释当前文件，而是先使用 <code>zoom-out</code> 拉高一层，弄清楚它在系统里的位置：上游是谁、下游是谁、核心概念是什么、下一步应该读哪里。Claude Code 的常见工作流里也建议先从 broad questions 开始，再逐步深入具体组件和执行路径。[^claude-common-workflows] 这样后面的修改才不会只盯着局部。</p>
+<p>修 bug 时，我会更希望它进入 <code>diagnose</code> 的流程：先建立反馈循环，再复现问题，然后提出可证伪的假设，用日志、测试或调试器去验证。很多 bug 真正难的地方不在改动本身，而在确认自己没有修错方向。Anthropic 的 coding agent 讨论也指出，代码任务之所以适合 agent，很大一部分原因在于代码可以通过自动化测试验证，agent 可以用测试结果迭代。[^anthropic-coding-agents]</p>
+<p>如果是在实现一个明确的新行为，我会倾向于用 <code>tdd</code>。先列业务规则、边界条件和验收范围，再写失败测试，再写最小实现。AI 可以很快生成代码，但测试会把它拉回到具体行为上，不让它只写出一段“看起来像那么回事”的实现。</p>
+<p>任务做完以后，我还会要求 <code>verification-before-completion</code>。AI 不能只说“已经完成”，而要先运行对应的验证命令，读输出，再根据结果判断能不能做完成断言。这个 skill 对我很重要，因为 AI 很容易在语气上显得很确定，但工程上真正需要的是证据。Codex 的最佳实践也把测试、lint、type check、行为确认和 diff review 放在可靠性收口里。[^codex-test-review]</p>
+<p>如果过程中形成了稳定结论，比如某个模块的约束、某种排障方法、某个架构决策，我会再用 <code>project-docs-sync</code> 或 <code>project-docs-writing</code> 把它同步回项目文档。否则这次对话结束以后，经验又散掉了，下次还要重新解释。OpenAI 在 Harness Engineering 里把 repository knowledge 作为 system of record，并把短入口文件、结构化文档和渐进式披露放在一起使用；这其实是在解决同一个问题：让 AI 能从项目内部重新找到稳定上下文。[^repo-system-of-record]</p>
+<pre>
+<code class="mermaid">
+
+flowchart TD
+    A[遇到需求] --&gt; B{当前最需要澄清什么}
+    B --&gt;|方案还不清楚| K[grill-then-docs&lt;br&#x2F;&gt;先问透决策，再写回文档]
+    B --&gt;|不熟悉代码| C[zoom-out&lt;br&#x2F;&gt;先建立上下文地图]
+    B --&gt;|排查 bug| D[diagnose&lt;br&#x2F;&gt;复现、假设、验证、收敛根因]
+    B --&gt;|实现新行为| E[tdd&lt;br&#x2F;&gt;测试先行，按行为推进]
+    K --&gt; F
+    C --&gt; F[修改或继续分析]
+    D --&gt; F
+    E --&gt; F
+    F --&gt; G[verification-before-completion&lt;br&#x2F;&gt;用新鲜证据确认结果]
+    G --&gt; H{形成稳定结论?}
+    H --&gt;|是| I[project-docs-sync &#x2F; project-docs-writing&lt;br&#x2F;&gt;写回项目文档]
+    H --&gt;|否| J[结束任务]
+    I --&gt; J
+</code>
+</pre>
+
+<p>这些流程看起来琐碎，但它们决定了 AI 是在帮你推进工程，还是只是在生成一堆看起来合理的文本。</p>
+<h2 id="处理-AI-的失控"><a href="#处理-AI-的失控" class="headerlink" title="处理 AI 的失控"></a>处理 AI 的失控</h2><p>把 AI 放进工作流，并不是因为 AI 不会做事。恰恰相反，是因为它太容易流畅地做事，甚至在方向不对的时候也显得很有把握。</p>
+<h3 id="上下文污染"><a href="#上下文污染" class="headerlink" title="上下文污染"></a>上下文污染</h3><p>我使用 AI 的过程中遇到过不少问题。最常见的一类，是上下文变得太长、太杂以后，AI 开始不理解业务。它会抓住对话里某个局部信息，然后沿着一个不对的方向继续推理，甚至越解释越偏。</p>
+<p>这种时候，继续在原来的对话里纠正，不一定是最好的办法。因为问题有时不在某一句提示词，而在整个上下文已经被污染了。OpenAI 对“大 AGENTS.md”的反思很有代表性：上下文是稀缺资源，太多指导反而会挤掉任务、代码和真正相关的文档。[^context-is-scarce] 我会选择新开一个对话，或者先清理上下文，再把真正重要的背景、约束和当前目标重新说清楚。如果项目里已经有文档，就让 AI 先看文档，而不是继续依赖一段越来越长的聊天记录。</p>
+<h3 id="调试时跳过证据"><a href="#调试时跳过证据" class="headerlink" title="调试时跳过证据"></a>调试时跳过证据</h3><p>另一类问题出现在 debug 时。AI 很容易想直接根据代码猜原因，然后给出一个修复方案。这个过程看起来很快，但风险很高，因为它可能只是在修一个“看起来像问题”的地方。我遇到过 AI 死活不肯先插桩、不肯根据日志复现，而是反复尝试直接改代码。</p>
+<p>后来我用 <code>diagnose</code> 去约束这个过程，并且反复调整它的规则：先建立反馈循环，先复现，再提出假设；需要日志就插有明确目的的日志；每次观察结果以后更新假设，而不是直接跳到修复。这样做会慢一点，但它能把 AI 从“猜一个答案”拉回到“拿证据收敛问题”。这也是人在环（Human-in-the-Loop）真正有价值的地方：人不只是最后点确认，而是在高不确定、高风险或缺证据的位置把流程停住。[^hitl]</p>
+<h3 id="混淆计划和事实"><a href="#混淆计划和事实" class="headerlink" title="混淆计划和事实"></a>混淆计划和事实</h3><p>还有一类更隐蔽的问题：AI 看起来像是知道自己在干什么，但实际上它可能只是选择了一个“看起来合理”的位置。</p>
+<p>比如我的 <code>grill-then-docs</code>，它的目标是先把方案问清楚，再把稳定结论沉淀下来。可在一开始，AI 经常会把 grill 之后“接下来要做什么”写进 <code>./docs/features</code> 或 <code>./docs/architecture</code>。从表面看，这很合理：方案讨论和功能、架构都有关。但实际上这是错误的，因为 grill 后续要做的事情只是计划，不是已经成立的功能事实，也不是架构事实。</p>
+<p>它应该先进入 <code>./docs/plan</code>，等实现完成、结论稳定以后，才有资格进入 features 或 architecture。</p>
+<p>这个错误很有代表性。AI 能根据文字相似性把内容放到看起来相关的地方，但“语义相关”不等于“事实身份正确”。一个计划即使和架构有关，也仍然只是计划；一个候选方案即使描述得很完整，也还不是系统事实。Microsoft 的 Human-AI Interaction Guidelines 也提醒我们，AI 系统需要让用户能理解、纠正和恢复，而不是把一个看似合理的输出直接当作事实。[^human-ai-guidelines]</p>
+<p>这背后更完整的能力边界，我在 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a> 里单独写过。放到工作流里看，解决办法不是指望 AI 自己突然理解项目知识治理，而是把规则明确写进去：grill 之后形成的后续计划，应该写到 <code>/docs/plan</code>，不能直接写进 <code>/docs/features</code> 或 <code>/docs/architecture</code>。</p>
+<p>这不是一个简单的目录偏好，而是在告诉 AI：什么东西还只是计划，什么东西才可以被当作项目事实。</p>
+<h2 id="把偏好变成约束"><a href="#把偏好变成约束" class="headerlink" title="把偏好变成约束"></a>把偏好变成约束</h2><p>使用 AI 写代码时，很多问题不是 AI 不会，而是它不知道你在意什么。</p>
+<p>你在意命名是否贴合领域，注释是否解释意图而不是复述代码，提交信息是否清楚，文档是否跟着代码一起更新，这些偏好如果每次都临时说明，就很容易遗漏。</p>
+<p>skill 的价值在于把这些偏好变成稳定约束。它不是让 AI 替我做判断，而是让 AI 在我设定的边界里工作。更准确地说，skill 管的是“在某类任务里如何行动”，而不是“把人的责任外包出去”。</p>
+<p>这也是为什么我不太愿意把这件事叫作“写提示词”。提示词更像一次性的表达，工作流则会问另一组问题：</p>
+<ul>
+<li>这个需求现在处在哪个阶段？</li>
+<li>AI 应该先读什么上下文？</li>
+<li>什么情况下可以动手？</li>
+<li>什么结果可以算完成？</li>
+<li>需要什么证据才能宣布完成？</li>
+<li>哪些结论应该写回文档？</li>
+</ul>
+<p>这些问题比一句漂亮提示词更重要。</p>
+<h2 id="让-AI-更像协作者"><a href="#让-AI-更像协作者" class="headerlink" title="让 AI 更像协作者"></a>让 AI 更像协作者</h2><p>skill 是一种协作协议。它让 AI 知道在什么场景下该采用什么工作方式，也让我不用每次都从零开始解释自己的工程习惯。</p>
+<p>这也对应了前面两篇文章的结论：AI 可以加速表达、生成和试探，但程序员仍然要负责判断、边界和验证。把 AI 放进工作流，就是把这些责任拆成更清晰的流程，让 AI 更稳定地参与其中。</p>
+<p>好的 AI 使用方式，不是把人从流程里拿掉，而是让人更清楚地站在该负责的位置上。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^harness-engineering]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering: leveraging Codex in an agent-first world</em></a>。这里引用它来支撑“AI 使用效果取决于环境、意图、工具和反馈循环，而不只是 prompt”的判断。<br>[^anthropic-agents]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents"><em>Building Effective AI Agents</em></a>。Anthropic 区分 workflow 与 agent，并提醒只在复杂度确实需要时提升自主性。<br>[^codex-best-practices]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用的是“把重复指导沉淀到 <code>AGENTS.md</code>、skill、配置和自动化工作流”的实践建议。<br>[^claude-skills]: Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/skills"><em>Extend Claude with skills</em></a>。Claude Code 的 skill 文档强调 <code>SKILL.md</code> 保持聚焦，细节放入按需加载的 supporting files。<br>[^codex-plan-first]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices: Plan first for difficult tasks</em></a>。这里引用它来支撑复杂任务先规划、再执行的工作流。<br>[^claude-common-workflows]: Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/common-workflows"><em>Claude Code common workflows</em></a>。其中“理解代码库”和“查找相关代码”的建议都强调从广到窄地建立上下文。<br>[^anthropic-coding-agents]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents"><em>Building Effective AI Agents</em></a>。这里引用的是 coding agents 适合用测试反馈迭代的判断。<br>[^codex-test-review]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices: Improve reliability with testing and review</em></a>。这里引用它来支撑“完成断言必须绑定测试、检查、行为确认和 review”。<br>[^repo-system-of-record]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering</em></a>。这里引用的是“repository knowledge as the system of record”和渐进式披露的实践。<br>[^context-is-scarce]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering</em></a>。这里引用的是“大型指令文件会挤占任务、代码和相关文档”的上下文管理经验。<br>[^hitl]: 参见 Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>；以及 NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它们来支撑“人工介入点需要上下文、控制、恢复和责任边界”的说法。<br>[^human-ai-guidelines]: Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>。这份 CHI 2019 论文提出并验证了 18 条 Human-AI Interaction 设计指南，适合支撑“AI 输出需要可理解、可纠正、可恢复”的边界。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness engineering</a>：适合理解为什么 AI coding 的关键不只是提示词，而是环境、工具、反馈和知识系统。</li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>：适合理解 <code>AGENTS.md</code>、plan-first、测试验证和 review 如何进入日常工作流。</li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective AI Agents</a>：适合理解 workflow、agent、自主性、测试反馈和 guardrails 的边界。</li>
+<li>Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/common-workflows">Claude Code common workflows</a>：适合把“看代码、修 bug、写测试、写文档”拆成可执行工作流。</li>
+<li>Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/skills">Extend Claude with skills</a>：适合理解 skill 为什么应该聚焦入口和按需加载，而不是变成大而全说明书。</li>
+<li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/">Guidelines for Human-AI Interaction</a>：适合理解人在 AI 系统中的控制、纠错和恢复位置。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" class="post-title-link" itemprop="url">GPT 有智能，但不是责任主体</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-09 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-09T00:00:00+08:00">2026-07-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-16 23:11:24" itemprop="dateModified" datetime="2026-07-16T23:11:24+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>讨论 GPT 这样的 AI 时，我们很容易陷入两个极端。</p>
+<p>一种说法是：它只是概率接龙，根本不理解，也没有智能。另一种说法是：它已经表现得像一个人，所以它当然理解，也当然能判断。</p>
+<p>我觉得这两种说法都太快了。GPT 确实不是传统意义上的“查表机器”，它能在语言、代码、概念和任务之间建立复杂关系，也能解决许多过去需要人类经验才能处理的问题。但它的理解不是人的理解，它的判断也不是责任主体的判断。</p>
+<p>这个判断不只是使用体验。关于大语言模型是否“理解”，学界本来就有持续争论。Mitchell 和 Krakauer 在关于 LLM 理解能力的综述中，把问题放在“不同理解模式”的层面讨论；Bender 和 Koller 则提醒我们区分语言形式和语言意义，不能因为模型能处理形式，就直接推断它拥有人的意义理解。[^understanding-debate] 另一边，GPT-3、GPT-4 相关研究又确实显示，规模化语言模型能在许多任务上表现出强大的迁移和问题求解能力。[^gpt-capability]</p>
+<p>所以，真正值得问的不是“GPT 到底有没有理解”，而是：我们说一个东西理解了某件事时，到底在说什么？</p>
+<h2 id="什么叫理解"><a href="#什么叫理解" class="headerlink" title="什么叫理解"></a>什么叫理解</h2><p>理解不是一个单层概念。</p>
+<p>如果把理解定义得很窄，等同于“能不能在文本中建立结构关系并给出有效解释”，那 GPT 显然有某种理解能力。如果把理解定义得更接近人，要求它把语言和现实经验、行动后果、社会责任连接起来，那它又明显不具备人的理解。这也是为什么我更愿意把问题拆开，而不是直接回答“有”或“没有”。</p>
+<p>最低限度的理解，是能建立关系。比如看到一个错误日志，知道它可能和某个配置、某个 API 用法、某个版本变化有关；看到一段代码，知道变量、函数、调用链之间大致是什么关系。GPT 在这个层面上很强，它能从大量文本和代码中学到模式，并在新的上下文里组合这些模式。</p>
+<p>更进一步的理解，是能放进上下文里解释。不是只知道“这段代码是什么”，而是知道它为什么在这里，受什么约束，和系统里其他部分有什么关系。如果给 GPT 足够上下文，它也能在这个层面表现得不错。它可以解释一段业务逻辑，可以比较几个方案，可以指出某个实现可能不符合当前架构。</p>
+<p>但人的理解还不止这些。</p>
+<p>人理解一件事，往往还意味着知道它在现实中的位置。这个需求为什么存在，谁会使用它，错了会造成什么后果，哪些事实已经成立，哪些还只是计划，哪些判断需要承担责任。这些东西不只是文本关系，也不只是概念关系，它们和现实经验、组织规则、项目状态、责任分配有关。</p>
+<p>GPT 可以在文本里模拟这些关系，也可以根据你给出的规则做出候选判断。但它并不生活在这个项目里，不承担这个系统上线后的后果，也不会因为一次错误分类让团队文档长期混乱。它可以说“这看起来像架构决策”，但它不能替你确认这是否已经成为项目事实。</p>
+<p>这就是我说的：GPT 有理解能力，但它的理解不是人的理解。</p>
+<h2 id="什么叫判断"><a href="#什么叫判断" class="headerlink" title="什么叫判断"></a>什么叫判断</h2><p>判断也要分层看。</p>
+<p>有些判断是规则型的。比如这段代码有没有语法错误，某个测试是否通过，一个接口返回值是否符合约定。只要规则足够明确，GPT 可以很好地辅助这些判断，甚至可以帮你生成验证方式。</p>
+<p>但“能给出判断”不等于“能稳定知道自己判断是否正确”。TruthfulQA 这类研究说明，模型可能会复述训练语料中的常见错误；关于模型校准的研究也显示，模型在特定格式下能估计自己答案的可信度，但这种能力会随任务和格式变化而漂移。OpenAI 关于幻觉的研究也指出，很多训练和评测方式会奖励猜测，而不是奖励承认不确定。[^truth-calibration]</p>
+<p>有些判断是基于事实状态的。比如一段文档应该放到 <code>docs/features</code>、<code>docs/architecture</code> 还是 <code>docs/plan</code>。这表面上像是分类问题，实际上是在判断这段内容到底是什么：它是已经实现的功能事实，还是尚未执行的计划？是已经被系统采纳的架构约束，还是一次讨论中的候选方案？</p>
+<p>GPT 容易在这里出错。它可能会根据语义相关性做选择：这段话和功能有关，就放到 features；这段话和架构有关，就放到 architecture。但对项目来说，真正重要的不是“相关”，而是“身份正确”。一个计划即使和架构有关，也仍然只是计划；一个候选方案即使描述得很完整，也还不是系统事实。</p>
+<p>这类判断需要事实依据，也需要责任主体。GPT 可以提出候选结论，但不能替程序员确认事实状态。</p>
+<p>还有一类判断是价值取舍。比如为了可维护性牺牲一点性能是否值得，为了交付速度临时接受一个技术债是否合适，一个设计是否符合团队长期方向。这些判断并不只是事实题，也不只是偏好题，而是事实、约束、目标和责任放在一起之后的选择。</p>
+<p>这类判断在 AI 研究里也很微妙。关于 ChatGPT 道德判断的实验显示，它的回答可能和人类判断不一致，也会受到提示方式、选项呈现和模型差异影响。也就是说，AI 可以生成看起来像价值判断的文本，但这不等于它成为了一个能稳定承担判断后果的价值主体。[^moral-judgment]</p>
+<p>GPT 可以参与讨论，可以列选项，可以指出代价。但最后做判断的人，仍然必须是人。</p>
+<h2 id="什么叫智能"><a href="#什么叫智能" class="headerlink" title="什么叫智能"></a>什么叫智能</h2><p>如果把智能理解为解决问题的能力，那么 GPT 显然表现出了某种真实的机器智能。</p>
+<p>它能写代码、解释代码、翻译文本、总结资料、生成测试、提出方案、辅助排障。它不是简单地复制训练材料，而是在新上下文里组合已有模式，形成有用输出。把这些能力说成“完全没有智能”，并不符合我们的实际体验。</p>
+<p>这也能从研究脉络里看到。GPT-3 论文展示了大模型在少样本设置下的跨任务能力；“Sparks of AGI” 一文则记录了早期 GPT-4 在数学、代码、视觉、医学、法律等多种任务上的能力跃迁。无论是否接受作者关于 AGI 的判断，至少可以说明：把 GPT 只说成“完全没有智能的文字拼接器”，已经很难解释它在许多任务上的表现。[^gpt-capability]</p>
+<p>但如果把智能理解为人的完整智能，那 GPT 又明显不够。</p>
+<p>人类智能包含目标、经验、行动、反馈、责任、价值感和现实处境。人不是只在文本里做下一步预测，而是在世界里行动，并承受行动带来的后果。程序员写错代码会面对故障、用户、团队、维护成本和长期演进；GPT 不会。</p>
+<p>这也是许多治理和出版规则强调人的原因。比如 Springer Nature 的 AI 政策明确不把 LLM 列为作者，理由不是它不能生成文字，而是作者身份意味着对作品负责，而这种责任不能有效适用于 LLM。NIST 的 AI 风险管理框架也把 AI 风险放在组织治理、度量、管理和责任结构中，而不是把责任交给模型本身。[^authorship-governance]</p>
+<p>所以，更准确的说法是：GPT 有机器智能，但它不是完整的人类智能。它能在很多任务上表现得聪明，却不是一个能替你承担责任的主体。</p>
+<h2 id="为什么这对程序员重要"><a href="#为什么这对程序员重要" class="headerlink" title="为什么这对程序员重要"></a>为什么这对程序员重要</h2><p>这个区分不只是哲学问题，它会直接影响我们怎么使用 AI。</p>
+<p>如果你觉得 GPT 完全不理解，你可能会低估它，把它只当成补全工具，错过它在信息整理、方案推演、代码理解和排障辅助上的价值。</p>
+<p>如果你觉得 GPT 像人一样理解，你又可能会高估它，把事实确认、架构判断、业务取舍和完成断言交给它。这样做的风险更大，因为 GPT 的输出常常很流畅，很像知道自己在干什么。</p>
+<p>更稳妥的位置是：承认它有能力，但不把责任交给它。</p>
+<p>GPT 可以帮我们更快建立问题地图，更快生成草稿，更快提出候选方案，更快组织信息。但程序员仍然要负责确认事实、判断边界、验证结果，并承担系统后果。</p>
+<p>AI 时代的程序员，不应该把自己退化成“审稿的人”，也不应该假装 AI 只是一个高级自动补全。更好的关系是：让 AI 参与思考过程，但由人保留判断权；让 AI 加速表达和试探，但由人确认什么可以成为事实。</p>
+<p>所以我更愿意这样总结：</p>
+<p>GPT 有智能，但不是责任主体。它可以帮助我们理解问题，却不能替我们成为那个必须负责的人。</p>
+<p>这也是为什么我更倾向于 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a>，而不是把判断权交给它。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^understanding-debate]: Melanie Mitchell and David C. Krakauer, <a target="_blank" rel="noopener" href="https://www.pnas.org/doi/10.1073/pnas.2215907120"><em>The debate over understanding in AI’s large language models</em></a>；Emily M. Bender and Alexander Koller, <a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/"><em>Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data</em></a>。这里引用它们来支撑“LLM 是否理解不是单层问题，语言形式和人的意义理解需要区分”。<br>[^gpt-capability]: Tom B. Brown et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165"><em>Language Models are Few-Shot Learners</em></a>；Sébastien Bubeck et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12712"><em>Sparks of Artificial General Intelligence: Early experiments with GPT-4</em></a>。这里引用它们来支撑“规模化语言模型确实展现出跨任务能力”，但不把这些能力直接等同于人的完整智能。<br>[^truth-calibration]: Stephanie Lin, Jacob Hilton, Owain Evans, <a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/"><em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em></a>；Saurav Kadavath et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221"><em>Language Models (Mostly) Know What They Know</em></a>；OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它们来支撑“会回答、回答真实、知道自己是否可靠，是不同层次的能力”。<br>[^moral-judgment]: <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6"><em>ChatGPT does not replicate human moral judgments</em></a>。这里引用它来支撑“AI 可以生成道德&#x2F;价值判断文本，但不等于稳定复制人类判断或成为价值责任主体”。<br>[^authorship-governance]: Springer Nature, <a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai"><em>AI policy</em></a>；NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它们来支撑“AI 输出能力和责任主体资格需要区分，责任应落在可治理的人或组织结构上”。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.pnas.org/doi/10.1073/pnas.2215907120">The Debate Over Understanding in AI’s Large Language Models</a>：关于 LLM 是否“理解”的综述，适合支撑“理解不是单层概念”。</li>
+<li><a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/">Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data</a>：区分语言形式和意义，适合支撑“文本关系不等于人的现实理解”。</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners</a>：GPT-3 少样本能力研究，适合支撑“LLM 的能力不能被简单贬低”。</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12712">Sparks of Artificial General Intelligence</a>：早期 GPT-4 能力研究，适合支撑“机器智能”的讨论，同时要注意它本身也有争议。</li>
+<li><a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/">TruthfulQA</a> 和 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221">Language Models (Mostly) Know What They Know</a>：适合支撑“会回答”和“知道自己是否正确”不是同一件事。</li>
+<li><a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">Why language models hallucinate</a>：适合支撑“模型会被训练和评测激励推向猜测”的说法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6">ChatGPT does not replicate human moral judgments</a>：适合支撑“AI 可以给出道德&#x2F;价值判断文本，但不等于稳定复制人类判断”。</li>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai">Springer Nature AI policy</a> 和 <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a>：适合支撑“责任主体仍然必须是人或组织”。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" class="post-title-link" itemprop="url">代码、工具与人：AI 时代的程序员</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-06 22:17:28" itemprop="dateCreated datePublished" datetime="2026-07-06T22:17:28+08:00">2026-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 21:30:17" itemprop="dateModified" datetime="2026-07-17T21:30:17+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>很多人喜欢问 AI 会不会取代程序员？然而这个问题问得太急了。它默认了一件事：程序员的核心工作就是写代码。</p>
+<p>这个默认前提，值得先停下来看看。</p>
+<h2 id="编码只是职责之一"><a href="#编码只是职责之一" class="headerlink" title="编码只是职责之一"></a>编码只是职责之一</h2><p>有没有 AI，编码都只是程序员职责的一部分。</p>
+<p>这就像会计并不是“制表的人”。制表当然是会计工作中很重要的一环，但会计真正负责的是账务是否准确、规则是否被遵守、风险是否被识别，以及经营事实是否被可靠地表达出来。表格只是承载这些判断与结果的工具。</p>
+<p>程序员也是如此。代码很重要，但代码不是工作的全部。程序员真正负责的是理解问题、建立模型、拆分边界、识别约束、设计系统行为，并让这个系统在现实环境中可运行、可维护、可验证。</p>
+<p>AI 让编码这件事变得更快，也让“写出代码”这件事显得没有过去那么稀缺。但这并不意味着程序员的责任消失了。相反，它会把程序员的价值更清楚地推回到那些更难外包给工具的部分：判断该不该做，决定怎么做，验证做得对不对，以及承担系统长期演进的后果。</p>
+<h2 id="我们应该使用-AI-写代码吗"><a href="#我们应该使用-AI-写代码吗" class="headerlink" title="我们应该使用 AI 写代码吗"></a>我们应该使用 AI 写代码吗</h2><p>如果一个工具能够帮助我们更快地表达想法、查找资料、生成样例、整理思路、补全代码，那么程序员没有理由拒绝它。拒绝 AI 本身，并不会让一个人变得更专业。就像拒绝 IDE、调试器、搜索引擎，也不会让人更懂软件工程。</p>
+<p>但使用 AI 写代码，并不意味着把程序员的责任交给 AI。AI 可以生成代码，但它不会替你理解业务目标；它可以给出方案，但它不会替你承担系统后果；它可以补全实现，但它不会自动知道这个实现是否适合当前上下文。</p>
+<p>AI 更像是一个能力放大器。你想得清楚，它可以放大你的效率；你想得模糊，它也会放大你的混乱。它能让正确的方向更快落地，也能让错误的方向更快堆积成代码。</p>
+<p>所以问题不在于“要不要用 AI 写代码”，而在于“用 AI 写代码时，程序员是否仍然掌握判断权”。</p>
+<h2 id="AI-时代应该如何写代码"><a href="#AI-时代应该如何写代码" class="headerlink" title="AI 时代应该如何写代码"></a>AI 时代应该如何写代码</h2><p>AI 时代写代码，最重要的变化不是少写几行代码，而是写代码之前和之后的工作变得更重要了。</p>
+<p>过去我们常常把注意力放在“怎么实现”上：接口怎么写，循环怎么写，数据结构怎么组织，异常怎么处理。这些问题当然仍然重要，但 AI 已经能在很多局部实现上提供不错的帮助。真正容易出问题的地方，反而是那些 AI 不一定知道、也不一定能替你判断的部分。</p>
+<p>首先，要先把问题说清楚。不要一上来就让 AI 写代码，而是先描述目标、约束、输入输出、边界条件和不能破坏的现有行为。问题描述得越清楚，AI 给出的代码越可能接近你真正需要的东西。程序员在这里做的不是“下命令”，而是在整理自己的判断。</p>
+<p>其次，要把 AI 的输出当作草稿，而不是答案。AI 生成的代码可以作为一个起点，但它需要被阅读、质疑和验证。变量名是否表达了业务含义，抽象是否过度，边界条件是否遗漏，错误处理是否符合系统习惯，这些都需要程序员重新接管。</p>
+<p>再次，要用测试和运行结果约束 AI。只靠“看起来对”是不够的。越是借助 AI 快速生成代码，越应该补上可执行的验证：单元测试、集成测试、日志、断言，或者最小可复现的运行结果。AI 可以帮你写测试，但测试要覆盖什么，仍然取决于你对问题的理解。</p>
+<p>最后，要保持对上下文的敏感。很多代码不是孤立存在的，它会受到项目风格、历史包袱、性能要求、部署环境、团队习惯和业务规则的影响。AI 很容易给出一个局部上漂亮、整体上不合适的方案。程序员需要判断这段代码能不能放进当前系统，而不仅仅是能不能单独运行。</p>
+<p>所以，AI 时代写代码，不是把“思考”交给 AI，然后自己负责复制粘贴。更好的方式是：人负责定义问题、拆分边界、判断取舍和验证结果，AI 负责加速搜索、表达、生成和试探。这样使用 AI，代码会写得更快，但责任仍然留在应该承担责任的人那里。</p>
+<h2 id="我使用-AI-的经验"><a href="#我使用-AI-的经验" class="headerlink" title="我使用 AI 的经验"></a>我使用 AI 的经验</h2><p>很多时候，我们会反复对 AI 说同样的东西：先理解上下文，不要急着改；修 bug 前先复现；写完以后要验证；不要随便宣布完成；重要结论要沉淀到文档里。我把这些重复要求整理成了 skill：<a target="_blank" rel="noopener" href="https://cnb.cool/ryuu64/skills%E3%80%82">https://cnb.cool/ryuu64/skills。</a></p>
+<h3 id="形成标准流程"><a href="#形成标准流程" class="headerlink" title="形成标准流程"></a>形成标准流程</h3><p>AI 很擅长生成内容，但它不一定天然知道什么时候该停下来理解上下文，什么时候该先验证假设，什么时候该把结论写回文档。skill 的作用，就是把这些流程显式写出来。</p>
+<p>当我还没有想清楚方案时，<code>grill-then-docs</code> 对我很重要。它先用 <code>grill</code> 的方式把一个决策点问透：有哪些选项，各自的代价是什么，推荐哪一个，为什么。等结论稳定以后，再把这些结论写回项目文档。这样 AI 不只是陪我聊了一轮方案，而是把这轮讨论变成项目之后还能复用的上下文。</p>
+<p>比如看不懂一段代码时，我不希望 AI 直接解释当前文件，而是先使用 <code>zoom-out</code> 拉高一层，弄清楚它在系统里的位置：上游是谁、下游是谁、核心概念是什么、下一步应该读哪里。这样后面的修改才不会只盯着局部。</p>
+<p>修 bug 时，我会更希望它进入 <code>diagnose</code> 的流程：先建立反馈循环，再复现问题，然后提出可证伪的假设，用日志、测试或调试器去验证。很多 bug 真正难的地方不在改动本身，而在确认自己没有修错方向。</p>
+<p>如果是在实现一个明确的新行为，我会倾向于用 <code>tdd</code>。先列业务规则、边界条件和验收范围，再写失败测试，再写最小实现。AI 可以很快生成代码，但测试会把它拉回到具体行为上，不让它只写出一段“看起来像那么回事”的实现。</p>
+<p>任务做完以后，我还会要求 <code>verification-before-completion</code>。AI 不能只说“已经完成”，而要先运行对应的验证命令，读输出，再根据结果判断能不能做完成断言。这个 skill 对我很重要，因为 AI 很容易在语气上显得很确定，但工程上真正需要的是证据。</p>
+<p>如果过程中形成了稳定结论，比如某个模块的约束、某种排障方法、某个架构决策，我会再用 <code>project-docs-sync</code> 或 <code>project-docs-writing</code> 把它同步回项目文档。否则这次对话结束以后，经验又散掉了，下次还要重新解释。</p>
+<pre>
+<code class="mermaid">
+
+flowchart TD
+    A[遇到需求] --&gt; B{当前最需要澄清什么}
+    B --&gt;|方案还不清楚| K[grill-then-docs&lt;br&#x2F;&gt;先问透决策，再写回文档]
+    B --&gt;|不熟悉代码| C[zoom-out&lt;br&#x2F;&gt;先建立上下文地图]
+    B --&gt;|排查 bug| D[diagnose&lt;br&#x2F;&gt;复现、假设、验证、收敛根因]
+    B --&gt;|实现新行为| E[tdd&lt;br&#x2F;&gt;测试先行，按行为推进]
+    K --&gt; F
+    C --&gt; F[修改或继续分析]
+    D --&gt; F
+    E --&gt; F
+    F --&gt; G[verification-before-completion&lt;br&#x2F;&gt;用新鲜证据确认结果]
+    G --&gt; H{形成稳定结论?}
+    H --&gt;|是| I[project-docs-sync &#x2F; project-docs-writing&lt;br&#x2F;&gt;写回项目文档]
+    H --&gt;|否| J[结束任务]
+    I --&gt; J
+</code>
+</pre>
+
+<p>这些流程看起来琐碎，但它们决定了 AI 是在帮你推进工程，还是只是在生成一堆看起来合理的文本。</p>
+<h3 id="处理-AI-的失控"><a href="#处理-AI-的失控" class="headerlink" title="处理 AI 的失控"></a>处理 AI 的失控</h3><h4 id="上下文污染"><a href="#上下文污染" class="headerlink" title="上下文污染"></a>上下文污染</h4><p>我使用 AI 的过程中也遇到过不少问题。最常见的一类，是上下文变得太长、太杂以后，AI 开始不理解业务。它会抓住对话里某个局部信息，然后沿着一个不对的方向继续推理，甚至越解释越偏。</p>
+<p>这种时候，继续在原来的对话里纠正，不一定是最好的办法。因为问题有时不在某一句提示词，而在整个上下文已经被污染了。我会选择新开一个对话，或者先清理上下文，再把真正重要的背景、约束和当前目标重新说清楚。如果项目里已经有文档，就让 AI 先看文档，而不是继续依赖一段越来越长的聊天记录。</p>
+<h4 id="调试时跳过证据"><a href="#调试时跳过证据" class="headerlink" title="调试时跳过证据"></a>调试时跳过证据</h4><p>另一类问题出现在 debug 时。AI 很容易想直接根据代码猜原因，然后给出一个修复方案。这个过程看起来很快，但风险很高，因为它可能只是在修一个“看起来像问题”的地方。我遇到过 AI 死活不肯先插桩、不肯根据日志复现，而是反复尝试直接改代码。</p>
+<p>后来我用 <code>diagnose</code> 去约束这个过程，并且反复调整它的规则：先建立反馈循环，先复现，再提出假设；需要日志就插有明确目的的日志；每次观察结果以后更新假设，而不是直接跳到修复。这样做会慢一点，但它能把 AI 从“猜一个答案”拉回到“拿证据收敛问题”。</p>
+<h4 id="混淆计划和事实"><a href="#混淆计划和事实" class="headerlink" title="混淆计划和事实"></a>混淆计划和事实</h4><p>还有一类更隐蔽的问题：AI 看起来像是知道自己在干什么，但实际上它可能只是选择了一个“看起来合理”的位置。</p>
+<p>比如我的 <code>grill-then-docs</code>，它的目标是先把方案问清楚，再把稳定结论沉淀下来。可在一开始，AI 经常会把 grill 之后“接下来要做什么”写进 <code>./docs/features</code> 或 <code>./docs/architecture</code>。从表面看，这很合理：方案讨论和功能、架构都有关。但实际上这是错误的，因为 grill 后续要做的事情只是计划，不是已经成立的功能事实，也不是架构事实。它应该先进入 <code>./docs/plan</code>，等实现完成、结论稳定以后，才有资格进入 features 或 architecture。</p>
+<p>这个错误很有代表性。AI 并不一定知道“计划”和“事实”之间的价值差异。它能根据文本相似性判断某段内容和哪个目录更相关，却未必能判断这段内容在项目知识体系里的身份：它是待办、假设、决策、事实，还是长期约束。对程序员来说，这些边界很重要；对 AI 来说，如果没有明确规则，它可能只会选择概率上最像的地方。</p>
+<p>这里说的价值判断，不是“我更喜欢哪种写法”这种偏好判断，而是基于事实状态做定性：这段内容现在到底是什么。它是已经实现的功能事实，还是尚未执行的计划？是已经被系统采纳的架构约束，还是一次讨论中的候选方案？这些判断依赖项目当前状态，也依赖团队对文档的定义。</p>
+<p>GPT 可以根据文字相似性把内容放到看起来相关的地方，也可以在规则足够明确时照着规则执行。但如果规则没有把这些事实身份说清楚，它就很容易把“语义相关”误当成“事实身份正确”。<code>./docs/features</code>、<code>./docs/architecture</code> 和 <code>./docs/plan</code> 的区别，本质上不是路径选择，而是项目知识治理中的事实判断：什么已经成立，什么还只是计划，什么可以作为长期约束沉淀下来。</p>
+<p>所以问题不在于 AI 能不能给出一个看似合理的分类，而在于它有没有足够事实依据做这个分类，以及分类标准是否被明确表达。对程序员来说，“这个内容应该写到哪里”背后其实是在判断它在项目中的状态；对 AI 来说，如果没有明确规则，它可能只是选择概率上最像的目录。</p>
+<p>所以我后来在 skill 里明确约束：grill 之后形成的后续计划，应该写到 <code>/docs/plan</code>，不能直接写进 <code>/docs/features</code> 或 <code>/docs/architecture</code>。这不是一个简单的目录偏好，而是在告诉 AI：什么东西还只是计划，什么东西才可以被当作项目事实。</p>
+<p>这些问题也让我更确定一件事：AI 不是一直稳定的。上下文、提示方式、任务阶段都会影响它的表现。程序员需要识别什么时候该继续推进，什么时候该停下来重置上下文，什么时候该强制它回到验证流程。</p>
+<h3 id="把偏好变成约束"><a href="#把偏好变成约束" class="headerlink" title="把偏好变成约束"></a>把偏好变成约束</h3><p>使用 AI 写代码时，很多问题不是 AI 不会，而是它不知道你在意什么。你在意命名是否贴合领域，注释是否解释意图而不是复述代码，提交信息是否清楚，文档是否跟着代码一起更新，这些偏好如果每次都临时说明，就很容易遗漏。</p>
+<p>skill 的价值在于把这些偏好变成稳定约束。它不是让 AI 替我做判断，而是让 AI 在我设定的边界里工作。</p>
+<h3 id="让-AI-更像协作者"><a href="#让-AI-更像协作者" class="headerlink" title="让 AI 更像协作者"></a>让 AI 更像协作者</h3><p>skill 是一种协作协议。它让 AI 知道在什么场景下该采用什么工作方式，也让我不用每次都从零开始解释自己的工程习惯。</p>
+<p>这也对应了前面说的：AI 可以加速表达、生成和试探，但程序员仍然要负责判断、边界和验证。skill 只是把这些责任拆成更清晰的流程，让 AI 更稳定地参与其中。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/04/%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%A1%AE%E5%AE%9A%E8%AE%A2%E5%8D%95%E7%9A%84%E5%A5%96%E5%8A%B1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/02/04/%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%A1%AE%E5%AE%9A%E8%AE%A2%E5%8D%95%E7%9A%84%E5%A5%96%E5%8A%B1/" class="post-title-link" itemprop="url">什么时候确定订单的奖励</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-04 16:28:19" itemprop="dateCreated datePublished" datetime="2026-02-04T16:28:19+08:00">2026-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">业务设计</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>747</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在<strong>影响奖励结果的所有输入已经确定、且不再变化</strong>的那一刻。</p>
+<p>这是确定订单奖励内容的唯一标准。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>在一次业务设计讨论中，关于奖励的确定时机出现了不同意见。（我的真实经历）</p>
+<p>一种观点认为，奖励应当在最终流程中再计算；<br>另一种观点认为，只要奖励结果已经可以确定，就应该立即计算并固化。</p>
+<p>这看起来只是计算时机的差异，<br>但背后实际讨论的是：<strong>奖励结果在系统中什么时候才应当被视为事实。</strong></p>
+<h2 id="什么时候确定奖励内容是合理的？"><a href="#什么时候确定奖励内容是合理的？" class="headerlink" title="什么时候确定奖励内容是合理的？"></a>什么时候确定奖励内容是合理的？</h2><p>奖励内容本质上是一次规则计算的结果，它通常依赖以下输入：</p>
+<ul>
+<li>订单金额（含优惠、折扣）</li>
+<li>商品 &#x2F; 档位 &#x2F; 套餐</li>
+<li>活动规则（倍率、阈值、档位）</li>
+<li>玩家状态（VIP、首充、次数等）</li>
+</ul>
+<p>当这些输入被完整收集，且后续流程中不会再发生变化时，奖励内容就可以被确定。</p>
+<p>换句话说：</p>
+<p>只要奖励的计算结果在逻辑上已经不可再变，就可以确认。</p>
+<h2 id="常见的可确认时间点"><a href="#常见的可确认时间点" class="headerlink" title="常见的可确认时间点"></a>常见的可确认时间点</h2><p>以下场景通常已经满足“输入已经确定、且不再变化”的条件：</p>
+<ul>
+<li>支付成功后，订单金额与商品信息已确定</li>
+<li>商品或服务的交付参数被锁定</li>
+<li>活动规则以快照形式固化到订单中</li>
+</ul>
+<p>这些时间点的共同特点是：<br>奖励计算所依赖的数据已经稳定。</p>
+<h2 id="为什么要尽早确定奖励内容？"><a href="#为什么要尽早确定奖励内容？" class="headerlink" title="为什么要尽早确定奖励内容？"></a>为什么要尽早确定奖励内容？</h2><h3 id="原因一：规则是可变的"><a href="#原因一：规则是可变的" class="headerlink" title="原因一：规则是可变的"></a>原因一：规则是可变的</h3><p>如果奖励内容不在当时确认，后续再计算就会受到规则变动的影响，例如：</p>
+<ul>
+<li>活动配置被调整</li>
+<li>奖励倍率发生变化</li>
+<li>原有档位被下架</li>
+</ul>
+<p>这将直接导致一种严重问题：</p>
+<p>用户下单时看到的是 A 奖励，<br>系统最终确认的是 B 奖励。</p>
+<p>这是比技术错误更严重的事故——用户认知不一致。</p>
+<h3 id="原因二：奖励需要可解释（对账-追责）"><a href="#原因二：奖励需要可解释（对账-追责）" class="headerlink" title="原因二：奖励需要可解释（对账 &amp; 追责）"></a>原因二：奖励需要可解释（对账 &amp; 追责）</h3><p>提前确定奖励内容，可以让系统具备清晰的“历史解释能力”：</p>
+<p>为每一笔订单保留奖励结果快照</p>
+<p>支持事后审计与对账</p>
+<p>支持客服明确解释“这笔奖励是如何算出来的”</p>
+<p>奖励内容一旦确认，就应当成为订单事实的一部分，而不是一个需要反复推导的结果。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>奖励可以晚发放，但不应该晚确定。</p>
+<p>确定奖励的本质，是把规则计算结果从“可推导结果”转为“订单事实”。</p>
+<p>系统应保存当时的输入、规则版本和计算结果。后续如果发生退款、取消、补偿等变化，应通过冲正或补偿流程处理，而不是重新解释历史订单。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/" class="post-title-link" itemprop="url">不要在 API 命名中使用 check</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-04 15:58:28" itemprop="dateCreated datePublished" datetime="2026-02-04T15:58:28+08:00">2026-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E5%91%BD%E5%90%8D/" itemprop="url" rel="index"><span itemprop="name">编程命名</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>527</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。</p>
+<p>在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。</p>
+<h2 id="check-的定位"><a href="#check-的定位" class="headerlink" title="check 的定位"></a>check 的定位</h2><p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<br>在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。</p>
+<ol>
+<li>返回类型<strong>是</strong> <code>void</code> 而<strong>不是</strong> <code>boolean</code>。</li>
+<li>失败时抛出异常。</li>
+<li>成功时什么都不发生。</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkStatus</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkPermission</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkConfig</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="check-的滥用"><a href="#check-的滥用" class="headerlink" title="check 的滥用"></a>check 的滥用</h2><p>对 check 的最严重最常见的滥用出现在命名 API 时。</p>
+<p>命名 API 时，我们的目标是<strong>消除惊讶</strong>，而 check 在 API 语境下是语义不稳定的命名。 对外的 API 一旦叫 <code>checkXxxx</code>，使用者就会在多种猜测中不知所措：</p>
+<ol>
+<li>成功时返回的是一个 <code>boolean</code>还是一个结果？</li>
+<li>失败时是一个 <code>false</code> 异常 还是结果？</li>
+<li>我调用这个 API 会不会修改一些状态？</li>
+</ol>
+<p>举一个更具体的例子，当一个方法叫 <code>checkOrder()</code> 时：</p>
+<p>如果想知道订单是否有效，我们会期待它叫 <code>isValid()</code>。</p>
+<p>如果想触发校验流程并拿到错误列表，我们会期待它叫 <code>validateOrder()</code>。</p>
+<p>如果想在订单无效时阻止程序运行，我们会期待它叫 <code>ensureOrderValid()</code>。</p>
+<p>check 就像一个黑色盲盒，不看实现永远不知道它会静默失败还是原地爆炸。 因此，它只适合作为类内部的辅助方法（Helper methods）。</p>
+<p>正确命名 API 的方式是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">validateXxx()    <span class="comment">// 有结果</span></span><br><span class="line">verifyXxx()      <span class="comment">// 鉴权 / 第三方</span></span><br><span class="line">ensureXxx()      <span class="comment">// 业务保障（失败抛异常）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>用 check 吗</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回 boolean</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>返回 Result &#x2F; Error</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Controller &#x2F; API</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>有业务副作用</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>失败直接抛异常</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>内部前置校验</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>private &#x2F; protected</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Domain 规则校验</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/16/redis-lua/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/09/16/redis-lua/" class="post-title-link" itemprop="url">redis lua</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-09-16 23:43:32" itemprop="dateCreated datePublished" datetime="2025-09-16T23:43:32+08:00">2025-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis-lua/" itemprop="url" rel="index"><span itemprop="name">redis lua</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>691</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。</p>
+<h2 id="执行隔离性（Isolation-Guarantee）"><a href="#执行隔离性（Isolation-Guarantee）" class="headerlink" title="执行隔离性（Isolation Guarantee）"></a>执行隔离性（Isolation Guarantee）</h2><p>redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。</p>
+<p>这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。</p>
+<p>请看如下无执行隔离的<strong>时序图</strong>示例：</p>
+<table>
+<thead>
+<tr>
+<th align="left">时序</th>
+<th align="left">客户端A</th>
+<th>客户端B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">t1</td>
+<td align="left"><strong>客户端A</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">t2</td>
+<td align="left"></td>
+<td><strong>客户端B</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
+</tr>
+<tr>
+<td align="left">t3</td>
+<td align="left"><strong>客户端A</strong> 执行 <code>DEL token:42</code>(成功)</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">t4</td>
+<td align="left"></td>
+<td><strong>客户端B</strong> 执行 <code>DEL token:42</code>(因 token 已被A删除，此操作实际无效，但B仍会继续下单)</td>
+</tr>
+</tbody></table>
+<p>可见A和B都成功执行了下单操作，出现重复下单错误。</p>
+<p>再看如下有执行隔离的<strong>时序图</strong>示例：</p>
+<table>
+<thead>
+<tr>
+<th align="left">时序</th>
+<th align="left">客户端A</th>
+<th align="left">客户端B</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">t1</td>
+<td align="left">发送 <code>EVAL &quot;if redis.call(&#39;GET&#39;, KEYS[1]) then return redis.call(&#39;DEL&#39;, KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
+<td align="left"></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">t2</td>
+<td align="left"></td>
+<td align="left">发送 <code>EVAL &quot;if redis.call(&#39;GET&#39;, KEYS[1]) then return redis.call(&#39;DEL&#39;, KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">t3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td>执行<strong>客户端A</strong>的脚本： 1. <code>GET token:42</code>(存在) 2. <code>DEL token:42</code>(成功删除)</td>
+</tr>
+<tr>
+<td align="left">t4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td><strong>客户端B</strong> 的请求此时才被处理。执行同样的脚本： 1. <code>GET token:42</code>(已不存在) 脚本返回 0，拒绝操作。</td>
+</tr>
+</tbody></table>
+<p>可见只有A成功了，B的操作失败了，未出现重复下单错误。</p>
+<h2 id="不满足全有或全无原则（all-or-nothing）"><a href="#不满足全有或全无原则（all-or-nothing）" class="headerlink" title="不满足全有或全无原则（all-or-nothing）"></a>不满足全有或全无原则（all-or-nothing）</h2><p><a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/tutorial-transactions.html">all-or-nothing</a><br>指事务要么完全发生，要么根本不发生。例如A向B转账100元，B已收到100元，但A并非扣除100元，这是不可接受的。</p>
+<h3 id="原子提交-回滚机制（Atomic-Commit-Rollback）"><a href="#原子提交-回滚机制（Atomic-Commit-Rollback）" class="headerlink" title="原子提交&#x2F;回滚机制（Atomic Commit&#x2F;Rollback）"></a>原子提交&#x2F;回滚机制（Atomic Commit&#x2F;Rollback）</h3><p>在数据库的实现中一般会使用原子提交&#x2F;回滚实现全有或全无原则。</p>
+<h4 id="原子提交"><a href="#原子提交" class="headerlink" title="原子提交"></a>原子提交</h4><p>当事务中的所有操作都成功执行，并且验证没有违反约束时，系统会 一次性把事务的所有修改写入数据库（这一批操作完成了）。</p>
+<p>提交之后，所有事务产生的更改对其他事务可见。</p>
+<h4 id="原子回滚"><a href="#原子回滚" class="headerlink" title="原子回滚"></a>原子回滚</h4><p>如果事务中某个环节失败，或者用户&#x2F;系统主动要求撤销，就必须 <strong>撤回事务中已做的所有修改</strong>，让数据库回到事务开始之前的状态（这一批已做的操作都不算数）。</p>
+<p>一般会使用 <code>undo log</code> 来实现，保证把执行的操作撤销掉。</p>
+<h2 id="请保持脚本的轻量"><a href="#请保持脚本的轻量" class="headerlink" title="请保持脚本的轻量"></a>请保持脚本的轻量</h2><p>由于脚本执行期间会阻塞整个 Redis 的执行，<strong>避免在脚本中编写复杂循环或耗时操作</strong>是关键。否则会严重影响 Redis 的响应性能。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">104k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:18</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

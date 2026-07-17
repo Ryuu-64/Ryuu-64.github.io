@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="前面两篇文章分别谈了程序员的职责和 GPT 的能力边界：代码、工具与人：AI 时代的程序员，以及 GPT 有智能，但不是责任主体。 这一篇继续往下走，谈一个更具体的问题：日常工作里，我到底应该怎样使用 AI？ 我现在越来越觉得，AI 不是靠一次提示词用好的。 提示词当然重要。但真正决定效果的，往往不是某一句话写得多漂亮，而是 AI 被放进了什么样的工作方式里：什么时候先澄清，什么时候先读上下文，什">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把 AI 放进工作流">
+<meta property="og:url" content="http://example.com/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="前面两篇文章分别谈了程序员的职责和 GPT 的能力边界：代码、工具与人：AI 时代的程序员，以及 GPT 有智能，但不是责任主体。 这一篇继续往下走，谈一个更具体的问题：日常工作里，我到底应该怎样使用 AI？ 我现在越来越觉得，AI 不是靠一次提示词用好的。 提示词当然重要。但真正决定效果的，往往不是某一句话写得多漂亮，而是 AI 被放进了什么样的工作方式里：什么时候先澄清，什么时候先读上下文，什">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-16T14:53:19.234Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="程序员">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Skill">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/","path":"2026/07/11/把-AI-放进工作流/","title":"把 AI 放进工作流"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>把 AI 放进工作流 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E5%8F%AA%E5%92%8C-AI-%E8%81%8A%E5%A4%A9"><span class="nav-number">1.</span> <span class="nav-text">不要只和 AI 聊天</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%86%B3%E5%AE%9A%E5%BD%93%E5%89%8D%E9%98%B6%E6%AE%B5"><span class="nav-number">2.</span> <span class="nav-text">先决定当前阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86-AI-%E7%9A%84%E5%A4%B1%E6%8E%A7"><span class="nav-number">3.</span> <span class="nav-text">处理 AI 的失控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E6%B1%A1%E6%9F%93"><span class="nav-number">3.1.</span> <span class="nav-text">上下文污染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%97%B6%E8%B7%B3%E8%BF%87%E8%AF%81%E6%8D%AE"><span class="nav-number">3.2.</span> <span class="nav-text">调试时跳过证据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E8%AE%A1%E5%88%92%E5%92%8C%E4%BA%8B%E5%AE%9E"><span class="nav-number">3.3.</span> <span class="nav-text">混淆计划和事实</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E5%81%8F%E5%A5%BD%E5%8F%98%E6%88%90%E7%BA%A6%E6%9D%9F"><span class="nav-number">4.</span> <span class="nav-text">把偏好变成约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A9-AI-%E6%9B%B4%E5%83%8F%E5%8D%8F%E4%BD%9C%E8%80%85"><span class="nav-number">5.</span> <span class="nav-text">让 AI 更像协作者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">6.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">7.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="把 AI 放进工作流 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          把 AI 放进工作流
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-11T00:00:00+08:00">2026-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-16 22:53:19" itemprop="dateModified" datetime="2026-07-16T22:53:19+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>前面两篇文章分别谈了程序员的职责和 GPT 的能力边界：<a href="/2026/07/06/%E4%BB%A3%E7%A0%81%E3%80%81%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%BA%BA%EF%BC%9AAI-%E6%97%B6%E4%BB%A3%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98/" title="代码、工具与人：AI 时代的程序员">代码、工具与人：AI 时代的程序员</a>，以及 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a>。</p>
+<p>这一篇继续往下走，谈一个更具体的问题：日常工作里，我到底应该怎样使用 AI？</p>
+<p>我现在越来越觉得，AI 不是靠一次提示词用好的。</p>
+<p>提示词当然重要。但真正决定效果的，往往不是某一句话写得多漂亮，而是 AI 被放进了什么样的工作方式里：什么时候先澄清，什么时候先读上下文，什么时候可以动手，什么时候必须验证，什么时候应该把结论写回文档。OpenAI 在谈 Codex 的 agent-first 实践时，把工程师的角色描述为设计环境、指定意图和建立反馈循环；Anthropic 在讨论 agentic systems 时，也区分了预定义路径的 workflow 和由模型动态决定步骤的 agent。[^harness-engineering][^anthropic-agents]</p>
+<p>也就是说，问题不是“怎么让 AI 回答得更像一个聪明人”，而是“怎么让 AI 参与一个可靠的工作流”。</p>
+<h2 id="不要只和-AI-聊天"><a href="#不要只和-AI-聊天" class="headerlink" title="不要只和 AI 聊天"></a>不要只和 AI 聊天</h2><p>很多时候，我们会反复对 AI 说同样的东西：先理解上下文，不要急着改；修 bug 前先复现；写完以后要验证；不要随便宣布完成；重要结论要沉淀到文档里。</p>
+<p>如果每次都靠临时提醒，这件事很容易失效。因为对话会变长，上下文会变脏，人的注意力也会松。AI 可能这次听进去了，下次又回到它更熟悉的生成模式里：先给一个看起来合理的答案。</p>
+<p>所以我把这些重复要求整理成了 skill：<a target="_blank" rel="noopener" href="https://cnb.cool/ryuu64/skills%E3%80%82">https://cnb.cool/ryuu64/skills。</a></p>
+<p>skill 对我来说，不是“更长的提示词”，而是一种协作协议。它把那些反复出现的工程判断写成可复用流程，让 AI 知道在什么场景下该采用什么工作方式。这个判断也和 Codex、Claude Code 的官方建议相近：稳定的项目偏好应该进入 <code>AGENTS.md</code>、skill 或项目文档，而不是每次都靠临时 prompt 重复。[^codex-best-practices][^claude-skills]</p>
+<h2 id="先决定当前阶段"><a href="#先决定当前阶段" class="headerlink" title="先决定当前阶段"></a>先决定当前阶段</h2><p>AI 很擅长生成内容，但它不一定天然知道什么时候该停下来理解上下文，什么时候该先验证假设，什么时候该把结论写回文档。</p>
+<p>所以我更倾向于先判断当前需求处在哪个阶段。对复杂、模糊或多步骤任务，先 plan 再动手，比直接进入实现更稳；对简单任务，则没有必要把流程做重。[^codex-plan-first]</p>
+<p>当我还没有想清楚方案时，<code>grill-then-docs</code> 对我很重要。它先用 <code>grill</code> 的方式把一个决策点问透：有哪些选项，各自的代价是什么，推荐哪一个，为什么。等结论稳定以后，再把这些结论写回项目文档。这样 AI 不只是陪我聊了一轮方案，而是把这轮讨论变成项目之后还能复用的上下文。</p>
+<p>比如看不懂一段代码时，我不希望 AI 直接解释当前文件，而是先使用 <code>zoom-out</code> 拉高一层，弄清楚它在系统里的位置：上游是谁、下游是谁、核心概念是什么、下一步应该读哪里。Claude Code 的常见工作流里也建议先从 broad questions 开始，再逐步深入具体组件和执行路径。[^claude-common-workflows] 这样后面的修改才不会只盯着局部。</p>
+<p>修 bug 时，我会更希望它进入 <code>diagnose</code> 的流程：先建立反馈循环，再复现问题，然后提出可证伪的假设，用日志、测试或调试器去验证。很多 bug 真正难的地方不在改动本身，而在确认自己没有修错方向。Anthropic 的 coding agent 讨论也指出，代码任务之所以适合 agent，很大一部分原因在于代码可以通过自动化测试验证，agent 可以用测试结果迭代。[^anthropic-coding-agents]</p>
+<p>如果是在实现一个明确的新行为，我会倾向于用 <code>tdd</code>。先列业务规则、边界条件和验收范围，再写失败测试，再写最小实现。AI 可以很快生成代码，但测试会把它拉回到具体行为上，不让它只写出一段“看起来像那么回事”的实现。</p>
+<p>任务做完以后，我还会要求 <code>verification-before-completion</code>。AI 不能只说“已经完成”，而要先运行对应的验证命令，读输出，再根据结果判断能不能做完成断言。这个 skill 对我很重要，因为 AI 很容易在语气上显得很确定，但工程上真正需要的是证据。Codex 的最佳实践也把测试、lint、type check、行为确认和 diff review 放在可靠性收口里。[^codex-test-review]</p>
+<p>如果过程中形成了稳定结论，比如某个模块的约束、某种排障方法、某个架构决策，我会再用 <code>project-docs-sync</code> 或 <code>project-docs-writing</code> 把它同步回项目文档。否则这次对话结束以后，经验又散掉了，下次还要重新解释。OpenAI 在 Harness Engineering 里把 repository knowledge 作为 system of record，并把短入口文件、结构化文档和渐进式披露放在一起使用；这其实是在解决同一个问题：让 AI 能从项目内部重新找到稳定上下文。[^repo-system-of-record]</p>
+<pre>
+<code class="mermaid">
+
+flowchart TD
+    A[遇到需求] --&gt; B{当前最需要澄清什么}
+    B --&gt;|方案还不清楚| K[grill-then-docs&lt;br&#x2F;&gt;先问透决策，再写回文档]
+    B --&gt;|不熟悉代码| C[zoom-out&lt;br&#x2F;&gt;先建立上下文地图]
+    B --&gt;|排查 bug| D[diagnose&lt;br&#x2F;&gt;复现、假设、验证、收敛根因]
+    B --&gt;|实现新行为| E[tdd&lt;br&#x2F;&gt;测试先行，按行为推进]
+    K --&gt; F
+    C --&gt; F[修改或继续分析]
+    D --&gt; F
+    E --&gt; F
+    F --&gt; G[verification-before-completion&lt;br&#x2F;&gt;用新鲜证据确认结果]
+    G --&gt; H{形成稳定结论?}
+    H --&gt;|是| I[project-docs-sync &#x2F; project-docs-writing&lt;br&#x2F;&gt;写回项目文档]
+    H --&gt;|否| J[结束任务]
+    I --&gt; J
+</code>
+</pre>
+
+<p>这些流程看起来琐碎，但它们决定了 AI 是在帮你推进工程，还是只是在生成一堆看起来合理的文本。</p>
+<h2 id="处理-AI-的失控"><a href="#处理-AI-的失控" class="headerlink" title="处理 AI 的失控"></a>处理 AI 的失控</h2><p>把 AI 放进工作流，并不是因为 AI 不会做事。恰恰相反，是因为它太容易流畅地做事，甚至在方向不对的时候也显得很有把握。</p>
+<h3 id="上下文污染"><a href="#上下文污染" class="headerlink" title="上下文污染"></a>上下文污染</h3><p>我使用 AI 的过程中遇到过不少问题。最常见的一类，是上下文变得太长、太杂以后，AI 开始不理解业务。它会抓住对话里某个局部信息，然后沿着一个不对的方向继续推理，甚至越解释越偏。</p>
+<p>这种时候，继续在原来的对话里纠正，不一定是最好的办法。因为问题有时不在某一句提示词，而在整个上下文已经被污染了。OpenAI 对“大 AGENTS.md”的反思很有代表性：上下文是稀缺资源，太多指导反而会挤掉任务、代码和真正相关的文档。[^context-is-scarce] 我会选择新开一个对话，或者先清理上下文，再把真正重要的背景、约束和当前目标重新说清楚。如果项目里已经有文档，就让 AI 先看文档，而不是继续依赖一段越来越长的聊天记录。</p>
+<h3 id="调试时跳过证据"><a href="#调试时跳过证据" class="headerlink" title="调试时跳过证据"></a>调试时跳过证据</h3><p>另一类问题出现在 debug 时。AI 很容易想直接根据代码猜原因，然后给出一个修复方案。这个过程看起来很快，但风险很高，因为它可能只是在修一个“看起来像问题”的地方。我遇到过 AI 死活不肯先插桩、不肯根据日志复现，而是反复尝试直接改代码。</p>
+<p>后来我用 <code>diagnose</code> 去约束这个过程，并且反复调整它的规则：先建立反馈循环，先复现，再提出假设；需要日志就插有明确目的的日志；每次观察结果以后更新假设，而不是直接跳到修复。这样做会慢一点，但它能把 AI 从“猜一个答案”拉回到“拿证据收敛问题”。这也是人在环（Human-in-the-Loop）真正有价值的地方：人不只是最后点确认，而是在高不确定、高风险或缺证据的位置把流程停住。[^hitl]</p>
+<h3 id="混淆计划和事实"><a href="#混淆计划和事实" class="headerlink" title="混淆计划和事实"></a>混淆计划和事实</h3><p>还有一类更隐蔽的问题：AI 看起来像是知道自己在干什么，但实际上它可能只是选择了一个“看起来合理”的位置。</p>
+<p>比如我的 <code>grill-then-docs</code>，它的目标是先把方案问清楚，再把稳定结论沉淀下来。可在一开始，AI 经常会把 grill 之后“接下来要做什么”写进 <code>./docs/features</code> 或 <code>./docs/architecture</code>。从表面看，这很合理：方案讨论和功能、架构都有关。但实际上这是错误的，因为 grill 后续要做的事情只是计划，不是已经成立的功能事实，也不是架构事实。</p>
+<p>它应该先进入 <code>./docs/plan</code>，等实现完成、结论稳定以后，才有资格进入 features 或 architecture。</p>
+<p>这个错误很有代表性。AI 能根据文字相似性把内容放到看起来相关的地方，但“语义相关”不等于“事实身份正确”。一个计划即使和架构有关，也仍然只是计划；一个候选方案即使描述得很完整，也还不是系统事实。Microsoft 的 Human-AI Interaction Guidelines 也提醒我们，AI 系统需要让用户能理解、纠正和恢复，而不是把一个看似合理的输出直接当作事实。[^human-ai-guidelines]</p>
+<p>这背后更完整的能力边界，我在 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a> 里单独写过。放到工作流里看，解决办法不是指望 AI 自己突然理解项目知识治理，而是把规则明确写进去：grill 之后形成的后续计划，应该写到 <code>/docs/plan</code>，不能直接写进 <code>/docs/features</code> 或 <code>/docs/architecture</code>。</p>
+<p>这不是一个简单的目录偏好，而是在告诉 AI：什么东西还只是计划，什么东西才可以被当作项目事实。</p>
+<h2 id="把偏好变成约束"><a href="#把偏好变成约束" class="headerlink" title="把偏好变成约束"></a>把偏好变成约束</h2><p>使用 AI 写代码时，很多问题不是 AI 不会，而是它不知道你在意什么。</p>
+<p>你在意命名是否贴合领域，注释是否解释意图而不是复述代码，提交信息是否清楚，文档是否跟着代码一起更新，这些偏好如果每次都临时说明，就很容易遗漏。</p>
+<p>skill 的价值在于把这些偏好变成稳定约束。它不是让 AI 替我做判断，而是让 AI 在我设定的边界里工作。更准确地说，skill 管的是“在某类任务里如何行动”，而不是“把人的责任外包出去”。</p>
+<p>这也是为什么我不太愿意把这件事叫作“写提示词”。提示词更像一次性的表达，工作流则会问另一组问题：</p>
+<ul>
+<li>这个需求现在处在哪个阶段？</li>
+<li>AI 应该先读什么上下文？</li>
+<li>什么情况下可以动手？</li>
+<li>什么结果可以算完成？</li>
+<li>需要什么证据才能宣布完成？</li>
+<li>哪些结论应该写回文档？</li>
+</ul>
+<p>这些问题比一句漂亮提示词更重要。</p>
+<h2 id="让-AI-更像协作者"><a href="#让-AI-更像协作者" class="headerlink" title="让 AI 更像协作者"></a>让 AI 更像协作者</h2><p>skill 是一种协作协议。它让 AI 知道在什么场景下该采用什么工作方式，也让我不用每次都从零开始解释自己的工程习惯。</p>
+<p>这也对应了前面两篇文章的结论：AI 可以加速表达、生成和试探，但程序员仍然要负责判断、边界和验证。把 AI 放进工作流，就是把这些责任拆成更清晰的流程，让 AI 更稳定地参与其中。</p>
+<p>好的 AI 使用方式，不是把人从流程里拿掉，而是让人更清楚地站在该负责的位置上。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^harness-engineering]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering: leveraging Codex in an agent-first world</em></a>。这里引用它来支撑“AI 使用效果取决于环境、意图、工具和反馈循环，而不只是 prompt”的判断。<br>[^anthropic-agents]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents"><em>Building Effective AI Agents</em></a>。Anthropic 区分 workflow 与 agent，并提醒只在复杂度确实需要时提升自主性。<br>[^codex-best-practices]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用的是“把重复指导沉淀到 <code>AGENTS.md</code>、skill、配置和自动化工作流”的实践建议。<br>[^claude-skills]: Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/skills"><em>Extend Claude with skills</em></a>。Claude Code 的 skill 文档强调 <code>SKILL.md</code> 保持聚焦，细节放入按需加载的 supporting files。<br>[^codex-plan-first]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices: Plan first for difficult tasks</em></a>。这里引用它来支撑复杂任务先规划、再执行的工作流。<br>[^claude-common-workflows]: Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/common-workflows"><em>Claude Code common workflows</em></a>。其中“理解代码库”和“查找相关代码”的建议都强调从广到窄地建立上下文。<br>[^anthropic-coding-agents]: Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents"><em>Building Effective AI Agents</em></a>。这里引用的是 coding agents 适合用测试反馈迭代的判断。<br>[^codex-test-review]: OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices: Improve reliability with testing and review</em></a>。这里引用它来支撑“完成断言必须绑定测试、检查、行为确认和 review”。<br>[^repo-system-of-record]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering</em></a>。这里引用的是“repository knowledge as the system of record”和渐进式披露的实践。<br>[^context-is-scarce]: OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering</em></a>。这里引用的是“大型指令文件会挤占任务、代码和相关文档”的上下文管理经验。<br>[^hitl]: 参见 Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>；以及 NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它们来支撑“人工介入点需要上下文、控制、恢复和责任边界”的说法。<br>[^human-ai-guidelines]: Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/"><em>Guidelines for Human-AI Interaction</em></a>。这份 CHI 2019 论文提出并验证了 18 条 Human-AI Interaction 设计指南，适合支撑“AI 输出需要可理解、可纠正、可恢复”的边界。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness engineering</a>：适合理解为什么 AI coding 的关键不只是提示词，而是环境、工具、反馈和知识系统。</li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>：适合理解 <code>AGENTS.md</code>、plan-first、测试验证和 review 如何进入日常工作流。</li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective AI Agents</a>：适合理解 workflow、agent、自主性、测试反馈和 guardrails 的边界。</li>
+<li>Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/common-workflows">Claude Code common workflows</a>：适合把“看代码、修 bug、写测试、写文档”拆成可执行工作流。</li>
+<li>Anthropic Docs, <a target="_blank" rel="noopener" href="https://docs.anthropic.com/en/docs/claude-code/skills">Extend Claude with skills</a>：适合理解 skill 为什么应该聚焦入口和按需加载，而不是变成大而全说明书。</li>
+<li>Microsoft Research, <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/">Guidelines for Human-AI Interaction</a>：适合理解人在 AI 系统中的控制、纠错和恢复位置。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/" rel="tag"># 程序员</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/Skill/" rel="tag"># Skill</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" rel="prev" title="GPT 有智能，但不是责任主体">
+                  <i class="fa fa-angle-left"></i> GPT 有智能，但不是责任主体
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/" rel="next" title="任务进度为什么会倒退">
+                  任务进度为什么会倒退 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">104k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:18</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLAI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="任务进度为什么会倒退">
+<meta property="og:url" content="http://example.com/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLAI">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-11T07:31:58.000Z">
+<meta property="article:modified_time" content="2026-07-16T15:21:03.112Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="缓存">
+<meta property="article:tag" content="一致性">
+<meta property="article:tag" content="RPC">
+<meta property="article:tag" content="任务系统">
+<meta property="article:tag" content="事故复盘">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/","path":"2026/07/11/任务进度为什么会倒退/","title":"任务进度为什么会倒退"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>任务进度为什么会倒退 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">现象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E6%A8%A1%E5%9D%97%E5%90%84%E8%87%AA%E9%83%BD%E5%BE%88%E5%90%88%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">三个模块各自都很合理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E6%9D%A1%E5%86%99%E8%B7%AF%E5%BE%84"><span class="nav-number">3.</span> <span class="nav-text">两条写路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%8F%E7%BC%93%E5%AD%98%E6%98%AF%E6%80%8E%E4%B9%88%E8%A6%86%E7%9B%96%E6%AD%A3%E7%A1%AE%E6%95%B0%E6%8D%AE%E7%9A%84"><span class="nav-number">4.</span> <span class="nav-text">脏缓存是怎么覆盖正确数据的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9B%B4%E6%96%B0%E6%97%B6%E9%97%B4%E6%98%AF%E5%AF%B9%E7%9A%84"><span class="nav-number">5.</span> <span class="nav-text">为什么更新时间是对的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B9%E5%9B%A0%E4%B8%8D%E6%98%AF%E7%BC%93%E5%AD%98%EF%BC%8C%E8%80%8C%E6%98%AF%E7%BC%93%E5%AD%98%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%83%E4%B8%8D%E6%B8%85%E6%A5%9A"><span class="nav-number">6.</span> <span class="nav-text">根因不是缓存，而是缓存的所有权不清楚</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%98%AF%E5%8A%A0%E4%B8%80%E6%AC%A1%E5%90%8C%E6%AD%A5"><span class="nav-number">7.</span> <span class="nav-text">修复为什么不是加一次同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%BA%94%E8%AF%A5%E8%AE%A9%E7%BC%93%E5%AD%98%E5%8F%82%E4%B8%8E%E5%86%99%E5%85%A5"><span class="nav-number">8.</span> <span class="nav-text">什么时候应该让缓存参与写入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">10.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">11.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/11/%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%80%92%E9%80%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="任务进度为什么会倒退 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          任务进度为什么会倒退
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-11 15:31:58" itemprop="dateCreated datePublished" datetime="2026-07-11T15:31:58+08:00">2026-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-16 23:21:03" itemprop="dateModified" datetime="2026-07-16T23:21:03+08:00">2026-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">分布式系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/%E4%B8%80%E8%87%B4%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">一致性</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>有些 Bug 很反直觉。</p>
+<p>比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。</p>
+<p>更诡异的是，更新时间是新的，进度却是旧的。</p>
+<p>这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>这次问题的表现大概是这样：</p>
+<ol>
+<li>玩家在游戏内做了一次兑换。</li>
+<li>数据库里的任务记录一度变成了完成状态：<code>progress=1</code>，<code>status=CAN_CLAIM</code>。</li>
+<li>玩家退出游戏后重新登录。</li>
+<li>同一条任务又变回了未完成：<code>progress=0</code>，<code>status=INIT</code>。</li>
+</ol>
+<p>如果只看兑换流程，会觉得它没有问题。兑换完成后，平台服务通知任务服务更新进度，数据库也确实写成功了。</p>
+<p>真正的问题发生在退出游戏的时候。</p>
+<h2 id="三个模块各自都很合理"><a href="#三个模块各自都很合理" class="headerlink" title="三个模块各自都很合理"></a>三个模块各自都很合理</h2><p>这个任务系统被拆在三个模块里：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>平台服务</td>
+<td>平台事件入口，比如支付、兑换这类不直接发生在游戏循环里的操作</td>
+</tr>
+<tr>
+<td>任务服务</td>
+<td>任务系统核心，负责 DB 读写、进度计算、任务刷新</td>
+</tr>
+<tr>
+<td>游戏服务</td>
+<td>游戏内实时任务进度，负责内存缓存、客户端推送、退出时 flush</td>
+</tr>
+</tbody></table>
+<p>它们的职责单独看都很自然：</p>
+<ul>
+<li>平台事件发生在平台服务，所以兑换后由平台服务通知任务服务。</li>
+<li>任务数据落在任务服务，所以最终由任务服务写数据库。</li>
+<li>游戏中需要实时显示任务进度，所以游戏服务会在玩家进游戏时加载任务进度到内存。</li>
+</ul>
+<p>问题就出在最后一点：游戏服务里有一份任务进度缓存。</p>
+<h2 id="两条写路径"><a href="#两条写路径" class="headerlink" title="两条写路径"></a>两条写路径</h2><p>这个系统里，任务进度至少有两条更新路径。</p>
+<p>第一条是游戏内事件。</p>
+<p>例如射击、开宝箱、赚金币这种行为，本来就发生在游戏服里：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">游戏内事件</span><br><span class="line">  -&gt; 更新游戏服务内存缓存</span><br><span class="line">  -&gt; 推送客户端任务进度变化</span><br><span class="line">  -&gt; 退出或阶段性 flush</span><br><span class="line">  -&gt; 任务服务写 DB</span><br></pre></td></tr></table></figure>
+
+<p>这条路径是自洽的。内存先更新，DB 后更新，客户端也能收到推送。</p>
+<p>第二条是平台事件。</p>
+<p>兑换不是游戏服自己完成的，而是平台服务处理的：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">平台服务完成兑换</span><br><span class="line">  -&gt; 通知任务服务更新进度</span><br><span class="line">  -&gt; 任务服务按条件更新任务</span><br><span class="line">  -&gt; 写 DB</span><br></pre></td></tr></table></figure>
+
+<p>这条路径也自洽。兑换成功后，任务服务把 DB 里的进度加上去。</p>
+<p>但它少了一件事：没有通知游戏服务里的任务缓存。</p>
+<h2 id="脏缓存是怎么覆盖正确数据的"><a href="#脏缓存是怎么覆盖正确数据的" class="headerlink" title="脏缓存是怎么覆盖正确数据的"></a>脏缓存是怎么覆盖正确数据的</h2><p>把时间线连起来，就能看到问题：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">玩家进入游戏</span><br><span class="line">  -&gt; 游戏服务从任务服务加载任务进度</span><br><span class="line">  -&gt; 缓存在游戏服务内存中</span><br><span class="line">  -&gt; 此时 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家在游戏内兑换</span><br><span class="line">  -&gt; 平台服务完成兑换</span><br><span class="line">  -&gt; 任务服务写 DB</span><br><span class="line">  -&gt; DB 变为 progress=1, status=CAN_CLAIM</span><br><span class="line">  -&gt; 游戏服务缓存仍然是 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家退出游戏</span><br><span class="line">  -&gt; 游戏服务 flush 玩家任务缓存</span><br><span class="line">  -&gt; 把内存里的旧进度 flush 到任务服务</span><br><span class="line">  -&gt; 任务服务用旧 progress/status 覆盖 DB</span><br></pre></td></tr></table></figure>
+
+<p>所以，数据库不是没有更新成功。</p>
+<p>它是先被正确更新了，然后又被旧缓存覆盖了。</p>
+<p>这就是这个问题最容易误判的地方：如果只查兑换那一刻的数据库，会看到正确结果；如果查退出后的数据库，会看到错误结果。中间缺的不是一次写入，而是一次来自旧状态的覆盖写入。这个形态和并发控制里常说的 lost update 很接近：不是没有写入，而是后来的旧快照把已经成立的新事实覆盖掉了。[^optimistic-lock]</p>
+<h2 id="为什么更新时间是对的"><a href="#为什么更新时间是对的" class="headerlink" title="为什么更新时间是对的"></a>为什么更新时间是对的</h2><p>这个现象也很迷惑：<code>upd_time</code> 看起来是对的，但 <code>progress</code> 和 <code>status</code> 是错的。</p>
+<p>原因在 SQL 写法里。</p>
+<p>任务更新时，<code>progress</code>、<code>upd_time</code>、<code>status</code> 是一起 SET 的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> task_progress</span><br><span class="line"><span class="keyword">set</span> progress <span class="operator">=</span> ?,</span><br><span class="line">    upd_time <span class="operator">=</span> ?,</span><br><span class="line">    status <span class="operator">=</span> ?</span><br><span class="line"><span class="keyword">where</span> role_id <span class="operator">=</span> ?</span><br><span class="line">  <span class="keyword">and</span> task_id <span class="operator">=</span> ?</span><br></pre></td></tr></table></figure>
+
+<p>退出 flush 那条路径在写之前会先查一次 DB。此时 DB 里已经有新的 <code>upd_time</code>，但内存缓存里还是旧的进度和状态。</p>
+<p>于是它写回去的是：</p>
+<ul>
+<li><code>progress</code>: 来自旧缓存，变回 0</li>
+<li><code>status</code>: 来自旧缓存，变回 INIT</li>
+<li><code>upd_time</code>: 来自刚查出来的 DB 记录，看起来还是新的</li>
+</ul>
+<p>这就造成了一个很有迷惑性的现场：时间像是更新过，数据却像是回滚了。</p>
+<p>它不是事务回滚，而是旧状态覆盖。</p>
+<h2 id="根因不是缓存，而是缓存的所有权不清楚"><a href="#根因不是缓存，而是缓存的所有权不清楚" class="headerlink" title="根因不是缓存，而是缓存的所有权不清楚"></a>根因不是缓存，而是缓存的所有权不清楚</h2><p>看到这里，很容易得出一个简单结论：缓存有问题。</p>
+<p>但更准确地说，是这份缓存的所有权和写入边界不够清楚。</p>
+<p>游戏服务里的任务缓存适合处理游戏内事件，因为这些事件天然发生在游戏服务，并且需要实时推送客户端。</p>
+<p>但兑换任务不是游戏内事件。它的事实来源在平台服务，最终状态在任务服务，游戏服务只是曾经加载过一份旧快照。</p>
+<p>如果一份缓存满足下面两个条件，它就很危险：</p>
+<ol>
+<li>它不是事实来源。</li>
+<li>它可以在退出、定时任务、补偿流程里反向覆盖事实来源。</li>
+</ol>
+<p>这时候缓存就不只是缓存了，它变成了另一个写入者。Microsoft 的 Cache-Aside pattern 文档也明确提醒：cache-aside 本身并不保证缓存和数据源一致，外部进程更新数据源时，缓存要等重新加载或失效后才会反映变化。[^cache-aside]</p>
+<p>而多个写入者最怕的，就是每个人都以为自己手上的状态是最新的。</p>
+<h2 id="修复为什么不是加一次同步"><a href="#修复为什么不是加一次同步" class="headerlink" title="修复为什么不是加一次同步"></a>修复为什么不是加一次同步</h2><p>直觉上的修复是：兑换后通知游戏服务，把任务缓存也更新掉。</p>
+<p>这当然是一种方案，但它会引入新的问题：</p>
+<ul>
+<li>要给游戏服务增加更新任务进度的 RPC 能力。</li>
+<li>要考虑玩家是否在线、在哪个游戏服、通知失败怎么办。</li>
+<li>要保证 DB 更新和游戏服务缓存更新之间的失败补偿。</li>
+<li>以后所有平台任务都要想清楚要不要同步游戏服务缓存。</li>
+</ul>
+<p>这不是不能做，而是成本更高。AWS 对 cache-aside 和 write-through 的区分可以解释这里的取舍：如果选择 write-through，应用就要在更新主数据库后同步维护缓存；如果选择 cache-aside，就要承认缓存是按需加载的副本，并明确它的失效和回源机制。[^aws-caching]</p>
+<p>这次采用的是更小的修复：不要把兑换任务加载到游戏服务缓存里。</p>
+<p>原因很简单：兑换任务不需要游戏内实时追踪。</p>
+<p>玩家做兑换时，事实发生在平台服务；任务完成状态也由任务服务写 DB。它不需要由游戏服内存来参与生命周期。</p>
+<p>所以把兑换任务加入一个“非游戏内追踪任务”的排除列表：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">EXCHANGE_TASK_ID</span> <span class="operator">=</span> <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Integer&gt; NON_GAMEPLAY_TASK_IDS = set(</span><br><span class="line">    BIND_PHONE_TASK_ID,</span><br><span class="line">    DAILY_RECHARGE_TASK_ID,</span><br><span class="line">    EXCHANGE_TASK_ID</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>这样玩家进入游戏时，这类任务不会进入游戏服务的内存缓存：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">不加载到游戏服务</span><br><span class="line">  -&gt; 不产生游戏服务缓存</span><br><span class="line">  -&gt; 退出时不 flush</span><br><span class="line">  -&gt; 不会用旧缓存覆盖 DB</span><br></pre></td></tr></table></figure>
+
+<p>这个修复的关键不是“少写一段同步代码”，而是重新划清了任务的归属。</p>
+<p>游戏内任务交给游戏服务缓存追踪。</p>
+<p>平台任务不要进入游戏服务缓存。</p>
+<h2 id="什么时候应该让缓存参与写入"><a href="#什么时候应该让缓存参与写入" class="headerlink" title="什么时候应该让缓存参与写入"></a>什么时候应该让缓存参与写入</h2><p>这次问题给我的提醒是：不要只问“要不要缓存”，还要问“缓存有没有资格写回”。</p>
+<p>如果缓存只是读优化，它失效或过期最多影响性能。</p>
+<p>如果缓存会写回数据库，它就进入了 <a href="/2025/08/21/%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/" title="缓存一致性">缓存一致性</a> 的核心路径。此时至少要回答几个问题：</p>
+<ol>
+<li>缓存里的数据是谁更新的？</li>
+<li>还有没有其他路径会更新同一份 DB 数据？</li>
+<li>缓存写回时，是覆盖写、增量写，还是带版本判断的写？</li>
+<li>如果 DB 已经被其他路径更新，缓存写回应该跳过、合并，还是报错？</li>
+<li>哪些业务根本不应该进入这份缓存？</li>
+</ol>
+<p>这几个问题里，最后一个经常被忽略。乐观并发控制给出的思路是：保存前比较“我当初读到的版本”和“数据库当前版本”，如果已经变化，就不要静默覆盖，而是进入冲突处理。EF Core 的 concurrency token 和 Fowler 的 Optimistic Offline Lock 都是在解决这类“旧副本写回”问题。[^concurrency-token]</p>
+<p>很多时候，最稳的修复不是让所有状态同步到所有地方，而是减少不该拥有状态的地方。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个 Bug 表面上是“任务进度倒退”，本质上是两条写路径竞争同一行数据：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">平台服务路径：写入正确进度</span><br><span class="line">游戏服务路径：退出时 flush 旧缓存</span><br><span class="line">最终结果：旧缓存覆盖新 DB</span><br></pre></td></tr></table></figure>
+
+<p>它提醒我一件事：</p>
+<p>缓存不是只要命中率高就算设计完成。只要缓存能写回，它就是一个数据作者。</p>
+<p>一个系统里可以有多个读者，但最好不要有太多自以为拥有事实的作者。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>[^optimistic-lock]: Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里借用的是“检测并阻止并发业务事务互相覆盖”的思路，不是说这个事故一定发生在 ORM 或长事务场景。<br>[^cache-aside]: Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a>。这里引用它来支撑“cache-aside 不自动保证缓存和数据源一致，外部写路径会让缓存变旧”的判断。<br>[^aws-caching]: AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a>。这里引用它来区分 cache-aside &#x2F; lazy loading 和 write-through：前者按需填充，后者要求应用在主库更新后主动维护缓存。<br>[^concurrency-token]: Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a>；Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里引用它们来支撑“旧快照写回应带版本判断或冲突处理，而不是无条件覆盖”的设计原则。</p>
+<h2 id="参考与延伸阅读"><a href="#参考与延伸阅读" class="headerlink" title="参考与延伸阅读"></a>参考与延伸阅读</h2><ul>
+<li>Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a></li>
+<li>AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a></li>
+<li>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a></li>
+<li>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%93%E5%AD%98/" rel="tag"># 缓存</a>
+              <a href="/tags/%E4%B8%80%E8%87%B4%E6%80%A7/" rel="tag"># 一致性</a>
+              <a href="/tags/RPC/" rel="tag"># RPC</a>
+              <a href="/tags/%E4%BB%BB%E5%8A%A1%E7%B3%BB%E7%BB%9F/" rel="tag"># 任务系统</a>
+              <a href="/tags/%E4%BA%8B%E6%95%85%E5%A4%8D%E7%9B%98/" rel="tag"># 事故复盘</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="把 AI 放进工作流">
+                  <i class="fa fa-angle-left"></i> 把 AI 放进工作流
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/16/TDD-%E8%AE%A9-AI-%E5%8F%AF%E9%9D%A0%EF%BC%8CAI-%E8%AE%A9-TDD-%E5%8F%AF%E8%A1%8C/" rel="next" title="TDD 让 AI 可靠，AI 让 TDD 可行">
+                  TDD 让 AI 可靠，AI 让 TDD 可行 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">104k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:18</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
