@@ -28,11 +28,11 @@
 <meta property="og:description" content="在 把 AI 放进工作流 里，我写过一个判断：AI 不是靠一次漂亮的提示词用好的，而是要被放进一个有边界、有验证、有沉淀的工作流里。 这篇继续往下走，专门谈这个工作流里越来越重要的一层东西：Agent Skill。 如果一个同事还不知道什么是 Agent Skill，我不太想一上来就告诉他：它是一个包含 SKILL.md 的目录，里面有 YAML front matter、说明正文、referen">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-17T14:39:01.964Z">
+<meta property="article:modified_time" content="2026-07-17T19:24:50.584Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="AI">
-<meta property="article:tag" content="工作流">
 <meta property="article:tag" content="Agent">
+<meta property="article:tag" content="工作流">
 <meta property="article:tag" content="Skill">
 <meta property="article:tag" content="Prompt">
 <meta name="twitter:card" content="summary">
@@ -149,7 +149,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -160,7 +160,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -238,9 +238,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-07-17 00:00:00 / 修改时间：22:39:01" itemprop="dateCreated datePublished" datetime="2026-07-17T00:00:00+08:00">2026-07-17</time>
+      <time title="创建时间：2026-07-17 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-17T00:00:00+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 03:24:50" itemprop="dateModified" datetime="2026-07-18T03:24:50+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -259,14 +265,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.9k</span>
+      <span>4.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>14 分钟</span>
+      <span>16 分钟</span>
     </span>
 </div>
 
@@ -300,17 +306,17 @@
 <p>如果这些要求每次都靠临时 Prompt 提醒，它们就很容易失效。</p>
 <p>人会忘记说。对话会变长。上下文会变脏。AI 会在后半段逐渐回到它熟悉的生成模式里。更麻烦的是，这些做法一旦只存在于聊天记录里，就很难被复用、修改、审查和传给团队里的其他人。</p>
 <p>所以 Prompt 的问题不是“不够强”，而是它天然偏向一次性沟通。</p>
-<p>Skill 要解决的是另一类问题：把反复出现的工作方式，沉淀成可复用、可触发、可维护的上下文。</p>
+<p>Skill 要解决的是另一类问题：把反复出现的工作方式，沉淀成可复用、可触发、可维护的上下文。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <h2 id="Skill-不是更长的-Prompt">Skill 不是更长的 Prompt</h2>
 <p>很容易把 Agent Skill 理解成“高级提示词”。</p>
 <p>这个理解只对了一半。</p>
 <p>Skill 里面确实有自然语言指令，Agent 也确实会读这些指令。但一个好的 Skill 不只是把一大段 Prompt 存起来。它至少多解决了三个问题。</p>
 <p>第一，它解决“什么时候用”的问题。</p>
-<p>Skill 的 <code>description</code> 不只是给人看的简介。对 Agent 来说，它是路由线索。一个好的 <code>description</code> 要说清楚：这个 skill 适用于什么任务，不适用于什么任务，和相邻 skill 的边界在哪里。</p>
+<p>Skill 的 <code>description</code> 不只是给人看的简介。对 Agent 来说，它是路由线索。一个好的 <code>description</code> 要说清楚：这个 skill 适用于什么任务，不适用于什么任务，和相邻 skill 的边界在哪里。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>第二，它解决“触发后先判断什么”的问题。</p>
 <p><code>SKILL.md</code> 不应该像百科全书，也不应该复制工具教程。它更应该告诉 Agent：当前任务先确认什么，哪些边界不能越过，什么时候需要继续读 <code>references/</code>，什么结果才算完成。</p>
 <p>第三，它解决“细节如何按需加载”的问题。</p>
-<p>不常用的背景资料、长检查清单、示例、脚本、模板，不一定要全部塞进主文件。它们可以放进 <code>references/</code>、<code>scripts/</code> 或 <code>assets/</code>。Agent 需要时再读，需要执行时再调用。</p>
+<p>不常用的背景资料、长检查清单、示例、脚本、模板，不一定要全部塞进主文件。它们可以放进 <code>references/</code>、<code>scripts/</code> 或 <code>assets/</code>。Agent 需要时再读，需要执行时再调用。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>所以 Skill 和 Prompt 的差别，不只是“短”和“长”的差别。</p>
 <p>Prompt 更像一次对话里的意图表达。Skill 更像某类任务的工作协议。</p>
 <h2 id="Skill、Prompt-和-Tool-各自解决不同问题">Skill、Prompt 和 Tool 各自解决不同问题</h2>
@@ -347,7 +353,7 @@
 <p>Agent 能调用测试命令、编辑器、文件系统，这些是 Tool。</p>
 <p>如果我希望它按 TDD 的节奏推进，先写失败测试，再写最小实现，再重构，并且不要为了让测试通过反过来放松断言，那就是 Skill 要表达的工作方式。</p>
 <p>Skill 不替代 Prompt，也不替代 Tool。</p>
-<p>Prompt 提供当前目标。Tool 提供行动能力。Skill 提供可复用的判断和流程。</p>
+<p>Prompt 提供当前目标。Tool 提供行动能力。Skill 提供可复用的判断和流程。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <h2 id="Skill-的核心是渐进式披露">Skill 的核心是渐进式披露</h2>
 <p>Agent Skill 背后的关键设计，不是“把更多说明交给 AI”，而是“只在需要时加载正确说明”。</p>
 <p>这叫渐进式披露。</p>
@@ -355,9 +361,9 @@
 <p>第一层，启动时只让 Agent 看到 skill 的名字、描述和位置。它知道“有这么一个能力”，但还没有把全文塞进上下文。</p>
 <p>第二层，当任务匹配时，Agent 才读取对应的 <code>SKILL.md</code>。</p>
 <p>第三层，如果 <code>SKILL.md</code> 指向更细的参考资料、脚本或模板，Agent 再按需要继续读取或执行。</p>
-<p>OpenAI 的 Codex 文档把 skill 描述为可复用的工作流格式，并明确提到 Codex 先看到 skill 的名称、描述和路径，只有决定使用时才读取完整 <code>SKILL.md</code>。Anthropic 在介绍 Agent Skills 时也用了同样的思路：先加载 <code>name</code> 和 <code>description</code>，任务相关时再读正文，更细的文件继续按需展开。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>OpenAI 的 Codex 文档把 skill 描述为可复用的工作流格式，并明确提到 Codex 先看到 skill 的名称、描述和路径，只有决定使用时才读取完整 <code>SKILL.md</code>。Anthropic 在介绍 Agent Skills 时也用了同样的思路：先加载 <code>name</code> 和 <code>description</code>，任务相关时再读正文，更细的文件继续按需展开。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup><sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <p>这件事很重要。</p>
-<p>因为上下文窗口不是越满越好。把所有规范、示例、异常情况、脚本说明都塞进去，短期看像是“资料齐全”，长期看却会稀释真正关键的约束。Agent 可能读了很多字，却更难抓住当前任务最应该遵守的那几条规则。</p>
+<p>因为上下文窗口不是越满越好。把所有规范、示例、异常情况、脚本说明都塞进去，短期看像是“资料齐全”，长期看却会稀释真正关键的约束。Agent 可能读了很多字，却更难抓住当前任务最应该遵守的那几条规则。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <p>好 Skill 不是让 Agent 多读字，而是让 Agent 少想错。</p>
 <h2 id="一个-Skill-通常长什么样">一个 Skill 通常长什么样</h2>
 <p>从格式上看，一个 Skill 通常是一个目录。</p>
@@ -378,7 +384,7 @@
 <p>很多人第一次写 Skill，容易把它写成操作手册。</p>
 <p>第一步做什么，第二步做什么，第三步做什么。再加一大堆命令示例、注意事项、边界情况。最后 <code>SKILL.md</code> 越写越长，像一份很努力但很臃肿的说明书。</p>
 <p>这不一定有效。</p>
-<p>Agent 很多基础操作本来就会。它会读文件，会看 <code>--help</code>，会根据项目里的 package scripts 推断测试命令，会模仿现有代码风格。Skill 不应该把这些 baseline 能力重新讲一遍。</p>
+<p>Agent 很多基础操作本来就会。它会读文件，会看 <code>--help</code>，会根据项目里的 package scripts 推断测试命令，会模仿现有代码风格。Skill 不应该把这些 baseline 能力重新讲一遍。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <p>Skill 最值得写的是 Agent 默认不知道、但对这类任务很关键的东西：</p>
 <ul>
 <li>这个团队的特殊约定。</li>
@@ -411,7 +417,7 @@
 <p>所以评估一个 Skill，不只要问它“能不能用”，还要问它有没有制造新的上下文噪声。</p>
 <h2 id="什么时候该把-Prompt-升级成-Skill">什么时候该把 Prompt 升级成 Skill</h2>
 <p>不是所有 Prompt 都值得变成 Skill。</p>
-<p>一次性需求没有必要 Skill 化。还在探索中的偏好也不急着沉淀。只有当一段提示开始反复出现，并且忘记它会导致稳定的质量问题时，才值得考虑升级。</p>
+<p>一次性需求没有必要 Skill 化。还在探索中的偏好也不急着沉淀。只有当一段提示开始反复出现，并且忘记它会导致稳定的质量问题时，才值得考虑升级。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>我会用这几个问题判断：</p>
 <p>第一，它是不是高频出现？</p>
 <p>如果每周都在重复同一类要求，比如写文章、诊断 bug、做代码审查、同步项目文档，那它有可能适合 Skill。</p>
@@ -444,7 +450,7 @@
 <p>这也是我觉得“从 Prompt 到 Skill”重要的原因。</p>
 <p>它不是提示词技巧的升级，而是工作流抽象的升级。</p>
 <p>当我们只写 Prompt 时，AI 协作更像一场场临时对话。对话当然有价值，但它很难沉淀。</p>
-<p>当我们开始写 Skill 时，一部分经验会变成可版本化的资产：团队怎么写文章，怎么修 bug，怎么做测试，怎么验证完成，怎么把结论写回文档。</p>
+<p>当我们开始写 Skill 时，一部分经验会变成可版本化的资产：团队怎么写文章，怎么修 bug，怎么做测试，怎么验证完成，怎么把结论写回文档。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <p>这些东西过去可能藏在资深同事的脑子里，藏在 code review 的评论里，藏在一次次会议和聊天记录里。Skill 把它们转成 Agent 能按需读取的工作上下文。</p>
 <p>所以，Agent Skill 不是为了让 AI 替我们判断。</p>
 <p>恰恰相反，它是把人的判断边界写得更清楚，让 AI 在这些边界里更稳定地工作。</p>
@@ -462,9 +468,25 @@
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>。这里引用的是 Codex Skills 对可复用工作流、渐进式披露、<code>SKILL.md</code>、<code>scripts/</code> 和 <code>references/</code> 的说明。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p>Agent Skills 标准把 skill 定义为包含 <code>SKILL.md</code> 的轻量开放格式，用来把专门知识和工作流交给 agent，并强调这些知识可以作为可复用、按需加载的 instructions / resources：<a target="_blank" rel="noopener" href="https://agentskills.io/home">https://agentskills.io/home</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn2" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>。这里引用的是 Agent Skills 的目录结构、<code>name</code> / <code>description</code> 路由、渐进式披露和按需加载参考文件的设计。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+<li id="fn2" class="footnote-item"><p>OpenAI Codex 文档和 Anthropic Claude Code 文档都把 <code>description</code> 放在触发 / 路由层：Codex 会根据 skill <code>description</code> 隐式匹配任务，Claude 也使用 <code>description</code> 判断何时应用 skill。因此，description 的边界清晰度会直接影响触发质量：<a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">https://learn.chatgpt.com/docs/build-skills</a>、<a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/skills">https://code.claude.com/docs/en/skills</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>OpenAI Codex 文档说明 skill 目录可以包含 <code>SKILL.md</code>、<code>scripts/</code>、<code>references/</code>、<code>assets/</code>；Agent Skills 标准也采用同样的目录结构，把脚本、参考资料、模板等作为按需加载资源：<a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">https://learn.chatgpt.com/docs/build-skills</a>、<a target="_blank" rel="noopener" href="https://agentskills.io/home">https://agentskills.io/home</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>OpenAI API Skills 文档把 skill 称为 versioned bundle，可用来 codify processes and conventions；这支撑“Prompt 给当前目标、Tool 给动作能力、Skill 给可复用流程和判断”的区分：<a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/tools-skills">https://developers.openai.com/api/docs/guides/tools-skills</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a>。这里引用的是 Codex Skills 对可复用工作流、渐进式披露、<code>SKILL.md</code>、<code>scripts/</code> 和 <code>references/</code> 的说明。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>。这里引用的是 Agent Skills 的目录结构、<code>name</code> / <code>description</code> 路由、渐进式披露和按需加载参考文件的设计。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Anthropic 的 Agent Skills 文章把 progressive disclosure 称为让 Skills 灵活、可扩展的核心设计原则；NN/g 对渐进式披露的经典定义也强调先呈现少量核心选项、按需展开复杂内容，以降低认知负荷和错误率。这里将该原则类比到 agent 上下文管理：<a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</a>、<a target="_blank" rel="noopener" href="https://www.nngroup.com/articles/progressive-disclosure/">https://www.nngroup.com/articles/progressive-disclosure/</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Agent Skills 的 best practices 建议 skill 应聚焦 agent 不知道的项目约定、领域流程和非显然边界，省略 agent 已经能处理的通用知识；这支撑“Skill 不该重复 baseline 能力”的判断：<a target="_blank" rel="noopener" href="https://agentskills.io/skill-creation/best-practices">https://agentskills.io/skill-creation/best-practices</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Agent Skills best practices 建议从真实任务、人工纠正、项目约定、运行结果和失败案例中提取 skill，并通过真实执行持续迭代；这支撑“反复出现且影响质量的 Prompt 才值得升级成 Skill”：<a target="_blank" rel="noopener" href="https://agentskills.io/skill-creation/best-practices">https://agentskills.io/skill-creation/best-practices</a>。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>Agent Skills 标准强调 skill 可以把程序性知识和团队上下文打包进 portable、version-controlled folders；OpenAI API Skills 文档也把 skill 称为 versioned bundle。这支撑“Skill 让协作经验变成可版本化资产”的说法：<a target="_blank" rel="noopener" href="https://agentskills.io/home">https://agentskills.io/home</a>、<a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/tools-skills">https://developers.openai.com/api/docs/guides/tools-skills</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -478,8 +500,8 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/AI/" rel="tag"># AI</a>
-              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
               <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
               <a href="/tags/Skill/" rel="tag"># Skill</a>
               <a href="/tags/Prompt/" rel="tag"># Prompt</a>
           </div>
@@ -526,13 +548,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

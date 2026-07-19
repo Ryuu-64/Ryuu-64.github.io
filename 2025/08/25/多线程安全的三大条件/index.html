@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="总结来说，多线程安全主要要满足 三大条件： 原子性（Atomicity） 操作不可分割，要么全部成功，要么全部失败。 123456789int x &#x3D; 0;&#x2F;&#x2F; 原子性保证Interlocked.Increment(ref x); &#x2F;&#x2F; 原子 +1，不会丢失更新&#x2F;&#x2F; 非原子性&#x2F;&#x2F; 其实是 load → add → store，可能被打断，导致多个线程覆盖&#x2F;&#x2F; 例如线程a正在++，这个过程中线程b也">
+    <meta name="description" content="总结来说，多线程安全主要要满足 三大条件： 原子性（Atomicity） 操作不可分割，要么全部成功，要么全部失败。[1] 123456789int x &#x3D; 0;&#x2F;&#x2F; 原子性保证Interlocked.Increment(ref x); &#x2F;&#x2F; 原子 +1，不会丢失更新&#x2F;&#x2F; 非原子性&#x2F;&#x2F; 其实是 load → add → store，可能被打断，导致多个线程覆盖&#x2F;&#x2F; 例如线程a正在++，这个过程中线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程安全的三大条件">
 <meta property="og:url" content="http://example.com/2025/08/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E4%B8%89%E5%A4%A7%E6%9D%A1%E4%BB%B6/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="总结来说，多线程安全主要要满足 三大条件： 原子性（Atomicity） 操作不可分割，要么全部成功，要么全部失败。 123456789int x &#x3D; 0;&#x2F;&#x2F; 原子性保证Interlocked.Increment(ref x); &#x2F;&#x2F; 原子 +1，不会丢失更新&#x2F;&#x2F; 非原子性&#x2F;&#x2F; 其实是 load → add → store，可能被打断，导致多个线程覆盖&#x2F;&#x2F; 例如线程a正在++，这个过程中线程b也">
+<meta property="og:description" content="总结来说，多线程安全主要要满足 三大条件： 原子性（Atomicity） 操作不可分割，要么全部成功，要么全部失败。[1] 123456789int x &#x3D; 0;&#x2F;&#x2F; 原子性保证Interlocked.Increment(ref x); &#x2F;&#x2F; 原子 +1，不会丢失更新&#x2F;&#x2F; 非原子性&#x2F;&#x2F; 其实是 load → add → store，可能被打断，导致多个线程覆盖&#x2F;&#x2F; 例如线程a正在++，这个过程中线">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-08-25T02:45:31.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.032Z">
+<meta property="article:modified_time" content="2026-07-17T18:48:46.782Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="线程">
 <meta property="article:tag" content="并发">
@@ -149,7 +149,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -160,7 +160,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -246,7 +246,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 02:48:46" itemprop="dateModified" datetime="2026-07-18T02:48:46+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -265,14 +265,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>814</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -284,19 +284,19 @@
     
     <div class="post-body" itemprop="articleBody"><p>总结来说，多线程安全主要要满足 三大条件：</p>
 <h2 id="原子性（Atomicity）">原子性（Atomicity）</h2>
-<p>操作不可分割，要么全部成功，要么全部失败。</p>
+<p>操作不可分割，要么全部成功，要么全部失败。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> x = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原子性保证</span></span><br><span class="line">Interlocked.Increment(<span class="keyword">ref</span> x); <span class="comment">// 原子 +1，不会丢失更新</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 非原子性</span></span><br><span class="line"><span class="comment">// 其实是 load → add → store，可能被打断，导致多个线程覆盖</span></span><br><span class="line"><span class="comment">// 例如线程a正在++，这个过程中线程b也++，本来x会+2结果会变成只+1</span></span><br><span class="line">x++;</span><br></pre></td></tr></table></figure>
 <h2 id="可见性-Visibility">可见性 (Visibility)</h2>
 <p>一个线程对共享变量的修改，另一个线程能够立即看到。</p>
-<p>CPU 会做缓存[1]和指令重排（跟有序性也有很大关系），导致线程 A 改了变量，线程 B 可能“看不到”。</p>
-<p>需要内存屏障（memory barrier）[2]、<code>volatile</code> 或锁来保证。</p>
+<p>CPU 会做缓存[1]和指令重排（跟有序性也有很大关系），导致线程 A 改了变量，线程 B 可能“看不到”。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>需要内存屏障（memory barrier）[2]、<code>volatile</code> 或锁来保证。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="built_in">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadA</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    flag = <span class="literal">true</span>; <span class="comment">// 修改对其他线程立即可见</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadB</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span> (!flag) &#123; &#125; <span class="comment">// 否则可能无限循环</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="有序性-Ordering">有序性 (Ordering)</h2>
 <p>程序执行顺序符合预期。</p>
-<p>编译器，JIT和CPU，可能会重排指令，导致代码执行顺序和书写顺序不一致。</p>
+<p>编译器，JIT和CPU，可能会重排指令，导致代码执行顺序和书写顺序不一致。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>内存屏障、锁等可以限制重排。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">object</span> lockObj = <span class="keyword">new</span> <span class="built_in">object</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton Instance &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">lock</span> (lockObj) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                        instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                        <span class="comment">// 可能被重排为：</span></span><br><span class="line">                        <span class="comment">// 1. 分配内存</span></span><br><span class="line">                        <span class="comment">// 2. 把 instance 指向内存</span></span><br><span class="line">                        <span class="comment">// 3. 调用构造函数</span></span><br><span class="line">                        <span class="comment">// 线程 B 可能看到一个“未初始化完成”的对象</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> instance;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个时候可以给 instance 添加 <code>volatile</code>，或者是用 <code>Lazy&lt;T&gt;</code>（线程安全的初始化对象）</p>
+<p>这个时候可以给 instance 添加 <code>volatile</code>，或者是用 <code>Lazy&lt;T&gt;</code>（线程安全的初始化对象）<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <h2 id="总结">总结</h2>
 <p>在多线程编程里，<strong>原子性（Atomicity）、有序性（Ordering）、可见性（Visibility）</strong> 经常是相辅相成的——它们不是独立孤立的，而是互相依赖来保证线程安全。</p>
 <h2 id="脚注">脚注</h2>
@@ -338,6 +338,21 @@
 <p>x86 有 <code>mfence</code>、<code>lfence</code>、<code>sfence</code></p>
 <p>ARM 有 <code>dmb</code>、<code>dsb</code></p>
 <p>这些指令就是内存屏障。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn 的 <code>Interlocked.Increment</code> API 文档说明，该方法会递增指定变量并以原子操作存储结果，适合支撑单变量 read-modify-write 的原子性边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment">https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn 的 C# <code>volatile</code> 参考把 <code>volatile</code> 读写描述为 acquire / release 语义，并提醒它不保证所有线程观察到完全相同的全局顺序，因此这里的“看不到”更精确地说是缺少同步规则时没有跨线程可见性保证：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn 的 <code>Thread.MemoryBarrier</code> 文档说明内存屏障会限制屏障前后的内存访问重排；C# <code>lock</code> 文档说明 <code>lock</code> 会进入互斥临界区并转换为 <code>Monitor.Enter</code> / <code>Monitor.Exit</code> 结构；<code>volatile</code> 文档则说明字段级 acquire / release 语义。参见 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier">https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><code>Thread.MemoryBarrier</code> 官方文档明确说，屏障之前的内存访问不能被重排到屏障之后，屏障之后的内存访问也不能被重排到屏障之前；这正是有序性讨论中的底层边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier">https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn 的 Lazy initialization 指南说明，<code>Lazy&lt;T&gt;</code> 默认创建线程安全对象，常用于延迟初始化和单例式对象发布：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization">https://learn.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -396,13 +411,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

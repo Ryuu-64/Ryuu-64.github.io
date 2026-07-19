@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。 有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:  在这个级别上担心性能问题是不明智的，">
+    <meta name="description" content="将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。[1]编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。[2] 有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:[3]  在这个级别上担心性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-Java-54返回零长度的数组或集合,而不是null">
 <meta property="og:url" content="http://example.com/2021/06/27/Effective-Java-54%E8%BF%94%E5%9B%9E%E9%9B%B6%E9%95%BF%E5%BA%A6%E7%9A%84%E6%95%B0%E7%BB%84%E6%88%96%E9%9B%86%E5%90%88-%E8%80%8C%E4%B8%8D%E6%98%AFnull/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。 有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:  在这个级别上担心性能问题是不明智的，">
+<meta property="og:description" content="将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。[1]编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。[2] 有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:[3]  在这个级别上担心性">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-27T07:18:39.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.010Z">
+<meta property="article:modified_time" content="2026-07-17T18:03:05.244Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="effective Java">
@@ -145,7 +145,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 02:03:05" itemprop="dateModified" datetime="2026-07-18T02:03:05+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>362</span>
+      <span>532</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -278,14 +278,31 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。</p>
-<p>有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:</p>
+    <div class="post-body" itemprop="articleBody"><p>将null而不是0长度的数组或集合返回是不合常理的，这使得客户端中必须得有额外代码以处理null的代码。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>编写客户端程序的程序员有可能忘记写代码来处理null，这样的错误可能很久都不会被发现。返回null也会使得其实现代码更加复杂。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>有时候会有人认为: null返回值会比零长度集合或数组更好，因为它避免了分配长度容器所需的开销。这种观点是站不住脚的，原因有二:<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <ol>
-<li>在这个级别上担心性能问题是不明智的，除非分析表明这个方法正是造成性能问题的原因(见67条)。</li>
+<li>在这个级别上担心性能问题是不明智的，除非分析表明这个方法正是造成性能问题的原因(见67条)。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></li>
 <li>不需要分配零长度的集合或者数组，也可以返回他们。</li>
 </ol>
-<p>如果切实造存在性2能问题，可以通过重复返回一个<em><strong>不可变</strong></em>的零长度集合(例如 Collections.emptyList() Collections.emptyMap() )，避免即时分配，因为不可变类可以被自由的共享(见17条)。这仅是一个优化，几乎用不上。如果您认为确实有必要，请在行动前后进行性能测试。</p>
-<p>简而言之，<strong>返回一个零长度的数组或集合，而不是null</strong>。如果返回null，那样会使得API更加难用，也更容易出错，且没有任何的性能优势。</p>
+<p>如果切实造存在性2能问题，可以通过重复返回一个<em><strong>不可变</strong></em>的零长度集合(例如 Collections.emptyList() Collections.emptyMap() )，避免即时分配，因为不可变类可以被自由的共享(见17条)。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>这仅是一个优化，几乎用不上。如果您认为确实有必要，请在行动前后进行性能测试。</p>
+<p>简而言之，<strong>返回一个零长度的数组或集合，而不是null</strong>。如果返回null，那样会使得API更加难用，也更容易出错，且没有任何的性能优势。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 54, gives the rule to return empty collections or arrays instead of <code>null</code>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><em>Effective Java</em> Item 54 frames <code>null</code> collection returns as an API contract cost because every caller must remember and handle the extra path. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><em>Effective Java</em> Item 54 directly addresses the claim that returning <code>null</code> avoids allocating empty containers. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><em>Effective Java</em> Item 54 ties this performance concern to the broader measurement-first rule in Item 67: optimize only when profiling shows the method is actually a problem. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Oracle Java SE 21 API documents <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html#emptyList()"><code>Collections.emptyList()</code></a>, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html#emptySet()"><code>emptySet()</code></a>, and <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html#emptyMap()"><code>emptyMap()</code></a> as immutable empty collection factories; <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#of()"><code>List.of()</code></a> is also an unmodifiable list factory. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>The same boundary is reflected in Oracle’s <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html"><code>Optional</code></a> documentation: <code>Optional&lt;T&gt;</code> represents the possible absence of one non-null value, while collection APIs already have a natural zero-element value. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -341,13 +358,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="(Ryuu: 附上原文地址 : Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains&#x2F;resharper-unity Wiki) 这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。 若从 UnityEngine.Object 派生的类型使用空合并 (??)">
+    <meta name="description" content="(Ryuu: 附上原文地址 : Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains&#x2F;resharper-unity Wiki)[1] 这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。[2] 若从 UnityEngine.Object 派生的类型使用空合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">
 <meta property="og:url" content="http://example.com/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="(Ryuu: 附上原文地址 : Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains&#x2F;resharper-unity Wiki) 这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。 若从 UnityEngine.Object 派生的类型使用空合并 (??)">
+<meta property="og:description" content="(Ryuu: 附上原文地址 : Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains&#x2F;resharper-unity Wiki)[1] 这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。[2] 若从 UnityEngine.Object 派生的类型使用空合">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-28T08:46:23.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.023Z">
+<meta property="article:modified_time" content="2026-07-18T11:06:41.698Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="UnityEngine">
@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -158,7 +158,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -244,7 +244,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 19:06:41" itemprop="dateModified" datetime="2026-07-18T19:06:41+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,14 +263,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>830</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -280,19 +280,19 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>(Ryuu: 附上原文地址 : <a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains/resharper-unity Wiki</a>)</p>
-<p>这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。</p>
-<p>若从 UnityEngine.Object 派生的类型使用空合并 (??) 或空传播或条件 (?.) 运算符，则会显示此警告。 这些运算符<strong>不会使用 UnityEngine.Object 上声明的自定义相等运算符</strong>，将绕过 Unity 原生(native)对象的存活检测。 为了阐明意图，最好使用显式 null 或 bool 比较，或调用 System.Object.ReferenceEquals()。</p>
+    <div class="post-body" itemprop="articleBody"><p>(Ryuu: 附上原文地址 : <a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">Possible unintended bypass of lifetime check of underlying Unity engine object · JetBrains/resharper-unity Wiki</a>)<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>这是 Unity 特定的检查。此检查仅在 Unity 项目中运行。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>若从 UnityEngine.Object 派生的类型使用空合并 (??) 或空传播或条件 (?.) 运算符，则会显示此警告。 这些运算符<strong>不会使用 UnityEngine.Object 上声明的自定义相等运算符</strong>，将绕过 Unity 原生(native)对象的存活检测。 为了阐明意图，最好使用显式 null 或 bool 比较，或调用 System.Object.ReferenceEquals()。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <h2 id="详情">详情</h2>
-<p>从 UnityEngine.Object 派生的类型是托管 .NET 对象，在 C# 脚本中用于表示与使用原生 Unity 引擎对象。这两种类型的对象具有<strong>不同的</strong>生命周期。托管的 .NET 对象在没有更多引用时被垃圾收集，而本地 Unity 引擎对象在加载新场景或通过显式调用 UnityEngine.Object.Destroy() 时被销毁。这意味着托管的 .NET 对象指向的原生对象可能已被销毁。</p>
-<p>UnityEngine.Object 类定义了自定义相等运算符，当与 null 进行比较时，这些运算符将检查底层原生 Unity 引擎对象是否已被破坏。换句话说， myMonoBehaviour == null 将检查是否已分配 myMonoBehaviour 变量，并且还将检查原生引擎对象是否已被销毁。可以使用布尔比较执行相同的检查，例如 if (myMonoBehaviour == true) 或 if (!myMonoBehaviour) 或是 if (myMonoBehaviour)。</p>
-<p>如果使用空合并或条件运算符，则表意不明确，并且可能绕过预期的生命周期检查。如果打算进行生命周期检查，推荐使用与 null 或布尔比较的显式比较。若不打算进行生命周期检查，请调用 System.Object.ReferenceEquals() 以明确表意。注意，对 object.ReferenceEquals() 的调用被编译器优化为简单的空检查，比调用自定义相等运算符更快。</p>
+<p>从 UnityEngine.Object 派生的类型是托管 .NET 对象，在 C# 脚本中用于表示与使用原生 Unity 引擎对象。这两种类型的对象具有<strong>不同的</strong>生命周期。托管的 .NET 对象在没有更多引用时被垃圾收集，而本地 Unity 引擎对象在加载新场景或通过显式调用 UnityEngine.Object.Destroy() 时被销毁。这意味着托管的 .NET 对象指向的原生对象可能已被销毁。 <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>UnityEngine.Object 类定义了自定义相等运算符，当与 null 进行比较时，这些运算符将检查底层原生 Unity 引擎对象是否已被破坏。换句话说， myMonoBehaviour == null 将检查是否已分配 myMonoBehaviour 变量，并且还将检查原生引擎对象是否已被销毁。可以使用布尔比较执行相同的检查，例如 if (myMonoBehaviour == true) 或 if (!myMonoBehaviour) 或是 if (myMonoBehaviour)。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>如果使用空合并或条件运算符，则表意不明确，并且可能绕过预期的生命周期检查。如果打算进行生命周期检查，推荐使用与 null 或布尔比较的显式比较。若不打算进行生命周期检查，请调用 System.Object.ReferenceEquals() 以明确表意。注意，对 object.ReferenceEquals() 的调用被编译器优化为简单的空检查，比调用自定义相等运算符更快。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <h2 id="空合并运算符">空合并运算符</h2>
 <p>以下示例的表意不明确：是检查 gameObject是否正确引用，还是检查原生 Unity 引擎对象是否已销毁？</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> go = gameObject ?? CreateNewGameObject();</span><br></pre></td></tr></table></figure>
-<p>若目的是检查底层引擎对象的生命周期，则此代码不正确，因为生命周期检查被绕过。使用显式 null 或 boolean 比较修复代码：</p>
+<p>若目的是检查底层引擎对象的生命周期，则此代码不正确，因为生命周期检查被绕过。使用显式 null 或 boolean 比较修复代码：<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> go = gameObject != <span class="literal">null</span> ? gameObject : CreateNewGameObject();</span><br><span class="line"><span class="comment">// 也可使用隐式的 bool 转换运算符进行同样的检测</span></span><br><span class="line">go = gameObject ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
-<p>若目的是确保 gameObject 变量已被初始化并分配了有效的 C# 引用，推荐使用显式调用 object.ReferenceEquals()：</p>
+<p>若目的是确保 gameObject 变量已被初始化并分配了有效的 C# 引用，推荐使用显式调用 object.ReferenceEquals()：<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> !<span class="built_in">object</span>.ReferenceEquals(gameObject, <span class="literal">null</span>) ? gameObject : CreateNewGameObject();</span><br></pre></td></tr></table></figure>
 <p>虽然这种更改稍显冗长，但表意十分明确。</p>
 <h2 id="空条件运算符">空条件运算符</h2>
@@ -300,11 +300,36 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">monoBehaviour?.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
 <p>同样的，如果目的是简单地检查 monoBehaviour 变量是否已正确初始化与引用，推荐使用显式调用 object.ReferenceEquals()：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">object</span>.ReferenceEquals(monoBehaviour, <span class="literal">null</span>))</span><br><span class="line">  monoBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
-<p>但是，如果目的是检查底层引擎对象的生命周期，推荐使用显式的 null 或 boolean 比较：</p>
+<p>但是，如果目的是检查底层引擎对象的生命周期，推荐使用显式的 null 或 boolean 比较：<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (monoBehaviour != <span class="literal">null</span>)</span><br><span class="line">  monoBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br><span class="line"><span class="comment">// 也可使用隐式的 bool 转换运算符</span></span><br><span class="line"><span class="keyword">if</span> (otherBehaviour)</span><br><span class="line">  otherBehaviour.Invoke(<span class="string">&quot;Attack&quot;</span>, <span class="number">1.0f</span>);</span><br></pre></td></tr></table></figure>
 <h2 id="参阅">参阅</h2>
-<p>有关此主题的更多详细信息，请参阅 Unity 博客文章 <a target="_blank" rel="noopener" href="https://blogs.unity3d.com/2014/05/16/custom-operator-should-we-keep-it/">“Custom == operator, should we keep it?”</a>.</p>
+<p>有关此主题的更多详细信息，请参阅 Unity 博客文章 <a target="_blank" rel="noopener" href="https://blogs.unity3d.com/2014/05/16/custom-operator-should-we-keep-it/">“Custom == operator, should we keep it?”</a>. <sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <p>已翻译：<a href="/2021/08/28/Unity-Resharper-%E5%8F%AF%E8%83%BD%E6%84%8F%E5%A4%96%E7%BB%95%E8%BF%87Unity%E5%BC%95%E6%93%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BA%95%E5%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A3%80%E6%9F%A5/" title="Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查">Unity-Resharper-可能意外绕过Unity引擎对象的底层生命周期检查</a></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>JetBrains 旧版 ReSharper Unity wiki 与当前 Inspectopedia 条目都将该问题归入 Unity 专用检查：<a target="_blank" rel="noopener" href="https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object">https://github.com/JetBrains/resharper-unity/wiki/Possible-unintended-bypass-of-lifetime-check-of-underlying-Unity-engine-object</a>、<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html">https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>JetBrains Inspectopedia 的 <code>Unity.NoNullCoalescing</code> 与 <code>Unity.NoNullPropagation</code> inspection 均属于 Unity inspection，目标是 <code>UnityEngine.Object</code> 派生类型上的 null 语义：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html">https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html</a>、<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/inspectopedia/Unity.NoNullPropagation.html">https://www.jetbrains.com/help/inspectopedia/Unity.NoNullPropagation.html</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn 说明 <code>??</code>、<code>?.</code> / <code>?[]</code> 的 null 判断语义；C# operator overloading 文档说明 <code>x?.y</code>、<code>x?[y]</code>、<code>??</code>、<code>??=</code> 不能重载。因此这些语法不会进入 <code>UnityEngine.Object.operator ==</code> 的生命周期检查：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Unity 的 .NET in Unity 文档说明 Unity 脚本运行在 managed 环境中；Unity <code>Object.Destroy</code> 文档说明销毁的是 GameObject、Component 或 asset 等 Unity 对象；Unity <code>Object</code> 文档还描述了 C# wrapper 与 native object 分离的状态：<a target="_blank" rel="noopener" href="https://docs.unity.cn/2020.1/Documentation/Manual/overview-of-dot-net-in-unity.html">https://docs.unity.cn/2020.1/Documentation/Manual/overview-of-dot-net-in-unity.html</a>、<a target="_blank" rel="noopener" href="https://docs.unity.cn/Documentation/ScriptReference/Object.Destroy.html">https://docs.unity.cn/Documentation/ScriptReference/Object.Destroy.html</a>、<a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.html">https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.html</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Unity Scripting API 的 <code>Object.operator ==</code> 文档说明，与 <code>null</code> 比较时会检查 managed object reference 和 native object pointer；UnityCsReference 中 <code>operator ==</code>、<code>operator !=</code> 和隐式 <code>bool</code> 转换最终走 <code>CompareBaseObjects</code>：<a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object-operator_eq.html">https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object-operator_eq.html</a>、<a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnityEngineObject.bindings.cs">https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnityEngineObject.bindings.cs</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>JetBrains 的 Unity null inspections 和 Unity Manual 的 best practices 都强调区分 Unity null 检查与真实 C# null 检查；Unity 生命周期检查用 <code>obj == null</code> / <code>obj != null</code>，真实 C# 引用检查用 <code>object.ReferenceEquals</code> 或等价的 CLR 引用语义：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html">https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html</a>、<a target="_blank" rel="noopener" href="https://docs.unity.cn/6000.5/Documentation/Manual/programming-best-practices.html">https://docs.unity.cn/6000.5/Documentation/Manual/programming-best-practices.html</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>JetBrains <code>Unity.NoNullCoalescing</code> inspection 专门指出 Unity 对象上的 <code>??</code> 可能绕过底层 Unity engine object 的 lifetime check；Microsoft <code>??</code> 文档说明该运算符只按左操作数是否为 null 选择分支：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html">https://www.jetbrains.com/help/inspectopedia/Unity.NoNullCoalescing.html</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft <code>Object.ReferenceEquals</code> 文档说明它判断两个 object reference 是否为同一实例或是否都为 <code>null</code>；Unity Manual 将它列为检查真实 C# null 引用的方式，而不是 Unity native object liveness 检查：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.object.referenceequals">https://learn.microsoft.com/en-us/dotnet/api/system.object.referenceequals</a>、<a target="_blank" rel="noopener" href="https://docs.unity.cn/6000.5/Documentation/Manual/programming-best-practices.html">https://docs.unity.cn/6000.5/Documentation/Manual/programming-best-practices.html</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>JetBrains <code>Unity.NoNullPropagation</code> inspection 指出 Unity 对象上的 null propagation / conditional access 可能绕过 Unity 生命周期检查；Microsoft member access operators 文档说明 <code>?.</code> 只在左操作数非 null 时访问成员：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/inspectopedia/Unity.NoNullPropagation.html">https://www.jetbrains.com/help/inspectopedia/Unity.NoNullPropagation.html</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators</a>。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>Unity 官方博客 <em>Custom == operator, should we keep it?</em> 解释了 fake null、C# wrapper 与 C++ native object 生命周期分离，以及移除自定义 <code>==</code> 的兼容性风险；当前 Unity 博客地址为：<a target="_blank" rel="noopener" href="https://unity.com/blog/engine-platform/custom-operator-should-we-keep-it">https://unity.com/blog/engine-platform/custom-operator-should-we-keep-it</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -361,13 +386,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="***一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。***重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。 作为一个极端反面的例子，考虑下面的语句: 1String s &#x3D; new String(&quot;stringgette&quot;); &#x2F;&#x2F; DON&#x27;T DO THIS! 该语句每次执行的时候都创建一">
+    <meta name="description" content="***一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。***重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。[1] 作为一个极端反面的例子，考虑下面的语句: 1String s &#x3D; new String(&quot;stringgette&quot;); &#x2F;&#x2F; DON&#x27;T DO THIS! 该语句每次执行的时候都">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-Java-5避免创建不必要的对象">
 <meta property="og:url" content="http://example.com/2021/05/10/Effective-Java-5%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="***一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。***重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。 作为一个极端反面的例子，考虑下面的语句: 1String s &#x3D; new String(&quot;stringgette&quot;); &#x2F;&#x2F; DON&#x27;T DO THIS! 该语句每次执行的时候都创建一">
+<meta property="og:description" content="***一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。***重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。[1] 作为一个极端反面的例子，考虑下面的语句: 1String s &#x3D; new String(&quot;stringgette&quot;); &#x2F;&#x2F; DON&#x27;T DO THIS! 该语句每次执行的时候都">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-10T08:55:54.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.011Z">
+<meta property="article:modified_time" content="2026-07-18T07:05:50.939Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="effective Java">
@@ -145,7 +145,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 15:05:50" itemprop="dateModified" datetime="2026-07-18T15:05:50+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
+      <span>2.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
+      <span>10 分钟</span>
     </span>
 </div>
 
@@ -278,31 +278,54 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>***一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。***重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。</p>
+    <div class="post-body" itemprop="articleBody"><p>***一般来说，最好能重用对象，而不是在每次需要的时候就创造一个相同功能的对象。***重用方式既快速又流行。如果对象是不可变的(immutable)(见第15条)，它就始终可以被重用。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>作为一个极端反面的例子，考虑下面的语句:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;stringgette&quot;</span>); <span class="comment">// DON&#x27;T DO THIS!</span></span><br></pre></td></tr></table></figure>
-<p>该语句每次执行的时候都创建一个新的String实例，但是这些创建对象的动作全都是不必要的。传递给String构造器的参数&quot;stringgette&quot;本身就是个String实例，功能方面等同于构造器创建的所有对象。如果这种用法是在一个循环中，或者是在一个被频繁调用的方法中，就会创建出成千上万不不要的String实例。</p>
+<p>该语句每次执行的时候都创建一个新的String实例，但是这些创建对象的动作全都是不必要的。传递给String构造器的参数&quot;stringgette&quot;本身就是个String实例，功能方面等同于构造器创建的所有对象。如果这种用法是在一个循环中，或者是在一个被频繁调用的方法中，就会创建出成千上万不不要的String实例。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>改进后的版本如下:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;stringgette&quot;</span>;</span><br></pre></td></tr></table></figure>
-<p>这个版本只使用一个String实例，而不是每次执行的时候都创建一个新的实例。而且，它可以保证，对于所有在同一台虚拟机种的代码，只要它们包含想用的字符串字面常量，该对象就会被重用 [JLS, 3.10.5]</p>
-<p>***对于同时提供了静态工厂方法(见第1条)和构造器的不可变类，通常可以使用静态工厂方法而不是构造器，以避免创建不必要的对象。***例如，静态工厂方法Boolean.valueOf(String)几乎总是优先于构造器Boolean(String)。构造器在每次调用的时候都会创建一个新的对象，而静态工厂方法则从来不要求这样做，实际上也不会这样做。</p>
-<p>***除了重用不可变对象之外，也可以重用那些一直不会被修改的可变对象。***下面是一个比较微妙，也比较常见的反面例子，其中涉及可变的Date对象，它们的值一旦计算出来之后就不在变化。这个类建立了一个模型，其中有一个人，并有一个isBabyBoomer方法，用来检验这个人是否为一个&quot;baby boomer&quot;(婴儿潮时期出生的婴儿)，也就是检验这个人是否出生于1946-1964年。</p>
+<p>这个版本只使用一个String实例，而不是每次执行的时候都创建一个新的实例。而且，它可以保证，对于所有在同一台虚拟机种的代码，只要它们包含想用的字符串字面常量，该对象就会被重用 [JLS, 3.10.5]<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>***对于同时提供了静态工厂方法(见第1条)和构造器的不可变类，通常可以使用静态工厂方法而不是构造器，以避免创建不必要的对象。***例如，静态工厂方法Boolean.valueOf(String)几乎总是优先于构造器Boolean(String)。构造器在每次调用的时候都会创建一个新的对象，而静态工厂方法则从来不要求这样做，实际上也不会这样做。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>***除了重用不可变对象之外，也可以重用那些一直不会被修改的可变对象。***下面是一个比较微妙，也比较常见的反面例子，其中涉及可变的Date对象，它们的值一旦计算出来之后就不在变化。这个类建立了一个模型，其中有一个人，并有一个isBabyBoomer方法，用来检验这个人是否为一个&quot;baby boomer&quot;(婴儿潮时期出生的婴儿)，也就是检验这个人是否出生于1946-1964年。<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date birthDate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Other fields, methods and constructor omitted</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBabyBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// Unnecessary allocation of expensive object</span></span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">gmtCal</span> <span class="operator">=</span> Calendar.getInstance(TimeZone.getTimeZone(<span class="string">&quot;GMT&quot;</span>));</span><br><span class="line">        gmtCal.set(<span class="number">1946</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">boomStart</span> <span class="operator">=</span> gmtCal.getTime();</span><br><span class="line">        gmtCal.set(<span class="number">1964</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">boomEnd</span> <span class="operator">=</span> gmtCal.getTime();</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(boomStart) &gt;= <span class="number">0</span> &amp;&amp; birthDate.compareTo(boomEnd) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>isBabyBoomer 每次别调用的时候，都会新建一个Calendar ，一个 TimeZone 和两个 Date 实例，这是不必要的。下面的版本用一个静态的初始化器(initializer)</p>
 <p>，避免了这种效率低下的情况:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Date birthDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Date BOOM_START;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Date BOOM_END;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="type">Calendar</span> <span class="variable">gmtCal</span> <span class="operator">=</span> Calendar.getInstance(TimeZone.getTimeZone(<span class="string">&quot;GMT&quot;</span>));</span><br><span class="line">        gmtCal.set(<span class="number">1946</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        BOOM_START = gmtCal.getTime();</span><br><span class="line">        gmtCal.set(<span class="number">1964</span>, Calendar.JANUARY, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        BOOM_END = gmtCal.getTime();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Other fields, methods and constructor omitted</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBabyBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(BOOM_START) &gt;= <span class="number">0</span> &amp;&amp; birthDate.compareTo(BOOM_END) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>改进后的Person类只在初始化的时候创建Calender，TimeZone和Date实例一次，而不是在每次调用isBabyBoomer的时候都创建这些实例。如果isBabyBoomer方法被频繁的调用，这种方法将会显著地提高性能 (作者: 在我的机器上，每调用一千万次，原来的版本需要32 000ms，而改进后的版本只需 130ms)。除了提高性能之外，代码的含义也更加清晰了。**把boomStart和boomEnd从局部变量改为final静态域，这些如期显然是被作为常量对待，从而使得代码更易于理解。**但是，这种优化带来的效果并不总是那么明显，因为Calender实例创建代价特别昂贵。</p>
-<p>如果改进后的Person类被初始化了，isBabyBoomer方法却永远不会被调用，那就没有必要初始化BOOM_START和BOOM_END域。通过<strong>延迟初始化(lazily initializing)</strong>(见第71条)，即把对这些域的初始化延迟到isBabyBoomer方法第一次被调用的时候进行，则有可能消除这些不必要的初始化工作，但是不建议这样做。正如延迟初始化中常见的情况一样，这样做会使方法的实现更加复杂，从而无法将性能显著提高到超过已经达到的水平(见55条)。</p>
-<p>在本条目前面的例子中，所讨论的对象显然都是能够被重用的，因为它们被初始化之后不会再改变。其他的情形则并不总是这么明显了。考虑适配器(adapter)的情形 [Gamma95, p.139]，有时也叫做视图 (view)。适配器是指这样一个对象：它把功能委托给一个后备对象 (backing object)，从而为后备对象提供一个可以替代的接口。由于适配器除了后备对象之外，没有其他的状态信息，所以针对某个给定对象的特定适配器而言，它不需要创建多个适配器实例。</p>
-<p><strong>例如，Map接口的keySet方法返回该Map对象的Set视图，其中包含该Map中所有的键 (key)。看起来好像每次调用keySet都应该创建一个新的Set实例，但是，对于一个给定的Map对象，实际上每次调用keySet都返回同样的Set实例。虽然返回的Set实例一般是可改变的，但是所有返回的对象在功能上是等同的：当其中一个返回对象发生变化时，所有其他的返回对象也要发生变化，因为它们是由同一个Map实例支撑的。虽然创建KeySet视图对象的多个实例并无害处，但也无必要。</strong></p>
-<p>在Java 1.5发行版本中，有一种创建多余对象的新方法，称作自动装箱 (auto boxing)，它允许程序员将基本类型和装箱基本类型 (Boxed Primitive Type) 混用，按需要自动装箱和拆箱。自动装箱使得基本类型和装箱基本类型之间的区别变得模糊起来，但是并没有完全消除。它们在语义上还有着微妙的差别，在性能上也有着比较明显的差别 (见第49条)。考虑下面的程序，他计算所有int正值的总和。为此，程序必须使用long，因为int不够大，无法容纳所有int正值的总和:</p>
+<p>改进后的Person类只在初始化的时候创建Calender，TimeZone和Date实例一次，而不是在每次调用isBabyBoomer的时候都创建这些实例。如果isBabyBoomer方法被频繁的调用，这种方法将会显著地提高性能 (作者: 在我的机器上，每调用一千万次，原来的版本需要32 000ms，而改进后的版本只需 130ms)。除了提高性能之外，代码的含义也更加清晰了。**把boomStart和boomEnd从局部变量改为final静态域，这些如期显然是被作为常量对待，从而使得代码更易于理解。**但是，这种优化带来的效果并不总是那么明显，因为Calender实例创建代价特别昂贵。<sup class="footnote-ref"><a href="#fn1" id="fnref1:2">[1:2]</a></sup></p>
+<p>如果改进后的Person类被初始化了，isBabyBoomer方法却永远不会被调用，那就没有必要初始化BOOM_START和BOOM_END域。通过<strong>延迟初始化(lazily initializing)</strong>(见第71条)，即把对这些域的初始化延迟到isBabyBoomer方法第一次被调用的时候进行，则有可能消除这些不必要的初始化工作，但是不建议这样做。正如延迟初始化中常见的情况一样，这样做会使方法的实现更加复杂，从而无法将性能显著提高到超过已经达到的水平(见55条)。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>在本条目前面的例子中，所讨论的对象显然都是能够被重用的，因为它们被初始化之后不会再改变。其他的情形则并不总是这么明显了。考虑适配器(adapter)的情形 [Gamma95, p.139]，有时也叫做视图 (view)。适配器是指这样一个对象：它把功能委托给一个后备对象 (backing object)，从而为后备对象提供一个可以替代的接口。由于适配器除了后备对象之外，没有其他的状态信息，所以针对某个给定对象的特定适配器而言，它不需要创建多个适配器实例。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p><strong>例如，Map接口的keySet方法返回该Map对象的Set视图，其中包含该Map中所有的键 (key)。看起来好像每次调用keySet都应该创建一个新的Set实例，但是，对于一个给定的Map对象，实际上每次调用keySet都返回同样的Set实例。虽然返回的Set实例一般是可改变的，但是所有返回的对象在功能上是等同的：当其中一个返回对象发生变化时，所有其他的返回对象也要发生变化，因为它们是由同一个Map实例支撑的。虽然创建KeySet视图对象的多个实例并无害处，但也无必要。</strong><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p>在Java 1.5发行版本中，有一种创建多余对象的新方法，称作自动装箱 (auto boxing)，它允许程序员将基本类型和装箱基本类型 (Boxed Primitive Type) 混用，按需要自动装箱和拆箱。自动装箱使得基本类型和装箱基本类型之间的区别变得模糊起来，但是并没有完全消除。它们在语义上还有着微妙的差别，在性能上也有着比较明显的差别 (见第49条)。考虑下面的程序，他计算所有int正值的总和。为此，程序必须使用long，因为int不够大，无法容纳所有int正值的总和:<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Hideously slow program! Can you spot the object creation?</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">Long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这段程序是正确的，但是要比预期的情况要更慢，因为这里打错了字符大写了L。变量sum 由 long类型变为了Long类型，意味着程序构造了2<sup>31</sup>个多余的Long实例。将sum的声明从Long改为long (作者: 在我的机器上运行时间从43秒降低到了6.8秒)。结论很明显：<em><strong>要优先使用基本类型而不是装箱基本类型，要当心无意识的自动装箱。</strong></em></p>
+<p>这段程序是正确的，但是要比预期的情况要更慢，因为这里打错了字符大写了L。变量sum 由 long类型变为了Long类型，意味着程序构造了2<sup>31</sup>个多余的Long实例。将sum的声明从Long改为long (作者: 在我的机器上运行时间从43秒降低到了6.8秒)。结论很明显：<em><strong>要优先使用基本类型而不是装箱基本类型，要当心无意识的自动装箱。</strong></em><sup class="footnote-ref"><a href="#fn8" id="fnref8:1">[8:1]</a></sup></p>
 <p>以下是我自己尝试的代码 时间分别是 50 6598 ms 和 50 827 ms 性能差了约10倍。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="variable">TIME_SPEND</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="variable">TIME_SPEND_TOTAL</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="comment">// Avoid unnecessary boxing and unboxing.</span></span><br><span class="line">    <span class="comment">// Long sum = 0L; // TEST_COUNT = 50 6598 ms</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0L</span>; <span class="comment">// TEST_COUNT = 50 827 ms</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">TEST_COUNT</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; TEST_COUNT; j++) &#123;</span><br><span class="line">        sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        TIME_SPEND_TOTAL += System.currentTimeMillis() - TIME_SPEND;</span><br><span class="line">        System.out.println(<span class="string">&quot;No.&quot;</span> + (j + <span class="number">1</span>) + <span class="string">&quot; : &quot;</span> + (System.currentTimeMillis() - TIME_SPEND) + <span class="string">&quot; ms &quot;</span> +sum);</span><br><span class="line">        TIME_SPEND = System.currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(TIME_SPEND_TOTAL / TEST_COUNT + <span class="string">&quot; ms&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><em><strong>不要错误的认为本条目介绍的内容暗示着&quot;创建对象的代价非常昂贵，我们应该尽可能的避免创建对象&quot;。相反，由于小对象的构造器只做很少量的显式工作，所以，小对象的创建和回收动作是非常廉价的，特别是在现代的JVM实现上更是如此。通过创建附加的对象，提升程序的清晰性，简洁性和功能性，这通常是件好事。</strong></em></p>
-<p>反之，通过维护自己的对象池 (object pool) 来避免创建对象并不是一种好的做法，除非池中的对象是非常重量级的。真正正确使用对象池的典型对象示例就是数据库连接池。建立数据库连接的代价是非常昂贵的，因此重用这些对象非常有意义。而且，数据库的许可可能限制你只能使用一定数量的连接。但是，一般而言，维护自己的对象池必定增加代码的复杂度，同时增加内存占用 (footprint)，并且还会损害性能。现代的JVM实现具有高度优化的垃圾回收器，其性能很容易就会超过轻量级对象池的性能。</p>
-<p>与本条目对应的是第39条中有关&quot;保护性拷贝(defensive copying)&quot; 的内容。本条目提及&quot;当你应该重用现有对象的时候，请不要创建新的对象&quot;，而第39条中&quot;当你应该创建新对象的时候，请不要重用现有的对象&quot;。注意，在提倡使用保护性拷贝的时候，因重用对象而付出的代价要远远大于因创建重复对象而付出的代价。必要时如果没能实施保护性拷贝，将会导致潜在的错误和安全漏洞；而不必要地创建对象则只会影响程序的风格和功能。</p>
+<p><em><strong>不要错误的认为本条目介绍的内容暗示着&quot;创建对象的代价非常昂贵，我们应该尽可能的避免创建对象&quot;。相反，由于小对象的构造器只做很少量的显式工作，所以，小对象的创建和回收动作是非常廉价的，特别是在现代的JVM实现上更是如此。通过创建附加的对象，提升程序的清晰性，简洁性和功能性，这通常是件好事。</strong></em><sup class="footnote-ref"><a href="#fn1" id="fnref1:3">[1:3]</a></sup></p>
+<p>反之，通过维护自己的对象池 (object pool) 来避免创建对象并不是一种好的做法，除非池中的对象是非常重量级的。真正正确使用对象池的典型对象示例就是数据库连接池。建立数据库连接的代价是非常昂贵的，因此重用这些对象非常有意义。而且，数据库的许可可能限制你只能使用一定数量的连接。但是，一般而言，维护自己的对象池必定增加代码的复杂度，同时增加内存占用 (footprint)，并且还会损害性能。现代的JVM实现具有高度优化的垃圾回收器，其性能很容易就会超过轻量级对象池的性能。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<p>与本条目对应的是第39条中有关&quot;保护性拷贝(defensive copying)&quot; 的内容。本条目提及&quot;当你应该重用现有对象的时候，请不要创建新的对象&quot;，而第39条中&quot;当你应该创建新对象的时候，请不要重用现有的对象&quot;。注意，在提倡使用保护性拷贝的时候，因重用对象而付出的代价要远远大于因创建重复对象而付出的代价。必要时如果没能实施保护性拷贝，将会导致潜在的错误和安全漏洞；而不必要地创建对象则只会影响程序的风格和功能。<sup class="footnote-ref"><a href="#fn1" id="fnref1:4">[1:4]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042"><em>Effective Java, 3rd Edition</em></a>, discusses avoiding unnecessary object creation, object reuse, object pools, and the boundary with defensive copying in the “Creating and Destroying Objects” chapter. <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a> <a href="#fnref1:2" class="footnote-backref">↩︎</a> <a href="#fnref1:3" class="footnote-backref">↩︎</a> <a href="#fnref1:4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html#%3Cinit%3E(java.lang.String)">String(String original)</a>, documents that the constructor creates a new string representing the same character sequence as the original. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Oracle, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.10.5">Java Language Specification §3.10.5 String Literals</a>, specifies string literal interning and reuse of equivalent string literals. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html">Boolean</a>, marks Boolean constructors as deprecated for removal and directs callers toward <code>parseBoolean</code> or <code>valueOf</code>. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042"><em>Effective Java, 3rd Edition</em></a>, Item 83, frames lazy initialization as an optimization that adds complexity and should be used judiciously. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Erich Gamma et al., <a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610"><em>Design Patterns: Elements of Reusable Object-Oriented Software</em></a>, describes Adapter as an object that converts one interface into another; this supports the adapter/view background used before the <code>Map.keySet()</code> example. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html#keySet()">Map.keySet()</a>, documents the backed-view semantics: changes are reflected between the map and the returned set; the API contract supports the view relationship, not a portable object-identity guarantee across calls. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Oracle, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-5.html#jls-5.1.7">Java Language Specification §5.1.7 Boxing Conversion</a> and <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-5.html#jls-5.1.8">§5.1.8 Unboxing Conversion</a>, define boxing and unboxing conversions between primitive and wrapper types. <a href="#fnref8" class="footnote-backref">↩︎</a> <a href="#fnref8:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/Connection.html#close()">Connection.close()</a>, documents that closing a JDBC connection releases database and JDBC resources; this supports treating database connections as heavyweight resources whose reuse is managed by connection-pooling infrastructure. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -358,13 +381,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

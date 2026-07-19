@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="单一职责原则(Single Responsibility Principle) 单一类承担单一职责。   开放封闭原则（Open close Principle) 对扩展开放，对修改封闭。   里氏替换原则（Liskov Substitution Principle） 父类具有的功能，子类必须具有。   接口隔离原则（Interface Segregation Principle） 依赖应当建">
+    <meta name="description" content="单一职责原则(Single Responsibility Principle) 单一类承担单一职责。[1]   开放封闭原则（Open close Principle) 对扩展开放，对修改封闭。[2]   里氏替换原则（Liskov Substitution Principle） 父类具有的功能，子类必须具有。[3]   接口隔离原则（Interface Segregation Princip">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式SOLID原则">
 <meta property="og:url" content="http://example.com/2021/06/27/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8FSOLID%E5%8E%9F%E5%88%99/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="单一职责原则(Single Responsibility Principle) 单一类承担单一职责。   开放封闭原则（Open close Principle) 对扩展开放，对修改封闭。   里氏替换原则（Liskov Substitution Principle） 父类具有的功能，子类必须具有。   接口隔离原则（Interface Segregation Principle） 依赖应当建">
+<meta property="og:description" content="单一职责原则(Single Responsibility Principle) 单一类承担单一职责。[1]   开放封闭原则（Open close Principle) 对扩展开放，对修改封闭。[2]   里氏替换原则（Liskov Substitution Principle） 父类具有的功能，子类必须具有。[3]   接口隔离原则（Interface Segregation Princip">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-27T06:57:32.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.035Z">
+<meta property="article:modified_time" content="2026-07-17T19:28:36.531Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="SOLID">
@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -158,7 +158,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -244,7 +244,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 03:28:36" itemprop="dateModified" datetime="2026-07-18T03:28:36+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,14 +263,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>185</span>
+      <span>732</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -283,32 +283,49 @@
     <div class="post-body" itemprop="articleBody"><ol>
 <li>
 <p><strong>单一职责原则(Single Responsibility Principle)</strong></p>
-<p>单一类承担单一职责。</p>
+<p>单一类承担单一职责。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 </li>
 <li>
 <p><strong>开放封闭原则（Open close Principle)</strong></p>
-<p>对扩展开放，对修改封闭。</p>
+<p>对扩展开放，对修改封闭。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 </li>
 <li>
 <p><strong>里氏替换原则（Liskov Substitution Principle）</strong></p>
-<p>父类具有的功能，子类必须具有。</p>
+<p>父类具有的功能，子类必须具有。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 </li>
 <li>
 <p><strong>接口隔离原则（Interface Segregation Principle）</strong></p>
-<p>依赖应当建立在最小的接口。 (而不是聚合的单一接口)</p>
+<p>依赖应当建立在最小的接口。 (而不是聚合的单一接口)<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 </li>
 <li>
 <p><strong>依赖倒置原则（Dependency Inversion Principle）</strong></p>
-<p>依赖不基于实体类，而是基于接口 。(依赖不基于具体，而是基于抽象)</p>
+<p>依赖不基于实体类，而是基于接口 。(依赖不基于具体，而是基于抽象)<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 </li>
 </ol>
 <p>国内有设计模式六大原则的说法，多出一个：</p>
 <ol start="6">
 <li>
 <p><strong>迪米特法则 (Law of Demeter)</strong> 又称 最少知道原则 (Least Knowledge Principle)</p>
-<p>模块不应了解所操作对象的内部情况。</p>
+<p>模块不应了解所操作对象的内部情况。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 </li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Robert C. Martin 在 <em>The Principles of OOD</em> 与 <em>Clean Architecture</em> 中把 Single Responsibility Principle 放在“变化原因 / actor”语境里理解：一个模块应只对一类变化原因负责，而不是机械追求“一个类只能有一个方法”。参见：<a target="_blank" rel="noopener" href="https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod</a>、<a target="_blank" rel="noopener" href="https://www.pearson.com/en-us/subject-catalog/p/clean-architecture-a-craftsmans-guide-to-software-structure-and-design/P200000009528">https://www.pearson.com/en-us/subject-catalog/p/clean-architecture-a-craftsmans-guide-to-software-structure-and-design/P200000009528</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Open/Closed Principle 通常追溯到 Bertrand Meyer 的 <em>Object-Oriented Software Construction</em>，后续也被 Robert C. Martin 纳入 OOD 原则体系。这里的“对扩展开放，对修改封闭”应理解为在稳定变化轴上用抽象、策略或插件减少对既有核心代码的修改，而不是旧代码永远不能改：<a target="_blank" rel="noopener" href="https://archive.eiffel.com/doc/oosc/">https://archive.eiffel.com/doc/oosc/</a>、<a target="_blank" rel="noopener" href="https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Liskov Substitution Principle 的学术来源是 Barbara Liskov 的 <em>Data Abstraction and Hierarchy</em> 以及 Liskov / Wing 的 <em>A Behavioral Notion of Subtyping</em>。更严格地说，子类型要能替换父类型并保住父类型承诺，包括前置条件、后置条件和不变量等行为契约，而不只是“拥有同名功能”：<a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/62139.62141">https://dl.acm.org/doi/10.1145/62139.62141</a>、<a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/197320.197383">https://dl.acm.org/doi/10.1145/197320.197383</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Interface Segregation Principle 在 Robert C. Martin 的 OOD 原则体系中用于约束“客户不应依赖自己不用的方法”。它强调按客户角色切分接口，而不是把所有调用方都绑到一个膨胀接口上：<a target="_blank" rel="noopener" href="https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Dependency Inversion Principle 在 Robert C. Martin 的表述中关注高层策略与低层细节的依赖方向；Microsoft Learn 的 .NET dependency injection 文档则展示了通过接口 / 基类抽象依赖、由容器注入实现来避免硬编码依赖的常见平台实践。DIP 不等于所有类都必须抽接口，依赖注入也只是常见实现手段之一：<a target="_blank" rel="noopener" href="https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">https://web.archive.org/web/20150906155800/http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection">https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Law of Demeter 来源于 Lieberherr、Holland 和 Riel 的 <em>Object-Oriented Programming: An Objective Sense of Style</em>，核心是限制对象之间的结构穿透，减少调用方对内部对象图的知识。它不要求无意义地层层转发，而是提醒模块不要依赖过深的内部结构：<a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/62083.62095">https://dl.acm.org/doi/10.1145/62083.62095</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -366,13 +383,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

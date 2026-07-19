@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="隐式类型的局部变量是为了支持匿名类型而加入C#语言的。 用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。 在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。 局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于">
+    <meta name="description" content="隐式类型的局部变量是为了支持匿名类型而加入C#语言的。[1] 用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。[2] 在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。[3] 局部变量的类型推断机制并不影响 C# 的静态类型检">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-CSharp-1优先使用隐式类型的局部变量">
 <meta property="og:url" content="http://example.com/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="隐式类型的局部变量是为了支持匿名类型而加入C#语言的。 用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。 在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。 局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于">
+<meta property="og:description" content="隐式类型的局部变量是为了支持匿名类型而加入C#语言的。[1] 用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。[2] 在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。[3] 局部变量的类型推断机制并不影响 C# 的静态类型检">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-01T15:01:08.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:19:59.996Z">
+<meta property="article:modified_time" content="2026-07-17T19:35:13.766Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="effective CSharp">
@@ -145,7 +145,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:19:59" itemprop="dateModified" datetime="2026-07-17T21:19:59+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 03:35:13" itemprop="dateModified" datetime="2026-07-18T03:35:13+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>756</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -278,19 +278,40 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p><strong>隐式类型的局部变量是为了支持匿名类型而加入C#语言的。</strong></p>
-<p>用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。</p>
-<p>在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。</p>
-<p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。</p>
-<p>如下情况变量类型是显而易见的 (构造函数与工厂方法</p>
+    <div class="post-body" itemprop="articleBody"><p><strong>隐式类型的局部变量是为了支持匿名类型而加入C#语言的。</strong><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>如下情况变量类型是显而易见的 (构造函数与工厂方法<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> MyType();</span><br><span class="line"><span class="keyword">var</span> thing = AccountFactory.CreateSavingAccount();</span><br></pre></td></tr></table></figure>
-<p>如下情况变量类型没有清晰的指出</p>
+<p>如下情况变量类型没有清晰的指出<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
 <p>在这种情况下应当在变量声明时指定清晰的名称，尽管方法并没有指出返回类型，但这样就能让开发者推断出变量类型，例如：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> HighestSellingProduct = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
 <p>查看代码的人会根据自己的理解认定该变量类型，可能恰好与变量在运行期的真实类型相符。但编译器不会像人那样思考，而是根据声明判定其在编译期的类型。若用 var 进行声明，编译器会推断其类型，而开发者看不到编译器推断的类型。因此，他们所认定的类型可能不符，这会在代码的维护中导致错误的修改，并产生一些本来可以避免的 Bug。</p>
-<p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。</p>
-<p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em></p>
+<p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em><sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn 的隐式类型局部变量文档说明，匿名类型没有可在源代码中显式写出的类型名，因此通常必须使用 <code>var</code> 保存匿名类型结果；这也是 <code>var</code> 被引入 C# 后的重要使用场景：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Bill Wagner 的 <em>Effective C# (Covers C# 6.0), 3rd Edition</em> Item 1 建议优先考虑隐式类型局部变量，但目标是提升可读性，而不是单纯少写类型名：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283">https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft 的 C# coding conventions 建议：当变量类型能从赋值右侧明显看出时使用 <code>var</code>，当方法返回类型或上下文不能清楚表达类型时避免使用 <code>var</code>。这支撑“可以用，但不能滥用”的边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>C# 规范 §13.6.2.2 规定，隐式类型局部变量的类型由初始化表达式的编译期类型决定；Microsoft Learn 也强调 <code>var</code> 声明的变量仍然是强类型。<code>dynamic</code> 则是另一套机制，会把部分绑定推迟到运行期：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/statements#13622-implicitly-typed-local-variable-declarations">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/statements#13622-implicitly-typed-local-variable-declarations</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic">https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft 的 C# coding conventions 把 <code>var customer = new Customer()</code> 这类右侧类型明显的声明列为适合使用隐式类型的场景，因为显式类型只是在重复右侧信息：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Microsoft 的 C# coding conventions 也明确提醒：不要仅靠方法名来假设返回类型；当返回类型不能从右侧表达式看清时，显式类型通常能保留更好的阅读线索：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>C# 类型系统文档说明，编译期类型会影响成员访问、重载解析和转换；数值字面量与数值转换场景中，<code>var</code> 推断出的具体类型可能影响精度、范围或重载选择，因此在数值类型承载语义时显式写出类型更稳：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn 的 IDE0007 / IDE0008 规则把 <code>var</code> 与显式类型偏好拆成“内置类型、类型明显场景、其他场景”三类，可通过 <code>.editorconfig</code> 配置。也就是说，<code>var</code> 是可审查的风格偏好与可读性判断，不是语言层面的绝对规则：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008">https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -346,13 +367,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

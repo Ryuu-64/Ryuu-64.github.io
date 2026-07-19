@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="使用 AI 编程时，有一个很自然的冲动：把更多东西给它。 需求说明给它，代码文件给它，错误日志给它，历史讨论给它，旧方案也给它。模型不是有很长的上下文窗口吗？那多给一点，它应该就更懂项目。 我现在越来越觉得，这个想法只对了一半。 AI 确实需要上下文。没有上下文，它只能靠通用模式猜。可上下文不是资料仓库。把所有东西塞进去，不等于它会更稳定地理解项目。很多时候，对话越长，材料越多，AI 反而越容易抓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 上下文工程：把正确的信息放到正确的位置">
+<meta property="og:url" content="http://example.com/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="使用 AI 编程时，有一个很自然的冲动：把更多东西给它。 需求说明给它，代码文件给它，错误日志给它，历史讨论给它，旧方案也给它。模型不是有很长的上下文窗口吗？那多给一点，它应该就更懂项目。 我现在越来越觉得，这个想法只对了一半。 AI 确实需要上下文。没有上下文，它只能靠通用模式猜。可上下文不是资料仓库。把所有东西塞进去，不等于它会更稳定地理解项目。很多时候，对话越长，材料越多，AI 反而越容易抓">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-18T08:12:32.367Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="上下文">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="软件开发">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/","path":"2026/07/18/AI-上下文工程：把正确的信息放到正确的位置/","title":"AI 上下文工程：把正确的信息放到正确的位置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AI 上下文工程：把正确的信息放到正确的位置 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prompt-%E5%8F%AA%E6%98%AF%E5%85%A5%E5%8F%A3%EF%BC%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E6%89%8D%E6%98%AF%E7%8E%B0%E5%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">Prompt 只是入口，上下文才是现场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8D%E5%8F%AA%E6%98%AF%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">上下文不只是聊天记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%8F%98%E5%A4%A7%EF%BC%8C%E4%B8%8D%E4%BB%A3%E8%A1%A8%E8%AE%B0%E5%BF%86%E5%8F%98%E5%8F%AF%E9%9D%A0"><span class="nav-number">3.</span> <span class="nav-text">窗口变大，不代表记忆变可靠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BC%9A%E8%85%90%E7%83%82"><span class="nav-number">4.</span> <span class="nav-text">上下文会腐烂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E8%B4%A8%E9%87%8F%E6%AF%94%E4%B8%8A%E4%B8%8B%E6%96%87%E9%95%BF%E5%BA%A6%E6%9B%B4%E9%87%8D%E8%A6%81"><span class="nav-number">5.</span> <span class="nav-text">上下文质量比上下文长度更重要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%E9%9C%80%E8%A6%81%E4%B8%8D%E5%90%8C%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">6.</span> <span class="nav-text">不同阶段需要不同上下文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A5%E5%A4%96%E5%AD%98%E7%9A%84%E4%B8%9C%E8%A5%BF%EF%BC%8C%E4%B8%8D%E8%A6%81%E7%95%99%E5%9C%A8%E5%AF%B9%E8%AF%9D%E9%87%8C"><span class="nav-number">7.</span> <span class="nav-text">该外存的东西，不要留在对话里</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E4%B8%8A%E4%B8%8B%E6%96%87%E3%80%81RAG-%E5%92%8C-Skill-%E5%90%84%E8%87%AA%E8%A7%A3%E5%86%B3%E4%B8%8D%E5%90%8C%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">长上下文、RAG 和 Skill 各自解决不同问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B9%9F%E6%9C%89%E4%BF%A1%E4%BB%BB%E8%BE%B9%E7%95%8C"><span class="nav-number">9.</span> <span class="nav-text">上下文也有信任边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%97%A5%E5%B8%B8%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="nav-number">10.</span> <span class="nav-text">一个日常检查清单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86-AI%EF%BC%8C%E5%B0%B1%E6%98%AF%E7%AE%A1%E7%90%86%E5%AE%83%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8E%B0%E5%9C%BA"><span class="nav-number">11.</span> <span class="nav-text">管理 AI，就是管理它的工作现场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">12.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AI 上下文工程：把正确的信息放到正确的位置 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AI 上下文工程：把正确的信息放到正确的位置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-18 00:00:00 / 修改时间：16:12:32" itemprop="dateCreated datePublished" datetime="2026-07-18T00:00:00+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>22 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>使用 AI 编程时，有一个很自然的冲动：把更多东西给它。</p>
+<p>需求说明给它，代码文件给它，错误日志给它，历史讨论给它，旧方案也给它。模型不是有很长的上下文窗口吗？那多给一点，它应该就更懂项目。</p>
+<p>我现在越来越觉得，这个想法只对了一半。</p>
+<p>AI 确实需要上下文。没有上下文，它只能靠通用模式猜。可上下文不是资料仓库。把所有东西塞进去，不等于它会更稳定地理解项目。很多时候，对话越长，材料越多，AI 反而越容易抓错重点、重复旧方案、忽略新约束，或者把早就废弃的尝试当成当前事实。</p>
+<p>这篇想专门谈这个问题：AI 的上下文到底是什么，为什么它会变脏，日常使用里又该怎么管理。</p>
+<p>如果前面几篇文章是在说“AI 应该被放进工作流”，那这一篇更像是继续往下问：<strong>这个工作流里，AI 每一步到底应该看见什么？</strong></p>
+<h2 id="Prompt-只是入口，上下文才是现场">Prompt 只是入口，上下文才是现场</h2>
+<p>很多关于 AI 使用的讨论，会从 Prompt 开始。</p>
+<p>这当然没错。Prompt 是我们表达当前意图的入口。你要它解释代码、起草测试、排查 bug、写文章，第一步总要把需求说出来。</p>
+<p>但当任务稍微复杂一点，Prompt 就不再是全部。</p>
+<p>比如你让 AI 修一个 bug。真正影响它判断的，不只是“帮我修这个 bug”这句话，还包括：</p>
+<ul>
+<li>它有没有读到复现步骤。</li>
+<li>它有没有看见当前分支的真实代码。</li>
+<li>它有没有知道哪些旧行为不能破坏。</li>
+<li>它有没有拿到测试命令和失败输出。</li>
+<li>它有没有被旧日志、旧假设、旧计划带偏。</li>
+<li>它有没有知道什么证据可以算修复完成。</li>
+</ul>
+<p>这些东西共同构成了 AI 当前的工作现场。</p>
+<p>所以我不太愿意把 AI 协作只理解成“写提示词”。提示词只是把任务递进去。上下文决定 AI 在什么信息环境里思考和行动。OpenAI 在谈 Codex 的 agent-first 实践时，也把重点放在环境、工具、反馈和仓库内知识上：让 agent 能直接使用标准开发工具、读取项目内的上下文、复现和验证问题，而不是靠人把所有材料复制进对话里。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>更准确地说，AI 的输出质量同时取决于三件事：</p>
+<p>第一，模型本身有什么能力。</p>
+<p>第二，当前任务说得是否清楚。</p>
+<p>第三，当前上下文是否干净、相关、可追溯、可验证。</p>
+<p>我们平时最容易盯着前两项。模型换一个，Prompt 改一句。但第三项经常才是长任务里真正出问题的地方。</p>
+<h2 id="上下文不只是聊天记录">上下文不只是聊天记录</h2>
+<p>“上下文”这个词容易被说窄。</p>
+<p>很多人想到上下文，会想到聊天记录：前面问过什么，AI 回过什么。可在 AI 编程里，上下文远不止这些。</p>
+<p>它至少包括几类东西。</p>
+<p>第一类是指令。比如 system prompt、developer instructions、<code>AGENTS.md</code>、skill、输出格式、代码风格、禁止事项和完成要求。</p>
+<p>第二类是知识。比如项目 README、架构文档、源码、测试、接口说明、数据库结构、历史 issue、搜索结果和 RAG 检索片段。</p>
+<p>第三类是工具结果。比如 <code>rg</code> 命中、测试输出、lint 报错、构建日志、浏览器截图、API 响应和命令行返回值。</p>
+<p>第四类是任务状态。比如当前目标、计划、待办、已经废弃的方案、剩余风险、用户刚刚补充的新约束。</p>
+<p>第五类是长期记忆。比如项目稳定约定、团队偏好、常用验证命令、以前沉淀下来的排障经验。</p>
+<p>这些内容的性质完全不同，却常常被混在同一个上下文窗口里。问题也从这里开始。</p>
+<p>代码现状是事实，方案是计划，错误日志是证据，模型总结是假设，外部网页是待核验材料，<code>AGENTS.md</code> 是项目规则。它们可以同时出现，但不能拥有同样的身份。</p>
+<p>如果 AI 分不清“这是事实”还是“这是刚才想过但还没验证的方案”，它就很容易把一个看起来合理的中间产物当成真实约束。</p>
+<p>这也是我在 <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a> 里写过的那个问题：AI 可以处理关系，但不能替人承担事实确认和责任边界。放到上下文管理里，就是要把不同信息的身份标清楚。</p>
+<h2 id="窗口变大，不代表记忆变可靠">窗口变大，不代表记忆变可靠</h2>
+<p>现在很多模型都有很长的上下文窗口。它们能一次性放进更多文本，这确实改变了很多工作方式。</p>
+<p>长文可以直接读，大段代码可以一起比较，多轮对话不必太快丢失历史。这些都是实用能力。</p>
+<p>但上下文窗口更像“当前请求的工作记忆”，不是无限记忆。</p>
+<p>它回答的是：这一次交互里，最多能放多少 token。</p>
+<p>它不保证：放进去的每个信息都会被同等稳定地使用。</p>
+<p>这点很关键。长上下文的风险不是只有“超过上限”。在还没超过上限时，模型就可能因为信息太多、位置太深、相似干扰太多而开始变差。<code>Lost in the Middle</code> 这篇研究就观察到，模型处理长输入时，对开头和结尾的信息通常更敏感，中间位置的相关信息更容易被忽略。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>工程上看到的现象也很熟悉：</p>
+<ul>
+<li>你已经告诉它不要改某个模块，它后面还是改了。</li>
+<li>你后面修正了目标，它仍然沿用前面的旧计划。</li>
+<li>它读过正确文件，但总结时引用了过时结论。</li>
+<li>它拿到了测试失败输出，却去修另一个看起来相关的地方。</li>
+</ul>
+<p>这些问题不是简单的“上下文不够长”。恰恰相反，有时是上下文太长、太杂、太像。</p>
+<p>能放下更多材料，只是让你拥有更大的桌面。桌面变大以后，如果所有文件、草稿、废纸和咖啡杯都堆在一起，你不一定更容易工作。</p>
+<p>AI 也一样。</p>
+<h2 id="上下文会腐烂">上下文会腐烂</h2>
+<p>我很喜欢 <code>Context Rot</code> 这个说法。</p>
+<p>它指的不是上下文超过窗口以后被截断，而是上下文还在，但质量已经变差。模型仍然“看得见”，却开始不能稳定使用关键内容。</p>
+<p>Chroma 在 2025 年的技术报告里用 <code>Context Rot</code> 讨论输入变长后模型表现的退化。他们的实验条件已经相对受控，但仍观察到模型性能会随着输入长度增加而以不均匀、甚至有些意外的方式下降。真实 agent 任务通常更复杂：里面有工具输出、搜索结果、代码片段、错误路径、多轮计划和人类补充说明，情况只会更乱。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>在日常 AI 编程里，上下文腐烂通常来自几种东西。</p>
+<p>第一种是旧计划残留。</p>
+<p>长任务一开始可能计划走 A 方案，后来发现不合适，改成 B 方案。但 A 方案的解释、文件路径、半成品代码和理由还留在对话里。后面 AI 总结或实现时，可能又把 A 当成有效背景。</p>
+<p>第二种是失败路径残留。</p>
+<p>调试时会尝试很多假设。假设本来应该被证据淘汰，但如果没有明确标废弃，它会变成上下文里的幽灵状态。AI 后面可能继续围着它解释。</p>
+<p>第三种是工具结果堆积。</p>
+<p>测试输出、日志、网页、搜索结果、<code>rg</code> 命中都很有用，但它们多数是短期证据。定位完成以后，大段原始输出应该被压缩成“命令、结果、关键证据、可重取路径”。如果一直留在主上下文里，它们很快就会变成噪声。</p>
+<p>第四种是相似干扰项。</p>
+<p>最危险的上下文不一定是完全无关的内容，而是“看起来相关但不是这次问题答案”的内容。相似模块、相似 bug、同名概念、旧版本接口，都可能让 AI 抓错证据。</p>
+<p>第五种是规则膨胀。</p>
+<p>把所有偏好都写进 always-on prompt，看起来很保险，实际会稀释高频关键规则。一个过大的 <code>AGENTS.md</code> 或 skill，可能让 AI 每次都携带大量低频规则进入任务。到最后，不是规则变强了，而是所有规则一起变弱了。</p>
+<p>所以，上下文腐烂的本质不是“AI 忘了”，而是“AI 记住了太多不该继续起作用的东西”。</p>
+<h2 id="上下文质量比上下文长度更重要">上下文质量比上下文长度更重要</h2>
+<p>如果只用 token 数衡量上下文，很容易误判。</p>
+<p>一个很长的上下文可能质量很低。里面有重复说明、旧日志、无来源摘要、相互冲突的计划和一堆可重新获取的原始输出。</p>
+<p>一个很短的上下文可能质量很高。它只包含当前目标、必要文件、关键约束、验证命令和几条有来源的事实。</p>
+<p>我现在更愿意用几个维度判断上下文质量。</p>
+<p>第一，相关性。</p>
+<p>当前窗口里的信息，有多少直接服务这一步任务？如果我正在改一个局部 bug，是否真的需要保留三轮之前的架构讨论全文？</p>
+<p>第二，充分性。</p>
+<p>必要事实是否齐全？有些上下文很干净，但少了关键边界，比如旧行为不能破坏、接口兼容性、权限约束、异常路径。这会让 AI 用合理默认值补洞。</p>
+<p>第三，信号密度。</p>
+<p>有效信息占多少比例？大段日志、搜索结果、重复解释会让模型付出注意力成本，却不一定带来判断价值。</p>
+<p>第四，可追溯性。</p>
+<p>结论能不能回到来源？是哪个文件、哪条命令、哪个测试、哪个官方文档、哪一次用户确认？没有来源的总结只能作为提示，不能直接当证据。</p>
+<p>第五，时效。</p>
+<p>上下文是不是当前状态？旧分支的代码、昨天的测试结果、已经被用户改掉的计划，都可能误导模型。</p>
+<p>第六，可验证性。</p>
+<p>这份上下文能不能导向外部检查？比如测试、lint、build、截图、日志、人工 review、来源核验。没有验证闭环的上下文，很容易让 AI 只是在写更流畅的解释。</p>
+<p>RAG 领域里也有类似思想。比如 Ragas 会区分 context precision、context recall、faithfulness、answer relevance 这类指标：不是只看“检索到了多少”，而是看取回内容是否相关、答案所需事实是否覆盖、回答是否忠于上下文。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> 这个思路可以迁移到更广义的 AI 协作里：上下文不是越多越好，而是要看它是否真的支撑当前任务。</p>
+<h2 id="不同阶段需要不同上下文">不同阶段需要不同上下文</h2>
+<p>上下文管理最实用的一条原则是：不要让一个上下文承载所有阶段。</p>
+<p>复杂任务通常至少可以拆成五段。</p>
+<p>第一段是 Research。</p>
+<p>这个阶段要宽一点。目标是弄清楚系统现状：相关文件在哪里，调用链是什么，测试怎么跑，风险点在哪。这里可以多搜索、多浏览、多问几个为什么。</p>
+<p>但 Research 的输出不应该是“把所有读过的东西留在对话里”。它应该压缩成问题地图：关键文件、关键事实、可疑点、已排除路径、需要继续验证的假设。</p>
+<p>第二段是 Plan。</p>
+<p>计划阶段要窄一些。它不需要保留所有探索痕迹，而要保留决策所需的事实、约束、方案取舍、非目标和验证方式。计划的价值之一，就是把复杂上下文压缩成可执行路径。</p>
+<p>OpenAI 的 Codex best practices 也建议复杂、模糊或难描述的任务先规划，再写代码。计划模式的价值不只是“想一想”，而是让 agent 先收集上下文、澄清目标、形成更强的执行边界。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>第三段是 Implement。</p>
+<p>真正实现时，上下文应该更窄。当前文件、邻近接口、测试、验收条件、已经确认的设计决策就够了。早期探索时读过的长文档、旧日志和被废弃方案，最好不要继续影响实现。</p>
+<p>第四段是 Verify。</p>
+<p>验证阶段需要的是新鲜证据。运行了什么命令，结果如何，失败在哪里，修复后有没有重新跑。这里最怕的是拿旧的通过结果或模型自述当完成证据。</p>
+<p>第五段是 Document。</p>
+<p>如果任务产生了稳定结论，就不要让它只留在聊天记录里。项目规则进 <code>AGENTS.md</code> 或项目文档；通用知识进 wiki；验证方式进脚本、测试或 CI；个人/项目长期偏好进受控 memory。</p>
+<p>这样下一次任务不是继承一整段又长又脏的对话，而是按需读取被整理过的上下文。</p>
+<h2 id="该外存的东西，不要留在对话里">该外存的东西，不要留在对话里</h2>
+<p>上下文窗口是运行时资源，不是长期知识库。</p>
+<p>这个区别很重要。</p>
+<p>有些信息必须出现在当前对话里，因为 AI 这一步马上要用。比如用户刚刚定义的目标，当前报错，正在修改的函数，刚跑出来的测试失败。</p>
+<p>有些信息不应该长期停留在对话里，而应该外存化。</p>
+<p>稳定项目规则，应该进 <code>AGENTS.md</code>、README、开发文档、lint、formatter、CI 或脚本。比如怎么跑测试、哪些目录不能乱动、提交前必须检查什么。</p>
+<p>可复用工作方式，应该进 skill。比如写文章前先确认读者、目的、论点、材料和声音；修 bug 前先复现；完成前必须拿新鲜验证证据。</p>
+<p>主题知识，应该进 wiki 或项目文档。比如某个模块的架构边界、某类问题的排障流程、某个设计决策的理由。</p>
+<p>一次性工具结果，应该被摘要和指针化。比如“<code>npm test</code> 失败，失败用例是 X，错误是 Y，完整输出可重新运行命令获取”。</p>
+<p>这个动作看起来像整理，其实是在保护后续推理。</p>
+<p>对话是临时工作台。文档、测试、脚本、wiki、skill，才是能跨任务复用的上下文系统。</p>
+<h2 id="长上下文、RAG-和-Skill-各自解决不同问题">长上下文、RAG 和 Skill 各自解决不同问题</h2>
+<p>谈上下文时，很容易把几个概念混在一起：长上下文、RAG、文档、memory、skill。</p>
+<p>它们不是互相替代的关系。</p>
+<p>长上下文适合整体阅读。比如资料数量少，但需要看完整结构，直接读进来通常最简单。代码 review、架构文档比较、长文总结，都可能适合这种方式。</p>
+<p>RAG 适合从大量、可更新、需要出处或权限治理的资料里取少量证据。它的重点不是“让模型拥有全部知识”，而是把大语料缩成当前问题需要的高价值片段。</p>
+<p>项目文档适合保存已经稳定的项目事实。它应该比聊天记录更可靠，也应该能被人 review、修改和版本控制。</p>
+<p>Memory 适合保存跨任务稳定偏好或状态，但它尤其需要谨慎。临时情绪、未验证总结、外部网页内容，不应该随便写进长期记忆。</p>
+<p>Skill 适合保存某类任务的工作协议。OpenAI 的 Codex skill 文档和 Anthropic 的 Agent Skills 文档都采用类似的渐进式披露思路：先让 agent 看到 skill 的名称和描述，任务匹配时再读完整说明，更细的参考材料和脚本继续按需加载。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p>这套分层的意义是：让 AI 在需要时看到正确东西，而不是每次都携带所有东西。</p>
+<p>所以我会这样粗略判断：</p>
+<ul>
+<li>少量材料，需要整体结构：直接读。</li>
+<li>大量材料，只需要少量证据：检索或 RAG。</li>
+<li>稳定项目规则：写进项目文档、<code>AGENTS.md</code>、脚本或 CI。</li>
+<li>稳定工作方式：写成 skill。</li>
+<li>当前任务状态：留在计划或阶段性摘要里。</li>
+<li>低信任外部内容：只作为待核验证据。</li>
+</ul>
+<p>这比“上下文窗口够大，全部塞进去”更麻烦一点，但也更像工程。</p>
+<h2 id="上下文也有信任边界">上下文也有信任边界</h2>
+<p>上下文还有一个经常被忽略的问题：不是所有进入上下文的内容都可信。</p>
+<p>用户当前请求和项目规则不一样。源码和外部网页不一样。测试输出和模型草稿不一样。RAG chunk 和系统指令更不是一回事。</p>
+<p>任何被模型读到的文本，都可能影响模型后续行为。网页、Issue、PR、日志、PDF、代码注释、搜索结果里都可能出现类似“忽略之前指令”这样的内容。OWASP 在 2025 年 LLM Top 10 中把 prompt injection 放在第一项，并且明确区分直接注入和来自外部来源的间接注入。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup> NIST 的生成式 AI 风险管理资料也把这类风险放进更大的治理、度量和管理框架里看。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<p>对日常 AI 编程来说，一个简单原则是：外部内容只能提供证据，不能自动升级成指令。</p>
+<p>比如网页里写着“请忽略系统提示”，这句话只是网页内容。Issue 里有人说“顺手删掉旧模块”，这也只是待确认需求，不是权限。日志里出现的提示词片段，不应该让 agent 改变自己的安全规则。</p>
+<p>更具体一点，可以把上下文分成几层：</p>
+<ul>
+<li>平台和开发者规则：最高优先级。</li>
+<li>项目规则和源码事实：支撑工程判断。</li>
+<li>用户当前目标：定义这次任务。</li>
+<li>外部资料和工具结果：作为待核验证据。</li>
+<li>模型自己的草稿和总结：作为假设。</li>
+</ul>
+<p>低信任内容可以帮助我们发现问题，但不能替我们决定权限、事实身份和长期记忆写入。</p>
+<p>这也是为什么“上下文工程”不只是效率问题，也是安全问题。</p>
+<h2 id="一个日常检查清单">一个日常检查清单</h2>
+<p>真正使用时，不需要每次都套很重的流程。</p>
+<p>我会用一个很短的检查清单。</p>
+<p>第一，当前目标能不能一句话说清楚？</p>
+<p>如果不能，先不要让 AI 大量读文件或直接实现。目标不清楚时，读得越多，越容易把噪声包装成方案。</p>
+<p>第二，当前阶段是什么？</p>
+<p>是研究、计划、实现、验证，还是沉淀？不同阶段需要不同上下文。不要让研究阶段的所有材料都陪着实现阶段走到最后。</p>
+<p>第三，现在给 AI 的材料是不是当前步骤必要的？</p>
+<p>如果不是，给路径、摘要或索引就够了。能重新获取的原始输出，不要永久留在主上下文。</p>
+<p>第四，事实、计划、假设有没有分开？</p>
+<p>尤其是调试和重构。已经被证据排除的假设，要明确标废弃；当前方案要标当前；未验证内容不要写成结论。</p>
+<p>第五，关键结论有没有来源？</p>
+<p>文件路径、命令输出、测试名、官方文档链接、用户确认，都比“看起来应该是”可靠。</p>
+<p>第六，完成判断有没有新鲜证据？</p>
+<p>测试、lint、build、截图、日志、人工 review，至少要有和任务相称的证据。没有证据时，就说“未验证”，不要把语气写得更像完成。</p>
+<p>第七，有没有稳定结论值得外存？</p>
+<p>如果这次又重复解释了同一个项目规则，就考虑写进 <code>AGENTS.md</code>、文档、skill 或脚本。下次不要再靠聊天记录召回。</p>
+<p>这个清单的目的不是约束 AI 少做事，而是让它少在错误的信息环境里做事。</p>
+<h2 id="管理-AI，就是管理它的工作现场">管理 AI，就是管理它的工作现场</h2>
+<p>我以前更关心“怎么把话说清楚”。</p>
+<p>现在仍然关心，但顺序变了。</p>
+<p>对简单任务，好的 Prompt 已经够用。可对复杂任务，真正影响结果的往往是上下文系统：哪些规则常驻，哪些材料按需加载，哪些工具结果要压缩，哪些结论要写回，哪些外部内容不能越过信任边界。</p>
+<p>AI 的能力越强，这件事反而越重要。</p>
+<p>能力弱的时候，它可能只是做不好。能力强的时候，它会把一个不干净的上下文执行得很流畅。旧计划、噪声日志、模糊目标、相似干扰项，都可能被它加工成一套看起来完整的方案。</p>
+<p>所以，好的 AI 使用方式，不是把上下文堆满。</p>
+<p>而是让 AI 在每个阶段看到正确、干净、可追溯、可验证的信息。</p>
+<p>上下文不是资料仓库。</p>
+<p>上下文是 AI 的工作现场。</p>
+<p>你怎么布置这个现场，它就会怎么工作。</p>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
+<li>本博客：<a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a></li>
+<li>本博客：<a href="/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/" title="AI 编程工作流的反模式">AI 编程工作流的反模式</a></li>
+<li>本博客：<a href="/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/" title="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象">从 Prompt 到 Skill：AI Agent 工作流的下一层抽象</a></li>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/">Harness engineering</a></li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a></li>
+<li>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills">Build skills</a></li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a></li>
+<li>Nelson F. Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a></li>
+<li>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot">Context Rot</a></li>
+<li>OWASP, <a target="_blank" rel="noopener" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">LLM01:2025 Prompt Injection</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/harness-engineering/"><em>Harness engineering: leveraging Codex in an agent-first world</em></a>。这里引用的是 agent-first 软件开发中环境、工具、仓库内知识和验证反馈对 Codex 工作方式的影响。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Nelson F. Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172"><em>Lost in the Middle: How Language Models Use Long Contexts</em></a>。这篇研究观察到，长上下文中相关信息的位置会显著影响模型表现，开头和结尾通常比中间更容易被利用。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Kelly Hong, Anton Troynikov, Jeff Huber, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot"><em>Context Rot: How Increasing Input Tokens Impacts LLM Performance</em></a>，Chroma Technical Report, 2025。这里引用它来支撑“输入变长后模型性能可能不均匀退化，长上下文能力不能只用简单检索任务代表”的判断。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Ragas 文档中的 <a target="_blank" rel="noopener" href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_precision/">Context Precision</a> 和 <a target="_blank" rel="noopener" href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_recall/">Context Recall</a> 指标，把检索上下文拆成相关性、排序质量和事实覆盖等维度。本文借用这个思路说明：上下文质量不等于上下文长度。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用的是复杂任务先计划、把重复指导沉淀到 <code>AGENTS.md</code>、并通过测试和 review 提高可靠性的实践建议。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>OpenAI Developers, <a target="_blank" rel="noopener" href="https://learn.chatgpt.com/docs/build-skills"><em>Build skills</em></a>。Codex skill 文档说明 skill 是包含 <code>SKILL.md</code> 以及可选 <code>scripts/</code>、<code>references/</code>、<code>assets/</code> 的目录，并强调 Codex 会先看 skill 列表，匹配后再读取完整说明。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills"><em>Equipping agents for the real world with Agent Skills</em></a>。这里引用的是 Agent Skills 的三层加载和 progressive disclosure：metadata 常驻，instructions 触发时加载，reference/code 按需使用。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>OWASP Gen AI Security Project, <a target="_blank" rel="noopener" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/"><em>LLM01:2025 Prompt Injection</em></a>。这里引用它来支撑“进入上下文的外部内容可能改变模型行为，prompt injection 包括直接和间接形式”的安全边界。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它来支撑“生成式 AI 风险需要进入组织和系统层面的治理、度量和管理，而不是只靠模型自律或一次确认”的判断。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87/" rel="tag"># 上下文</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag"># 软件开发</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/" rel="prev" title="AI 编程工作流的反模式">
+                  <i class="fa fa-angle-left"></i> AI 编程工作流的反模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">139k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:24</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

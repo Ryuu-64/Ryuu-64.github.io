@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如： 1234567891011121314151617var allEmployees &#x3D; FindAllEmployees();&#x2F;&#x2F; Find the first employees:var earlyFolks &#x3D;    from e in allEmployees    where e.Classificati">
+    <meta name="description" content="这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如：[1] 1234567891011121314151617var allEmployees &#x3D; FindAllEmployees();&#x2F;&#x2F; Find the first employees:var earlyFolks &#x3D;    from e in allEmployees    where e.Classific">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-CSharp-38考虑用lambda表达式来代替方法">
 <meta property="og:url" content="http://example.com/2021/08/04/Effective-CSharp-38%E8%80%83%E8%99%91%E7%94%A8lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如： 1234567891011121314151617var allEmployees &#x3D; FindAllEmployees();&#x2F;&#x2F; Find the first employees:var earlyFolks &#x3D;    from e in allEmployees    where e.Classificati">
+<meta property="og:description" content="这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如：[1] 1234567891011121314151617var allEmployees &#x3D; FindAllEmployees();&#x2F;&#x2F; Find the first employees:var earlyFolks &#x3D;    from e in allEmployees    where e.Classific">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-04T10:01:40.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:19:59.998Z">
+<meta property="article:modified_time" content="2026-07-17T20:13:07.831Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="effective CSharp">
@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -158,7 +158,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -244,7 +244,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:19:59" itemprop="dateModified" datetime="2026-07-17T21:19:59+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 04:13:07" itemprop="dateModified" datetime="2026-07-18T04:13:07+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,14 +263,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -280,13 +280,13 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如：</p>
+    <div class="post-body" itemprop="articleBody"><p>这条建议可能听起来有些奇怪，因为 lambda 表达式代替方法会重复编写代码。例如：<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> allEmployees = FindAllEmployees();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the first employees:</span></span><br><span class="line"><span class="keyword">var</span> earlyFolks =</span><br><span class="line">    <span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span><br><span class="line">    <span class="keyword">where</span> e.Classification == EmployeeType.Salary</span><br><span class="line">    <span class="keyword">where</span> e.YearsOfService &gt; <span class="number">20</span></span><br><span class="line">    <span class="keyword">where</span> e.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">    <span class="keyword">select</span> e;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the newest people:</span></span><br><span class="line"><span class="keyword">var</span> newest =</span><br><span class="line">    <span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span><br><span class="line">    <span class="keyword">where</span> e.Classification == EmployeeType.Salary</span><br><span class="line">    <span class="keyword">where</span> e.YearsOfService &lt; <span class="number">20</span></span><br><span class="line">    <span class="keyword">where</span> e.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">    <span class="keyword">select</span> e;</span><br></pre></td></tr></table></figure>
-<p>你可以将这些 where 合并为一条子句，然而这并不会带来太大区别。查询操作之间本就可以拼接 (见31条)，而简单的 where 谓词还会有可能内联 (inline)，因此，这两种写法在性能上是一样的。</p>
-<p>看到刚才那段代码，你可能会想把重复的 lambda 表达式提取到方法，以便复用：</p>
+<p>你可以将这些 where 合并为一条子句，然而这并不会带来太大区别。查询操作之间本就可以拼接 (见31条)，而简单的 where 谓词还会有可能内联 (inline)，因此，这两种写法在性能上是一样的。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>看到刚才那段代码，你可能会想把重复的 lambda 表达式提取到方法，以便复用：<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Factor out method:</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">LowPaidSalaried</span>(<span class="params">Employee e</span>)</span> =&gt; </span><br><span class="line">    e.MonthlySalary &lt; <span class="number">4000</span> &amp;&amp; e.Classification == EmployeeType.Salary;</span><br><span class="line"></span><br><span class="line"><span class="comment">// else where</span></span><br><span class="line"><span class="keyword">var</span> allEmployees = FindAllEmployees();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> earlyFolks =</span><br><span class="line">	<span class="function"><span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span></span><br><span class="line"><span class="function">	<span class="keyword">where</span> <span class="title">LowPaidSalaried</span>(<span class="params">e</span>) &amp;&amp; e.YearsOfService &gt; 20</span></span><br><span class="line"><span class="function">	<span class="keyword">select</span> e</span>;</span><br><span class="line">            </span><br><span class="line"><span class="comment">// Find the newest people:</span></span><br><span class="line"><span class="keyword">var</span> newest =</span><br><span class="line">	<span class="keyword">from</span> e <span class="keyword">in</span> allEmployees</span><br><span class="line">	<span class="keyword">where</span> e.Classification == EmployeeType.Salary</span><br><span class="line">	<span class="keyword">where</span> e.YearsOfService &lt; <span class="number">20</span></span><br><span class="line">	<span class="keyword">where</span> e.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">	<span class="keyword">select</span> e;</span><br></pre></td></tr></table></figure>
 <p>如果将来需要修改员工的类别 (Classification)，或修改筛选底薪员工时所依据的最低月薪 (MonthlySalary)，那么只需要改动 LowPaidSalaried() 里的逻辑即可。</p>
-<p>但是这样的重构不能提高其复用性，这与 lambda 表达式求值、解析及执行机制有关：</p>
+<p>但是这样的重构不能提高其复用性，这与 lambda 表达式求值、解析及执行机制有关：<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <ul>
 <li>
 <p>LINQ to Objects</p>
@@ -294,18 +294,49 @@
 </li>
 <li>
 <p>LINQ to SQL</p>
-<p>根据 lambda 表达式创建表达式树，并解析，使其能在其他环境执行</p>
+<p>根据 lambda 表达式创建表达式树，并解析，使其能在其他环境执行<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 </li>
 </ul>
-<p>LINQ to Objects 针对本地数据存储 (local data store) 来执行查询，数据通常放在泛型集合。系统根据 lambda 表达式中的逻辑建立匿名委托，并执行相关代码。LINQ to Objects 扩展方法使用 IEnumerable<T> 来表示输入序列。</p>
-<p>LINQ to SQL 使用表达式树，根据所写查询逻辑构建表达式树，将其解析为适当的 T-SQL 查询，这种查询是针对数据库执行的，LINQ to SQL 把 T-SQL 形式的查询字符串发送给数据库引擎并执行。这种处理方式要求 LINQ to SQL引擎必须解析表达式树，并把其中每一项操作都替换成等价的 SQL，这意味着所有的方法调用都需要换成 Expression.MethodCall 节点。然而 LINQ to SQL 引擎并不能把每一种方法调用都顺利的转化为 SQL 表达式，无法转换将会引发异常。</p>
-<p>如果所写的程序库需要支持任意类型的数据源，必须考虑上述情况。需要分开编写 lambda 表达式，且内联至代码中，以保证程序库正常运行。</p>
-<p>这并不是在鼓励一味的复制代码，而是提醒，涉及查询表达式及 lambda 的地方应该用更为合理的方法去创建复用代码块。例如：</p>
+<p>LINQ to Objects 针对本地数据存储 (local data store) 来执行查询，数据通常放在泛型集合。系统根据 lambda 表达式中的逻辑建立匿名委托，并执行相关代码。LINQ to Objects 扩展方法使用 IEnumerable<T> 来表示输入序列。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>LINQ to SQL 使用表达式树，根据所写查询逻辑构建表达式树，将其解析为适当的 T-SQL 查询，这种查询是针对数据库执行的，LINQ to SQL 把 T-SQL 形式的查询字符串发送给数据库引擎并执行。这种处理方式要求 LINQ to SQL引擎必须解析表达式树，并把其中每一项操作都替换成等价的 SQL，这意味着所有的方法调用都需要换成 Expression.MethodCall 节点。然而 LINQ to SQL 引擎并不能把每一种方法调用都顺利的转化为 SQL 表达式，无法转换将会引发异常。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p>如果所写的程序库需要支持任意类型的数据源，必须考虑上述情况。需要分开编写 lambda 表达式，且内联至代码中，以保证程序库正常运行。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<p>这并不是在鼓励一味的复制代码，而是提醒，涉及查询表达式及 lambda 的地方应该用更为合理的方法去创建复用代码块。例如：<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> IQueryable&lt;Employee&gt; <span class="title">LowPaidSalariedFilter</span>(<span class="params"><span class="keyword">this</span> IQueryable&lt;Employee&gt; sequence</span>)</span> =&gt;</span><br><span class="line">    <span class="keyword">from</span> s <span class="keyword">in</span> sequence</span><br><span class="line">    <span class="keyword">where</span> s.Classification == EmployeeType.Salary &amp;&amp; s.MonthlySalary &lt; <span class="number">4000</span></span><br><span class="line">    <span class="keyword">select</span> s;</span><br><span class="line"></span><br><span class="line"><span class="comment">// else where</span></span><br><span class="line"><span class="keyword">var</span> allEmployees = FindAllEmployees();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the first employees:</span></span><br><span class="line"><span class="keyword">var</span> salaried = allEmployees.LowPaidSalariedFilter();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> earlyFolks = salaried.Where(e =&gt; e.YearsOfService &gt; <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find the newest people:</span></span><br><span class="line"><span class="keyword">var</span> newest = salaried.Where(e =&gt; e.YearsOfService &lt; <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
-<p>并不是每一种查询都能像这样简单的改写，可能需要沿着调用链寻找，才能发现可供复用的列表处理逻辑 (list-processing logic)，从而提取相同的 lambda 表达式。31条提过，只要当程序真的需要遍历集合的时，enumerator 方法才会得以执行。可利用此特征，将查询操作分成许多小方法来写，这些小方法都能复用某一套 lambda 表达式来执行它所应该完成的那一部分查询工作。这些方法需要将待处理的序列当成输入值，并以 yield return 形式返回处理结果。这些小方法可构成较大的查询模块。避免重复的代码，使得代码结构更合理。</p>
-<p>也可按照同样的思路建立表达式树，以此拼接 IQueryable 形式的 enumerator，令查询操作能够远程执行。寻找相关员工所用的那棵表达式树可以先于其他查询拼接，然后执行。IQueryProvider 对象 (LINQ to SQL 引擎的数据源就是这种对象) 可以把全套查询操作一次执行完毕，而不必将其分解成多个部分放到本地执行。</p>
-<p>若想在复杂的查询中有效地复用 lambda 表达式，可以考虑针对封闭的泛型类型创建扩展方法。LowPaidSalariedFilter 方法就是这么写的，它接受有待筛选的 Employee 对象序列，输出经过筛选后的 Employee 对象序列。在实际工作中，还应该创建以 IEnumerable<Employee> 作阐述的重载版本，以便同时支持 LINQ to Objects 及 LINQ to SQL。</p>
-<p>你可以把查询操作分成多个小方法，其中一些方法在其内部用 lambda 表达式处理序列，另一些方法以 lambda 表达式作参数。把这些小方法拼接起来，以实现整套操作。这样既可以支持 IEnumerable<T> 与 IQueryable<T>，又能令系统有机会构建出表达式树，以便高效执行查询。</p>
+<p>并不是每一种查询都能像这样简单的改写，可能需要沿着调用链寻找，才能发现可供复用的列表处理逻辑 (list-processing logic)，从而提取相同的 lambda 表达式。31条提过，只要当程序真的需要遍历集合的时，enumerator 方法才会得以执行。可利用此特征，将查询操作分成许多小方法来写，这些小方法都能复用某一套 lambda 表达式来执行它所应该完成的那一部分查询工作。这些方法需要将待处理的序列当成输入值，并以 yield return 形式返回处理结果。这些小方法可构成较大的查询模块。避免重复的代码，使得代码结构更合理。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<p>也可按照同样的思路建立表达式树，以此拼接 IQueryable 形式的 enumerator，令查询操作能够远程执行。寻找相关员工所用的那棵表达式树可以先于其他查询拼接，然后执行。IQueryProvider 对象 (LINQ to SQL 引擎的数据源就是这种对象) 可以把全套查询操作一次执行完毕，而不必将其分解成多个部分放到本地执行。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<p>若想在复杂的查询中有效地复用 lambda 表达式，可以考虑针对封闭的泛型类型创建扩展方法。LowPaidSalariedFilter 方法就是这么写的，它接受有待筛选的 Employee 对象序列，输出经过筛选后的 Employee 对象序列。在实际工作中，还应该创建以 IEnumerable<Employee> 作阐述的重载版本，以便同时支持 LINQ to Objects 及 LINQ to SQL。<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+<p>你可以把查询操作分成多个小方法，其中一些方法在其内部用 lambda 表达式处理序列，另一些方法以 lambda 表达式作参数。把这些小方法拼接起来，以实现整套操作。这样既可以支持 IEnumerable<T> 与 IQueryable<T>，又能令系统有机会构建出表达式树，以便高效执行查询。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Bill Wagner, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283"><em>Effective C# (Covers C# 6.0), 3rd Edition</em></a> 在本条目中讨论查询谓词复用；Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions">Lambda expressions and anonymous functions</a> 说明 lambda 可以转换为委托或表达式树，因此“是否抽方法”取决于后续执行模型。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><em>Effective C#</em> Item 38 将多个 <code>where</code> 子句和合并谓词视为等价查询结构的一种写法；这里的性能判断依赖具体 provider 和运行时优化，脚注只支撑“查询操作可组合、短谓词通常不应为了抽象而破坏查询形状”这一设计边界。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/">Delegates</a> 和 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/local-functions">Local functions</a> 支撑具名方法、局部函数适合表达可复用或有业务名的逻辑；后文的限制主要发生在 <code>IQueryable&lt;T&gt;</code> provider 需要翻译表达式树时。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions">Lambda expressions and anonymous functions</a> 说明 lambda 可转换为委托类型或表达式树类型；这正是 LINQ to Objects 与 <code>IQueryable&lt;T&gt;</code> provider 场景差异的基础。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/">Delegates</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.linq.iqueryable-1"><code>IQueryable&lt;T&gt;</code> Interface</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/">Expression trees</a> 分别支撑“本地委托执行”和“表达式树交给 provider 分析/执行”的区别。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1"><code>IEnumerable&lt;T&gt;</code> Interface</a> 表示可枚举序列；<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions">Lambda expressions</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/">Delegates</a> 支撑 LINQ to Objects 中谓词通常作为本地委托执行。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.linq.iqueryable-1"><code>IQueryable&lt;T&gt;</code> Interface</a> 说明查询与 provider 关联，枚举会触发表达式树执行；<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/">Expression trees</a> 说明表达式树表示代码结构，但具体 provider 不一定能翻译所有方法调用。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p><em>Effective C#</em> Item 38 与 Microsoft Learn <code>IQueryable&lt;T&gt;</code> / expression tree 文档共同支撑这一边界：面向任意 provider 的查询库应保留 provider 能看见的成员访问、比较和布尔组合结构，而不是只暴露一个普通 .NET 方法调用。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.linq.iqueryable-1"><code>IQueryable&lt;T&gt;</code> Interface</a> 和 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/">Expression trees</a> 支撑把复用单位设计成仍返回 <code>IQueryable&lt;T&gt;</code> 的查询片段，让后续过滤继续留在同一表达式树中。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>对 <code>IEnumerable&lt;T&gt;</code> 场景，Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/yield"><code>yield</code> statement</a> 支撑用迭代器逐项返回处理结果；这与前一条序列 API 可组合性结论一致，即把列表处理逻辑拆成可拼接的小步骤。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.linq.iqueryable-1"><code>IQueryable&lt;T&gt;</code> Interface</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/">Expression trees</a> 支撑 <code>IQueryProvider</code> 通过表达式树执行查询；组合 <code>IQueryable&lt;T&gt;</code> 片段可以把整体查询结构保留给 provider。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">Extension members</a> 支撑用扩展方法表达查询片段；分别提供 <code>IEnumerable&lt;T&gt;</code> 与 <code>IQueryable&lt;T&gt;</code> 版本，可以区分本地委托执行和 provider 翻译两种语义。 <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>本文总结由 <em>Effective C#</em> Item 38、Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions">Lambda expressions</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.linq.iqueryable-1"><code>IQueryable&lt;T&gt;</code></a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/">Expression trees</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">Extension members</a> 共同支撑：查询逻辑可以拆成小方法，但应保留 <code>IEnumerable&lt;T&gt;</code> 与 <code>IQueryable&lt;T&gt;</code> 各自需要的执行形状。 <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -363,13 +394,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

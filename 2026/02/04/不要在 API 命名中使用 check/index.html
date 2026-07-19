@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位 check 是可以用的，但是它只能在一个非常窄的语义里使用。 在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。  返回类型是 void 而不是 boolean">
+    <meta name="description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。[1] 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位 check 是可以用的，但是它只能在一个非常窄的语义里使用。[2] 在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。[3]  返回类型是 void 而不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不要在 API 命名中使用 check">
 <meta property="og:url" content="http://example.com/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位 check 是可以用的，但是它只能在一个非常窄的语义里使用。 在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。  返回类型是 void 而不是 boolean">
+<meta property="og:description" content="本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。[1] 在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。 check 的定位 check 是可以用的，但是它只能在一个非常窄的语义里使用。[2] 在大多数项目里， checkXxx() 是一个前置条件检查，不满足时抛出异常且没有业务副作用。[3]  返回类型是 void 而不">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-02-04T07:58:28.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.027Z">
+<meta property="article:modified_time" content="2026-07-17T19:01:06.559Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="编程命名">
 <meta property="article:tag" content="API设计">
@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -158,7 +158,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -244,7 +244,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 03:01:06" itemprop="dateModified" datetime="2026-07-18T03:01:06+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,14 +263,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>527</span>
+      <span>1.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -280,11 +280,11 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。</p>
+    <div class="post-body" itemprop="articleBody"><p>本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。</p>
 <h2 id="check-的定位">check 的定位</h2>
-<p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<br>
-在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。</p>
+<p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><br>
+在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <ol>
 <li>返回类型<strong>是</strong> <code>void</code> 而<strong>不是</strong> <code>boolean</code>。</li>
 <li>失败时抛出异常。</li>
@@ -294,7 +294,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkStatus</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkPermission</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkConfig</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
 <h2 id="check-的滥用">check 的滥用</h2>
 <p>对 check 的最严重最常见的滥用出现在命名 API 时。</p>
-<p>命名 API 时，我们的目标是<strong>消除惊讶</strong>，而 check 在 API 语境下是语义不稳定的命名。 对外的 API 一旦叫 <code>checkXxxx</code>，使用者就会在多种猜测中不知所措：</p>
+<p>命名 API 时，我们的目标是<strong>消除惊讶</strong>，而 check 在 API 语境下是语义不稳定的命名。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> 对外的 API 一旦叫 <code>checkXxxx</code>，使用者就会在多种猜测中不知所措：<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <ol>
 <li>成功时返回的是一个 <code>boolean</code>还是一个结果？</li>
 <li>失败时是一个 <code>false</code> 异常 还是结果？</li>
@@ -304,11 +304,11 @@
 <p>如果想知道订单是否有效，我们会期待它叫 <code>isValid()</code>。</p>
 <p>如果想触发校验流程并拿到错误列表，我们会期待它叫 <code>validateOrder()</code>。</p>
 <p>如果想在订单无效时阻止程序运行，我们会期待它叫 <code>ensureOrderValid()</code>。</p>
-<p>check 就像一个黑色盲盒，不看实现永远不知道它会静默失败还是原地爆炸。 因此，它只适合作为类内部的辅助方法（Helper methods）。</p>
+<p>check 就像一个黑色盲盒，不看实现永远不知道它会静默失败还是原地爆炸。 因此，它只适合作为类内部的辅助方法（Helper methods）。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <p>正确命名 API 的方式是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">validateXxx()    <span class="comment">// 有结果</span></span><br><span class="line">verifyXxx()      <span class="comment">// 鉴权 / 第三方</span></span><br><span class="line">ensureXxx()      <span class="comment">// 业务保障（失败抛异常）</span></span><br></pre></td></tr></table></figure>
 <h2 id="总结">总结</h2>
-<p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。</p>
+<p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <table>
 <thead>
 <tr>
@@ -351,6 +351,25 @@
 </tr>
 </tbody>
 </table>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Guava <code>Preconditions</code> 使用 <code>checkArgument</code>、<code>checkState</code>、<code>checkNotNull</code> 表示前置条件检查；JDK <code>Objects.checkIndex</code> 也把 <code>check</code> 用于边界检查并在失败时抛异常。这说明 <code>check</code> 在主流库中常见的核心语义是“检查前置条件或边界”，不是任意业务动作：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Guava <code>Preconditions</code> 文档把 <code>checkArgument</code>、<code>checkState</code>、<code>checkNotNull</code> 分别对应参数、状态和非空前置条件；这些方法的失败语义是抛异常，支撑了“check 可用但语义很窄”的边界：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><code>Preconditions.checkArgument</code> 在表达式为 false 时抛 <code>IllegalArgumentException</code>，<code>checkState</code> 在状态条件不满足时抛 <code>IllegalStateException</code>，JDK <code>Objects.checkIndex</code> 在越界时抛 <code>IndexOutOfBoundsException</code>；这些例子都不是返回业务结果或推进业务流程的公开动作：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Swift API Design Guidelines 强调名字应在调用点清晰，因为声明只出现一次而使用会出现很多次；Microsoft .NET 成员命名指南也建议方法名使用动词或动词短语，布尔属性使用肯定式短语并可用 <code>Can</code>、<code>Is</code>、<code>Has</code> 增强语义：<a target="_blank" rel="noopener" href="https://www.swift.org/documentation/api-design-guidelines/#naming">https://www.swift.org/documentation/api-design-guidelines/#naming</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>OpenAPI 3.1 规定 <code>operationId</code> 在 API 内应唯一且可被工具和库用于识别 operation；Google AIP-136 要求自定义方法用明确动词命名。公开 API 名字会进入文档、代码生成和客户端心智，因此 <code>checkXxx</code> 这类语义不稳定动词风险更高：<a target="_blank" rel="noopener" href="https://spec.openapis.org/oas/v3.1.0.html#operation-object">https://spec.openapis.org/oas/v3.1.0.html#operation-object</a>、<a target="_blank" rel="noopener" href="https://google.aip.dev/136">https://google.aip.dev/136</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p><code>check</code> 在 Guava / JDK 中常见于前置条件或边界检查工具方法；这支持把 <code>checkXxx</code> 保留在内部 helper 或模块内约定中，而不是泛化为公开业务 API 名称：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Google AIP-136 要求自定义方法名使用动词，AIP-190 把命名视为跨资源、字段和方法的一致性契约；.NET 成员命名指南也要求方法使用动词或动词短语。这些指南共同支撑“对外 API 用结果或行为导向动词”的建议：<a target="_blank" rel="noopener" href="https://google.aip.dev/136">https://google.aip.dev/136</a>、<a target="_blank" rel="noopener" href="https://google.aip.dev/190">https://google.aip.dev/190</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -407,13 +426,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

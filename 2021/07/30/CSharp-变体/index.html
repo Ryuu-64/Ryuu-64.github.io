@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Show you the code. 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758&#x2F;&#x2F; Variant type parameters could be declared in interfaces or delegates on">
+    <meta name="description" content="Show you the code.[1][2][3][4] 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758&#x2F;&#x2F; Variant type parameters could be declared in interfaces or">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSharp-变体">
 <meta property="og:url" content="http://example.com/2021/07/30/CSharp-%E5%8F%98%E4%BD%93/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="Show you the code. 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758&#x2F;&#x2F; Variant type parameters could be declared in interfaces or delegates on">
+<meta property="og:description" content="Show you the code.[1][2][3][4] 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758&#x2F;&#x2F; Variant type parameters could be declared in interfaces or">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-30T10:14:55.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:19:59.993Z">
+<meta property="article:modified_time" content="2026-07-18T05:05:56.905Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="泛型">
@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -158,7 +158,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -244,7 +244,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:19:59" itemprop="dateModified" datetime="2026-07-17T21:19:59+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 13:05:56" itemprop="dateModified" datetime="2026-07-18T13:05:56+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,7 +263,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>128</span>
+      <span>363</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -280,8 +280,21 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>Show you the code.</p>
+    <div class="post-body" itemprop="articleBody"><p>Show you the code.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Variant type parameters could be declared in interfaces or delegates only!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">ICovariant</span>&lt;<span class="keyword">out</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Covariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">ICovariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IContravariant</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Contravariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">IContravariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IInvariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Invariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">IInvariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Covariant</span>(<span class="params"> <span class="comment">/* out */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ICovariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Covariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        ICovariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Covariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can assign &quot;Derived&quot; to &quot;Base&quot;</span></span><br><span class="line">        obj = str;</span><br><span class="line">        str = obj; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Contravariant</span>(<span class="params"> <span class="comment">/* in */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IContravariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Contravariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        IContravariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Contravariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can assign &quot;Base&quot; to &quot;Derived&quot;</span></span><br><span class="line">        str = obj;</span><br><span class="line">        obj = str; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Invariant</span>(<span class="params"> <span class="comment">/* none */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IInvariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Invariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        IInvariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Invariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can&#x27;t do any assign </span></span><br><span class="line">        obj = str; <span class="comment">// error</span></span><br><span class="line">        str = obj; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/generics/covariance-and-contravariance">Covariance and Contravariance in Generics</a> 与 C# language specification <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/interfaces#1923-variant-type-parameter-lists">§19.2.3 Variant type parameter lists</a> 支撑：C# 的变体类型参数只出现在接口和委托类型上，并通过 <code>in</code> / <code>out</code> 标注协变、逆变或不变。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/out-generic-modifier"><code>out</code> generic modifier</a> 说明 <code>out</code> 表示协变类型参数，允许把更派生的类型实参作为更宽泛的泛型接口或委托使用；这对应示例里 <code>ICovariant&lt;string&gt;</code> 可赋值给 <code>ICovariant&lt;object&gt;</code>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-generic-modifier"><code>in</code> generic modifier</a> 说明 <code>in</code> 表示逆变类型参数，允许把更宽泛的类型实参作为更具体的泛型接口或委托使用；这对应示例里 <code>IContravariant&lt;object&gt;</code> 可赋值给 <code>IContravariant&lt;string&gt;</code>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces">Creating Variant Generic Interfaces</a> 与 C# language specification 的 variance conversion 规则共同支撑：未标注 <code>in</code> / <code>out</code> 的类型参数是不变的，变体转换需要满足对应的协变、逆变或恒等转换条件。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -339,13 +352,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

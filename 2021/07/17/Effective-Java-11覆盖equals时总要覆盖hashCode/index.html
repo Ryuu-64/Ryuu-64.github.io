@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="**在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。**如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：  在应用程序的执行期间，只要对象的 equals 方法的比较操作所用到的信息没有被修改，那么对同一个对象的多次调用">
+    <meta name="description" content="**在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。**如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：[1]  在应用程序的执行期间，只要对象的 equals 方法的比较操作所用到的信息没有被修改，那么对同一个对象的多">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-Java-11覆盖equals时总要覆盖hashCode">
 <meta property="og:url" content="http://example.com/2021/07/17/Effective-Java-11%E8%A6%86%E7%9B%96equals%E6%97%B6%E6%80%BB%E8%A6%81%E8%A6%86%E7%9B%96hashCode/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="**在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。**如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：  在应用程序的执行期间，只要对象的 equals 方法的比较操作所用到的信息没有被修改，那么对同一个对象的多次调用">
+<meta property="og:description" content="**在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。**如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：[1]  在应用程序的执行期间，只要对象的 equals 方法的比较操作所用到的信息没有被修改，那么对同一个对象的多">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-17T13:56:33.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.002Z">
+<meta property="article:modified_time" content="2026-07-18T08:42:21.283Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="effective Java">
@@ -145,7 +145,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 16:42:21" itemprop="dateModified" datetime="2026-07-18T16:42:21+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -278,19 +278,19 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>**在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。**如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：</p>
+    <div class="post-body" itemprop="articleBody"><p>**在每个覆盖了 equals 方法的类中，都必须覆盖 hashCode 方法。**如果不这样做，就会违反 hashCode 的通用约定，从而导致该类无法结合所有基于散列的集合一起正常运作，这类集合包括 HashMap 和 HashSet。下面是约定的内容，摘自 Object 规范：<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <ul>
 <li>在应用程序的执行期间，只要对象的 equals 方法的比较操作所用到的信息没有被修改，那么对同一个对象的多次调用，hashCode 方法都必须始终返回同一个值。在一个应用程序与另一个程序的执行过程中，执行 hashCode 方法所返回的值可以不一致。</li>
-<li>如果两个对象根据 equals(Object) 方法比较<strong>相等</strong>，调用这两个对象中的 hashCode 方法都<strong>必须</strong>产生同样的整数结果。</li>
+<li>如果两个对象根据 equals(Object) 方法比较<strong>相等</strong>，调用这两个对象中的 hashCode 方法都<strong>必须</strong>产生同样的整数结果。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></li>
 <li>如果两个对象根据 equals(Object) 方法比较<strong>不相等</strong>，调用这两个对象中的 hashCode 方法，则<strong>不一定</strong>要求 hashCode 方法必须产生不同的结果 (哈希碰撞)。但是程序员应该知道，给不相等的对象产生截然不同的整数结果，有可能提高散列表（hash table）的性能。</li>
 </ul>
-<p>**因没有覆盖 hashCode 而违反的关键约定是第二条：相等的对象必须具有相等的散列码 (hash code)。**根据类的 equals 方法，两个截然不同的实例在逻辑上有可能是相等的，但是根据 Object 类的 hashCode 方法，它们仅仅是两个没有任何共同之处的对象。因此，对象的 hashCode 方法返回两个看起来是随机的整数，而不是根据第二个约定所要求的那样，返回两个相等的整数。</p>
+<p>**因没有覆盖 hashCode 而违反的关键约定是第二条：相等的对象必须具有相等的散列码 (hash code)。**根据类的 equals 方法，两个截然不同的实例在逻辑上有可能是相等的，但是根据 Object 类的 hashCode 方法，它们仅仅是两个没有任何共同之处的对象。因此，对象的 hashCode 方法返回两个看起来是随机的整数，而不是根据第二个约定所要求的那样，返回两个相等的整数。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>假设在 HashMap 中用第10条中出现过的 PhoneNumber 类的实例作为键：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;PhoneNumber, String&gt; m = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">m.put(<span class="keyword">new</span> <span class="title class_">PhoneNumber</span>(<span class="number">707</span>, <span class="number">867</span>, <span class="number">5309</span>), <span class="string">&quot;Jenny&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>你可能期望 m.get(new PhoneNumber(707, 867, 5309)) 会返回 “Jenny”，但它实际上返回的是 null。注意，这里涉及两个 PhoneNumber 实例：第一个被插入 HashMap 中，第二个实例与第一个相等，用于从 Map 中根据 PhoneNumber 去获取用户名字。由于 PhoneNumber 类没有覆盖 hashCode 方法，从而导致两个相等的实例具有不相等的散列码，违反了 hashCode 的约定。因此，put 方法把电话号码对象存放在一个散列桶 (hash bucket)中，get 方法却在另一个散列桶中查找这个电话号码。即使这两个实例正好被放到同一个散列桶中，get 方法也必定会返回 null，因为 HashMap 有一项优化，可以将与每个项相关联的散列码缓存起来，如果散列码不匹配，也就不再去检验对象的等同性。</p>
+<p>你可能期望 m.get(new PhoneNumber(707, 867, 5309)) 会返回 “Jenny”，但它实际上返回的是 null。注意，这里涉及两个 PhoneNumber 实例：第一个被插入 HashMap 中，第二个实例与第一个相等，用于从 Map 中根据 PhoneNumber 去获取用户名字。由于 PhoneNumber 类没有覆盖 hashCode 方法，从而导致两个相等的实例具有不相等的散列码，违反了 hashCode 的约定。因此，put 方法把电话号码对象存放在一个散列桶 (hash bucket)中，get 方法却在另一个散列桶中查找这个电话号码。即使这两个实例正好被放到同一个散列桶中，get 方法也必定会返回 null，因为 HashMap 有一项优化，可以将与每个项相关联的散列码缓存起来，如果散列码不匹配，也就不再去检验对象的等同性。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>修正这个问题非常简单，只需为PhoneNumber类提供一个适当的 hashCode 方法即可。那么，hashCode 方法应该是什么样的呢？编写一个合法但并不好用的 hashCode 方法没有任何价值。例如，下面这个方法总是合法的，但是<strong>它永远都不应该被正式使用</strong>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The worst possible legal hashCode implementation -never use!</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面这个 hashCode 方法是合法的，因为它确保了相等的对象总是具有同样的散列码。但它也极为恶劣，因为它使得每个对象都具有同样的散列码。因此，每个对象都被映射到同一个散列桶中，使散列表退化为链表 (linked list)。它使得本该线性时间运行的程序变成了以平方级时间在运行。对于规模很大的散列表而言，这会关系到散列表能否正常工作。</p>
+<p>上面这个 hashCode 方法是合法的，因为它确保了相等的对象总是具有同样的散列码。但它也极为恶劣，因为它使得每个对象都具有同样的散列码。因此，每个对象都被映射到同一个散列桶中，使散列表退化为链表 (linked list)。它使得本该线性时间运行的程序变成了以平方级时间在运行。对于规模很大的散列表而言，这会关系到散列表能否正常工作。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <p>一个好的散列函数通常倾向于 “为不相等的对象产生不相等的散列码”。这正是hashCode约定中第三条的含义。理想情况下，散列函数应该把集合中不相等的实例均匀地分布到所有可能的int值上。要想完全达到这种理想的情形是非常困难的。幸运的是，相对接近这种理想情形则并不太困难。下面给出一种简单的解决办法：</p>
 <ol>
 <li>
@@ -326,12 +326,31 @@
 </li>
 <li>
 <p>返回 result 。</p>
-<p>(Ryuu：附上 java 源码的实现，你会发现这就是作者提供的解决方案。这并不奇怪，本书作者 Joshua Bloch，曾任职 Sun 公司 进行 Java 的开发)</p>
+<p>(Ryuu：附上 java 源码的实现，你会发现这就是作者提供的解决方案。这并不奇怪，本书作者 Joshua Bloch，曾任职 Sun 公司 进行 Java 的开发)<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.util.Objects</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object... values)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Arrays.hashCode(values);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// java.util.Arrays</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">(Object a[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Object element : a)</span><br><span class="line">        result = <span class="number">31</span> * result + (element == <span class="literal">null</span> ? <span class="number">0</span> : element.hashCode());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>写完了 hashCode 方法之后，问问自己<strong>相等的实例是否都具有相等的散列码</strong>。要编写单元测试来验证你的推断 (除非利用 AutoValue 生成 equals 和 hashCode 方法，这样你就可以放心地省略这些测试)。如果相等的实例有着不相等的散列码，则要找出原因，并修正错误。</p>
+<p>写完了 hashCode 方法之后，问问自己<strong>相等的实例是否都具有相等的散列码</strong>。要编写单元测试来验证你的推断 (除非利用 AutoValue 生成 equals 和 hashCode 方法，这样你就可以放心地省略这些测试)。如果相等的实例有着不相等的散列码，则要找出原因，并修正错误。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 </li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 11, states the practice rule that classes overriding <code>equals</code> must also override <code>hashCode</code>; Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()"><code>Object.hashCode()</code></a>, defines the formal contract. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()"><code>Object.hashCode()</code></a>, specifies that objects equal by <code>equals(Object)</code> must return the same integer hash code. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)"><code>Object.equals(Object)</code></a> and <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()"><code>Object.hashCode()</code></a>, define the equality/hash-code coupling that this paragraph relies on. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html"><code>HashMap</code></a>, documents hash-table-backed map behavior and notes that constant-time performance assumes the hash function disperses elements properly among buckets; OpenJDK <a target="_blank" rel="noopener" href="https://github.com/openjdk/jdk/blob/jdk-21%2B35/src/java.base/share/classes/java/util/HashMap.java"><code>HashMap</code> source</a> stores each node’s hash and checks hash equality before key equality in lookup paths, which is the implementation boundary behind this example. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html"><code>HashMap</code></a>, describes the performance assumption around proper dispersion; OpenJDK, <a target="_blank" rel="noopener" href="https://openjdk.org/jeps/180">JEP 180</a>, adds tree bins as a collision-mitigation mechanism rather than a replacement for good hash functions. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#hash(java.lang.Object...)"><code>Objects.hash(Object...)</code></a> and <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html#hashCode(java.lang.Object%5B%5D)"><code>Arrays.hashCode(Object[])</code></a>, document the standard-library helpers used in the shown implementation style. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>EqualsVerifier, <a target="_blank" rel="noopener" href="https://jqno.nl/equalsverifier/manual/">Manual</a>, documents automated checks for <code>equals</code> and <code>hashCode</code> contracts; <em>Effective Java</em> Item 11 recommends verifying that equal instances have equal hash codes. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -387,13 +406,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

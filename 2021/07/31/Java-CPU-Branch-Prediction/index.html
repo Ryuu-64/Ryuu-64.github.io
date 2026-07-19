@@ -28,7 +28,7 @@
 <meta property="og:description" content="1234567891011121314151617181920212223242526public static void main(String[] args) &#123;    int arraySize &#x3D; 1 &lt;&lt; 15;    int[] data &#x3D; new int[arraySize];    Random rnd &#x3D; new Random(0);    for (in">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-31T11:03:00.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.014Z">
+<meta property="article:modified_time" content="2026-07-17T18:36:52.388Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="for">
@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -245,7 +245,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 02:36:52" itemprop="dateModified" datetime="2026-07-18T02:36:52+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>448</span>
+      <span>631</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -282,9 +282,9 @@
     
     
     <div class="post-body" itemprop="articleBody"><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">arraySize</span> <span class="operator">=</span> <span class="number">1</span> &lt;&lt; <span class="number">15</span>;</span><br><span class="line">    <span class="type">int</span>[] data = <span class="keyword">new</span> <span class="title class_">int</span>[arraySize];</span><br><span class="line">    <span class="type">Random</span> <span class="variable">rnd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">0</span>; c &lt; arraySize; ++c)</span><br><span class="line">        data[c] = rnd.nextInt() % <span class="number">256</span>;</span><br><span class="line">    </span><br><span class="line">    sum(data, arraySize); <span class="comment">// 2_506_570_100 ns</span></span><br><span class="line">    <span class="comment">// The next sum runs faster after sort</span></span><br><span class="line">    Arrays.sort(data);</span><br><span class="line">    sum(data, arraySize);<span class="comment">// _768_923_900 ns</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[j] &gt;= <span class="number">128</span>)</span><br><span class="line">                sum += array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上的示例初始化一个数组，以 256 的模数进行填充，后对其中大于等于 128 的元素求和。</p>
-<p>见注释结果，排序后的数组执行求和，比不排序的要快的多。这是在执行 if 语句时，CPU 的分支预测导致的。</p>
-<p>通过分支的历史选择记录进行分支预测，若预测命中，则指令能快速的执行；若未命中，则当前执行分支作废，转而执行另一分支 (未命中的预测会损耗性能)：</p>
+<p>以上的示例初始化一个数组，以 256 的模数进行填充，后对其中大于等于 128 的元素求和。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>见注释结果，排序后的数组执行求和，比不排序的要快的多。这是在执行 if 语句时，CPU 的分支预测导致的。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>通过分支的历史选择记录进行分支预测，若预测命中，则指令能快速的执行；若未命中，则当前执行分支作废，转而执行另一分支 (未命中的预测会损耗性能)：<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>T : 分支预测命中</p>
 <p>F : 分支预测未命中</p>
 <ul>
@@ -299,12 +299,27 @@
 <p>F F F F F F T T T T T T</p>
 </li>
 </ul>
-<p>无序数组难以保证预测命中率，而有序数组则极好判断。</p>
-<p>也可通过位运算优化，消除分支判断。</p>
+<p>无序数组难以保证预测命中率，而有序数组则极好判断。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>也可通过位运算优化，消除分支判断。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * no if statement in this method</span></span><br><span class="line"><span class="comment"> * use shift operators</span></span><br><span class="line"><span class="comment"> * if positive num : num &gt;&gt; 31 == 0</span></span><br><span class="line"><span class="comment"> * if negative num : num &gt;&gt; 31 == -1</span></span><br><span class="line"><span class="comment"> * ~0 = -1 (ffffffff)</span></span><br><span class="line"><span class="comment"> * ~-1 = 0 (0)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sumAvoidBranchPrediction</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            sum += ~((array[j] - <span class="number">128</span>) &gt;&gt; <span class="number">31</span>) &amp; array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>); <span class="comment">// _606_267_300 ns</span></span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>原始地址：</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34056162/article/details/89278427?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.base&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.base">【Java深入学习系列】之CPU的分支预测(Branch Prediction)模型</a></p>
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array</a></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.17.3">§15.17.3 Remainder Operator</a>, defines Java <code>%</code> as remainder rather than mathematical modulo; Oracle Java SE 21 <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Random.html#nextInt(int)"><code>Random.nextInt(int bound)</code></a> is the API to generate a bounded <code>[0, bound)</code> integer when that is the intended data range. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>The Stack Overflow example <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">“Why is processing a sorted array faster than processing an unsorted array?”</a> is the demonstration source; Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> is the primary vendor source for branch-prediction performance behavior. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> describes branch prediction as a processor optimization and treats mispredicted branches as a performance cost in hot code. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> supports the general claim that predictable branch behavior is easier for the processor than irregular branch behavior; exact results depend on CPU, JVM, data shape, and benchmark method. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.19">§15.19 Shift Operators</a>, defines signed right-shift behavior; branchless arithmetic or bit tricks should still be verified with <a target="_blank" rel="noopener" href="https://openjdk.org/projects/code-tools/jmh/">JMH</a> or equivalent benchmarking before being treated as an optimization. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -363,13 +378,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

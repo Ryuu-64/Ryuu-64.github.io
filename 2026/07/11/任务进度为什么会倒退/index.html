@@ -28,7 +28,7 @@
 <meta property="og:description" content="有些 Bug 很反直觉。 比如一个任务进度，明明已经在数据库里变成了完成状态，退出游戏再重新登录以后，又变回未完成。 更诡异的是，更新时间是新的，进度却是旧的。 这类问题最麻烦的地方在于：单看某一条链路，它都是对的；把几条链路放在一起，它就错了。 现象 这次问题的表现大概是这样：  玩家在游戏内做了一次兑换。 数据库里的任务记录一度变成了完成状态：progress&#x3D;1，status&#x3D;CAN_CLA">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-11T07:31:58.000Z">
-<meta property="article:modified_time" content="2026-07-17T14:39:01.964Z">
+<meta property="article:modified_time" content="2026-07-18T10:30:22.923Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="缓存">
 <meta property="article:tag" content="一致性">
@@ -149,7 +149,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -160,7 +160,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -246,7 +246,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 22:39:01" itemprop="dateModified" datetime="2026-07-17T22:39:01+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 18:30:22" itemprop="dateModified" datetime="2026-07-18T18:30:22+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,14 +269,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -332,7 +332,7 @@
 </ul>
 <p>问题就出在最后一点：游戏服务里有一份任务进度缓存。</p>
 <h2 id="两条写路径">两条写路径</h2>
-<p>这个系统里，任务进度至少有两条更新路径。</p>
+<p>这个系统里，任务进度至少有两条更新路径。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>第一条是游戏内事件。</p>
 <p>例如射击、开宝箱、赚金币这种行为，本来就发生在游戏服里：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">游戏内事件</span><br><span class="line">  -&gt; 更新游戏服务内存缓存</span><br><span class="line">  -&gt; 推送客户端任务进度变化</span><br><span class="line">  -&gt; 退出或阶段性 flush</span><br><span class="line">  -&gt; 任务服务写 DB</span><br></pre></td></tr></table></figure>
@@ -347,7 +347,7 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">玩家进入游戏</span><br><span class="line">  -&gt; 游戏服务从任务服务加载任务进度</span><br><span class="line">  -&gt; 缓存在游戏服务内存中</span><br><span class="line">  -&gt; 此时 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家在游戏内兑换</span><br><span class="line">  -&gt; 平台服务完成兑换</span><br><span class="line">  -&gt; 任务服务写 DB</span><br><span class="line">  -&gt; DB 变为 progress=1, status=CAN_CLAIM</span><br><span class="line">  -&gt; 游戏服务缓存仍然是 finishNum=0, status=INIT</span><br><span class="line"></span><br><span class="line">玩家退出游戏</span><br><span class="line">  -&gt; 游戏服务 flush 玩家任务缓存</span><br><span class="line">  -&gt; 把内存里的旧进度 flush 到任务服务</span><br><span class="line">  -&gt; 任务服务用旧 progress/status 覆盖 DB</span><br></pre></td></tr></table></figure>
 <p>所以，数据库不是没有更新成功。</p>
 <p>它是先被正确更新了，然后又被旧缓存覆盖了。</p>
-<p>这就是这个问题最容易误判的地方：如果只查兑换那一刻的数据库，会看到正确结果；如果查退出后的数据库，会看到错误结果。中间缺的不是一次写入，而是一次来自旧状态的覆盖写入。这个形态和并发控制里常说的 lost update 很接近：不是没有写入，而是后来的旧快照把已经成立的新事实覆盖掉了。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>这就是这个问题最容易误判的地方：如果只查兑换那一刻的数据库，会看到正确结果；如果查退出后的数据库，会看到错误结果。中间缺的不是一次写入，而是一次来自旧状态的覆盖写入。这个形态和并发控制里常说的 lost update 很接近：不是没有写入，而是后来的旧快照把已经成立的新事实覆盖掉了。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <h2 id="为什么更新时间是对的">为什么更新时间是对的</h2>
 <p>这个现象也很迷惑：<code>upd_time</code> 看起来是对的，但 <code>progress</code> 和 <code>status</code> 是错的。</p>
 <p>原因在 SQL 写法里。</p>
@@ -361,7 +361,7 @@
 <li><code>upd_time</code>: 来自刚查出来的 DB 记录，看起来还是新的</li>
 </ul>
 <p>这就造成了一个很有迷惑性的现场：时间像是更新过，数据却像是回滚了。</p>
-<p>它不是事务回滚，而是旧状态覆盖。</p>
+<p>它不是事务回滚，而是旧状态覆盖。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <h2 id="根因不是缓存，而是缓存的所有权不清楚">根因不是缓存，而是缓存的所有权不清楚</h2>
 <p>看到这里，很容易得出一个简单结论：缓存有问题。</p>
 <p>但更准确地说，是这份缓存的所有权和写入边界不够清楚。</p>
@@ -372,7 +372,7 @@
 <li>它不是事实来源。</li>
 <li>它可以在退出、定时任务、补偿流程里反向覆盖事实来源。</li>
 </ol>
-<p>这时候缓存就不只是缓存了，它变成了另一个写入者。Microsoft 的 Cache-Aside pattern 文档也明确提醒：cache-aside 本身并不保证缓存和数据源一致，外部进程更新数据源时，缓存要等重新加载或失效后才会反映变化。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这时候缓存就不只是缓存了，它变成了另一个写入者。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>Microsoft 的 Cache-Aside pattern 文档也明确提醒：cache-aside 本身并不保证缓存和数据源一致，外部进程更新数据源时，缓存要等重新加载或失效后才会反映变化。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <p>而多个写入者最怕的，就是每个人都以为自己手上的状态是最新的。</p>
 <h2 id="修复为什么不是加一次同步">修复为什么不是加一次同步</h2>
 <p>直觉上的修复是：兑换后通知游戏服务，把任务缓存也更新掉。</p>
@@ -383,8 +383,8 @@
 <li>要保证 DB 更新和游戏服务缓存更新之间的失败补偿。</li>
 <li>以后所有平台任务都要想清楚要不要同步游戏服务缓存。</li>
 </ul>
-<p>这不是不能做，而是成本更高。AWS 对 cache-aside 和 write-through 的区分可以解释这里的取舍：如果选择 write-through，应用就要在更新主数据库后同步维护缓存；如果选择 cache-aside，就要承认缓存是按需加载的副本，并明确它的失效和回源机制。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p>这次采用的是更小的修复：不要把兑换任务加载到游戏服务缓存里。</p>
+<p>这不是不能做，而是成本更高。AWS 对 cache-aside 和 write-through 的区分可以解释这里的取舍：如果选择 write-through，应用就要在更新主数据库后同步维护缓存；如果选择 cache-aside，就要承认缓存是按需加载的副本，并明确它的失效和回源机制。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>这次采用的是更小的修复：不要把兑换任务加载到游戏服务缓存里。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <p>原因很简单：兑换任务不需要游戏内实时追踪。</p>
 <p>玩家做兑换时，事实发生在平台服务；任务完成状态也由任务服务写 DB。它不需要由游戏服内存来参与生命周期。</p>
 <p>所以把兑换任务加入一个“非游戏内追踪任务”的排除列表：</p>
@@ -396,7 +396,7 @@
 <p>平台任务不要进入游戏服务缓存。</p>
 <h2 id="什么时候应该让缓存参与写入">什么时候应该让缓存参与写入</h2>
 <p>这次问题给我的提醒是：不要只问“要不要缓存”，还要问“缓存有没有资格写回”。</p>
-<p>如果缓存只是读优化，它失效或过期最多影响性能。</p>
+<p>如果缓存只是读优化，它失效或过期最多影响性能。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <p>如果缓存会写回数据库，它就进入了 <a href="/2025/08/21/%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/" title="缓存一致性">缓存一致性</a> 的核心路径。此时至少要回答几个问题：</p>
 <ol>
 <li>缓存里的数据是谁更新的？</li>
@@ -405,13 +405,13 @@
 <li>如果 DB 已经被其他路径更新，缓存写回应该跳过、合并，还是报错？</li>
 <li>哪些业务根本不应该进入这份缓存？</li>
 </ol>
-<p>这几个问题里，最后一个经常被忽略。乐观并发控制给出的思路是：保存前比较“我当初读到的版本”和“数据库当前版本”，如果已经变化，就不要静默覆盖，而是进入冲突处理。EF Core 的 concurrency token 和 Fowler 的 Optimistic Offline Lock 都是在解决这类“旧副本写回”问题。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>这几个问题里，最后一个经常被忽略。乐观并发控制给出的思路是：保存前比较“我当初读到的版本”和“数据库当前版本”，如果已经变化，就不要静默覆盖，而是进入冲突处理。EF Core 的 concurrency token 和 Fowler 的 Optimistic Offline Lock 都是在解决这类“旧副本写回”问题。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>很多时候，最稳的修复不是让所有状态同步到所有地方，而是减少不该拥有状态的地方。</p>
 <h2 id="小结">小结</h2>
 <p>这个 Bug 表面上是“任务进度倒退”，本质上是两条写路径竞争同一行数据：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">平台服务路径：写入正确进度</span><br><span class="line">游戏服务路径：退出时 flush 旧缓存</span><br><span class="line">最终结果：旧缓存覆盖新 DB</span><br></pre></td></tr></table></figure>
 <p>它提醒我一件事：</p>
-<p>缓存不是只要命中率高就算设计完成。只要缓存能写回，它就是一个数据作者。</p>
+<p>缓存不是只要命中率高就算设计完成。只要缓存能写回，它就是一个数据作者。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <p>一个系统里可以有多个读者，但最好不要有太多自以为拥有事实的作者。</p>
 <h2 id="参考与延伸阅读">参考与延伸阅读</h2>
 <ul>
@@ -423,13 +423,25 @@
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里借用的是“检测并阻止并发业务事务互相覆盖”的思路，不是说这个事故一定发生在 ORM 或长事务场景。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p>Fowler 的 <em>Optimistic Offline Lock</em> 把问题表述为：多个业务事务可能跨越多个系统事务，不能只依赖单个数据库事务管理器来避免覆盖写；EF Core 的 optimistic concurrency 也通过保存时比较原始 concurrency token 来检测同一行是否已被别人修改。这支撑了“同一任务进度存在多条写路径时，必须把它当成多写入者问题”的判断：<a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html">https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency">https://learn.microsoft.com/en-us/ef/core/saving/concurrency</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn2" class="footnote-item"><p>Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a>。这里引用它来支撑“cache-aside 不自动保证缓存和数据源一致，外部写路径会让缓存变旧”的判断。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+<li id="fn2" class="footnote-item"><p>Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里借用的是“检测并阻止并发业务事务互相覆盖”的思路，不是说这个事故一定发生在 ORM 或长事务场景。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn3" class="footnote-item"><p>AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a>。这里引用它来区分 cache-aside / lazy loading 和 write-through：前者按需填充，后者要求应用在主库更新后主动维护缓存。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+<li id="fn3" class="footnote-item"><p>EF Core concurrency token 的更新语句会把 token 放入 <code>WHERE</code> 条件，若行已被并发修改则影响 0 行并触发并发冲突；这说明旧副本写回应被识别为冲突，而不是无条件覆盖事实源：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency">https://learn.microsoft.com/en-us/ef/core/saving/concurrency</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn4" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a>；Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里引用它们来支撑“旧快照写回应带版本判断或冲突处理，而不是无条件覆盖”的设计原则。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+<li id="fn4" class="footnote-item"><p>AWS caching patterns 把 write-through 描述为应用在主数据库更新后同步更新缓存的模式；一旦缓存被纳入写路径，应用就必须承担维护缓存与事实源一致性的责任。这支持把“可写缓存”视为数据作者，而不是普通读优化：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html">https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Azure Architecture Center, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"><em>Cache-Aside pattern</em></a>。这里引用它来支撑“cache-aside 不自动保证缓存和数据源一致，外部写路径会让缓存变旧”的判断。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>AWS, <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"><em>Caching patterns - Database Caching Strategies Using Redis</em></a>。这里引用它来区分 cache-aside / lazy loading 和 write-through：前者按需填充，后者要求应用在主库更新后主动维护缓存。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>从 cache-aside / write-through 的取舍看，若选择同步所有副本，就要把缓存维护纳入写路径；从 optimistic concurrency 的角度看，减少非权威写入者可以降低旧副本覆盖新事实的机会。因此，对不需要实时追踪的兑换任务，排除出游戏服务可写缓存是“减少写入者”的修复，而不是单纯少做一次同步：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html">https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html</a>、<a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html">https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Cache-Aside pattern 把缓存定位为按需加载的副本，并提醒缓存可能与数据源不一致；这种风险在只读缓存中主要表现为读到旧值，而当缓存能写回事实源时，风险会升级为旧值覆盖新事实：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside">https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/ef/core/saving/concurrency"><em>Handling Concurrency Conflicts - EF Core</em></a>；Martin Fowler, <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html"><em>Optimistic Offline Lock</em></a>。这里引用它们来支撑“旧快照写回应带版本判断或冲突处理，而不是无条件覆盖”的设计原则。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>“缓存能写回就是数据作者”是对 AWS write-through、Microsoft cache-aside 边界和 Fowler optimistic lock 思想的综合判断：写路径中的缓存必须有明确 owner、写入条件和冲突处理，否则就可能成为覆盖事实源的第二作者：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html">https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside">https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside</a>、<a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html">https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -491,13 +503,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

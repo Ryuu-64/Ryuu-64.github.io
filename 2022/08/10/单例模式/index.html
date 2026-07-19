@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="简述 单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。 设计模式类型：创建型 实现 1.懒汉 多线程不安全 12345678910111213public class Singleton &#123;    private static Singleton instance;    private Singleton() &#123;    &#125;">
+    <meta name="description" content="简述 单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。[1] 设计模式类型：创建型[2] 实现 1.懒汉 多线程不安全 12345678910111213public class Singleton &#123;    private static Singleton instance;    private Singleton() &#123;    &amp;#1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单例模式">
 <meta property="og:url" content="http://example.com/2022/08/10/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="简述 单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。 设计模式类型：创建型 实现 1.懒汉 多线程不安全 12345678910111213public class Singleton &#123;    private static Singleton instance;    private Singleton() &#123;    &#125;">
+<meta property="og:description" content="简述 单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。[1] 设计模式类型：创建型[2] 实现 1.懒汉 多线程不安全 12345678910111213public class Singleton &#123;    private static Singleton instance;    private Singleton() &#123;    &amp;#1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-10T14:03:20.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.031Z">
+<meta property="article:modified_time" content="2026-07-17T20:42:40.206Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
@@ -145,7 +145,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 04:42:40" itemprop="dateModified" datetime="2026-07-18T04:42:40+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>265</span>
+      <span>889</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -279,8 +279,8 @@
     
     
     <div class="post-body" itemprop="articleBody"><h2 id="简述">简述</h2>
-<p>单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。</p>
-<p>设计模式类型：创建型</p>
+<p>单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>设计模式类型：创建型<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <h2 id="实现">实现</h2>
 <h3 id="1-懒汉-多线程不安全">1.懒汉 多线程不安全</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -295,10 +295,27 @@
 <h3 id="6-枚举">6.枚举</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="选择">选择</h2>
-<p>不建议使用 1 和 2</p>
-<p>不考虑继承问题使用 6 枚举</p>
-<p>单例是派生类，确定会使用，建议使用 4 饿汉</p>
-<p>单例是派生类，且不确定单例是否会使用，考虑 3 双检锁 或 5 静态内部类</p>
+<p>不建议使用 1 和 2<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>不考虑继承问题使用 6 枚举<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>单例是派生类，确定会使用，建议使用 4 饿汉<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>单例是派生类，且不确定单例是否会使用，考虑 3 双检锁 或 5 静态内部类<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>GoF <em>Design Patterns</em> 把 Singleton 的意图概括为保证一个类只有一个实例，并提供访问该实例的全局访问点；《Effective Java》第 3 条也把 Java Singleton 放在“实例控制”的语境下讨论：<a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610">https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610</a>、<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042">https://www.informit.com/store/effective-java-9780134686042</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>GoF <em>Design Patterns</em> 将 Singleton 归入 Creational Patterns，因为它关注对象创建与实例控制，而不是对象结构或对象间行为协作：<a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610">https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>未同步的懒汉式在多线程下可能让多个线程同时观察到空引用并各自创建实例；<code>synchronized getInstance()</code> 能串行化创建过程，但每次访问都进入同步路径。这里的“不建议”主要对应并发安全和热路径同步成本两个边界，依据 Java 同步语义、JLS 内存模型和 Singleton 创建路径推导：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>《Effective Java》第 3 条推荐单元素枚举作为 Java Singleton 的简洁写法；JLS 规定 enum 类实例由枚举常量定义，反射 API 也禁止通过 <code>Constructor.newInstance</code> 创建 enum 实例，序列化规范对 enum 常量有专门规则：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042">https://www.informit.com/store/effective-java-9780134686042</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Constructor.html#newInstance(java.lang.Object...)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Constructor.html#newInstance(java.lang.Object...)</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants">https://docs.oracle.com/en/java/javase/21/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>饿汉式依赖类初始化期间创建 <code>static final</code> 实例；JLS 的类初始化规则和 <code>static</code> 字段规则说明静态字段属于类变量，并在类初始化过程中完成初始化，因此它适合“确定会使用”的简单单例，但也会把创建时机绑定到类初始化：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.1">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.1</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>双重检查锁在 Java 中必须配合 <code>volatile</code> 字段，依赖可见性和 happens-before 语义避免发布不完整对象；静态内部类 holder 则利用类初始化的延迟触发，首次主动访问 holder 的静态字段时才创建实例。需要普通类形式的延迟单例时，静态 holder 通常比双重检查锁更少手写并发协议：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -353,13 +370,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -28,7 +28,7 @@
 <meta property="og:description" content="引子 Java 原生不支持 .NET 样式的 multicast delegate，但我们可以通过手动维护 List&lt;Listener&gt; 来实现类似功能。随着业务复杂化，这种做法会导致代码臃肿，维护成本上升。 这样的需求是很常见的，我看了下项目有类似需求的地方，问题还是挺大的。 项目的现状 项目里的实现有两种 直接获取其他业务的引用 A 直接 调用了 B，B 又 调用了 C，D。还有">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-08-19T09:06:17.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.033Z">
+<meta property="article:modified_time" content="2026-07-18T05:18:21.960Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java dotnet delegate">
 <meta name="twitter:card" content="summary">
@@ -145,7 +145,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 13:18:21" itemprop="dateModified" datetime="2026-07-18T13:18:21+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.9k</span>
+      <span>5.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>18 分钟</span>
+      <span>20 分钟</span>
     </span>
 </div>
 
@@ -294,7 +294,7 @@
 <p>直接引用：</p>
 <p>O(N*(N-1)) 的复杂度，且依赖是直接的引用，非常强的耦合。</p>
 <p>观察者模式（Observer Pattern）：</p>
-<p>O(N*M) 的复杂度，N 为观察者，M为被观察者（subject）。依赖建立在被观察者和观察者之间，松耦合。</p>
+<p>O(N*M) 的复杂度，N 为观察者，M为被观察者（subject）。依赖建立在被观察者和观察者之间，松耦合。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <ol>
 <li>M 通常会远小于 N</li>
 <li>M 一般只是个方法的集合，而不是业务类，耦合度低，维护成本也很低</li>
@@ -397,17 +397,17 @@ O(M+N) 的复杂度，M 为发布者，N为订阅者。依赖建立在发布者�
 <p>成熟可靠，因为这是要用在项目的核心功能上，关系到百万千万个用户的体验，不能出错。</p>
 <p>易用，我们的项目里有很多同事，水平参差不齐，得让大家都能用。我实际也问过同事，有的同事甚至都没听说过观察者模式。</p>
 <h3 id="方案">方案</h3>
-<p>综合考虑，直接模仿 .NET 的 multicast delegate 是最合适的方案。又快又成熟可靠，还易用。<br>
+<p>综合考虑，直接模仿 .NET 的 multicast delegate 是最合适的方案。又快又成熟可靠，还易用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><br>
 虽然 .NET 里的 delegate 一等公民而且还有方便的语法糖，我们在 java 里不能做到完全一样，但也能做到很接近。</p>
 <h3 id="详细设计">详细设计</h3>
 <p>由于 java 已经有 function interface（函数式接口）去作为 lambda 表达式的目标了，我们是无法做到像 .NET<br>
-一样委托和多播委托无感的。但用函数式接口去做委托，再用已经写好了的委托去写多播委托是可以的。</p>
+一样委托和多播委托无感的。但用函数式接口去做委托，再用已经写好了的委托去写多播委托是可以的。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <h4 id="委托实现">委托实现</h4>
 <p>委托直接用函数式接口就行，主要是规范 api 和为多播委托做铺垫，同时不要忘记做好和 java 的适配。</p>
-<p>在实现前我们可以先做好 java EventListener[1] 的适配同时用接口标记 delegate</p>
+<p>在实现前我们可以先做好 java EventListener[1] 的适配同时用接口标记 delegate<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.ryuu.functional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.EventListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Delegate</span> <span class="keyword">extends</span> <span class="title class_">EventListener</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>保持和 .NET 一样，调用时的方法名称为 <code>... invoke(...)</code> 减少理解成本[2]。用<code>@FunctionalInterface</code>[3] 注解修饰实际的<br>
-<code>delegate</code>。</p>
+<code>delegate</code>。<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.ryuu.functional;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Action</span> <span class="keyword">extends</span> <span class="title class_">Delegate</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>现在委托就做好了。这样的另一个好处是，我们不需要在需要传 lambda 表达式的时候满世界找一个适配的函数式接口了，因为我们会像<br>
 .NET 一样预定义好：</p>
@@ -418,8 +418,8 @@ O(M+N) 的复杂度，M 为发布者，N为订阅者。依赖建立在发布者�
 <h5 id="不可变性">不可变性</h5>
 <p>任何“修改”都通过构造新对象来完成。虽然 <code>MulticastDelegate</code> 内部维护了一个 <code>_invocationList</code>，但每次 <code>CombineImpl</code> 或<br>
 <code>RemoveImpl</code> 实际上都会创建一个新的委托对象，而不会修改已有对象。这种方式使得委托本质上是不可变的（immutable）（虽然里面的 _<br>
-invocationList 在实现细节上并非只读）。</p>
-<p>在 Java 中，我们可以利用深拷贝和 <code>Collections.unmodifiableList</code> 来实现不可变性。</p>
+invocationList 在实现细节上并非只读）。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>在 Java 中，我们可以利用深拷贝和 <code>Collections.unmodifiableList</code> 来实现不可变性。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <h5 id="多播委托-2">多播委托</h5>
 <p>在 .NET 中，委托（delegate）统一由 <code>Delegate</code> / <code>MulticastDelegate</code> 管理。<strong>用户代码层面并没有“单播 / 多播”的区分</strong><br>
 ，这个细节完全隐藏在实现内部：</p>
@@ -427,7 +427,7 @@ invocationList 在实现细节上并非只读）。</p>
 <li><strong>单播 (single delegate)</strong>：<code>invocationList</code> 为空，只存一个方法引用。</li>
 <li><strong>多播 (multicast delegate)</strong>：<code>invocationList</code> 是数组，存多个方法引用。</li>
 </ul>
-<p>多播委托的合并与移除逻辑会自动处理这两种情况。因此，.NET 用户只会看到“委托可以 += / -= 方法”，而不会关心它当前是单播还是多播。</p>
+<p>多播委托的合并与移除逻辑会自动处理这两种情况。因此，.NET 用户只会看到“委托可以 += / -= 方法”，而不会关心它当前是单播还是多播。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <p>在 Java 中，因为 lambda 表达式必然作用在单个函数的接口上，所以单播对用户是显式的，实现多播时可以与 .NET 一样过内部封装隐藏掉单播多播的区别。</p>
 <h5 id="语法糖">语法糖</h5>
 <p>在 c# 中可以直接用 += -= 修改委托</p>
@@ -435,13 +435,13 @@ invocationList 在实现细节上并非只读）。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Fact</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Action a = () =&gt; &#123; &#125;;</span><br><span class="line">    Action b = () =&gt; &#123; &#125;;</span><br><span class="line">    a += b;</span><br><span class="line">    a -= b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Low-Level c#</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Fact</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Action a1 = UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_0 ?? (UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_0 = <span class="keyword">new</span> Action((<span class="built_in">object</span>) UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>, __methodptr(&lt;Test1&gt;b__0_0)));</span><br><span class="line">    Action b = UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_1 ?? (UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_1 = <span class="keyword">new</span> Action((<span class="built_in">object</span>) UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>, __methodptr(&lt;Test1&gt;b__0_1)));</span><br><span class="line">    Action a2 = (Action) Delegate.Remove(Delegate.Combine((Delegate) a1, (Delegate) b), (Delegate) b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>c# 在编译的时候把 <code>a += b</code> 和 <code>a -= b</code> 变成了 <code>Delegate.Remove </code>和<code>Delegate::Combine</code> 而且把新产生的对象赋回了 a。</p>
+<p>c# 在编译的时候把 <code>a += b</code> 和 <code>a -= b</code> 变成了 <code>Delegate.Remove </code>和<code>Delegate::Combine</code> 而且把新产生的对象赋回了 a。<sup class="footnote-ref"><a href="#fn7" id="fnref7:1">[7:1]</a></sup></p>
 <p>在 java 里我们是不可能通过编写代码实现这样的语法糖的，在 java 里用方法去实现就行。</p>
 <h3 id="栈式操作（Stack-Semantics）">栈式操作（Stack Semantics）</h3>
 <ol>
 <li><strong>语义一致</strong><br>
 在委托（delegate）的操作语义上，<code>+=</code> 始终将新委托附加到 <strong>尾部</strong>（类似 <strong>push</strong>），而 <code>-=</code> 则撤销 <strong>最近一次添加的委托</strong>（类似<br>
-<strong>pop</strong>）。这种设计确保了委托的修改符合 <strong>栈（LIFO）语义</strong>，简单直观。</li>
+<strong>pop</strong>）。这种设计确保了委托的修改符合 <strong>栈（LIFO）语义</strong>，简单直观。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></li>
 <li><strong>实现高效</strong><br>
 从尾部开始查找和移除，可以直接截断尾部，操作成本低；若从头部开始匹配，则需要移动后续所有元素，效率更差。</li>
 </ol>
@@ -458,7 +458,7 @@ invocationList 在实现细节上并非只读）。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">event</span> Action a = () =&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
 <p>Low-Level c#</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line">[<span class="meta">DebuggerBrowsable(DebuggerBrowsableState.Never)</span>]</span><br><span class="line"><span class="keyword">private</span> Action a;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">event</span> Action a</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>] <span class="keyword">add</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 先读取当前事件委托链，存入 action1，这里是为了在循环中对比 CAS 是否成功</span></span><br><span class="line">        <span class="comment">// 虽然这里的 action1 和 this.a 引用类型的，但 delegate 是不可变的</span></span><br><span class="line">        <span class="comment">// this.a 改变时会引用一个新的实例，而 action1 还是会引用 this.a 改变前的旧实例</span></span><br><span class="line">        <span class="comment">// 如果是可变的：</span></span><br><span class="line">        <span class="comment">// this.a 改变时引用的实例没有改变，action1 引用的还是 this.a 的实例，此时无法进行 != 判断</span></span><br><span class="line">        Action action1 = <span class="keyword">this</span>.a;</span><br><span class="line">        <span class="comment">// 保存当前尝试的旧值</span></span><br><span class="line">        Action action2;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 存放 尝试用 CAS 更新的“旧值”。</span></span><br><span class="line">            action2 = action1;</span><br><span class="line">            <span class="comment">// public static T CompareExchange&lt;T&gt;(ref T location, T value, T comparand);</span></span><br><span class="line">            <span class="comment">// location：你要修改的变量（这里是 this.a）。</span></span><br><span class="line">            <span class="comment">// value：如果 location == comparand 条件满足，要写入的新值（这里是 Delegate.Combine(action2, value)）。</span></span><br><span class="line">            <span class="comment">// comparand：预期旧值（这里是 action2）。</span></span><br><span class="line">            <span class="comment">// return：location 在此操作之前的值（无论是否成功）</span></span><br><span class="line">            <span class="comment">// 这保证了无论怎样循环 action1 都是最新的 this.a 的值</span></span><br><span class="line">            action1 = Interlocked.CompareExchange&lt;Action&gt;(<span class="keyword">ref</span> <span class="keyword">this</span>.a, (Action) Delegate.Combine((Delegate) action2, (Delegate) <span class="keyword">value</span>), action2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// action1 不等于 action2（说明 CAS 失败，this.a 被其他线程修改过）。</span></span><br><span class="line">        <span class="comment">// 循环重新读取 this.a 并尝试合并。</span></span><br><span class="line">        <span class="keyword">while</span> (action1 != action2);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>] <span class="keyword">remove</span></span><br><span class="line">    &#123;</span><br><span class="line">        Action action1 = <span class="keyword">this</span>.a;</span><br><span class="line">        Action action2;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            action2 = action1;</span><br><span class="line">            action1 = Interlocked.CompareExchange&lt;Action&gt;(<span class="keyword">ref</span> <span class="keyword">this</span>.a, (Action) Delegate.Remove((Delegate) action2, (Delegate) <span class="keyword">value</span>), action2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (action1 != action2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可见编译器为 event 生成了 add 和 remove 访问器，使用了 CAS[4] 做自旋锁，来保证对多播的修改是线程安全的。</p>
+<p>可见编译器为 event 生成了 add 和 remove 访问器，使用了 CAS[4] 做自旋锁，来保证对多播的修改是线程安全的。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>在 Java 中，如果想实现类似的体验，可以通过 <strong>APT（Annotation Processing Tool）</strong> 来生成访问器代码，使使用体验更接近<br>
 .NET。然而，APT 会带来一些问题：</p>
 <ol>
@@ -482,13 +482,13 @@ invocationList 在实现细节上并非只读）。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> final boolean isEvent;</span><br><span class="line"><span class="keyword">private</span> final Object delegatesWriteLock = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MulticastDelegate</span>(<span class="params">boolean isEvent</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isEvent = isEvent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> final <span class="keyword">void</span> <span class="title">add</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isEvent) &#123;</span><br><span class="line">        addSync(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        addAsync(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addSync</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    synchronized (delegatesWriteLock) &#123;</span><br><span class="line">        addInternal(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addAsync</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    addInternal(<span class="built_in">delegate</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里我们用的是 <code>synchronized</code> 保证多线程安全而不是基于 CAS<br>
 写一个自旋锁。我们需要考虑锁实现的性能，自旋锁是一种忙等（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Busy_waiting">busy waiting</a><br>
-），如果竞争很激烈[5]会非常浪费 CPU。这种情况可以让线程阻塞，CPU 还可以去执行其他线程，这样效率更高。</p>
+），如果竞争很激烈[5]会非常浪费 CPU。这种情况可以让线程阻塞，CPU 还可以去执行其他线程，这样效率更高。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <p>代码段示例，展示 event 的<strong>调用全只留给声明事件的类内部</strong>实现：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Event</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">Delegate</span>&gt; &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">MulticastDelegate</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">Delegate</span>&gt; <span class="title">implements</span> <span class="title">Iterable</span>&lt;<span class="title">T</span>&gt;, <span class="title">Delegate</span>, <span class="title">Event</span>&lt;<span class="title">T</span>&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ClassWithActionsEvent</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> final Actions actions = Actions.<span class="keyword">event</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Event&lt;Action&gt; <span class="title">getActions</span>()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> actions;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">privateMethod</span>()</span> &#123;</span><br><span class="line">        actions.invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="微基准测试">微基准测试</h2>
-<p>.NET 的 delegate 的性能是不错的，我们可以使用 JMH(Java Microbenchmark Harness)[6]进行基准测试来查看是否符合性能模型。</p>
+<p>.NET 的 delegate 的性能是不错的，我们可以使用 JMH(Java Microbenchmark Harness)[6]进行基准测试来查看是否符合性能模型。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
 <table>
 <thead>
 <tr>
@@ -759,14 +759,14 @@ invocationList 在实现细节上并非只读）。</p>
 <li><strong>GC 时间与次数</strong>数据显示垃圾回收被频繁触发，特别是在短周期高频调用场景下，内存分配压力显著增大。</li>
 </ul>
 <h4 id="性能模型分析-2">性能模型分析</h4>
-<p>这是<strong>快照式迭代器</strong>的性能特征：读取速度快、线程安全，但在高频多线程调用下 GC 压力明显。</p>
+<p>这是<strong>快照式迭代器</strong>的性能特征：读取速度快、线程安全，但在高频多线程调用下 GC 压力明显。<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
 <h3 id="多线程混合-add-remove-invoke"><strong>多线程混合 add/remove/invoke</strong></h3>
 <p>当我们将16线程 invoke 改为12线程 invoke、2线程 add、2线程 remove时，invoke 性能从270.771降至35.550，显著变慢。这是由于 invoke<br>
 的CPU缓存失效，线程间需要频繁同步内存数据所导致。而 add 和 remove 操作比 invoke 更慢，主要因为它们需要保证线程安全。</p>
 <h4 id="性能模型分析-3">性能模型分析</h4>
-<p><strong>写时复制表</strong>（Copy-On-Write List）的性能模型：读取操作高效，不受线程竞争影响，可并行执行多个读操作；写操作则需要复制并修改表，时间和空间成本较高，频繁写入会造成性能瓶颈。</p>
+<p><strong>写时复制表</strong>（Copy-On-Write List）的性能模型：读取操作高效，不受线程竞争影响，可并行执行多个读操作；写操作则需要复制并修改表，时间和空间成本较高，频繁写入会造成性能瓶颈。<sup class="footnote-ref"><a href="#fn12" id="fnref12:1">[12:1]</a></sup></p>
 <h3 id="总结-2">总结</h3>
-<p>至此微基准测试与分析完毕，基准测试结果表明，该实现符合预期的性能模型。</p>
+<p>至此微基准测试与分析完毕，基准测试结果表明，该实现符合预期的性能模型。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
 <h2 id="另请参阅">另请参阅</h2>
 <p>详细的实现请查看 <a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/functional.git">项目源码仓库</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/dotnet/runtime.git">dotnet runtime 仓库</a> 委托的实现在 <code>System.Private.CoreLib</code> 程序集中</p>
@@ -785,6 +785,37 @@ invocationList 在实现细节上并非只读）。</p>
 *接口调用/方法引用**的性能模型）。</p>
 <p>如果你对此很好奇请阅读 <a target="_blank" rel="noopener" href="https://shipilev.net/blog/2014/nanotrusting-nanotime/">nanotrusting-nanotime</a> 博客内容。</p>
 <p>如果你对代码的性能很好奇可以观看此视频 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9tvbz8CSI8M">code::dive conference 2015 - Andrei Alexandrescu - Writing Fast Code II</a></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Gamma 等人的 <em>Design Patterns</em> 将 Observer 描述为 subject 与多个 observer 之间的一对多依赖，用于在 subject 状态变化时通知依赖对象；这里的复杂度表达是对依赖形态和维护成本的工程化估算，不是严格数学证明。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/delegates">C# language specification - Delegates</a> 定义 delegate 类型、invocation list 和多播调用顺序；它能支撑“借鉴 .NET multicast delegate 语义”的设计方向，但不意味着 Java 能复制 C# 的语言级语法。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>JLS <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.27">§15.27 Lambda Expressions</a> 说明 lambda 表达式依赖目标类型；Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html"><code>FunctionalInterface</code></a> 说明函数式接口是 lambda 表达式和方法引用的目标类型，<code>@FunctionalInterface</code> 会让编译器检查接口是否满足函数式接口要求。 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/EventListener.html"><code>EventListener</code></a> 是所有事件监听器接口应扩展的标记接口；把自定义 delegate 接口挂到 <code>EventListener</code> 更像语义标记，而不是继承行为。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.combine"><code>Delegate.Combine</code></a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.remove"><code>Delegate.Remove</code></a> 支撑组合 / 移除返回委托结果的公开语义；具体 <code>_invocationList</code> 属于 .NET runtime 实现细节。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#unmodifiableList-java.util.List-"><code>Collections.unmodifiableList</code></a> 返回指定列表的不可修改视图；若底层列表仍可变，应结合拷贝或私有封装理解不可变边界。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/addition-operator#delegate-combination">delegate combination</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal">delegate removal</a> 说明 <code>+</code> / <code>+=</code> 会组合 delegate，<code>-</code> / <code>-=</code> 会移除 delegate；<code>Delegate.Combine</code> / <code>Delegate.Remove</code> 是对应的运行时 API 语义。 <a href="#fnref7" class="footnote-backref">↩︎</a> <a href="#fnref7:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.remove"><code>Delegate.Remove</code></a> 说明移除的是目标 invocation list 的最后一次出现；因此文中“栈式”更准确地说是“追加到尾部、从右往左移除最近匹配项”的语义。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>C# language specification <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1514-events">Events</a> 支撑 event 的 <code>add</code> / <code>remove</code> 访问器和外部访问边界；Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.compareexchange"><code>Interlocked.CompareExchange</code></a> 支撑 CAS 更新模式。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>JLS <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.19">§14.19 The synchronized Statement</a> 定义 Java <code>synchronized</code> 通过 monitor 进入和退出临界区；它支撑这里用阻塞互斥而不是自旋 CAS 实现写侧同步的设计边界。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>OpenJDK <a target="_blank" rel="noopener" href="https://openjdk.org/projects/code-tools/jmh/">JMH</a> 是 JVM 微基准 harness；用它验证性能模型比手写 <code>System.nanoTime()</code> 循环更可靠。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CopyOnWriteArrayList.html"><code>CopyOnWriteArrayList</code></a> 说明写操作会复制底层数组，迭代器使用创建时快照，适合遍历远多于修改的场景；这支撑文中的读多写少和 GC/写成本边界。 <a href="#fnref12" class="footnote-backref">↩︎</a> <a href="#fnref12:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>OpenJDK JMH 与 Aleksey Shipilev <a target="_blank" rel="noopener" href="https://shipilev.net/blog/2014/nanotrusting-nanotime/"><em>Nanotrusting the Nanotime</em></a> 都指向同一个边界：微基准可用于理解底层成本模型，但不能直接推出线上业务 QPS 或用户体验结论。 <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -839,13 +870,13 @@ invocationList 在实现细节上并非只读）。</p>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

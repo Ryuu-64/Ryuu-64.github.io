@@ -28,7 +28,7 @@
 <meta property="og:description" content="讨论 GPT 这样的 AI 时，我们很容易陷入两个极端。 一种说法是：它只是概率接龙，根本不理解，也没有智能。另一种说法是：它已经表现得像一个人，所以它当然理解，也当然能判断。 我觉得这两种说法都太快了。GPT 确实不是传统意义上的“查表机器”，它能在语言、代码、概念和任务之间建立复杂关系，也能解决许多过去需要人类经验才能处理的问题。但它的理解不是人的理解，它的判断也不是责任主体的判断。 这个判断">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-17T14:39:01.962Z">
+<meta property="article:modified_time" content="2026-07-17T19:14:56.895Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="程序员">
@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -245,7 +245,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 22:39:01" itemprop="dateModified" datetime="2026-07-17T22:39:01+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 03:14:56" itemprop="dateModified" datetime="2026-07-18T03:14:56+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -264,14 +264,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.2k</span>
+      <span>3.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
+      <span>14 分钟</span>
     </span>
 </div>
 
@@ -287,38 +287,38 @@
 <p>这个判断不只是使用体验。关于大语言模型是否“理解”，学界本来就有持续争论。Mitchell 和 Krakauer 在关于 LLM 理解能力的综述中，把问题放在“不同理解模式”的层面讨论；Bender 和 Koller 则提醒我们区分语言形式和语言意义，不能因为模型能处理形式，就直接推断它拥有人的意义理解。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 另一边，GPT-3、GPT-4 相关研究又确实显示，规模化语言模型能在许多任务上表现出强大的迁移和问题求解能力。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>所以，真正值得问的不是“GPT 到底有没有理解”，而是：我们说一个东西理解了某件事时，到底在说什么？</p>
 <h2 id="什么叫理解">什么叫理解</h2>
-<p>理解不是一个单层概念。</p>
+<p>理解不是一个单层概念。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>如果把理解定义得很窄，等同于“能不能在文本中建立结构关系并给出有效解释”，那 GPT 显然有某种理解能力。如果把理解定义得更接近人，要求它把语言和现实经验、行动后果、社会责任连接起来，那它又明显不具备人的理解。这也是为什么我更愿意把问题拆开，而不是直接回答“有”或“没有”。</p>
 <p>最低限度的理解，是能建立关系。比如看到一个错误日志，知道它可能和某个配置、某个 API 用法、某个版本变化有关；看到一段代码，知道变量、函数、调用链之间大致是什么关系。GPT 在这个层面上很强，它能从大量文本和代码中学到模式，并在新的上下文里组合这些模式。</p>
 <p>更进一步的理解，是能放进上下文里解释。不是只知道“这段代码是什么”，而是知道它为什么在这里，受什么约束，和系统里其他部分有什么关系。如果给 GPT 足够上下文，它也能在这个层面表现得不错。它可以解释一段业务逻辑，可以比较几个方案，可以指出某个实现可能不符合当前架构。</p>
 <p>但人的理解还不止这些。</p>
 <p>人理解一件事，往往还意味着知道它在现实中的位置。这个需求为什么存在，谁会使用它，错了会造成什么后果，哪些事实已经成立，哪些还只是计划，哪些判断需要承担责任。这些东西不只是文本关系，也不只是概念关系，它们和现实经验、组织规则、项目状态、责任分配有关。</p>
-<p>GPT 可以在文本里模拟这些关系，也可以根据你给出的规则做出候选判断。但它并不生活在这个项目里，不承担这个系统上线后的后果，也不会因为一次错误分类让团队文档长期混乱。它可以说“这看起来像架构决策”，但它不能替你确认这是否已经成为项目事实。</p>
+<p>GPT 可以在文本里模拟这些关系，也可以根据你给出的规则做出候选判断。但它并不生活在这个项目里，不承担这个系统上线后的后果，也不会因为一次错误分类让团队文档长期混乱。它可以说“这看起来像架构决策”，但它不能替你确认这是否已经成为项目事实。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>这就是我说的：GPT 有理解能力，但它的理解不是人的理解。</p>
 <h2 id="什么叫判断">什么叫判断</h2>
 <p>判断也要分层看。</p>
 <p>有些判断是规则型的。比如这段代码有没有语法错误，某个测试是否通过，一个接口返回值是否符合约定。只要规则足够明确，GPT 可以很好地辅助这些判断，甚至可以帮你生成验证方式。</p>
-<p>但“能给出判断”不等于“能稳定知道自己判断是否正确”。TruthfulQA 这类研究说明，模型可能会复述训练语料中的常见错误；关于模型校准的研究也显示，模型在特定格式下能估计自己答案的可信度，但这种能力会随任务和格式变化而漂移。OpenAI 关于幻觉的研究也指出，很多训练和评测方式会奖励猜测，而不是奖励承认不确定。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>但“能给出判断”不等于“能稳定知道自己判断是否正确”。TruthfulQA 这类研究说明，模型可能会复述训练语料中的常见错误；关于模型校准的研究也显示，模型在特定格式下能估计自己答案的可信度，但这种能力会随任务和格式变化而漂移。OpenAI 关于幻觉的研究也指出，很多训练和评测方式会奖励猜测，而不是奖励承认不确定。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <p>有些判断是基于事实状态的。比如一段文档应该放到 <code>docs/features</code>、<code>docs/architecture</code> 还是 <code>docs/plan</code>。这表面上像是分类问题，实际上是在判断这段内容到底是什么：它是已经实现的功能事实，还是尚未执行的计划？是已经被系统采纳的架构约束，还是一次讨论中的候选方案？</p>
 <p>GPT 容易在这里出错。它可能会根据语义相关性做选择：这段话和功能有关，就放到 features；这段话和架构有关，就放到 architecture。但对项目来说，真正重要的不是“相关”，而是“身份正确”。一个计划即使和架构有关，也仍然只是计划；一个候选方案即使描述得很完整，也还不是系统事实。</p>
-<p>这类判断需要事实依据，也需要责任主体。GPT 可以提出候选结论，但不能替程序员确认事实状态。</p>
+<p>这类判断需要事实依据，也需要责任主体。GPT 可以提出候选结论，但不能替程序员确认事实状态。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <p>还有一类判断是价值取舍。比如为了可维护性牺牲一点性能是否值得，为了交付速度临时接受一个技术债是否合适，一个设计是否符合团队长期方向。这些判断并不只是事实题，也不只是偏好题，而是事实、约束、目标和责任放在一起之后的选择。</p>
-<p>这类判断在 AI 研究里也很微妙。关于 ChatGPT 道德判断的实验显示，它的回答可能和人类判断不一致，也会受到提示方式、选项呈现和模型差异影响。也就是说，AI 可以生成看起来像价值判断的文本，但这不等于它成为了一个能稳定承担判断后果的价值主体。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>GPT 可以参与讨论，可以列选项，可以指出代价。但最后做判断的人，仍然必须是人。</p>
+<p>这类判断在 AI 研究里也很微妙。关于 ChatGPT 道德判断的实验显示，它的回答可能和人类判断不一致，也会受到提示方式、选项呈现和模型差异影响。也就是说，AI 可以生成看起来像价值判断的文本，但这不等于它成为了一个能稳定承担判断后果的价值主体。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p>GPT 可以参与讨论，可以列选项，可以指出代价。但最后做判断的人，仍然必须是人。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <h2 id="什么叫智能">什么叫智能</h2>
 <p>如果把智能理解为解决问题的能力，那么 GPT 显然表现出了某种真实的机器智能。</p>
 <p>它能写代码、解释代码、翻译文本、总结资料、生成测试、提出方案、辅助排障。它不是简单地复制训练材料，而是在新上下文里组合已有模式，形成有用输出。把这些能力说成“完全没有智能”，并不符合我们的实际体验。</p>
 <p>这也能从研究脉络里看到。GPT-3 论文展示了大模型在少样本设置下的跨任务能力；“Sparks of AGI” 一文则记录了早期 GPT-4 在数学、代码、视觉、医学、法律等多种任务上的能力跃迁。无论是否接受作者关于 AGI 的判断，至少可以说明：把 GPT 只说成“完全没有智能的文字拼接器”，已经很难解释它在许多任务上的表现。<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup></p>
 <p>但如果把智能理解为人的完整智能，那 GPT 又明显不够。</p>
 <p>人类智能包含目标、经验、行动、反馈、责任、价值感和现实处境。人不是只在文本里做下一步预测，而是在世界里行动，并承受行动带来的后果。程序员写错代码会面对故障、用户、团队、维护成本和长期演进；GPT 不会。</p>
-<p>这也是许多治理和出版规则强调人的原因。比如 Springer Nature 的 AI 政策明确不把 LLM 列为作者，理由不是它不能生成文字，而是作者身份意味着对作品负责，而这种责任不能有效适用于 LLM。NIST 的 AI 风险管理框架也把 AI 风险放在组织治理、度量、管理和责任结构中，而不是把责任交给模型本身。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>这也是许多治理和出版规则强调人的原因。比如 Springer Nature 的 AI 政策明确不把 LLM 列为作者，理由不是它不能生成文字，而是作者身份意味着对作品负责，而这种责任不能有效适用于 LLM。NIST 的 AI 风险管理框架也把 AI 风险放在组织治理、度量、管理和责任结构中，而不是把责任交给模型本身。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>所以，更准确的说法是：GPT 有机器智能，但它不是完整的人类智能。它能在很多任务上表现得聪明，却不是一个能替你承担责任的主体。</p>
 <h2 id="为什么这对程序员重要">为什么这对程序员重要</h2>
 <p>这个区分不只是哲学问题，它会直接影响我们怎么使用 AI。</p>
 <p>如果你觉得 GPT 完全不理解，你可能会低估它，把它只当成补全工具，错过它在信息整理、方案推演、代码理解和排障辅助上的价值。</p>
 <p>如果你觉得 GPT 像人一样理解，你又可能会高估它，把事实确认、架构判断、业务取舍和完成断言交给它。这样做的风险更大，因为 GPT 的输出常常很流畅，很像知道自己在干什么。</p>
-<p>更稳妥的位置是：承认它有能力，但不把责任交给它。</p>
-<p>GPT 可以帮我们更快建立问题地图，更快生成草稿，更快提出候选方案，更快组织信息。但程序员仍然要负责确认事实、判断边界、验证结果，并承担系统后果。</p>
+<p>更稳妥的位置是：承认它有能力，但不把责任交给它。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<p>GPT 可以帮我们更快建立问题地图，更快生成草稿，更快提出候选方案，更快组织信息。但程序员仍然要负责确认事实、判断边界、验证结果，并承担系统后果。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
 <p>AI 时代的程序员，不应该把自己退化成“审稿的人”，也不应该假装 AI 只是一个高级自动补全。更好的关系是：让 AI 参与思考过程，但由人保留判断权；让 AI 加速表达和试探，但由人确认什么可以成为事实。</p>
 <p>所以我更愿意这样总结：</p>
 <p>GPT 有智能，但不是责任主体。它可以帮助我们理解问题，却不能替我们成为那个必须负责的人。</p>
@@ -341,11 +341,23 @@
 </li>
 <li id="fn2" class="footnote-item"><p>Tom B. Brown et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165"><em>Language Models are Few-Shot Learners</em></a>；Sébastien Bubeck et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12712"><em>Sparks of Artificial General Intelligence: Early experiments with GPT-4</em></a>。这里引用它们来支撑“规模化语言模型确实展现出跨任务能力”，但不把这些能力直接等同于人的完整智能。 <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn3" class="footnote-item"><p>Stephanie Lin, Jacob Hilton, Owain Evans, <a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/"><em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em></a>；Saurav Kadavath et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221"><em>Language Models (Mostly) Know What They Know</em></a>；OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它们来支撑“会回答、回答真实、知道自己是否可靠，是不同层次的能力”。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+<li id="fn3" class="footnote-item"><p>Mitchell 和 Krakauer 将 LLM 理解争论放在多种理解模式中讨论；Bender 和 Koller 则从语言形式与意义的区分出发，提醒不要把形式操作直接等同于人的意义理解。这共同支撑“理解需要分层讨论，而不是简单回答有或没有”：<a target="_blank" rel="noopener" href="https://www.pnas.org/doi/10.1073/pnas.2215907120">https://www.pnas.org/doi/10.1073/pnas.2215907120</a>、<a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/">https://aclanthology.org/2020.acl-main.463/</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn4" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6"><em>ChatGPT does not replicate human moral judgments</em></a>。这里引用它来支撑“AI 可以生成道德/价值判断文本，但不等于稳定复制人类判断或成为价值责任主体”。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+<li id="fn4" class="footnote-item"><p>Bender 和 Koller 的形式 / 意义区分说明，文本形式能力不能直接推出现实处境中的意义承担；NIST AI RMF 也把 AI 风险管理放在产品、服务、系统和组织的治理结构中，而不是放在模型自身。这支持“模型可以模拟上下文关系，但不能替人确认项目事实”：<a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/">https://aclanthology.org/2020.acl-main.463/</a>、<a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">https://www.nist.gov/itl/ai-risk-management-framework</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn5" class="footnote-item"><p>Springer Nature, <a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai"><em>AI policy</em></a>；NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它们来支撑“AI 输出能力和责任主体资格需要区分，责任应落在可治理的人或组织结构上”。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+<li id="fn5" class="footnote-item"><p>Stephanie Lin, Jacob Hilton, Owain Evans, <a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/"><em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em></a>；Saurav Kadavath et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221"><em>Language Models (Mostly) Know What They Know</em></a>；OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它们来支撑“会回答、回答真实、知道自己是否可靠，是不同层次的能力”。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>TruthfulQA、模型校准和 OpenAI 关于 hallucination 的研究共同说明，流畅回答、事实可靠性和知道自己是否可靠是不同能力；因此，项目事实状态仍需要来源、工具、测试或人工确认：<a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/">https://aclanthology.org/2022.acl-long.229/</a>、<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221">https://arxiv.org/abs/2207.05221</a>、<a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">https://openai.com/index/why-language-models-hallucinate/</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6"><em>ChatGPT does not replicate human moral judgments</em></a>。这里引用它来支撑“AI 可以生成道德/价值判断文本，但不等于稳定复制人类判断或成为价值责任主体”。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>关于 ChatGPT 道德判断的实证研究显示，模型价值判断输出会受提示、选项呈现和模型差异影响；Springer Nature 的 AI policy 也把 authorship 与 accountability 绑定，并说明这种责任不能有效适用于 LLM。这支撑“AI 可参与讨论，但最终价值取舍仍要由人承担”：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6">https://www.nature.com/articles/s41598-025-24700-6</a>、<a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai">https://www.nature.com/nature-portfolio/editorial-policies/ai</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Springer Nature, <a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai"><em>AI policy</em></a>；NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它们来支撑“AI 输出能力和责任主体资格需要区分，责任应落在可治理的人或组织结构上”。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>NIST AI RMF 的目标是帮助组织管理 AI 对个人、组织和社会造成的风险，并把风险治理放进设计、开发、使用和评估过程；Springer Nature AI policy 也强调最终文本需要有人类 accountability。这支撑“承认 AI 能力，但把责任放进工作流和组织结构”：<a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">https://www.nist.gov/itl/ai-risk-management-framework</a>、<a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai">https://www.nature.com/nature-portfolio/editorial-policies/ai</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>OpenAI 关于 hallucination 的研究提醒，模型输出会受到训练和评测激励影响，不能只凭流畅性确认事实；NIST AI RMF 则把 AI 风险管理落实到组织的治理、度量和管理实践中。对软件工程而言，这支撑程序员仍需负责事实确认、边界判断、验证和系统后果：<a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">https://openai.com/index/why-language-models-hallucinate/</a>、<a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">https://www.nist.gov/itl/ai-risk-management-framework</a>。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -406,13 +418,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

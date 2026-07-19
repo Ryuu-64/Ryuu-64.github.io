@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。 在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员： 12345678&#x2F;&#x2F; The int enum pattern - severely deficient!public static final">
+    <meta name="description" content="枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。[1] 在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：[2] 12345678&#x2F;&#x2F; The int enum pattern - severely deficient!public static">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective-Java-34用enum代替int常量">
 <meta property="og:url" content="http://example.com/2023/01/02/Effective-Java-34%E7%94%A8enum%E4%BB%A3%E6%9B%BFint%E5%B8%B8%E9%87%8F/index.html">
 <meta property="og:site_name" content="Ryuu 的个人博客">
-<meta property="og:description" content="枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。 在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员： 12345678&#x2F;&#x2F; The int enum pattern - severely deficient!public static final">
+<meta property="og:description" content="枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。[1] 在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：[2] 12345678&#x2F;&#x2F; The int enum pattern - severely deficient!public static">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-01T16:03:48.000Z">
-<meta property="article:modified_time" content="2026-07-17T13:20:00.007Z">
+<meta property="article:modified_time" content="2026-07-17T17:45:49.380Z">
 <meta property="article:author" content="Ryuu">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="effective Java">
@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -157,7 +157,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -243,7 +243,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 01:45:49" itemprop="dateModified" datetime="2026-07-18T01:45:49+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -262,7 +262,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>230</span>
+      <span>364</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -279,12 +279,25 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。</p>
-<p>在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：</p>
+    <div class="post-body" itemprop="articleBody"><p>枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The int enum pattern - severely deficient!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_FUJI</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_PIPPIN</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_GRANNY_SMITH</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_NAVEL</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_TEMPLE</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_BLOOD</span> <span class="operator">=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<p>这种方法称作 int 枚举模式 (int enum pattern)，他存在许多不足。int 枚举模式无类型安全性，也无描述性可言。</p>
-<p>例入将 apple 传到需要 orange 的方法中，编译器也不会产生任何警告，还会用 == 操作符对 apple 与 orange 进行比较，甚至更糟：</p>
+<p>这种方法称作 int 枚举模式 (int enum pattern)，他存在许多不足。int 枚举模式无类型安全性，也无描述性可言。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>例入将 apple 传到需要 orange 的方法中，编译器也不会产生任何警告，还会用 == 操作符对 apple 与 orange 进行比较，甚至更糟：<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tasty citrus flavored applesauce!</span></span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> (APPLE_FUJI - ORANGE_TEMPLE) / APPLE_PIPPIN;</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9">§8.9 Enum Classes</a>, defines an enum declaration as a restricted class that defines a small set of named class instances; Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html"><code>java.lang.Enum</code></a>, documents it as the common base class for Java enumeration classes. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 34, frames the recommendation to use enums instead of int constants. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><em>Effective Java</em> Item 34 identifies the int enum pattern and explains why it lacks the type-safety and expressiveness supplied by Java enum types. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>The apple/orange example follows <em>Effective Java</em> Item 34: because both constants are merely <code>int</code> values, the Java type system cannot distinguish the two domains at compile time. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
 
@@ -341,13 +354,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

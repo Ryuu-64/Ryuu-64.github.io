@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">83</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -199,6 +199,212 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/16/redis-lua/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/09/16/redis-lua/" class="post-title-link" itemprop="url">redis lua</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-09-16 23:43:32" itemprop="dateCreated datePublished" datetime="2025-09-16T23:43:32+08:00">2025-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 02:54:42" itemprop="dateModified" datetime="2026-07-18T02:54:42+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis-lua/" itemprop="url" rel="index"><span itemprop="name">redis lua</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>很多人会说 redis 执行 lua 是原子性的，但这样说不太准确。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h2 id="执行隔离性（Isolation-Guarantee）">执行隔离性（Isolation Guarantee）</h2>
+<p>redis 执行命令是单线程的，执行 lua 脚本时会阻塞其他指令和脚本的执行。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这确保了脚本在执行的过程中不会被并发操作干扰（例如同时修改一个数据）。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>请看如下无执行隔离的<strong>时序图</strong>示例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">时序</th>
+<th style="text-align:left">客户端A</th>
+<th>客户端B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">t1</td>
+<td style="text-align:left"><strong>客户端A</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">t2</td>
+<td style="text-align:left"></td>
+<td><strong>客户端B</strong> 执行 <code>GET token:42</code>→ 返回存在</td>
+</tr>
+<tr>
+<td style="text-align:left">t3</td>
+<td style="text-align:left"><strong>客户端A</strong> 执行 <code>DEL token:42</code>(成功)</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">t4</td>
+<td style="text-align:left"></td>
+<td><strong>客户端B</strong> 执行 <code>DEL token:42</code>(因 token 已被A删除，此操作实际无效，但B仍会继续下单)</td>
+</tr>
+</tbody>
+</table>
+<p>可见A和B都成功执行了下单操作，出现重复下单错误。</p>
+<p>再看如下有执行隔离的<strong>时序图</strong>示例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">时序</th>
+<th style="text-align:left">客户端A</th>
+<th style="text-align:left">客户端B</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">t1</td>
+<td style="text-align:left">发送 <code>EVAL &quot;if redis.call('GET', KEYS[1]) then return redis.call('DEL', KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
+<td style="text-align:left"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">t2</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">发送 <code>EVAL &quot;if redis.call('GET', KEYS[1]) then return redis.call('DEL', KEYS[1]) else return 0 end&quot; 1 token:42</code></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">t3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td>执行<strong>客户端A</strong>的脚本： 1. <code>GET token:42</code>(存在) 2. <code>DEL token:42</code>(成功删除)</td>
+</tr>
+<tr>
+<td style="text-align:left">t4</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td><strong>客户端B</strong> 的请求此时才被处理。执行同样的脚本： 1. <code>GET token:42</code>(已不存在) 脚本返回 0，拒绝操作。</td>
+</tr>
+</tbody>
+</table>
+<p>可见只有A成功了，B的操作失败了，未出现重复下单错误。</p>
+<h2 id="不满足全有或全无原则（all-or-nothing）">不满足全有或全无原则（all-or-nothing）</h2>
+<p><a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/tutorial-transactions.html">all-or-nothing</a><br>
+指事务要么完全发生，要么根本不发生。例如A向B转账100元，B已收到100元，但A并非扣除100元，这是不可接受的。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<h3 id="原子提交-回滚机制（Atomic-Commit-Rollback）">原子提交/回滚机制（Atomic Commit/Rollback）</h3>
+<p>在数据库的实现中一般会使用原子提交/回滚实现全有或全无原则。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<h4 id="原子提交">原子提交</h4>
+<p>当事务中的所有操作都成功执行，并且验证没有违反约束时，系统会 一次性把事务的所有修改写入数据库（这一批操作完成了）。</p>
+<p>提交之后，所有事务产生的更改对其他事务可见。</p>
+<h4 id="原子回滚">原子回滚</h4>
+<p>如果事务中某个环节失败，或者用户/系统主动要求撤销，就必须 <strong>撤回事务中已做的所有修改</strong>，让数据库回到事务开始之前的状态（这一批已做的操作都不算数）。</p>
+<p>一般会使用 <code>undo log</code> 来实现，保证把执行的操作撤销掉。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<h2 id="请保持脚本的轻量">请保持脚本的轻量</h2>
+<p>由于脚本执行期间会阻塞整个 Redis 的执行，<strong>避免在脚本中编写复杂循环或耗时操作</strong>是关键。否则会严重影响 Redis 的响应性能。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Redis 官方文档《Scripting with Lua》说明，Lua 脚本会在服务器端执行并阻塞其他服务器活动，因此其他客户端只能看到脚本执行前或执行后的效果。这里的“原子性”更接近不可插入执行，而不是关系型数据库事务式自动回滚：<a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/programmability/eval-intro/">https://redis.io/docs/latest/develop/programmability/eval-intro/</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Redis《Scripting with Lua》明确说明，脚本运行时会阻塞所有服务器活动；同一文档也提醒脚本应快速执行，避免影响其他客户端：<a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/programmability/eval-intro/">https://redis.io/docs/latest/develop/programmability/eval-intro/</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Redis《Scripting with Lua》说明脚本执行期间不会与其他客户端请求交错，其他客户端只能观察到脚本前后的状态；这支撑了把 <code>GET</code> 与 <code>DEL</code> 放进同一个 Lua 脚本来消除客户端间竞态窗口的解释：<a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/programmability/eval-intro/">https://redis.io/docs/latest/develop/programmability/eval-intro/</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>PostgreSQL 官方文档《Transactions》把事务描述为多个步骤组成的 all-or-nothing 操作：如果任一步失败导致事务不能完成，这些步骤不会影响数据库。Redis 官方《Transactions》则明确说明 Redis 不支持事务回滚，<code>EXEC</code> 后的运行期错误不会阻止其他命令继续执行。参见 <a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/tutorial-transactions.html">https://www.postgresql.org/docs/current/tutorial-transactions.html</a> 与 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/using-commands/transactions/">https://redis.io/docs/latest/develop/using-commands/transactions/</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>PostgreSQL《Transactions》说明事务中的步骤要么作为整体提交，要么在失败时不影响数据库；这类语义是数据库事务 all-or-nothing 的核心，而不是 Redis Lua 的自动回滚承诺：<a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/tutorial-transactions.html">https://www.postgresql.org/docs/current/tutorial-transactions.html</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>MySQL 官方《InnoDB Undo Logs》说明，undo log record 包含回滚最近变更所需的信息，也会用于一致性读；这支撑了数据库实现中通过 undo 信息撤销已做修改的说法：<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/en/innodb-undo-logs.html">https://dev.mysql.com/doc/refman/en/innodb-undo-logs.html</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Redis《Scripting with Lua》要求脚本应快速执行，避免长时间阻塞服务器；Redis《Redis functions》也说明函数执行期间 Redis 服务器会被阻塞，长时间运行会阻塞所有客户端。参见 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/programmability/eval-intro/">https://redis.io/docs/latest/develop/programmability/eval-intro/</a> 与 <a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/programmability/functions-intro/">https://redis.io/docs/latest/develop/programmability/functions-intro/</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E4%B8%89%E5%A4%A7%E6%9D%A1%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -235,7 +441,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 02:48:46" itemprop="dateModified" datetime="2026-07-18T02:48:46+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -254,14 +460,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>814</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -274,19 +480,19 @@
     <div class="post-body" itemprop="articleBody">
           <p>总结来说，多线程安全主要要满足 三大条件：</p>
 <h2 id="原子性（Atomicity）">原子性（Atomicity）</h2>
-<p>操作不可分割，要么全部成功，要么全部失败。</p>
+<p>操作不可分割，要么全部成功，要么全部失败。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> x = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原子性保证</span></span><br><span class="line">Interlocked.Increment(<span class="keyword">ref</span> x); <span class="comment">// 原子 +1，不会丢失更新</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 非原子性</span></span><br><span class="line"><span class="comment">// 其实是 load → add → store，可能被打断，导致多个线程覆盖</span></span><br><span class="line"><span class="comment">// 例如线程a正在++，这个过程中线程b也++，本来x会+2结果会变成只+1</span></span><br><span class="line">x++;</span><br></pre></td></tr></table></figure>
 <h2 id="可见性-Visibility">可见性 (Visibility)</h2>
 <p>一个线程对共享变量的修改，另一个线程能够立即看到。</p>
-<p>CPU 会做缓存[1]和指令重排（跟有序性也有很大关系），导致线程 A 改了变量，线程 B 可能“看不到”。</p>
-<p>需要内存屏障（memory barrier）[2]、<code>volatile</code> 或锁来保证。</p>
+<p>CPU 会做缓存[1]和指令重排（跟有序性也有很大关系），导致线程 A 改了变量，线程 B 可能“看不到”。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>需要内存屏障（memory barrier）[2]、<code>volatile</code> 或锁来保证。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="built_in">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadA</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    flag = <span class="literal">true</span>; <span class="comment">// 修改对其他线程立即可见</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadB</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span> (!flag) &#123; &#125; <span class="comment">// 否则可能无限循环</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="有序性-Ordering">有序性 (Ordering)</h2>
 <p>程序执行顺序符合预期。</p>
-<p>编译器，JIT和CPU，可能会重排指令，导致代码执行顺序和书写顺序不一致。</p>
+<p>编译器，JIT和CPU，可能会重排指令，导致代码执行顺序和书写顺序不一致。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>内存屏障、锁等可以限制重排。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">object</span> lockObj = <span class="keyword">new</span> <span class="built_in">object</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton Instance &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">lock</span> (lockObj) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                        instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                        <span class="comment">// 可能被重排为：</span></span><br><span class="line">                        <span class="comment">// 1. 分配内存</span></span><br><span class="line">                        <span class="comment">// 2. 把 instance 指向内存</span></span><br><span class="line">                        <span class="comment">// 3. 调用构造函数</span></span><br><span class="line">                        <span class="comment">// 线程 B 可能看到一个“未初始化完成”的对象</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> instance;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个时候可以给 instance 添加 <code>volatile</code>，或者是用 <code>Lazy&lt;T&gt;</code>（线程安全的初始化对象）</p>
+<p>这个时候可以给 instance 添加 <code>volatile</code>，或者是用 <code>Lazy&lt;T&gt;</code>（线程安全的初始化对象）<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <h2 id="总结">总结</h2>
 <p>在多线程编程里，<strong>原子性（Atomicity）、有序性（Ordering）、可见性（Visibility）</strong> 经常是相辅相成的——它们不是独立孤立的，而是互相依赖来保证线程安全。</p>
 <h2 id="脚注">脚注</h2>
@@ -328,6 +534,21 @@
 <p>x86 有 <code>mfence</code>、<code>lfence</code>、<code>sfence</code></p>
 <p>ARM 有 <code>dmb</code>、<code>dsb</code></p>
 <p>这些指令就是内存屏障。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn 的 <code>Interlocked.Increment</code> API 文档说明，该方法会递增指定变量并以原子操作存储结果，适合支撑单变量 read-modify-write 的原子性边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment">https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn 的 C# <code>volatile</code> 参考把 <code>volatile</code> 读写描述为 acquire / release 语义，并提醒它不保证所有线程观察到完全相同的全局顺序，因此这里的“看不到”更精确地说是缺少同步规则时没有跨线程可见性保证：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn 的 <code>Thread.MemoryBarrier</code> 文档说明内存屏障会限制屏障前后的内存访问重排；C# <code>lock</code> 文档说明 <code>lock</code> 会进入互斥临界区并转换为 <code>Monitor.Enter</code> / <code>Monitor.Exit</code> 结构；<code>volatile</code> 文档则说明字段级 acquire / release 语义。参见 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier">https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><code>Thread.MemoryBarrier</code> 官方文档明确说，屏障之前的内存访问不能被重排到屏障之后，屏障之后的内存访问也不能被重排到屏障之前；这正是有序性讨论中的底层边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier">https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn 的 Lazy initialization 指南说明，<code>Lazy&lt;T&gt;</code> 默认创建线程安全对象，常用于延迟初始化和单例式对象发布：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization">https://learn.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -390,7 +611,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 02:57:53" itemprop="dateModified" datetime="2026-07-18T02:57:53+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -409,14 +630,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -428,8 +649,8 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="背景">背景</h2>
-<p>在 <strong>缓存 + 数据库</strong> 的经典架构里，缓存通常作为加速层来缓解数据库压力。<br>
-但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。</p>
+<p>在 <strong>缓存 + 数据库</strong> 的经典架构里，缓存通常作为加速层来缓解数据库压力。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><br>
+但在更新数据时，如果操作顺序处理不当，就可能导致缓存与数据库之间出现短暂的不一致。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>常见的更新顺序有两种：</p>
 <ol>
 <li>
@@ -488,10 +709,10 @@
 </table>
 <hr>
 <h2 id="缓存失效策略（Cache-Aside-Lazy-Loading）">缓存失效策略（Cache-Aside / Lazy-Loading）</h2>
-<p>写数据库，删除缓存，下次请求重建缓存，简单可靠。</p>
+<p>写数据库，删除缓存，下次请求重建缓存，简单可靠。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <h3 id="双删">双删</h3>
 <p>双删也是经常提到的办法，属于一种增强版的写数据库后删除缓存，能够减少不一致窗口期。</p>
-<p><strong>在更新数据库之后，执行两次缓存删除操作</strong>：</p>
+<p><strong>在更新数据库之后，执行两次缓存删除操作</strong>：<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <table>
 <thead>
 <tr>
@@ -570,13 +791,13 @@
 <li><strong>延迟太短</strong>：第二次删除可能还没覆盖到并发读回填的缓存，最终一致性可能都无法保证（长时间或永久脏缓存）。</li>
 <li><strong>延迟太长</strong>：第二次删除的间隔内，缓存可能被大量请求读写回填，脏数据存在的时间过长（脏数据多）。</li>
 </ul>
-<p><strong>惊群效应（Thundering Herds）</strong></p>
+<p><strong>惊群效应（Thundering Herds）</strong><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <ul>
 <li>频繁的缓存失效可能会导致惊群，会有多个请求导致请求访问数据库</li>
 </ul>
 <p>实际上，延迟双删更多是工程<strong>妥协</strong>：在读多写少、对短时间不一致可容忍的业务场景下适用（个人感觉有点骚操作，要么就别这么写，要写就干脆写更稳妥的租约或版本号方案）。</p>
 <h3 id="租约（Lease）">租约（Lease）</h3>
-<p>这是由 <strong>Meta</strong> 分享的方案。</p>
+<p>这是由 <strong>Meta</strong> 分享的方案。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <table>
 <thead>
 <tr>
@@ -615,7 +836,7 @@
 </table>
 <p>这里的 A 作为更新者触发了缓存的更新，其他的请求在租期内时会等待更新完毕。A，B，C 会拿着 token 等待缓存更新完毕。</p>
 <h4 id="等待">等待</h4>
-<p>请求 A，B，C 等待时一般会使用带抖动（避免惊群效应）的指数退避算法进行主动重试。</p>
+<p>请求 A，B，C 等待时一般会使用带抖动（避免惊群效应）的指数退避算法进行主动重试。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <p>为什么不用其他的方法？</p>
 <ol>
 <li>立即重试：这样会加重了访问压力。</li>
@@ -624,10 +845,10 @@
 <li>随机重试：缺乏不断增长的延迟，无法应对如微服务一段时间不可用或是数据库错误这种时间较长的场景。</li>
 </ol>
 <h3 id="版本号（Version）">版本号（Version）</h3>
-<p>这是由 <a target="_blank" rel="noopener" href="https://www.uber.com/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/">Uber 分享过的方案</a>。</p>
+<p>这是由 <a target="_blank" rel="noopener" href="https://www.uber.com/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/">Uber 分享过的方案</a>。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <p>数据库每行数据都有一个时间戳作为版本号。数据变更时时间戳会被更新。数据写入缓存时会将要写入的版本号和缓存中已有的版本号进行比较，更新的版本号才会被写入缓存。</p>
 <h4 id="原子化操作-redis">原子化操作 redis</h4>
-<p>使用 redis eval 执行 lua 脚本，脚本可以原子[2]化的执行操作：</p>
+<p>使用 redis eval 执行 lua 脚本，脚本可以原子[2]化的执行操作：<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <ol>
 <li>读取缓存已有的版本号</li>
 <li>比较已有的版本号和想要写入的版本号</li>
@@ -636,7 +857,7 @@
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> key = KEYS[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">local</span> value = ARGV[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">local</span> current_version = ARGV[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">local</span> version_key = <span class="string">&#x27;version:&#x27;</span>..key</span><br><span class="line"><span class="keyword">local</span> version_value = redis.call(<span class="string">&#x27;get&#x27;</span>, version_key)</span><br><span class="line"><span class="keyword">if</span> version_value == <span class="literal">false</span> <span class="keyword">or</span> version_value &lt; current_version <span class="keyword">then</span></span><br><span class="line">    redis.call(<span class="string">&#x27;mset&#x27;</span>, version_key, current_version, key, value)</span><br><span class="line">    <span class="keyword">return</span> &#123;value, <span class="literal">true</span>&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="literal">false</span>, <span class="literal">false</span>&#125;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <h4 id="变更数据捕获（Change-Data-Capture，CDC）">变更数据捕获（Change Data Capture，CDC）</h4>
 <p>变更数据捕获是一种用于<strong>捕获和记录数据库中数据变化</strong><br>
-的机制。当数据库数据发生变化（增删改）时，不通过业务代码或是主动查询/触发，而是直接在数据库或日志层面去自动捕获这种变化，并将内容记录下来给其他系统使用。</p>
+的机制。当数据库数据发生变化（增删改）时，不通过业务代码或是主动查询/触发，而是直接在数据库或日志层面去自动捕获这种变化，并将内容记录下来给其他系统使用。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <p>例如 Uber 基于 每个集群的 mysql binlog 实现了 CDC [3]。</p>
 <h2 id="总结">总结</h2>
 <table>
@@ -727,6 +948,31 @@
 <p>[3] Flux 会 tail MySQL binlog，监视数据库的数据变更实现 CDC（使用 binlog 是一个较好的选择，这样不会让CDC被未提交的脏事务影响）。</p>
 <p>Flux 是 Uber 的一个中间件，它不止会把数据发送给CDC还会发送给 replication, materialized views, data lake<br>
 ingestion，还会为验证集群中节点之间的数据一致性提供支持。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Azure Architecture Center 的《Cache-Aside pattern》把 cache-aside 描述为应用先查缓存、miss 后从数据源加载并写回缓存的模式；AWS 的缓存最佳实践也把缓存定位为降低延迟、减轻后端负载的性能层。参见 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside">https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside</a> 与 <a target="_blank" rel="noopener" href="https://aws.amazon.com/caching/best-practices/">https://aws.amazon.com/caching/best-practices/</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Azure《Cache-Aside pattern》说明，当应用更新信息时，应更新数据源并让缓存项失效；这也意味着数据库提交、缓存失效和下一次回填之间存在需要治理的不一致窗口：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside">https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Azure《Cache-Aside pattern》明确把“更新数据源后让缓存项失效”作为写路径建议；Amazon ElastiCache 文档也把 lazy loading / cache-aside 描述为 miss 时再加载数据的策略：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside">https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside</a>、<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html">https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>延迟双删可以理解为 cache-aside 写路径上的工程补偿：第一次删除配合 DB 更新，第二次删除试图覆盖并发读回填旧值的窗口。这个结论是基于 Azure cache-aside 写路径与缓存旧值回填风险的工程推论，不是官方文档中的强一致保证：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside">https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Facebook / Meta 的 NSDI 2013 论文《Scaling Memcache at Facebook》把 thundering herds 作为缓存 miss 后大量客户端同时请求后端数据源的问题，并介绍了 lease 机制来降低 stale sets 与峰值数据库压力：<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf">https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>《Scaling Memcache at Facebook》中的 lease 机制用于控制 miss 后谁有资格回填缓存。论文报告在一个实验场景中，lease 将峰值数据库查询从 17K/s 降到 1.3K/s：<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf">https://www.usenix.org/system/files/conference/nsdi13/nsdi13-final170_update.pdf</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>AWS Builders Library《Timeouts, retries, and backoff with jitter》说明，重试会放大压力，指数退避配合 jitter 可以减少客户端同步重试导致的峰值冲击：<a target="_blank" rel="noopener" href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Uber Engineering《How Uber Serves Over 40 Million Reads Per Second from Online Storage Using an Integrated Cache》描述了基于 MySQL binlog 的变更流、行时间戳版本，以及在缓存写入时用版本比较避免旧行覆盖新行的方案：<a target="_blank" rel="noopener" href="https://www.uber.com/us/en/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/">https://www.uber.com/us/en/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Redis 官方《Scripting with Lua》说明 Lua 脚本在服务端执行，脚本运行期间不会被其他客户端命令插入，因此适合把读取版本、比较版本和写入缓存合并成一个 Redis 内部条件写：<a target="_blank" rel="noopener" href="https://redis.io/docs/latest/develop/programmability/eval-intro/">https://redis.io/docs/latest/develop/programmability/eval-intro/</a>。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>Debezium 文档把 CDC 描述为捕获数据库行级变化并生成事件流的机制，并说明 log-based CDC 相对轮询可以低延迟捕获变化、减少对业务表的侵入：<a target="_blank" rel="noopener" href="https://debezium.io/documentation/reference/stable/features.html">https://debezium.io/documentation/reference/stable/features.html</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -789,7 +1035,7 @@ ingestion，还会为验证集群中节点之间的数据一致性提供支持�
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 13:18:21" itemprop="dateModified" datetime="2026-07-18T13:18:21+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -808,14 +1054,14 @@ ingestion，还会为验证集群中节点之间的数据一致性提供支持�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.9k</span>
+      <span>5.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>18 分钟</span>
+      <span>20 分钟</span>
     </span>
 </div>
 
@@ -842,7 +1088,7 @@ ingestion，还会为验证集群中节点之间的数据一致性提供支持�
 <p>直接引用：</p>
 <p>O(N*(N-1)) 的复杂度，且依赖是直接的引用，非常强的耦合。</p>
 <p>观察者模式（Observer Pattern）：</p>
-<p>O(N*M) 的复杂度，N 为观察者，M为被观察者（subject）。依赖建立在被观察者和观察者之间，松耦合。</p>
+<p>O(N*M) 的复杂度，N 为观察者，M为被观察者（subject）。依赖建立在被观察者和观察者之间，松耦合。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <ol>
 <li>M 通常会远小于 N</li>
 <li>M 一般只是个方法的集合，而不是业务类，耦合度低，维护成本也很低</li>
@@ -945,17 +1191,17 @@ O(M+N) 的复杂度，M 为发布者，N为订阅者。依赖建立在发布者�
 <p>成熟可靠，因为这是要用在项目的核心功能上，关系到百万千万个用户的体验，不能出错。</p>
 <p>易用，我们的项目里有很多同事，水平参差不齐，得让大家都能用。我实际也问过同事，有的同事甚至都没听说过观察者模式。</p>
 <h3 id="方案">方案</h3>
-<p>综合考虑，直接模仿 .NET 的 multicast delegate 是最合适的方案。又快又成熟可靠，还易用。<br>
+<p>综合考虑，直接模仿 .NET 的 multicast delegate 是最合适的方案。又快又成熟可靠，还易用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><br>
 虽然 .NET 里的 delegate 一等公民而且还有方便的语法糖，我们在 java 里不能做到完全一样，但也能做到很接近。</p>
 <h3 id="详细设计">详细设计</h3>
 <p>由于 java 已经有 function interface（函数式接口）去作为 lambda 表达式的目标了，我们是无法做到像 .NET<br>
-一样委托和多播委托无感的。但用函数式接口去做委托，再用已经写好了的委托去写多播委托是可以的。</p>
+一样委托和多播委托无感的。但用函数式接口去做委托，再用已经写好了的委托去写多播委托是可以的。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <h4 id="委托实现">委托实现</h4>
 <p>委托直接用函数式接口就行，主要是规范 api 和为多播委托做铺垫，同时不要忘记做好和 java 的适配。</p>
-<p>在实现前我们可以先做好 java EventListener[1] 的适配同时用接口标记 delegate</p>
+<p>在实现前我们可以先做好 java EventListener[1] 的适配同时用接口标记 delegate<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.ryuu.functional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.EventListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Delegate</span> <span class="keyword">extends</span> <span class="title class_">EventListener</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>保持和 .NET 一样，调用时的方法名称为 <code>... invoke(...)</code> 减少理解成本[2]。用<code>@FunctionalInterface</code>[3] 注解修饰实际的<br>
-<code>delegate</code>。</p>
+<code>delegate</code>。<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.ryuu.functional;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Action</span> <span class="keyword">extends</span> <span class="title class_">Delegate</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>现在委托就做好了。这样的另一个好处是，我们不需要在需要传 lambda 表达式的时候满世界找一个适配的函数式接口了，因为我们会像<br>
 .NET 一样预定义好：</p>
@@ -966,8 +1212,8 @@ O(M+N) 的复杂度，M 为发布者，N为订阅者。依赖建立在发布者�
 <h5 id="不可变性">不可变性</h5>
 <p>任何“修改”都通过构造新对象来完成。虽然 <code>MulticastDelegate</code> 内部维护了一个 <code>_invocationList</code>，但每次 <code>CombineImpl</code> 或<br>
 <code>RemoveImpl</code> 实际上都会创建一个新的委托对象，而不会修改已有对象。这种方式使得委托本质上是不可变的（immutable）（虽然里面的 _<br>
-invocationList 在实现细节上并非只读）。</p>
-<p>在 Java 中，我们可以利用深拷贝和 <code>Collections.unmodifiableList</code> 来实现不可变性。</p>
+invocationList 在实现细节上并非只读）。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>在 Java 中，我们可以利用深拷贝和 <code>Collections.unmodifiableList</code> 来实现不可变性。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <h5 id="多播委托-2">多播委托</h5>
 <p>在 .NET 中，委托（delegate）统一由 <code>Delegate</code> / <code>MulticastDelegate</code> 管理。<strong>用户代码层面并没有“单播 / 多播”的区分</strong><br>
 ，这个细节完全隐藏在实现内部：</p>
@@ -975,7 +1221,7 @@ invocationList 在实现细节上并非只读）。</p>
 <li><strong>单播 (single delegate)</strong>：<code>invocationList</code> 为空，只存一个方法引用。</li>
 <li><strong>多播 (multicast delegate)</strong>：<code>invocationList</code> 是数组，存多个方法引用。</li>
 </ul>
-<p>多播委托的合并与移除逻辑会自动处理这两种情况。因此，.NET 用户只会看到“委托可以 += / -= 方法”，而不会关心它当前是单播还是多播。</p>
+<p>多播委托的合并与移除逻辑会自动处理这两种情况。因此，.NET 用户只会看到“委托可以 += / -= 方法”，而不会关心它当前是单播还是多播。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <p>在 Java 中，因为 lambda 表达式必然作用在单个函数的接口上，所以单播对用户是显式的，实现多播时可以与 .NET 一样过内部封装隐藏掉单播多播的区别。</p>
 <h5 id="语法糖">语法糖</h5>
 <p>在 c# 中可以直接用 += -= 修改委托</p>
@@ -983,13 +1229,13 @@ invocationList 在实现细节上并非只读）。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Fact</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Action a = () =&gt; &#123; &#125;;</span><br><span class="line">    Action b = () =&gt; &#123; &#125;;</span><br><span class="line">    a += b;</span><br><span class="line">    a -= b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Low-Level c#</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Fact</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Action a1 = UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_0 ?? (UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_0 = <span class="keyword">new</span> Action((<span class="built_in">object</span>) UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>, __methodptr(&lt;Test1&gt;b__0_0)));</span><br><span class="line">    Action b = UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_1 ?? (UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>__0_1 = <span class="keyword">new</span> Action((<span class="built_in">object</span>) UnitTest2.&lt;&gt;c.&lt;&gt;<span class="number">9</span>, __methodptr(&lt;Test1&gt;b__0_1)));</span><br><span class="line">    Action a2 = (Action) Delegate.Remove(Delegate.Combine((Delegate) a1, (Delegate) b), (Delegate) b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>c# 在编译的时候把 <code>a += b</code> 和 <code>a -= b</code> 变成了 <code>Delegate.Remove </code>和<code>Delegate::Combine</code> 而且把新产生的对象赋回了 a。</p>
+<p>c# 在编译的时候把 <code>a += b</code> 和 <code>a -= b</code> 变成了 <code>Delegate.Remove </code>和<code>Delegate::Combine</code> 而且把新产生的对象赋回了 a。<sup class="footnote-ref"><a href="#fn7" id="fnref7:1">[7:1]</a></sup></p>
 <p>在 java 里我们是不可能通过编写代码实现这样的语法糖的，在 java 里用方法去实现就行。</p>
 <h3 id="栈式操作（Stack-Semantics）">栈式操作（Stack Semantics）</h3>
 <ol>
 <li><strong>语义一致</strong><br>
 在委托（delegate）的操作语义上，<code>+=</code> 始终将新委托附加到 <strong>尾部</strong>（类似 <strong>push</strong>），而 <code>-=</code> 则撤销 <strong>最近一次添加的委托</strong>（类似<br>
-<strong>pop</strong>）。这种设计确保了委托的修改符合 <strong>栈（LIFO）语义</strong>，简单直观。</li>
+<strong>pop</strong>）。这种设计确保了委托的修改符合 <strong>栈（LIFO）语义</strong>，简单直观。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></li>
 <li><strong>实现高效</strong><br>
 从尾部开始查找和移除，可以直接截断尾部，操作成本低；若从头部开始匹配，则需要移动后续所有元素，效率更差。</li>
 </ol>
@@ -1006,7 +1252,7 @@ invocationList 在实现细节上并非只读）。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">event</span> Action a = () =&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
 <p>Low-Level c#</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line">[<span class="meta">DebuggerBrowsable(DebuggerBrowsableState.Never)</span>]</span><br><span class="line"><span class="keyword">private</span> Action a;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">event</span> Action a</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>] <span class="keyword">add</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 先读取当前事件委托链，存入 action1，这里是为了在循环中对比 CAS 是否成功</span></span><br><span class="line">        <span class="comment">// 虽然这里的 action1 和 this.a 引用类型的，但 delegate 是不可变的</span></span><br><span class="line">        <span class="comment">// this.a 改变时会引用一个新的实例，而 action1 还是会引用 this.a 改变前的旧实例</span></span><br><span class="line">        <span class="comment">// 如果是可变的：</span></span><br><span class="line">        <span class="comment">// this.a 改变时引用的实例没有改变，action1 引用的还是 this.a 的实例，此时无法进行 != 判断</span></span><br><span class="line">        Action action1 = <span class="keyword">this</span>.a;</span><br><span class="line">        <span class="comment">// 保存当前尝试的旧值</span></span><br><span class="line">        Action action2;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 存放 尝试用 CAS 更新的“旧值”。</span></span><br><span class="line">            action2 = action1;</span><br><span class="line">            <span class="comment">// public static T CompareExchange&lt;T&gt;(ref T location, T value, T comparand);</span></span><br><span class="line">            <span class="comment">// location：你要修改的变量（这里是 this.a）。</span></span><br><span class="line">            <span class="comment">// value：如果 location == comparand 条件满足，要写入的新值（这里是 Delegate.Combine(action2, value)）。</span></span><br><span class="line">            <span class="comment">// comparand：预期旧值（这里是 action2）。</span></span><br><span class="line">            <span class="comment">// return：location 在此操作之前的值（无论是否成功）</span></span><br><span class="line">            <span class="comment">// 这保证了无论怎样循环 action1 都是最新的 this.a 的值</span></span><br><span class="line">            action1 = Interlocked.CompareExchange&lt;Action&gt;(<span class="keyword">ref</span> <span class="keyword">this</span>.a, (Action) Delegate.Combine((Delegate) action2, (Delegate) <span class="keyword">value</span>), action2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// action1 不等于 action2（说明 CAS 失败，this.a 被其他线程修改过）。</span></span><br><span class="line">        <span class="comment">// 循环重新读取 this.a 并尝试合并。</span></span><br><span class="line">        <span class="keyword">while</span> (action1 != action2);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>] <span class="keyword">remove</span></span><br><span class="line">    &#123;</span><br><span class="line">        Action action1 = <span class="keyword">this</span>.a;</span><br><span class="line">        Action action2;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            action2 = action1;</span><br><span class="line">            action1 = Interlocked.CompareExchange&lt;Action&gt;(<span class="keyword">ref</span> <span class="keyword">this</span>.a, (Action) Delegate.Remove((Delegate) action2, (Delegate) <span class="keyword">value</span>), action2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (action1 != action2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可见编译器为 event 生成了 add 和 remove 访问器，使用了 CAS[4] 做自旋锁，来保证对多播的修改是线程安全的。</p>
+<p>可见编译器为 event 生成了 add 和 remove 访问器，使用了 CAS[4] 做自旋锁，来保证对多播的修改是线程安全的。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>在 Java 中，如果想实现类似的体验，可以通过 <strong>APT（Annotation Processing Tool）</strong> 来生成访问器代码，使使用体验更接近<br>
 .NET。然而，APT 会带来一些问题：</p>
 <ol>
@@ -1030,13 +1276,13 @@ invocationList 在实现细节上并非只读）。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> final boolean isEvent;</span><br><span class="line"><span class="keyword">private</span> final Object delegatesWriteLock = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MulticastDelegate</span>(<span class="params">boolean isEvent</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isEvent = isEvent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> final <span class="keyword">void</span> <span class="title">add</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isEvent) &#123;</span><br><span class="line">        addSync(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        addAsync(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addSync</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    synchronized (delegatesWriteLock) &#123;</span><br><span class="line">        addInternal(<span class="built_in">delegate</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addAsync</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span> &#123;</span><br><span class="line">    addInternal(<span class="built_in">delegate</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里我们用的是 <code>synchronized</code> 保证多线程安全而不是基于 CAS<br>
 写一个自旋锁。我们需要考虑锁实现的性能，自旋锁是一种忙等（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Busy_waiting">busy waiting</a><br>
-），如果竞争很激烈[5]会非常浪费 CPU。这种情况可以让线程阻塞，CPU 还可以去执行其他线程，这样效率更高。</p>
+），如果竞争很激烈[5]会非常浪费 CPU。这种情况可以让线程阻塞，CPU 还可以去执行其他线程，这样效率更高。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <p>代码段示例，展示 event 的<strong>调用全只留给声明事件的类内部</strong>实现：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Event</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">Delegate</span>&gt; &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span>(<span class="params">T <span class="built_in">delegate</span></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">MulticastDelegate</span>&lt;<span class="title">T</span> <span class="title">extends</span> <span class="title">Delegate</span>&gt; <span class="title">implements</span> <span class="title">Iterable</span>&lt;<span class="title">T</span>&gt;, <span class="title">Delegate</span>, <span class="title">Event</span>&lt;<span class="title">T</span>&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ClassWithActionsEvent</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> final Actions actions = Actions.<span class="keyword">event</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Event&lt;Action&gt; <span class="title">getActions</span>()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> actions;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">privateMethod</span>()</span> &#123;</span><br><span class="line">        actions.invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="微基准测试">微基准测试</h2>
-<p>.NET 的 delegate 的性能是不错的，我们可以使用 JMH(Java Microbenchmark Harness)[6]进行基准测试来查看是否符合性能模型。</p>
+<p>.NET 的 delegate 的性能是不错的，我们可以使用 JMH(Java Microbenchmark Harness)[6]进行基准测试来查看是否符合性能模型。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
 <table>
 <thead>
 <tr>
@@ -1307,14 +1553,14 @@ invocationList 在实现细节上并非只读）。</p>
 <li><strong>GC 时间与次数</strong>数据显示垃圾回收被频繁触发，特别是在短周期高频调用场景下，内存分配压力显著增大。</li>
 </ul>
 <h4 id="性能模型分析-2">性能模型分析</h4>
-<p>这是<strong>快照式迭代器</strong>的性能特征：读取速度快、线程安全，但在高频多线程调用下 GC 压力明显。</p>
+<p>这是<strong>快照式迭代器</strong>的性能特征：读取速度快、线程安全，但在高频多线程调用下 GC 压力明显。<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
 <h3 id="多线程混合-add-remove-invoke"><strong>多线程混合 add/remove/invoke</strong></h3>
 <p>当我们将16线程 invoke 改为12线程 invoke、2线程 add、2线程 remove时，invoke 性能从270.771降至35.550，显著变慢。这是由于 invoke<br>
 的CPU缓存失效，线程间需要频繁同步内存数据所导致。而 add 和 remove 操作比 invoke 更慢，主要因为它们需要保证线程安全。</p>
 <h4 id="性能模型分析-3">性能模型分析</h4>
-<p><strong>写时复制表</strong>（Copy-On-Write List）的性能模型：读取操作高效，不受线程竞争影响，可并行执行多个读操作；写操作则需要复制并修改表，时间和空间成本较高，频繁写入会造成性能瓶颈。</p>
+<p><strong>写时复制表</strong>（Copy-On-Write List）的性能模型：读取操作高效，不受线程竞争影响，可并行执行多个读操作；写操作则需要复制并修改表，时间和空间成本较高，频繁写入会造成性能瓶颈。<sup class="footnote-ref"><a href="#fn12" id="fnref12:1">[12:1]</a></sup></p>
 <h3 id="总结-2">总结</h3>
-<p>至此微基准测试与分析完毕，基准测试结果表明，该实现符合预期的性能模型。</p>
+<p>至此微基准测试与分析完毕，基准测试结果表明，该实现符合预期的性能模型。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
 <h2 id="另请参阅">另请参阅</h2>
 <p>详细的实现请查看 <a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/functional.git">项目源码仓库</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/dotnet/runtime.git">dotnet runtime 仓库</a> 委托的实现在 <code>System.Private.CoreLib</code> 程序集中</p>
@@ -1333,6 +1579,37 @@ invocationList 在实现细节上并非只读）。</p>
 *接口调用/方法引用**的性能模型）。</p>
 <p>如果你对此很好奇请阅读 <a target="_blank" rel="noopener" href="https://shipilev.net/blog/2014/nanotrusting-nanotime/">nanotrusting-nanotime</a> 博客内容。</p>
 <p>如果你对代码的性能很好奇可以观看此视频 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9tvbz8CSI8M">code::dive conference 2015 - Andrei Alexandrescu - Writing Fast Code II</a></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Gamma 等人的 <em>Design Patterns</em> 将 Observer 描述为 subject 与多个 observer 之间的一对多依赖，用于在 subject 状态变化时通知依赖对象；这里的复杂度表达是对依赖形态和维护成本的工程化估算，不是严格数学证明。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/delegates">C# language specification - Delegates</a> 定义 delegate 类型、invocation list 和多播调用顺序；它能支撑“借鉴 .NET multicast delegate 语义”的设计方向，但不意味着 Java 能复制 C# 的语言级语法。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>JLS <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.27">§15.27 Lambda Expressions</a> 说明 lambda 表达式依赖目标类型；Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html"><code>FunctionalInterface</code></a> 说明函数式接口是 lambda 表达式和方法引用的目标类型，<code>@FunctionalInterface</code> 会让编译器检查接口是否满足函数式接口要求。 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/EventListener.html"><code>EventListener</code></a> 是所有事件监听器接口应扩展的标记接口；把自定义 delegate 接口挂到 <code>EventListener</code> 更像语义标记，而不是继承行为。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.combine"><code>Delegate.Combine</code></a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.remove"><code>Delegate.Remove</code></a> 支撑组合 / 移除返回委托结果的公开语义；具体 <code>_invocationList</code> 属于 .NET runtime 实现细节。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#unmodifiableList-java.util.List-"><code>Collections.unmodifiableList</code></a> 返回指定列表的不可修改视图；若底层列表仍可变，应结合拷贝或私有封装理解不可变边界。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/addition-operator#delegate-combination">delegate combination</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal">delegate removal</a> 说明 <code>+</code> / <code>+=</code> 会组合 delegate，<code>-</code> / <code>-=</code> 会移除 delegate；<code>Delegate.Combine</code> / <code>Delegate.Remove</code> 是对应的运行时 API 语义。 <a href="#fnref7" class="footnote-backref">↩︎</a> <a href="#fnref7:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.remove"><code>Delegate.Remove</code></a> 说明移除的是目标 invocation list 的最后一次出现；因此文中“栈式”更准确地说是“追加到尾部、从右往左移除最近匹配项”的语义。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>C# language specification <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1514-events">Events</a> 支撑 event 的 <code>add</code> / <code>remove</code> 访问器和外部访问边界；Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.compareexchange"><code>Interlocked.CompareExchange</code></a> 支撑 CAS 更新模式。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>JLS <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.19">§14.19 The synchronized Statement</a> 定义 Java <code>synchronized</code> 通过 monitor 进入和退出临界区；它支撑这里用阻塞互斥而不是自旋 CAS 实现写侧同步的设计边界。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>OpenJDK <a target="_blank" rel="noopener" href="https://openjdk.org/projects/code-tools/jmh/">JMH</a> 是 JVM 微基准 harness；用它验证性能模型比手写 <code>System.nanoTime()</code> 循环更可靠。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>Oracle Java SE <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CopyOnWriteArrayList.html"><code>CopyOnWriteArrayList</code></a> 说明写操作会复制底层数组，迭代器使用创建时快照，适合遍历远多于修改的场景；这支撑文中的读多写少和 GC/写成本边界。 <a href="#fnref12" class="footnote-backref">↩︎</a> <a href="#fnref12:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>OpenJDK JMH 与 Aleksey Shipilev <a target="_blank" rel="noopener" href="https://shipilev.net/blog/2014/nanotrusting-nanotime/"><em>Nanotrusting the Nanotime</em></a> 都指向同一个边界：微基准可用于理解底层成本模型，但不能直接推出线上业务 QPS 或用户体验结论。 <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -1395,7 +1672,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 18:06:04" itemprop="dateModified" datetime="2026-07-18T18:06:04+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1418,14 +1695,14 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>538</span>
+      <span>859</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -1441,17 +1718,30 @@ invocationList 在实现细节上并非只读）。</p>
 <img src="/2025/08/16/float-vs-decimal/img.png" class="" title="+&#x3D;">
 <p>这段话说的很含糊，可能是从 ai 的文本中截取的一段。而问为什么要用 decimal 时，这也是一般人的回答。</p>
 <h2 id="清晰的解释">清晰的解释</h2>
-<p>浮点数在计算机中以二进制形式存储，而很多十进制小数（例如 <code>0.1</code>）在二进制下表示为无限循环小数。由于浮点数的存储空间有限，这些无限二进制小数必须被截断，从而引入精度误差。相比之下，<code>decimal</code> 类型使用十进制存储，可以精确表示十进制小数，因此不会产生类似的精度问题，适合对精度要求高的场景（如财务计算）。</p>
+<p>浮点数在计算机中以二进制形式存储，而很多十进制小数（例如 <code>0.1</code>）在二进制下表示为无限循环小数。由于浮点数的存储空间有限，这些无限二进制小数必须被截断，从而引入精度误差。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>相比之下，<code>decimal</code> 类型使用十进制存储，可以精确表示十进制小数，因此不会产生类似的精度问题，适合对精度要求高的场景（如财务计算）。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <h2 id="进制与截断">进制与截断</h2>
-<p>decimal 如其名一样是十进制的，而一般的浮点（float/double）是基于二进制（binary floating-point）遵循 IEEE 754 标准的。</p>
+<p>decimal 如其名一样是十进制的，而一般的浮点（float/double）是基于二进制（binary floating-point）遵循 IEEE 754 标准的。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <p>最常见的情况是 0.1 + 0.2 = 0.3 的例子，请参考以下代码示例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.1&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.2&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.3&quot;</span>);</span><br><span class="line">checkFiniteInBinary(<span class="string">&quot;0.5&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> <span class="variable">floatResult</span> <span class="operator">=</span> <span class="number">.1f</span> + <span class="number">.2f</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;floatResult = %.64f\n&quot;</span>, floatResult);</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="variable">doubleResult</span> <span class="operator">=</span> <span class="number">.1</span> + <span class="number">.2</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;doubleResult = %.64f\n&quot;</span>, doubleResult);</span><br><span class="line"></span><br><span class="line"><span class="type">BigDecimal</span> <span class="variable">decimalResult</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.1&quot;</span>).add(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="string">&quot;0.2&quot;</span>));</span><br><span class="line">System.out.printf(<span class="string">&quot;decimalResult = %.64f\n&quot;</span>, decimalResult);</span><br><span class="line"></span><br><span class="line">doubleResult = <span class="number">.2</span> + <span class="number">.3</span>;</span><br><span class="line">System.out.printf(<span class="string">&quot;doubleResult = %.64f\n&quot;</span>, doubleResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">19:53:38: Executing &#x27;:org.ryuu.Main.main()&#x27;…</span><br><span class="line"></span><br><span class="line">Starting Gradle Daemon...</span><br><span class="line">Gradle Daemon started in 1 s 634 ms</span><br><span class="line">&gt; Task :compileJava UP-TO-DATE</span><br><span class="line">&gt; Task :processResources NO-SOURCE</span><br><span class="line">&gt; Task :classes UP-TO-DATE</span><br><span class="line"></span><br><span class="line">&gt; Task :org.ryuu.Main.main()</span><br><span class="line">十进制数0.1在二进制数下不能有限表示。</span><br><span class="line">0.0001100110011001100110011001100110011001100110011001100110011001... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.2在二进制数下不能有限表示。</span><br><span class="line">0.0011001100110011001100110011001100110011001100110011001100110011... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.3在二进制数下不能有限表示。</span><br><span class="line">0.0100110011001100110011001100110011001100110011001100110011001100... (仅显示64位)</span><br><span class="line"></span><br><span class="line">十进制数0.5在二进制数下能有限表示。</span><br><span class="line">0.1</span><br><span class="line"></span><br><span class="line">floatResult = 0.3000000119209289600000000000000000000000000000000000000000000000</span><br><span class="line">doubleResult = 0.3000000000000000400000000000000000000000000000000000000000000000</span><br><span class="line">decimalResult = 0.3000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">doubleResult = 0.5000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 6s</span><br><span class="line">2 actionable tasks: 1 executed, 1 up-to-date</span><br><span class="line">19:53:46: Execution finished &#x27;:org.ryuu.Main.main()&#x27;.</span><br></pre></td></tr></table></figure>
-<p>0.1，0.2这样的数在二进制里类似十进制的1/3(0.3333333…)，是无限循环的。浮点数会将数据截断，因此会丢失精度。</p>
+<p>0.1，0.2这样的数在二进制里类似十进制的1/3(0.3333333…)，是无限循环的。浮点数会将数据截断，因此会丢失精度。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0.1(decimal) = 0.0001100110011001100110011001100110011001100110011001100110011001... (binary)</span><br><span class="line">0.2(decimal) = 0.0011001100110011001100110011001100110011001100110011001100110011... (binary)</span><br></pre></td></tr></table></figure>
 <h2 id="另请参阅">另请参阅</h2>
 <p><a target="_blank" rel="noopener" href="https://github.com/Ryuu-64/learn-float-vs-decimal">github</a> 有完整的示例工程</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>David Goldberg 的经典论文《<a target="_blank" rel="noopener" href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>》说明，有限位表示只能近似覆盖无限多实数，因此多数实数运算结果无法在固定 bit 数中精确表示；其中也专门用 <code>0.1</code> 解释了十进制有限小数在二进制中的不可精确表示。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft C# 官方文档《<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">Floating-point numeric types</a>》把 <code>decimal</code> 定位为适合金融、货币、利率等由小数点右侧位数决定精度的场景，并说明 <code>0.1</code> 可由 <code>decimal</code> 精确表示但不能由 <code>double</code> 或 <code>float</code> 精确表示。Java 的 <code>BigDecimal</code> 官方 API 也将其定义为由任意精度整数 unscaled value 和 32-bit scale 组成的十进制数值类型，见 Oracle Java SE 17《<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html">BigDecimal</a>》。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>IEEE Standards Association 的《<a target="_blank" rel="noopener" href="https://standards.ieee.org/ieee/754/6210/">IEEE 754-2019 - IEEE Standard for Floating-Point Arithmetic</a>》是浮点算术标准入口，说明该标准规定了计算机编程环境中的二进制和十进制浮点交换格式、算术格式和方法。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Goldberg 论文同样指出，<code>0.1</code> 虽然有有限十进制表示，但在二进制中是无限循环表示，因此在以 2 为基数的有限精度浮点中不能被精确表示。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -1514,7 +1804,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 04:26:41" itemprop="dateModified" datetime="2026-07-18T04:26:41+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1533,7 +1823,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>74</span>
+      <span>389</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1551,14 +1841,29 @@ invocationList 在实现细节上并非只读）。</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>如果你想在 Project 视图中定位到当前正在编辑的文件</p>
+          <p>如果你想在 Project 视图中定位到当前正在编辑的文件<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <h3 id="自定义快捷键">自定义快捷键</h3>
 <ol>
-<li>打开 <strong>Settings/Preferences</strong>（<code>Ctrl + Alt + S</code> 或 <code>⌘ Command + ,</code>）。</li>
-<li>选择 <strong>Keymap</strong>。</li>
-<li>搜索 <strong>“Select File in Project View”</strong>。</li>
-<li>给这个动作分配一个你喜欢的快捷键。（我自己用的 <code>alt + shift 1</code>）</li>
+<li>打开 <strong>Settings/Preferences</strong>（<code>Ctrl + Alt + S</code> 或 <code>⌘ Command + ,</code>）。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></li>
+<li>选择 <strong>Keymap</strong>。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></li>
+<li>搜索 <strong>“Select File in Project View”</strong>。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></li>
+<li>给这个动作分配一个你喜欢的快捷键。（我自己用的 <code>alt + shift 1</code>）<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>JetBrains Guide 的 <em>Select Opened File</em> tip 说明，可以用 Project tool window 中的 Select Opened File 图标定位当前文件，也可以用 Select In action；IntelliJ IDEA Project tool window 文档还说明 <code>Always Select Opened File</code> 会自动选中当前编辑器文件：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/guide/java/tips/select-opened-file/">https://www.jetbrains.com/guide/java/tips/select-opened-file/</a>、<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/project-tool-window.html">https://www.jetbrains.com/help/idea/project-tool-window.html</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>JetBrains 的 <em>Configure keyboard shortcuts</em> 文档把添加快捷键的入口放在 Settings dialog 的 Keymap page，并以 <code>Ctrl+Alt+S</code> 作为打开 Settings 的快捷键示例：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html">https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>JetBrains <em>Keymap</em> 文档说明 Keymap 页面用于搜索 shortcuts 和 actions、创建/编辑 keymap，并修改 custom keymap 中 action 关联的快捷键：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/settings-keymap.html">https://www.jetbrains.com/help/idea/settings-keymap.html</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>JetBrains <em>Configure keyboard shortcuts</em> 文档说明，可以在 Keymap 页面通过搜索字段按 action name 查找需要的 action；如果知道快捷键，也可以用 Find Action by Shortcut 反查：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html">https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>JetBrains <em>Configure keyboard shortcuts</em> 文档说明，为 action 添加快捷键时，右键 action 选择 Add Keyboard Shortcut，再输入组合键；如果存在冲突，IDE 会显示 warning，系统或第三方快捷键冲突也应重新分配或禁用：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html">https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -1621,7 +1926,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 01:45:49" itemprop="dateModified" datetime="2026-07-18T01:45:49+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1640,7 +1945,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>230</span>
+      <span>364</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1658,12 +1963,25 @@ invocationList 在实现细节上并非只读）。</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。</p>
-<p>在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：</p>
+          <p>枚举类型 (enum type) 是指由一组固定的常量组成合法值的类型，例如一年中的季节、太阳系中的星星或者一副牌中的花色。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>在 Java 变成语言引入枚举类型之前，通常是用一组 int 常量 来表示枚举类型，其中每一个 int 表示枚举类型的一个成员：<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The int enum pattern - severely deficient!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_FUJI</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_PIPPIN</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">APPLE_GRANNY_SMITH</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_NAVEL</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_TEMPLE</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ORANGE_BLOOD</span> <span class="operator">=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<p>这种方法称作 int 枚举模式 (int enum pattern)，他存在许多不足。int 枚举模式无类型安全性，也无描述性可言。</p>
-<p>例入将 apple 传到需要 orange 的方法中，编译器也不会产生任何警告，还会用 == 操作符对 apple 与 orange 进行比较，甚至更糟：</p>
+<p>这种方法称作 int 枚举模式 (int enum pattern)，他存在许多不足。int 枚举模式无类型安全性，也无描述性可言。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>例入将 apple 传到需要 orange 的方法中，编译器也不会产生任何警告，还会用 == 操作符对 apple 与 orange 进行比较，甚至更糟：<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tasty citrus flavored applesauce!</span></span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> (APPLE_FUJI - ORANGE_TEMPLE) / APPLE_PIPPIN;</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9">§8.9 Enum Classes</a>, defines an enum declaration as a restricted class that defines a small set of named class instances; Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html"><code>java.lang.Enum</code></a>, documents it as the common base class for Java enumeration classes. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 34, frames the recommendation to use enums instead of int constants. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><em>Effective Java</em> Item 34 identifies the int enum pattern and explains why it lacks the type-safety and expressiveness supplied by Java enum types. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>The apple/orange example follows <em>Effective Java</em> Item 34: because both constants are merely <code>int</code> values, the Java type system cannot distinguish the two domains at compile time. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -1726,7 +2044,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 04:42:40" itemprop="dateModified" datetime="2026-07-18T04:42:40+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1745,14 +2063,14 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>265</span>
+      <span>889</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -1764,8 +2082,8 @@ invocationList 在实现细节上并非只读）。</p>
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="简述">简述</h2>
-<p>单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。</p>
-<p>设计模式类型：创建型</p>
+<p>单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>设计模式类型：创建型<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <h2 id="实现">实现</h2>
 <h3 id="1-懒汉-多线程不安全">1.懒汉 多线程不安全</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1780,10 +2098,27 @@ invocationList 在实现细节上并非只读）。</p>
 <h3 id="6-枚举">6.枚举</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="选择">选择</h2>
-<p>不建议使用 1 和 2</p>
-<p>不考虑继承问题使用 6 枚举</p>
-<p>单例是派生类，确定会使用，建议使用 4 饿汉</p>
-<p>单例是派生类，且不确定单例是否会使用，考虑 3 双检锁 或 5 静态内部类</p>
+<p>不建议使用 1 和 2<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>不考虑继承问题使用 6 枚举<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>单例是派生类，确定会使用，建议使用 4 饿汉<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>单例是派生类，且不确定单例是否会使用，考虑 3 双检锁 或 5 静态内部类<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>GoF <em>Design Patterns</em> 把 Singleton 的意图概括为保证一个类只有一个实例，并提供访问该实例的全局访问点；《Effective Java》第 3 条也把 Java Singleton 放在“实例控制”的语境下讨论：<a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610">https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610</a>、<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042">https://www.informit.com/store/effective-java-9780134686042</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>GoF <em>Design Patterns</em> 将 Singleton 归入 Creational Patterns，因为它关注对象创建与实例控制，而不是对象结构或对象间行为协作：<a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610">https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>未同步的懒汉式在多线程下可能让多个线程同时观察到空引用并各自创建实例；<code>synchronized getInstance()</code> 能串行化创建过程，但每次访问都进入同步路径。这里的“不建议”主要对应并发安全和热路径同步成本两个边界，依据 Java 同步语义、JLS 内存模型和 Singleton 创建路径推导：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>《Effective Java》第 3 条推荐单元素枚举作为 Java Singleton 的简洁写法；JLS 规定 enum 类实例由枚举常量定义，反射 API 也禁止通过 <code>Constructor.newInstance</code> 创建 enum 实例，序列化规范对 enum 常量有专门规则：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042">https://www.informit.com/store/effective-java-9780134686042</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Constructor.html#newInstance(java.lang.Object...)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Constructor.html#newInstance(java.lang.Object...)</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants">https://docs.oracle.com/en/java/javase/21/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>饿汉式依赖类初始化期间创建 <code>static final</code> 实例；JLS 的类初始化规则和 <code>static</code> 字段规则说明静态字段属于类变量，并在类初始化过程中完成初始化，因此它适合“确定会使用”的简单单例，但也会把创建时机绑定到类初始化：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.1">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.1</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>双重检查锁在 Java 中必须配合 <code>volatile</code> 字段，依赖可见性和 happens-before 语义避免发布不完整对象；静态内部类 holder 则利用类初始化的延迟触发，首次主动访问 holder 的静态字段时才创建实例。需要普通类形式的延迟单例时，静态 holder 通常比双重检查锁更少手写并发协议：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -1846,7 +2181,7 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:17:53" itemprop="dateModified" datetime="2026-07-17T21:17:53+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 12:50:37" itemprop="dateModified" datetime="2026-07-18T12:50:37+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1865,14 +2200,14 @@ invocationList 在实现细节上并非只读）。</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -1884,15 +2219,15 @@ invocationList 在实现细节上并非只读）。</p>
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="委托是类">委托是类</h2>
-<p><strong>委托是类，C# 提供了 delegate 关键字，使得用户能简单的声明委托</strong>。编译器及 CLR 做了大量的工作来隐藏委托的复杂性。[1]</p>
+<p><strong>委托是类，C# 提供了 delegate 关键字，使得用户能简单的声明委托</strong>。编译器及 CLR 做了大量的工作来隐藏委托的复杂性。[1]<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">internal</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">FeedBack</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span></span>)</span>;</span><br></pre></td></tr></table></figure>
 <p>编译器为如上的委托声明定义一个完整的类：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">FeedBack</span> : <span class="title">System.MulticastDelegate</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 构造器(Constructor)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FeedBack</span>(<span class="params"><span class="built_in">object</span> @<span class="built_in">object</span>, IntPtr method</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 委托调用 [2]</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Invoke</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 委托异步调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> IAsyncResult <span class="title">BeginInvoke</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span>, AsyncCallback asyncCallback, <span class="built_in">object</span> @<span class="built_in">object</span></span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">EndInvoke</span>(<span class="params">IAsyncResult result</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可使用 ILDasm.exe 打开生成的程序集，查看这个自动生成的类。</p>
 <img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/delegate.png" class="" title="delegate">
-<p>编译器定义了 FeedBack 类，其派生自 FCL (Framework Class Library) 中的 System.MulticastDelegate 类 (所有的委托都派生自 MulticastDelegate，MulticastDelegate 派生自 Delegate)。</p>
+<p>编译器定义了 FeedBack 类，其派生自 FCL (Framework Class Library) 中的 System.MulticastDelegate 类 (所有的委托都派生自 MulticastDelegate，MulticastDelegate 派生自 Delegate)。<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup></p>
 <h2 id="MulticastDelegate">MulticastDelegate</h2>
-<p>所有的委托都派生自 MulticastDelegate，所以它们继承了 MulticastDelegate 的字段、属性与方法。在这些成员中，有三个非公共字段是最重要的：</p>
+<p>所有的委托都派生自 MulticastDelegate，所以它们继承了 MulticastDelegate 的字段、属性与方法。在这些成员中，有三个非公共字段是最重要的：<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <table>
 <thead>
 <tr>
@@ -1923,10 +2258,10 @@ invocationList 在实现细节上并非只读）。</p>
 <h2 id="委托链-多播">委托链/多播</h2>
 <p><strong>委托链是委托对象的集合</strong>。</p>
 <h3 id="合并">合并</h3>
-<p>调用 Delegate.Combine(Delegate a, Delegate b) 方法对两个委托进行合并。</p>
+<p>调用 Delegate.Combine(Delegate a, Delegate b) 方法对两个委托进行合并。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fbChain = (Feedback)Delegate.Combine(fbChain, fb1);</span><br></pre></td></tr></table></figure>
 <h3 id="移除">移除</h3>
-<p>调用 Delegate.Remove(Delegate source, Delegate value) 方法对两个委托进行合并。</p>
+<p>调用 Delegate.Remove(Delegate source, Delegate value) 方法对两个委托进行合并。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fbChain = (Feedback)Delegate.Remove(fbChain, fb1);</span><br></pre></td></tr></table></figure>
 <h3 id="原理">原理</h3>
 <p>详情请参阅 <a target="_blank" rel="noopener" href="https://referencesource.microsoft.com/">Reference Source</a>。</p>
@@ -1952,7 +2287,7 @@ invocationList 在实现细节上并非只读）。</p>
 </li>
 </ul>
 <h4 id="Remove">Remove</h4>
-<p>注意，若 Remove 的目标为委托链，则该委托链需为当前操作委托对象委托链的连续子列表。[3]</p>
+<p>注意，若 Remove 的目标为委托链，则该委托链需为当前操作委托对象委托链的连续子列表。[3]<sup class="footnote-ref"><a href="#fn4" id="fnref4:1">[4:1]</a></sup></p>
 <ul>
 <li>若指定需要去除的委托<strong>为空</strong>，直接返回当前委托</li>
 <li>若指定需要去除的委托<strong>不为空</strong>，在当前委托及其委托链中寻找目标委托或目标委托链，剔除并返回
@@ -1966,7 +2301,7 @@ invocationList 在实现细节上并非只读）。</p>
 <p>Microsoft 在刚开始开发 .NET Framework 的时候引入了委托的概念。开发人员在 FCL 中添加类时，凡是有回调方法的地方都定义了新的委托类型。随时间的推移，他们定义的委托越来越多。仅在 MSCorLib.dll 中，就有接近 50 个委托类型，例如：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">TryCode</span>(<span class="params">Object userData</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">WaitCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">TimerCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">ContextCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">SendOrPostCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">ParameterizedThreadStart</span>(<span class="params">Object obj</span>)</span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>以上的示例委托，实际上都是一样的：这些委托引用的方法都是获取一个 Object 返回 void。没有必要定义这么多委托，定义一个就够了。</p>
-<p>现在的 .NET Framework 支持泛型 (C# 2.0 版本引入)，只需要几个泛型委托，就能表示多达16个参数的方法：</p>
+<p>现在的 .NET Framework 支持泛型 (C# 2.0 版本引入)，只需要几个泛型委托，就能表示多达16个参数的方法：<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <ul>
 <li>
 <p>从无参，到至多16个参数，返回值为 void 的 Action 委托：</p>
@@ -1978,19 +2313,19 @@ invocationList 在实现细节上并非只读）。</p>
 </li>
 </ul>
 <p>建议尽量使用以上的委托类型，而不是定义更多的委托类型。这样能减少系统中的类型数量，简化代码。</p>
-<p>但若需使用 ref 或 out 关键字以传递引用的方式传递参数，可能不得自定义委托：</p>
+<p>但若需使用 ref 或 out 关键字以传递引用的方式传递参数，可能不得自定义委托：<sup class="footnote-ref"><a href="#fn5" id="fnref5:1">[5:1]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">Foo</span>(<span class="params"><span class="keyword">ref</span> <span class="built_in">int</span> bar</span>)</span>;</span><br></pre></td></tr></table></figure>
 <h2 id="event-关键字">event 关键字</h2>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/event">event</a> 关键字用于在发布类 (publisher class) 中声明事件。这是一种特殊的多播委托，<strong>仅能从声明事件的类或结构（发布类）中对其进行调用</strong>，否则产生编译器：event 的委托仅能作为 += 或 -= 的左值 (除非在其声明的类或结构中)。 如果其他类或结构订阅该事件，则在发布类引发该事件时，将调用其事件处理程序方法。 有关详细信息和代码示例，请参阅<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/events/">事件</a>和<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/delegates/">委托</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/event">event</a> 关键字用于在发布类 (publisher class) 中声明事件。这是一种特殊的多播委托，<strong>仅能从声明事件的类或结构（发布类）中对其进行调用</strong>，否则产生编译器：event 的委托仅能作为 += 或 -= 的左值 (除非在其声明的类或结构中)。 如果其他类或结构订阅该事件，则在发布类引发该事件时，将调用其事件处理程序方法。 有关详细信息和代码示例，请参阅<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/events/">事件</a>和<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/delegates/">委托</a>。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">event</span> Action action;</span><br></pre></td></tr></table></figure>
 <h2 id="EventHandler">EventHandler</h2>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler?view=net-5.0">EventHandler</a> 委托是一个预定义的委托，专门表示不生成数据的事件的事件处理程序方法。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler?view=net-5.0">EventHandler</a> 委托是一个预定义的委托，专门表示不生成数据的事件的事件处理程序方法。 <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">EventHandler</span>(<span class="params"><span class="built_in">object</span>? sender, EventArgs e</span>)</span>;</span><br></pre></td></tr></table></figure>
-<p>如果事件生成数据，则必须使用泛型 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler-1?view=net-5.0">EventHandler<TEventArgs></a> 委托类。</p>
+<p>如果事件生成数据，则必须使用泛型 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler-1?view=net-5.0">EventHandler<TEventArgs></a> 委托类。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">EventHandler</span>&lt;<span class="title">TEventArgs</span>&gt;(<span class="params"><span class="built_in">object</span>? sender, TEventArgs e</span>)</span>;</span><br></pre></td></tr></table></figure>
 <h2 id="委托的简化语法">委托的简化语法</h2>
 <h3 id="Combine-与-Remove-的简化">Combine 与 Remove  的简化</h3>
-<p>C# 为委托重载 += 调用 Combine ，重载 -= 调用 Remove ，简化了委托链的构造。[4]</p>
+<p>C# 为委托重载 += 调用 Combine ，重载 -= 调用 Remove ，简化了委托链的构造。[4]<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">action1 = (Action) Delegate.Combine(action1, action2);</span><br><span class="line">action1 += action2;</span><br><span class="line">Delegate.Remove(action1, action2);</span><br><span class="line">action1 -= action2;</span><br></pre></td></tr></table></figure>
 <h3 id="不需要显式构造委托对象">不需要显式构造委托对象</h3>
 <p>仅仅是为了指定委托地址就构建一个对象显得有些奇怪，实际上构建委托对象是 CLR 的要求，该对象是包装器，可保证被包装的方法只能以类型安全的方式调用。C# 简化了委托的构建过程，不需要用户显示的使用 new 关键字进行委托的构造。</p>
@@ -2010,20 +2345,20 @@ invocationList 在实现细节上并非只读）。</p>
 <h3 id="不需要定义回调方法-使用-lamdba-表达式">不需要定义回调方法 (使用 lamdba 表达式)</h3>
 <p>不需要因构造委托而定义一个方法：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Action action = PrintAction;</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NOT NEED</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PrintAction</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Action&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以使用 lamdba 表达式简化回调：[5]</p>
+<p>可以使用 lamdba 表达式简化回调：[5]<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Action action = () =&gt; Console.WriteLine(<span class="string">&quot;Action&quot;</span>);</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="局部变量不需要手动包装到类中即可传递给回调方法">局部变量不需要手动包装到类中即可传递给回调方法</h3>
 <p>有时可能希望回调代码引用类中定义的其他成员或方法中的局部参数：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> bar = <span class="number">21</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> foo = <span class="number">21</span>;</span><br><span class="line">        Action action = () =&gt; Console.WriteLine(foo + bar); <span class="comment">// Closure allocation: &#x27;foo&#x27; variable</span></span><br><span class="line">        action.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实际上 lamdba 表达式主体的代码在一个单独的方法中 (CLR 的要求)。C# 通过自动辅助类实现闭包 (closure) [6]。在辅助类中，为需要传递给回调的每个值都定义一个字段。将回调方法定义为其实例方法。</p>
+<p>实际上 lamdba 表达式主体的代码在一个单独的方法中 (CLR 的要求)。C# 通过自动辅助类实现闭包 (closure) [6]<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup>。在辅助类中，为需要传递给回调的每个值都定义一个字段。将回调方法定义为其实例方法。</p>
 <p>构建回调方法实际上也构造了辅助类实例，使用方法中的局部变量的值初始化该实例中的字段，最后构造委托对象并绑定到该辅助对象的实例方法。</p>
 <h2 id="委托与反射">委托与反射</h2>
-<p>开发者可以在不知道回调方法的原型时使用回调。使用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.methodinfo.createdelegate?view=net-5.0">MethodInfo.CreateDelegate</a>，可在编译期不知道委托的所有必要信息的情况下创建委托：</p>
+<p>开发者可以在不知道回调方法的原型时使用回调。使用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.methodinfo.createdelegate?view=net-5.0">MethodInfo.CreateDelegate</a>，可在编译期不知道委托的所有必要信息的情况下创建委托：<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造包含静态方法的委托</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> Delegate <span class="title">CreateDelegate</span> (<span class="params">Type delegateType</span>)</span>;</span><br><span class="line"><span class="comment">// 构造包含实例方法的委托 (target 引用 this 实参)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> Delegate <span class="title">CreateDelegate</span> (<span class="params">Type delegateType, <span class="built_in">object</span>? target</span>)</span>;</span><br></pre></td></tr></table></figure>
 <p>创建完成后可用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.delegate.dynamicinvoke?view=net-5.0">Delegate.DynamicInvoke(Object[])</a> 调用它们：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用委托并传递参数</span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">object</span>? DynamicInvoke (<span class="keyword">params</span> <span class="built_in">object</span>?[]? <span class="keyword">args</span>);</span><br></pre></td></tr></table></figure>
 <p>使用反射 API 获取引用了回调方法的 MethodInfo 对象，调用 CreateDelegate 构造委托 (如果是实例方法则需要传递 target 参数，指定其 this 参数)。</p>
-<p>使用 DynamicInvoke 方法对委托对象的回调方法进行调用。DynamicInvoke 可传递一组参数，其在内部保证传递的参数与回调方法期望的参数兼容，兼容则调用回调方法，否则抛出 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.argumentexception?view=net-5.0">ArgumentException</a>。若参数数不匹配，则抛出 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.targetparametercountexception?view=net-5.0">TargetParameterCountException</a>。</p>
+<p>使用 DynamicInvoke 方法对委托对象的回调方法进行调用。DynamicInvoke 可传递一组参数，其在内部保证传递的参数与回调方法期望的参数兼容，兼容则调用回调方法，否则抛出 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.argumentexception?view=net-5.0">ArgumentException</a>。若参数数不匹配，则抛出 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.targetparametercountexception?view=net-5.0">TargetParameterCountException</a>。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
 <p>示例：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Foo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">StaticMethod</span>()</span> =&gt; Console.WriteLine(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">NonStaticMethod</span>()</span> =&gt; Console.WriteLine(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">MethodWithPara</span>(<span class="params"><span class="built_in">int</span> num</span>)</span> =&gt; Console.WriteLine(num);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Foo delegateReflectionTest = <span class="keyword">new</span> Foo();</span><br><span class="line">        MethodInfo nonStaticMethodInfo = delegateReflectionTest.GetType().GetMethod(<span class="string">&quot;NonStaticMethod&quot;</span>);</span><br><span class="line">        Delegate delegate1 = nonStaticMethodInfo?.CreateDelegate(<span class="keyword">typeof</span>(Action), delegateReflectionTest);</span><br><span class="line">        delegate1?.DynamicInvoke();</span><br><span class="line">        MethodInfo staticMethodInfo = delegateReflectionTest.GetType().GetMethod(<span class="string">&quot;StaticMethod&quot;</span>);</span><br><span class="line">        Delegate delegate2 = staticMethodInfo?.CreateDelegate(<span class="keyword">typeof</span>(Action));</span><br><span class="line">        delegate2?.DynamicInvoke();</span><br><span class="line">        MethodInfo methodInfoWithPara = delegateReflectionTest.GetType().GetMethod(<span class="string">&quot;MethodWithPara&quot;</span>);</span><br><span class="line">        Delegate delegate3 = methodInfoWithPara?.CreateDelegate(<span class="keyword">typeof</span>(Action&lt;<span class="built_in">int</span>&gt;));</span><br><span class="line">        delegate3?.DynamicInvoke(<span class="number">42</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="参阅">参阅</h2>
@@ -2058,6 +2393,38 @@ table th:nth-of-type(3) {
     width: 50%;
 }
 </style>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/delegates">C# language specification - Delegates</a>。用于支撑委托声明、委托类型派生关系、<code>Invoke</code> 调用语义以及委托实例封装调用列表等语言层事实。 <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Jeffrey Richter, <a target="_blank" rel="noopener" href="https://www.microsoftpressstore.com/store/clr-via-c-sharp-9780735668775"><em>CLR via C#, Fourth Edition</em></a>。用于支撑从 CLR 视角理解委托对象、目标方法、调用列表和运行时包装；具体内部字段仍应视为实现细节。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.combine">Delegate.Combine Method</a>。用于支撑 <code>Delegate.Combine</code> 合并 invocation list、返回新委托以及类型不匹配异常的公开 API 语义。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.remove">Delegate.Remove Method</a>。用于支撑 <code>Delegate.Remove</code> 从 invocation list 中移除最后一个匹配委托或匹配委托链的公开 API 语义。 <a href="#fnref4" class="footnote-backref">↩︎</a> <a href="#fnref4:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.action">Action Delegate</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func<TResult> Delegate</a>。用于支撑 .NET 提供通用 <code>Action</code> / <code>Func</code> 委托族，以及这些通用委托不覆盖 <code>ref</code> / <code>out</code> 签名的边界。 <a href="#fnref5" class="footnote-backref">↩︎</a> <a href="#fnref5:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/events/">Events - C# Programming Guide</a>。用于支撑事件的发布者/订阅者模型、事件触发限制和事件处理程序调用语义。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler">EventHandler Delegate</a>。用于支撑无事件数据时 <code>EventHandler</code> 的预定义事件处理器签名。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler<TEventArgs> Delegate</a>。用于支撑携带事件数据时使用泛型 <code>EventHandler&lt;TEventArgs&gt;</code> 的约定。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/addition-operator#delegate-combination">Addition operators - delegate combination</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal">Subtraction operators - delegate removal</a>。用于支撑 <code>+</code> / <code>+=</code> 组合委托和 <code>-</code> / <code>-=</code> 移除委托的语言运算符语义。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions">Lambda expressions and anonymous functions</a>。用于支撑 lambda 表达式可转换为委托并简化回调写法。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions#capture-of-outer-variables-and-variable-scope-in-lambda-expressions">Lambda expressions - capture of outer variables</a>。用于支撑 lambda 捕获外部变量会延长变量生命周期的说法。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.createdelegate">MethodInfo.CreateDelegate Method</a>。用于支撑从反射获得的方法创建指定委托类型，并在实例方法场景绑定目标对象的公开 API 语义。 <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.dynamicinvoke">Delegate.DynamicInvoke Method</a>。用于支撑 <code>DynamicInvoke</code> 的后期绑定调用、参数不匹配和目标方法异常包装等公开 API 行为。 <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
       
     </div>
 
@@ -2119,7 +2486,7 @@ table th:nth-of-type(3) {
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:19:59" itemprop="dateModified" datetime="2026-07-17T21:19:59+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-18 13:00:13" itemprop="dateModified" datetime="2026-07-18T13:00:13+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2138,14 +2505,14 @@ table th:nth-of-type(3) {
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -2156,123 +2523,33 @@ table th:nth-of-type(3) {
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>可能有人认为相比于 ForTest1，ForTest2 存储了数组的 Length，少了对于数组属性的频繁调用，会有更好的性能表现。</p>
+          <p>可能有人认为相比于 ForTest1，ForTest2 存储了数组的 Length，少了对于数组属性的频繁调用，会有更好的性能表现。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">JITPropertyAccessInFor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ForTest1</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; a.Length; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(a[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ForTest2</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">            <span class="built_in">int</span> len = a.Length;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(a[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以下 是 上段代码编译出的 IL code：(以下所述栈均为<strong>操作数栈 (Operand stack)</strong>)</p>
+<p>以下 是 上段代码编译出的 IL code：(以下所述栈均为<strong>操作数栈 (Operand stack)</strong>)<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.<span class="function">method <span class="keyword">private</span> hidebysig <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">ForTest1</span>() cil managed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Code size       30 (0x1e)</span></span><br><span class="line">  .maxstack  <span class="number">2</span> <span class="comment">// 栈最大深度</span></span><br><span class="line">  .<span class="function">locals <span class="title">init</span> (<span class="params">[<span class="number">0</span>] int32[] a, // 变量声明 (局部变量表</span>)</span></span><br><span class="line"><span class="function">           [1] int32 i)</span></span><br><span class="line"><span class="function">  IL_0000:  ldc.i4.5 <span class="comment">// int32 5 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_0001:  newarr     [mscorlib]System.Int32 <span class="comment">// 创建0基一维数组的对象引用入栈</span></span></span><br><span class="line"><span class="function">  IL_0006:  stloc.0 <span class="comment">// 出栈 置于局部变量表0位置 (初始化数组完毕)</span></span></span><br><span class="line"><span class="function">  IL_0007:  ldc.i4.0 <span class="comment">// int32 0 入栈 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_0008:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_0009:  br.s       IL_0017 <span class="comment">// 无条件地将控制转移到目标指令(短格式)(至 for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_000b:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (数组元素入栈)</span></span></span><br><span class="line"><span class="function">  IL_000c:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (i 入栈)</span></span></span><br><span class="line"><span class="function">  IL_000d:  ldelem.i4 <span class="comment">// 按指令指定类型(i4)，将指定数组索引中的元素入栈</span></span></span><br><span class="line"><span class="function">  IL_000e:  call       <span class="keyword">void</span> [mscorlib]System.Console::<span class="title">WriteLine</span>(<span class="params">int32</span>) <span class="comment">// 调用由传递的方法说明符指示的方法 (打印a[i])</span></span></span><br><span class="line"><span class="function">  IL_0013:  ldloc.1 <span class="comment">// 局部变量表1位置变量入计算栈 (i 入栈) (i++ 开始)</span></span></span><br><span class="line"><span class="function">  IL_0014:  ldc.i4.1 <span class="comment">// int32 1 入栈</span></span></span><br><span class="line"><span class="function">  IL_0015:  <span class="keyword">add</span> <span class="comment">// 出栈两次,出栈值相加，结果入栈</span></span></span><br><span class="line"><span class="function">  IL_0016:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (i++ 结束)</span></span></span><br><span class="line"><span class="function">  IL_0017:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (i 入栈) (for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_0018:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (a 入栈,准备获取数组长)</span></span></span><br><span class="line"><span class="function">  IL_0019:  ldlen <span class="comment">// 将0基一维数组的元素数目推送到计算栈上。(数组长入栈)</span></span></span><br><span class="line"><span class="function">  IL_001a:  conv.i4 <span class="comment">// 将栈顶元素转换为 int32 类型</span></span></span><br><span class="line"><span class="function">  IL_001b:  blt.s      IL_000b <span class="comment">// 判断计算栈顶两值大小(计算栈出栈两次，后出栈的是第一个值)。若第一个值小于第二个值，将控制转移到目标指令 (短格式)。</span></span></span><br><span class="line"><span class="function">  IL_001d:  ret <span class="comment">// 从当前方法返回</span></span></span><br><span class="line"><span class="function">&#125; <span class="comment">// end of method Program::ForTest1</span></span></span><br></pre></td></tr></table></figure>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">.<span class="function">method <span class="keyword">private</span> hidebysig <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">ForTest2</span>() cil managed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Code size       32 (0x20)</span></span><br><span class="line">  .maxstack  <span class="number">2</span> <span class="comment">// 栈最大深度</span></span><br><span class="line">  .<span class="function">locals <span class="title">init</span> (<span class="params">[<span class="number">0</span>] int32[] a, // 变量声明 (局部变量表</span>)</span></span><br><span class="line"><span class="function">           [1] int32 len,</span></span><br><span class="line"><span class="function">           [2] int32 i)</span></span><br><span class="line"><span class="function">  IL_0000:  ldc.i4.5 <span class="comment">// int32 5 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_0001:  newarr     [mscorlib]System.Int32 <span class="comment">// 创建0基一维数组的对象引用入栈</span></span></span><br><span class="line"><span class="function">  IL_0006:  stloc.0 <span class="comment">// 出栈 置于局部变量表0位置 (初始化数组完毕)</span></span></span><br><span class="line"><span class="function">  IL_0007:  ldloc.0 <span class="comment">// 局部变量表1位置变量入栈 (a 入栈,准备获取数组长)</span></span></span><br><span class="line"><span class="function">  IL_0008:  ldlen <span class="comment">// 将0基一维数组的元素数目推送到计算栈上。(数组长入栈)</span></span></span><br><span class="line"><span class="function">  IL_0009:  conv.i4 <span class="comment">// 将栈顶元素转换为 int32 类型</span></span></span><br><span class="line"><span class="function">  IL_000a:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (len = a.Length)</span></span></span><br><span class="line"><span class="function">  IL_000b:  ldc.i4.0 <span class="comment">// int32 0 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_000c:  stloc.2 <span class="comment">// 出栈 置于局部变量表2位置 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_000d:  br.s       IL_001b <span class="comment">// 无条件地将控制转移到目标指令(短格式)(至 for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_000f:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (a 入栈)</span></span></span><br><span class="line"><span class="function">  IL_0010:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈)</span></span></span><br><span class="line"><span class="function">  IL_0011:  ldelem.i4 <span class="comment">// 按指令指定类型(i4)，将指定数组索引中的元素入栈</span></span></span><br><span class="line"><span class="function">  IL_0012:  call       <span class="keyword">void</span> [mscorlib]System.Console::<span class="title">WriteLine</span>(<span class="params">int32</span>) <span class="comment">// 调用由传递的方法说明符指示的方法 (打印a[i])</span></span></span><br><span class="line"><span class="function">  IL_0017:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈) (i++ 开始)</span></span></span><br><span class="line"><span class="function">  IL_0018:  ldc.i4.1 <span class="comment">// int32 1 入栈</span></span></span><br><span class="line"><span class="function">  IL_0019:  <span class="keyword">add</span> <span class="comment">// 出栈两次,出栈值相加，结果入栈</span></span></span><br><span class="line"><span class="function">  IL_001a:  stloc.2 <span class="comment">// 出栈 置于局部变量表2位置 (i++ 结束)</span></span></span><br><span class="line"><span class="function">  IL_001b:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈) (for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_001c:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (len 入栈)</span></span></span><br><span class="line"><span class="function">  IL_001d:  blt.s      IL_000f <span class="comment">// 判断计算栈顶两值大小(计算栈出栈两次，后出栈的是第一个值)。若第一个值小于第二个值，将控制转移到目标指令 (短格式)。</span></span></span><br><span class="line"><span class="function">  IL_001f:  ret <span class="comment">// 从当前方法返回</span></span></span><br><span class="line"><span class="function">&#125; <span class="comment">// end of method Program::ForTest2</span></span></span><br></pre></td></tr></table></figure>
-<p>对比上述的 IL code，确实临时存储数组长，能够少在 for 的比较进行中少进行一定的操作，无需将数组从局部变量表(Local Variable Table)入操作数栈 (Operand stack)，并执行 ldlen 获取数组长。 但要注意， JIT 编译器知道 Length 是 Array 类的属性，生成的代码中只会调用该属性一次，结果会存储到临时变量中，此后的检查中调用的都是此临时变量。<strong>不需要自己用局部变量做缓存，这样既没有性能提升，还可能造成可读性下降</strong>。</p>
+<p>对比上述的 IL code，确实临时存储数组长，能够少在 for 的比较进行中少进行一定的操作，无需将数组从局部变量表(Local Variable Table)入操作数栈 (Operand stack)，并执行 ldlen 获取数组长。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> 但要注意， JIT 编译器知道 Length 是 Array 类的属性，生成的代码中只会调用该属性一次，结果会存储到临时变量中，此后的检查中调用的都是此临时变量。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup><strong>不需要自己用局部变量做缓存，这样既没有性能提升，还可能造成可读性下降</strong>。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <h2 id="参阅">参阅</h2>
 <p><em>CLR</em> <em>via</em> C# (第四版) 16.7 数组的内部工作原理</p>
 <h2 id="注释">注释</h2>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe(IL 反汇编程序)</a></p>
 <p>一般，该工具位于 NETFX 4.7.2 Tools 中</p>
 <p>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\x64\ildasm.exe</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/30/Hexo-%E5%BC%95%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%87%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/30/Hexo-%E5%BC%95%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%87%E7%AB%A0/" class="post-title-link" itemprop="url">Hexo-引用自己的文章</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-30 16:47:15" itemprop="dateCreated datePublished" datetime="2021-08-30T16:47:15+08:00">2021-08-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 21:20:00" itemprop="dateModified" datetime="2026-07-17T21:20:00+08:00">2026-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>86</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>文章名称不需要后缀名</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post<span class="emphasis">_link 文章名称 %&#125;</span></span><br></pre></td></tr></table></figure>
-<p>如</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post<span class="emphasis">_link Hello-World %&#125;</span></span><br></pre></td></tr></table></figure>
-<p>文章链接配置位于 _config.yml 中 permalink</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as &#x27;http://yoursite.com/child&#x27; and root as &#x27;/child/&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://yoursite.com</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/arrays">C# arrays</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.array.length">Array.Length Property</a> 支撑数组实例长度是数组自身的稳定事实；因此这里的性能直觉应落在 JIT 是否识别数组循环形状，而不是把 <code>Length</code> 当普通可变属性。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>ECMA-335 <a target="_blank" rel="noopener" href="https://ecma-international.org/publications-and-standards/standards/ecma-335/">Common Language Infrastructure</a> 定义 CIL 指令与运行时模型；Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe</a> 支撑用 ILDASM 查看程序集 IL。IL 能说明编译器输出，但不能直接等同最终机器码性能。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>ECMA-335 定义 <code>ldlen</code> 为读取数组长度的 CIL 指令；这支撑文中从 IL 层面对 <code>ForTest1</code> 与 <code>ForTest2</code> 的比较。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Jeffrey Richter, <a target="_blank" rel="noopener" href="https://www.microsoftpressstore.com/store/clr-via-c-sharp-9780735668775"><em>CLR via C#, Fourth Edition</em></a> 用数组内部工作原理解释数组长度和运行时模型；Microsoft <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/">.NET 5 performance post</a> 也明确讨论 <code>for (int i = 0; i &lt; arr.Length; i++)</code> 这类循环中 JIT 可证明索引不会越界并消除 bounds check。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/">.NET 5</a>、<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/">.NET 8</a>、<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-9/">.NET 9</a> 与 <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-10/">.NET 10</a> performance posts 对 bounds check elimination、range analysis、PGO 和 loop 优化的持续讨论说明：这类微优化依赖目标运行时、Release 构建、JIT 机器码和测量数据。普通数组循环默认保持 <code>i &lt; array.Length</code> 的清晰形状；只有上界昂贵、有副作用、需要快照语义或有测量证据时，才应手动缓存。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -2314,13 +2591,13 @@ table th:nth-of-type(3) {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">139k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:18</span>
+    <span title="站点阅读时长">8:24</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
