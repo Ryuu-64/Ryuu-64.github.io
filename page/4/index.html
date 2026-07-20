@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">87</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,258 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/31/Java-CPU-Branch-Prediction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/31/Java-CPU-Branch-Prediction/" class="post-title-link" itemprop="url">Java-CPU-Branch-Prediction</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-31 19:03:00" itemprop="dateCreated datePublished" datetime="2021-07-31T19:03:00+08:00">2021-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 02:36:52" itemprop="dateModified" datetime="2026-07-18T02:36:52+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">计算机组成原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>631</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">arraySize</span> <span class="operator">=</span> <span class="number">1</span> &lt;&lt; <span class="number">15</span>;</span><br><span class="line">    <span class="type">int</span>[] data = <span class="keyword">new</span> <span class="title class_">int</span>[arraySize];</span><br><span class="line">    <span class="type">Random</span> <span class="variable">rnd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">0</span>; c &lt; arraySize; ++c)</span><br><span class="line">        data[c] = rnd.nextInt() % <span class="number">256</span>;</span><br><span class="line">    </span><br><span class="line">    sum(data, arraySize); <span class="comment">// 2_506_570_100 ns</span></span><br><span class="line">    <span class="comment">// The next sum runs faster after sort</span></span><br><span class="line">    Arrays.sort(data);</span><br><span class="line">    sum(data, arraySize);<span class="comment">// _768_923_900 ns</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[j] &gt;= <span class="number">128</span>)</span><br><span class="line">                sum += array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上的示例初始化一个数组，以 256 的模数进行填充，后对其中大于等于 128 的元素求和。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>见注释结果，排序后的数组执行求和，比不排序的要快的多。这是在执行 if 语句时，CPU 的分支预测导致的。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>通过分支的历史选择记录进行分支预测，若预测命中，则指令能快速的执行；若未命中，则当前执行分支作废，转而执行另一分支 (未命中的预测会损耗性能)：<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>T : 分支预测命中</p>
+<p>F : 分支预测未命中</p>
+<ul>
+<li>
+<p>无序数组：</p>
+<p>-248, 7, -14, 241, 15, 112, 88, 246, 152, -200, 31, 180 …</p>
+<p>F F F T F F F T T F F T</p>
+</li>
+<li>
+<p>有序数组：</p>
+<p>127, 127, 127, 127, 127, 127, 128, 128, 128, 128, 128, 128 …</p>
+<p>F F F F F F T T T T T T</p>
+</li>
+</ul>
+<p>无序数组难以保证预测命中率，而有序数组则极好判断。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>也可通过位运算优化，消除分支判断。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * no if statement in this method</span></span><br><span class="line"><span class="comment"> * use shift operators</span></span><br><span class="line"><span class="comment"> * if positive num : num &gt;&gt; 31 == 0</span></span><br><span class="line"><span class="comment"> * if negative num : num &gt;&gt; 31 == -1</span></span><br><span class="line"><span class="comment"> * ~0 = -1 (ffffffff)</span></span><br><span class="line"><span class="comment"> * ~-1 = 0 (0)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sumAvoidBranchPrediction</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            sum += ~((array[j] - <span class="number">128</span>) &gt;&gt; <span class="number">31</span>) &amp; array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>); <span class="comment">// _606_267_300 ns</span></span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>原始地址：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34056162/article/details/89278427?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.base&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.base">【Java深入学习系列】之CPU的分支预测(Branch Prediction)模型</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array</a></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.17.3">§15.17.3 Remainder Operator</a>, defines Java <code>%</code> as remainder rather than mathematical modulo; Oracle Java SE 21 <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Random.html#nextInt(int)"><code>Random.nextInt(int bound)</code></a> is the API to generate a bounded <code>[0, bound)</code> integer when that is the intended data range. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>The Stack Overflow example <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">“Why is processing a sorted array faster than processing an unsorted array?”</a> is the demonstration source; Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> is the primary vendor source for branch-prediction performance behavior. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> describes branch prediction as a processor optimization and treats mispredicted branches as a performance cost in hot code. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> supports the general claim that predictable branch behavior is easier for the processor than irregular branch behavior; exact results depend on CPU, JVM, data shape, and benchmark method. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.19">§15.19 Shift Operators</a>, defines signed right-shift behavior; branchless arithmetic or bit tricks should still be verified with <a target="_blank" rel="noopener" href="https://openjdk.org/projects/code-tools/jmh/">JMH</a> or equivalent benchmarking before being treated as an optimization. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/30/CSharp-%E5%8F%98%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/30/CSharp-%E5%8F%98%E4%BD%93/" class="post-title-link" itemprop="url">CSharp-变体</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-30 18:14:55" itemprop="dateCreated datePublished" datetime="2021-07-30T18:14:55+08:00">2021-07-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 13:05:56" itemprop="dateModified" datetime="2026-07-18T13:05:56+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>363</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Show you the code.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Variant type parameters could be declared in interfaces or delegates only!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">ICovariant</span>&lt;<span class="keyword">out</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Covariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">ICovariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IContravariant</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Contravariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">IContravariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IInvariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Invariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">IInvariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Covariant</span>(<span class="params"> <span class="comment">/* out */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ICovariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Covariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        ICovariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Covariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can assign &quot;Derived&quot; to &quot;Base&quot;</span></span><br><span class="line">        obj = str;</span><br><span class="line">        str = obj; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Contravariant</span>(<span class="params"> <span class="comment">/* in */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IContravariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Contravariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        IContravariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Contravariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can assign &quot;Base&quot; to &quot;Derived&quot;</span></span><br><span class="line">        str = obj;</span><br><span class="line">        obj = str; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Invariant</span>(<span class="params"> <span class="comment">/* none */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IInvariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Invariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        IInvariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Invariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can&#x27;t do any assign </span></span><br><span class="line">        obj = str; <span class="comment">// error</span></span><br><span class="line">        str = obj; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/generics/covariance-and-contravariance">Covariance and Contravariance in Generics</a> 与 C# language specification <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/interfaces#1923-variant-type-parameter-lists">§19.2.3 Variant type parameter lists</a> 支撑：C# 的变体类型参数只出现在接口和委托类型上，并通过 <code>in</code> / <code>out</code> 标注协变、逆变或不变。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/out-generic-modifier"><code>out</code> generic modifier</a> 说明 <code>out</code> 表示协变类型参数，允许把更派生的类型实参作为更宽泛的泛型接口或委托使用；这对应示例里 <code>ICovariant&lt;string&gt;</code> 可赋值给 <code>ICovariant&lt;object&gt;</code>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-generic-modifier"><code>in</code> generic modifier</a> 说明 <code>in</code> 表示逆变类型参数，允许把更宽泛的类型实参作为更具体的泛型接口或委托使用；这对应示例里 <code>IContravariant&lt;object&gt;</code> 可赋值给 <code>IContravariant&lt;string&gt;</code>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces">Creating Variant Generic Interfaces</a> 与 C# language specification 的 variance conversion 规则共同支撑：未标注 <code>in</code> / <code>out</code> 的类型参数是不变的，变体转换需要满足对应的协变、逆变或恒等转换条件。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1602,322 +1854,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/14/Effective-Java-40%E5%9D%9A%E6%8C%81%E4%BD%BF%E7%94%A8Override%E6%B3%A8%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/14/Effective-Java-40%E5%9D%9A%E6%8C%81%E4%BD%BF%E7%94%A8Override%E6%B3%A8%E8%A7%A3/" class="post-title-link" itemprop="url">Effective-Java-40坚持使用Override注解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-14 13:24:41" itemprop="dateCreated datePublished" datetime="2021-07-14T13:24:41+08:00">2021-07-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 01:42:37" itemprop="dateModified" datetime="2026-07-18T01:42:37+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>719</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Java 类库中包含了几种注解类型。一般来说，其中最重要的是 @Override 注解。该注解仅能用于方法声明，表示被注解的方法声明覆盖了超类中的一个方法声明。坚持使用该注解，可以防止一大类的非法错误。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>请看代码段</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Can you spot the bug?</span></span><br><span class="line"><span class="comment"> * result: 260</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Bigram</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">char</span> first;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">char</span> second;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Bigram</span><span class="params">(<span class="type">char</span> first, <span class="type">char</span> second)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.first = first;</span><br><span class="line">        <span class="built_in">this</span>.second = second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Bigram b)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> first == b.first &amp;&amp; second == b.second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">31</span> * first + second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        Set&lt;Bigram&gt; s = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="string">&#x27;a&#x27;</span>; ch &lt;= <span class="string">&#x27;z&#x27;</span>; ch++) &#123;</span><br><span class="line">                s.add(<span class="keyword">new</span> <span class="title class_">Bigram</span>(ch, ch));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(s.size());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>该程序将反复的把 26 个双字母组合添加进集合中 (每个字母组合都由两个相同的小写字母组成)，随后打印该集合的大小。结果见注释，期望的结果是 26 ，因为存在重复添加相同字母组合的情况。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>显然 Bigram 类的创建者原本想覆盖 equals 方法(见第10条)，同时还记得覆盖 hashCode。实际上 equals 没有被重写，而是被重载了。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>重写 Object.equals 必须定义一个参数为 Object 类型的 equals 方法，但Bigram 类中定义的是 Bigram 类型，因此 Bigram 类从Object 类继承了equals ，该 equals 比较对象的同一性 (identity)，就像 == 操作符一样。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>所以对于每一个 bigram 的重复添加，都被看做是不同的，这就是结果为 260 的原因。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>幸运的是，编译器可以可以帮助你发现这个错误，但是需要告知编译器想要重写 Object.equals才行。用 @Override 标注Bigram.equals，如下<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">* Error: Method does not override method from its superclass</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Bigram b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> first == b.first &amp;&amp; second == b.second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果插入这个注解，会发现错误信息。将其改正为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Bigram))</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">Bigram</span> <span class="variable">b</span> <span class="operator">=</span> (Bigram) o;</span><br><span class="line">    <span class="keyword">return</span> first == b.first &amp;&amp; second == b.second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因此，应<strong>在想要重写超类声明的每个方法中使用 Override 注解</strong>。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Override.html"><code>java.lang.Override</code></a>, defines <code>@Override</code> as a method-declaration annotation and specifies the compiler error condition when the annotated method does not override, implement, or match an <code>Object</code> public method. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 40, uses the Bigram example to motivate consistent use of <code>@Override</code>. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.2">§8.4.2 Method Signature</a> and <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.8.1">§8.4.8.1 Overriding</a>, distinguish methods by name and parameter types and define when an instance method overrides another. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)"><code>Object.equals(Object)</code></a>, documents that the default implementation uses reference equality, equivalent to <code>==</code> for non-null references. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashSet.html"><code>HashSet</code></a>, documents a hash-table-backed <code>Set</code>; together with <code>Object.equals(Object)</code> and <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()"><code>Object.hashCode()</code></a>, this supports why distinct Bigram instances remain distinct when <code>equals(Object)</code> is not actually overridden. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Override.html"><code>java.lang.Override</code></a>, requires compilers to report an error when an annotated method does not meet one of the permitted override/implementation conditions. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p><em>Effective Java</em> Item 40 gives the practice rule to use <code>@Override</code> consistently; Error Prone, <a target="_blank" rel="noopener" href="https://errorprone.info/bugpattern/MissingOverride"><code>MissingOverride</code></a>, shows the same rule encoded as a static-analysis check. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/09/Java-%E5%88%86%E6%B4%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/09/Java-%E5%88%86%E6%B4%BE/" class="post-title-link" itemprop="url">Java-分派</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-09 14:42:31" itemprop="dateCreated datePublished" datetime="2021-07-09T14:42:31+08:00">2021-07-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 14:32:08" itemprop="dateModified" datetime="2026-07-18T14:32:08+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>15 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Java 是一门面向对象的程序语言，Java 具备面向对象的3个基本特征：封装、继承与多态。分派调用过程将会解释多态性特征的一些最基本的体现，如 Java 虚拟机如何实现 “重载” 和 &quot;重写”。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<h3 id="静态分派">静态分派</h3>
-<p>“分派” (Dispatch) 本身就带有动态性，一般不应用在静态语境中，在英文原版的 《Java 虚拟机规范》和《Java 语言规范》里的说法都是 “Method Overload Resolution”，实际应当归于 “解析”。但许多翻译的中文资料将其称为 “静态分派”。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>为解释静态分派与重载 (Overload)，请看如下代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * hello, guy!</span></span><br><span class="line"><span class="comment"> * hello, guy!</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StaticDispatch</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br><span class="line">        <span class="type">Human</span> <span class="variable">woman</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line">        <span class="type">StaticDispatch</span> <span class="variable">sd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StaticDispatch</span>();</span><br><span class="line">        sd.sayHello(man);</span><br><span class="line">        sd.sayHello(woman);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Man</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Woman</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">(Human guy)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello, guy!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">(Man guy)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello, gentleman!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">(Woman guy)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello, lady!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>相信对 Java 稍有了解的程序员看完代码后都能判断出正确的结果。但为何虚拟机会选择执行参数为 Human 的重载呢？首先需要弄清两个关键概念：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br></pre></td></tr></table></figure>
-<p>以上代码中的 “Human” 称为变量的 “静态类型” (Static Type)，或者叫做 “外观类型” (Apparent Type)，后面的 “Man” 则被称为变量的 “实际类型” (Actual Type) 或者叫 “运行时类型” (Runtime Type)。外观类型和实际类型在程序中都可能会发生变化，区别是外观类型的变化仅仅在使用时发生，变量本身的外观类型不会改变，并且最终的外观类型在编译期是可知的；而实际类型变化的结果在运行期才可以确定，编译器在编译程序的时候并不知道一个对象的实际类型是什么。</p>
-<p>不妨通过以下代码解释</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实际类型变化</span></span><br><span class="line"><span class="type">Human</span> <span class="variable">human</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextBoolean() ? <span class="keyword">new</span> <span class="title class_">Man</span>() : <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 外观类型变化</span></span><br><span class="line">sd.sayHello((Man) human);</span><br><span class="line">sd.sayHello((Woman) human);</span><br></pre></td></tr></table></figure>
-<p>human 的实际类型是可变的 (根据 nextBoolean() 的值决定)，编译期是不可知的，必须等到运行时才可以确定。human 的外观类型是 Human，可以在使用时临时改变类型，但这种改变在编译期是可知的，两次 sayHello 的调用，在编译期完全可以明确是 Man 还是 Women。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p>回到最先的代码 main 中两次调用 sd.sayHello ，此时调用哪个重载版本完全取决于传入参数的数据类型。代码中定义了两个实际类型不同，外观类型却相同的对象。虚拟机 (准确的来说是编译器) 重载时是通过参数的外观类型而不是实际类型作为判定依据的。外观类型在编译期可知，在编译阶段 Javac 编译器根据参数的外观类型决定了使用哪个重载版本，因此选择了 sayHello(Human) 作为调用的目标，并将这个方法的符号引用写到 main 里的两条invokevirtual 指令的参数中，如下反汇编的 26: 与 31:。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// javap -c 反汇编</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: <span class="keyword">new</span>           #<span class="number">7</span>                  <span class="comment">// class StaticDispatch$Man</span></span><br><span class="line">       <span class="number">3</span>: dup</span><br><span class="line">       <span class="number">4</span>: invokespecial #<span class="number">9</span>                  <span class="comment">// Method StaticDispatch$Man.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">       <span class="number">7</span>: astore_1</span><br><span class="line">       <span class="number">8</span>: <span class="keyword">new</span>           #<span class="number">10</span>                 <span class="comment">// class StaticDispatch$Woman</span></span><br><span class="line">      <span class="number">11</span>: dup</span><br><span class="line">      <span class="number">12</span>: invokespecial #<span class="number">12</span>                 <span class="comment">// Method StaticDispatch$Woman.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">15</span>: astore_2</span><br><span class="line">      <span class="number">16</span>: <span class="keyword">new</span>           #<span class="number">13</span>                 <span class="comment">// class StaticDispatch</span></span><br><span class="line">      <span class="number">19</span>: dup</span><br><span class="line">      <span class="number">20</span>: invokespecial #<span class="number">15</span>                 <span class="comment">// Method &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">23</span>: astore_3</span><br><span class="line">      <span class="number">24</span>: aload_3</span><br><span class="line">      <span class="number">25</span>: aload_1</span><br><span class="line">      <span class="number">26</span>: invokevirtual #<span class="number">16</span>                 <span class="comment">// Method sayHello:(LStaticDispatch$Human;)V</span></span><br><span class="line">      <span class="number">29</span>: aload_3</span><br><span class="line">      <span class="number">30</span>: aload_2</span><br><span class="line">      <span class="number">31</span>: invokevirtual #<span class="number">16</span>                 <span class="comment">// Method sayHello:(LStaticDispatch$Human;)V</span></span><br><span class="line">      <span class="number">34</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
-<p>**<em>所有依赖外观类型来决定方法执行版本的分派动作，都称为静态分派。<em><strong>静态分派最典型的应用表现就是方法的重载。<strong>静态分派发生在编译阶段</strong>，因此确定静态分派的动作实际上</strong>不是由虚拟机来执行</em></em>，这也是一些资料选择把静态分派归于 “解析” 而不是 “分派” 的原因。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>(未完待续)</p>
-<h3 id="动态分派">动态分派</h3>
-<p>动态分派与 Java 语言动态性的另一重要体现 —— 重写 (Override) 有着很密切的关联。请看如下代码段</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * man say hello</span></span><br><span class="line"><span class="comment"> * woman say hello</span></span><br><span class="line"><span class="comment"> * woman say hello</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StaticDispatch</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br><span class="line">        <span class="type">Human</span> <span class="variable">woman</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line">        man.sayHello();</span><br><span class="line">        woman.sayHello();</span><br><span class="line">        man = <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br><span class="line">        man.sayHello();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Man</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;man say hello&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Woman</span> <span class="keyword">extends</span> <span class="title class_">Human</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;woman say hello&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对于习惯了面向对象的 Java 程序员来说，运行结果正如预期。但 Java 虚拟机是如何判断应该调用哪个方法的？</p>
-<p>显然这里的选择调用的方法不可能再根据外观类型来决定。因为该实例的两个对象外观类型都是 Human 产生了不同的行为。man 在两次调用中还执行了两个不同的方法。原因很明显，因为这两个变量的实际类型不同。</p>
-<p>Java 是如何根据实际类型来分派方法执行的版本的呢？请看如下代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: <span class="keyword">new</span>           #<span class="number">7</span>                  <span class="comment">// class dispatch/DynamicDispatch$Man</span></span><br><span class="line">       <span class="number">3</span>: dup</span><br><span class="line">       <span class="number">4</span>: invokespecial #<span class="number">9</span>                  <span class="comment">// Method dispatch/DynamicDispatch$Man.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">       <span class="number">7</span>: astore_1</span><br><span class="line">       <span class="number">8</span>: <span class="keyword">new</span>           #<span class="number">10</span>                 <span class="comment">// class dispatch/DynamicDispatch$Woman</span></span><br><span class="line">      <span class="number">11</span>: dup</span><br><span class="line">      <span class="number">12</span>: invokespecial #<span class="number">12</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Woman.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">15</span>: astore_2</span><br><span class="line">      <span class="number">16</span>: aload_1</span><br><span class="line">      <span class="number">17</span>: invokevirtual #<span class="number">13</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Human.sayHello:()V</span></span><br><span class="line">      <span class="number">20</span>: aload_2</span><br><span class="line">      <span class="number">21</span>: invokevirtual #<span class="number">13</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Human.sayHello:()V</span></span><br><span class="line">      <span class="number">24</span>: <span class="keyword">new</span>           #<span class="number">10</span>                 <span class="comment">// class dispatch/DynamicDispatch$Woman</span></span><br><span class="line">      <span class="number">27</span>: dup</span><br><span class="line">      <span class="number">28</span>: invokespecial #<span class="number">12</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Woman.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">      <span class="number">31</span>: astore_1</span><br><span class="line">      <span class="number">32</span>: aload_1</span><br><span class="line">      <span class="number">33</span>: invokevirtual #<span class="number">13</span>                 <span class="comment">// Method dispatch/DynamicDispatch$Human.sayHello:()V</span></span><br><span class="line">      <span class="number">36</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
-<p>0 ~ 15 行是准备动作，建立 man 和 woman 的内存空间、调用 Man 和 Woman 类型的实例构造器，将这个实例引用存放到第 1、2 个局部变量表的变量槽中，这些动作实际对应以下的 Java 源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Human</span> <span class="variable">man</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Man</span>();</span><br><span class="line"><span class="type">Human</span> <span class="variable">woman</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Woman</span>();</span><br></pre></td></tr></table></figure>
-<p>16 ~ 21 的 aload 指令分别把刚刚创建的两个对象的引用压到栈顶，这两个对象是执行 sayHello 的所有者，称为接收者 (Receiver)；17 和 21 行是方法调用指令，这两条调用指令单从字节码角度来看，无论是指令(都是 invokevirtual) 还是参数 ( 都是常量池中第 22 项的常量，注释显示了这个常量是 Human.sayHello 的符号引用) 都完全一样，但是这两句指令最终执行的目标方法并不相同。解决问题的关键必须从 invokevirtual 指令本身入手，要弄清楚它是如何确定调用方法版本、如何实现多态查找来着手分析才行。</p>
-<p>根据 《Java 虚拟机规范》，invokevirtual 指令的运行时解析过程大致分为以下几个部分：<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<ol>
-<li>
-<p>找到操作数栈顶的第一个元素所指向的对象的<strong>实际类型</strong>，记作 C</p>
-</li>
-<li>
-<p>如果在类型 C 中找到与常量中的描述符和简单名称都相符的方法，则进行访问权限校验，</p>
-<p>如果通过则返回这个方法的直接引用，查找过程结束；</p>
-<p>不通过则返回 java.lang.IllegalAccessError 异常。</p>
-</li>
-<li>
-<p>否则，按继承关系自下而上依次对 C 的各个父类进行第二步的搜索及验证。</p>
-</li>
-<li>
-<p>若始终没有合适的方法，抛出 java.lang.AbstractMethodError 异常。</p>
-</li>
-</ol>
-<p>正是因为 invokevirtual 指令执行的第一步就是在运行期确定接收者的实际类型，所以两次调用中的 invokevirtual 指令并不是把常量池中方法的符号引用解析到直接引用上就结束了，还会根据方法接收者的实际类型来选择方法版本，这个过程就是 Java 语言中方法重写的本质。<strong>这种在运行期根据实际类型确定方法执行版本的分派过程称为动态分派</strong>。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<p>这种多态性的根源在于虚方法调用指令 invokevirtual 的执行逻辑，所以这只会对方法有效，对字段无效，因为字段不使用这条指令。<strong>在 Java 中只有虚方法存在，没有虚字段</strong>。字段永远不参与多态，哪个类的方法访问某个名字的的字段时，该名字指的就是这个类能看到的那个字段。当子类声明了与父类同名的字段时，虽然在子类的内存中两个字段都会存在，但子类的字段会遮蔽父类的同名字段。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
-<p>请看如下代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * I&#x27;m Son, I have $0</span></span><br><span class="line"><span class="comment"> * I&#x27;m Son, I have $4</span></span><br><span class="line"><span class="comment"> * This guy has $2</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FieldHasNoPolymorphic</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Father</span> <span class="variable">guy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Son</span>();</span><br><span class="line">        System.out.println(<span class="string">&quot;This guy has $&quot;</span> + guy.money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="variable">money</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Father</span><span class="params">()</span> &#123;</span><br><span class="line">            money = <span class="number">2</span>;</span><br><span class="line">            showMeTheMoney();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showMeTheMoney</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;I&#x27;m Father, I have $&quot;</span> + money);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Son</span> <span class="keyword">extends</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="variable">money</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Son</span><span class="params">()</span> &#123;</span><br><span class="line">            money = <span class="number">4</span>;</span><br><span class="line">            showMeTheMoney();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showMeTheMoney</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;I&#x27;m Son, I have $&quot;</span> + money);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出的两句都是 “I’m Son”，因为 Son 类在创建的时候，首先隐式调用了 Father 的构造函数，而 Father 构造函数中对 showMeTheMoney 的调用是一次虚方法的调用，执行的版本是 Son::showMeTheMoney 方法，所以输出的是 “I’m Son”。虽然父类的 money 已经初始化成 2，但 Son::showMeTheMoney 方法中访问的是子类的 money，这里的结果是 0，因为它要到子类的构造函数执行时才会被初始化。之后子类构造方法执行输出 4，main 的最后一句通过外观类型访问到了父类中的 money，输出 2。</p>
-<h3 id="单分派与多分派">单分派与多分派</h3>
-<p>方法的接收者与方法的参数统称为方法的宗量，该定义最早出现在《Java 与模式》。根据分派基于多少种宗量，可将分派划分为单分派和多分派两种。单分派是根据一个宗量对目标方法进行选择，多分派则是根据多于一个宗量对目标方法进行选择。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * father choose 360</span></span><br><span class="line"><span class="comment"> * son choose qq</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dispatch</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Father</span> <span class="variable">father</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Father</span>();</span><br><span class="line">        father.hardChoice(<span class="keyword">new</span> <span class="title class_">_360</span>());</span><br><span class="line">        <span class="type">Father</span> <span class="variable">son</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Son</span>();</span><br><span class="line">        son.hardChoice(<span class="keyword">new</span> <span class="title class_">QQ</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">QQ</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">_360</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(QQ arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;father choose qq&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(_360 arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;father choose 360&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Son</span> <span class="keyword">extends</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(QQ arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;son choose qq&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hardChoice</span><span class="params">(_360 arg)</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;son choose 360&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这两次 hardChoice 的结果已在注释标注，重点是编译阶段中编译器的静态分派过程。选择目标方法的依据有两点：一是外观类型是 Father 还是 Son，二是方法参数是 QQ 还是 360.这次选择结果的最终产物是产生了两条 invokevirtual 指令，两条指令的参数分别为常量池中指向 Father::hardChoice(360) 及 Father::hardChoice(QQ) 方法的符号引用。因为是根据两个宗量进行选择，所以 <strong>Java 语言的静态分派属于多分派类型</strong>。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
-<p>再看运行阶段中虚拟机的动态分派的过程。在执行 “son.hardChoice(new QQ());”，也就是指对应的 invokevirtual 指令时，由于编译期已经决定目标方法的签名必须为 hardChoice(QQ) ，虚拟机不管关心此时传递过来的参数到底是什么，因为其外观类型、实际类型都不会对选择构成任何影响，唯一可以影响虚拟机的该方法接受者的实际类型是 Father 还是 Son。因为只有一个宗量作为选择的依据，所以 <strong>Java 语言的动态分派属于单分派类型</strong>。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
-<p>根据上述论证，如今的 Java 语言是一门静态多分派、动态单分派的语言。强调如今是因为这个结论未必会一直保持。 C# 3.0 及之前的版本与 Java 一样是动态单分派语言，但在 C# 4.0 加入dynamic 类型后，就可以很方便的实现多分派。JDK 10 时 Java 语言出现新关键字 var，但请不要将其与 C# dynamic 混淆，实际上 Java var 对应的是 C# var。它们与 dynamic 有本质区别：var 是在编译时根据声明语句的右侧表达式类型进行静态推断的，本质上这是一种语法糖(见 Effective-CSharp-1优先使用隐式类型的局部变量)；而 dynamic 在编译时完全不关心类型是什么，等到运行的时候再做类型判断。 与 C# dynamic 功能<strong>相近</strong>的是 JDK 9 时通过 JEP 276 引入的 jdk.dynalink 模块，使用 jdk.dynalink 可以实现在表达式中使用动态类型，Javac 编译器可以将其操作翻译为 invokedynamic 指令的调用点。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
-<h3 id="虚拟机动态分派实现">虚拟机动态分派实现</h3>
-<p>前文介绍的分派过程，作为对于 Java 虚拟机概念模型的解释已基本足够了，明确的解释了虚拟机在分派时会做什么这个问题。但要问 Java 虚拟机 “具体如何做到”，答案则可能因虚拟机的实现而不同而有差别。</p>
-<p>动态分派是执行非常频繁的动作，且动态分派的方法版本选择过程需要运行时在接收者类型的方法元数据中搜索合适的目标方法。因此， Java 虚拟机实现基于执行性能的顾虑，真正运行时一般不会如此频繁地去反复搜索类型元数据，面对这种情况，一种基础且常见的优化手段是为类型在方注区中建立一个虚方法表（Virtual Method Table，也称为 vtable，与此对应的、在 invokeinterface 执行时也会用到接口方法表 —— Interface Method Table，简称 itable)，使用虚方法表索引代替元数据查找以提高性能。<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
-<p>虚方法表中存放着各个方法的实际入口地址。如果某个方法在子类中没有被重写，子类的虚方法表中的地址入口将与父类相同方法的入口地址一致，都是指向父类的实现入口。如果子类重写了这个方法，子类虚方法表中的地址则会被替换为指向子类实现版本的入口地址。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
-<p>为了程序实现方便，拥有相同签名的方法，在父类、子类的虚方法表中都应当具有一样的索引序号，这样当类型变换时，仅需要变更查找的虚方法表，就可以从不同的虚方法表中按索引转换出所需的入口地址。虚方法表一般在类加载的连接阶段进行初始化，准备了类的变量初始值后，虚拟机会把该类的虚方法表也一同初始化完毕。</p>
-<p>上述的查虚方法表是分派调用的一种优化手段，由于 Java 对象里面的方法默认 (即不使用 final) 就是虚方法，虚拟机除了使用虚方法表之外，为了进一步提高性能，还会用类型继承关系分析 (Class Hierarchy Analysis，CHA)、守护内联 (Guarded Inlining)、内存缓存 (Inline Cache) 等多种非稳定的激进优化来争取更大的性能空间。</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12">§15.12 Method Invocation Expressions</a>, separates compile-time method selection from run-time method invocation behavior. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2">§15.12.2 Compile-Time Step 2: Determine Method Signature</a>, uses overload-resolution terminology for compile-time method selection. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2">§15.12.2</a>, resolves overloaded methods from compile-time types, while <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.4">§15.12.4</a> covers run-time evaluation. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2">§15.12.2</a>, specifies that compile-time overload resolution determines the method signature before execution. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>This is the article’s learning-model term; the normative sources are JLS method invocation and overload-resolution rules, especially <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2">§15.12.2</a>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>Java Virtual Machine Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.invokevirtual"><code>invokevirtual</code></a>, defines the run-time lookup behavior for virtual method invocation. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.8.1">§8.4.8.1 Overriding by Instance Methods</a>, defines overriding; JVMS SE 21 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.invokevirtual"><code>invokevirtual</code></a> defines the corresponding run-time method lookup. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn8" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.11.1">§15.11.1 Field Access Using a Primary</a>, specifies that field access depends on the compile-time type, not dynamic dispatch. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn9" class="footnote-item"><p>This “static multi-dispatch” description is a teaching model over JLS <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2">§15.12.2</a>, because overload resolution considers the compile-time receiver and argument types. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn10" class="footnote-item"><p>This “dynamic single-dispatch” description follows JVMS <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.invokevirtual"><code>invokevirtual</code></a>: after the signature is fixed, run-time lookup is driven by the receiver class. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn11" class="footnote-item"><p>JEP 286, <a target="_blank" rel="noopener" href="https://openjdk.org/jeps/286">Local-Variable Type Inference</a>, defines Java <code>var</code> as static local-variable inference; Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic">Using type dynamic</a>, documents C# <code>dynamic</code>; JVMS SE 21 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.invokedynamic"><code>invokedynamic</code></a> and JEP 276, <a target="_blank" rel="noopener" href="https://openjdk.org/jeps/276">Dynamic Linking of Language-Defined Object Models</a>, define the dynamic call-site infrastructure. <a href="#fnref11" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn12" class="footnote-item"><p>JVMS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-1.html#jvms-1.2">§1.2 The Java Virtual Machine</a>, defines the JVM as an abstract machine; vtables, itables, CHA, guarded inlining, and inline caches are implementation strategies rather than Java language semantics. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn13" class="footnote-item"><p>OpenJDK HotSpot Wiki, <a target="_blank" rel="noopener" href="https://wiki.openjdk.org/display/HotSpot/VirtualCalls">VirtualCalls</a> and <a target="_blank" rel="noopener" href="https://wiki.openjdk.org/display/HotSpot/InterfaceCalls">InterfaceCalls</a>, describes HotSpot-style vtable and itable dispatch mechanics; OpenJDK source such as <a target="_blank" rel="noopener" href="https://github.com/openjdk/jdk/blob/master/src/hotspot/share/oops/klassVtable.cpp"><code>klassVtable.cpp</code></a> shows these as implementation structures rather than language-level guarantees. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1941,13 +1877,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">149k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:38</span>
+    <span title="站点阅读时长">9:04</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

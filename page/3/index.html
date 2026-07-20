@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">87</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,448 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/10/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/10/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">单例模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-10 22:03:20" itemprop="dateCreated datePublished" datetime="2022-08-10T22:03:20+08:00">2022-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 04:42:40" itemprop="dateModified" datetime="2026-07-18T04:42:40+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>889</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="简述">简述</h2>
+<p>单例 (Singleton) 模式提供一个可以全局访问的实例，并保证该类仅有一个实例。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>设计模式类型：创建型<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<h2 id="实现">实现</h2>
+<h3 id="1-懒汉-多线程不安全">1.懒汉 多线程不安全</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-懒汉-多线程安全">2.懒汉 多线程安全</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-双检锁">3.双检锁</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getSingleton</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">                    singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-饿汉">4.饿汉</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-静态内部类">5.静态内部类</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-枚举">6.枚举</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="选择">选择</h2>
+<p>不建议使用 1 和 2<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>不考虑继承问题使用 6 枚举<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>单例是派生类，确定会使用，建议使用 4 饿汉<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>单例是派生类，且不确定单例是否会使用，考虑 3 双检锁 或 5 静态内部类<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>GoF <em>Design Patterns</em> 把 Singleton 的意图概括为保证一个类只有一个实例，并提供访问该实例的全局访问点；《Effective Java》第 3 条也把 Java Singleton 放在“实例控制”的语境下讨论：<a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610">https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610</a>、<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042">https://www.informit.com/store/effective-java-9780134686042</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>GoF <em>Design Patterns</em> 将 Singleton 归入 Creational Patterns，因为它关注对象创建与实例控制，而不是对象结构或对象间行为协作：<a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610">https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>未同步的懒汉式在多线程下可能让多个线程同时观察到空引用并各自创建实例；<code>synchronized getInstance()</code> 能串行化创建过程，但每次访问都进入同步路径。这里的“不建议”主要对应并发安全和热路径同步成本两个边界，依据 Java 同步语义、JLS 内存模型和 Singleton 创建路径推导：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>《Effective Java》第 3 条推荐单元素枚举作为 Java Singleton 的简洁写法；JLS 规定 enum 类实例由枚举常量定义，反射 API 也禁止通过 <code>Constructor.newInstance</code> 创建 enum 实例，序列化规范对 enum 常量有专门规则：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686042">https://www.informit.com/store/effective-java-9780134686042</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.9</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Constructor.html#newInstance(java.lang.Object...)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/Constructor.html#newInstance(java.lang.Object...)</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants">https://docs.oracle.com/en/java/javase/21/docs/specs/serialization/serial-arch.html#serialization-of-enum-constants</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>饿汉式依赖类初始化期间创建 <code>static final</code> 实例；JLS 的类初始化规则和 <code>static</code> 字段规则说明静态字段属于类变量，并在类初始化过程中完成初始化，因此它适合“确定会使用”的简单单例，但也会把创建时机绑定到类初始化：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.1">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.1</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>双重检查锁在 Java 中必须配合 <code>volatile</code> 字段，依赖可见性和 happens-before 语义避免发布不完整对象；静态内部类 holder 则利用类初始化的延迟触发，首次主动访问 holder 的静态字段时才创建实例。需要普通类形式的延迟单例时，静态 holder 通常比双重检查锁更少手写并发协议：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4">https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/02/CSharp-%E5%A7%94%E6%89%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/" class="post-title-link" itemprop="url">CSharp-委托</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-02 20:45:44" itemprop="dateCreated datePublished" datetime="2021-09-02T20:45:44+08:00">2021-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 12:50:37" itemprop="dateModified" datetime="2026-07-18T12:50:37+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="委托是类">委托是类</h2>
+<p><strong>委托是类，C# 提供了 delegate 关键字，使得用户能简单的声明委托</strong>。编译器及 CLR 做了大量的工作来隐藏委托的复杂性。[1]<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">internal</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">FeedBack</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span></span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>编译器为如上的委托声明定义一个完整的类：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">FeedBack</span> : <span class="title">System.MulticastDelegate</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 构造器(Constructor)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FeedBack</span>(<span class="params"><span class="built_in">object</span> @<span class="built_in">object</span>, IntPtr method</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 委托调用 [2]</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Invoke</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 委托异步调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> IAsyncResult <span class="title">BeginInvoke</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span>, AsyncCallback asyncCallback, <span class="built_in">object</span> @<span class="built_in">object</span></span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">EndInvoke</span>(<span class="params">IAsyncResult result</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可使用 ILDasm.exe 打开生成的程序集，查看这个自动生成的类。</p>
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/delegate.png" class="" title="delegate">
+<p>编译器定义了 FeedBack 类，其派生自 FCL (Framework Class Library) 中的 System.MulticastDelegate 类 (所有的委托都派生自 MulticastDelegate，MulticastDelegate 派生自 Delegate)。<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup></p>
+<h2 id="MulticastDelegate">MulticastDelegate</h2>
+<p>所有的委托都派生自 MulticastDelegate，所以它们继承了 MulticastDelegate 的字段、属性与方法。在这些成员中，有三个非公共字段是最重要的：<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_target (Delegate 类的字段)</td>
+<td>System.Object</td>
+<td>若委托对象包装静态方法时，此字段为 null<br />若委托对象包装实例方法时，此字段引用回调方法需要操作的对象 (实例方法所在的对象)</td>
+</tr>
+<tr>
+<td>_methodPtr (Delegate 类的字段)</td>
+<td>System.IntPtr</td>
+<td>根据平台而定的整数类型 (所以上文 ILDasm 中的显示是 native int)，CLR 使用它标记需要回调的方法</td>
+</tr>
+<tr>
+<td>_invocationList</td>
+<td>System.Object</td>
+<td>此字段通常为 null。构造委托链时，引用一个委托数组</td>
+</tr>
+</tbody>
+</table>
+<p>委托的构造器有两个参数，一个是对象引用 (System.Object)，另一个则是根据平台而定的整型 (System.IntPtr)。C# 编译器构造委托时，会分析源码以确定引用的对象及方法。对象引用被传给构造器的 object 参数，标识方法的特殊 IntPtr 值 (从 MethodDef 或 MemberRef 元数据 token 获得) 被传给构造器的 method 参数。对于静态方法，为 object 参数传递 null。构造器将这两个实参分别保存于 _target 及 _methodPtr。此外，构造器将 _invocationList 设为 null。</p>
+<h2 id="委托链-多播">委托链/多播</h2>
+<p><strong>委托链是委托对象的集合</strong>。</p>
+<h3 id="合并">合并</h3>
+<p>调用 Delegate.Combine(Delegate a, Delegate b) 方法对两个委托进行合并。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fbChain = (Feedback)Delegate.Combine(fbChain, fb1);</span><br></pre></td></tr></table></figure>
+<h3 id="移除">移除</h3>
+<p>调用 Delegate.Remove(Delegate source, Delegate value) 方法对两个委托进行合并。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fbChain = (Feedback)Delegate.Remove(fbChain, fb1);</span><br></pre></td></tr></table></figure>
+<h3 id="原理">原理</h3>
+<p>详情请参阅 <a target="_blank" rel="noopener" href="https://referencesource.microsoft.com/">Reference Source</a>。</p>
+<h4 id="Combine">Combine</h4>
+<ul>
+<li>
+<p>若一个委托为 null</p>
+<p>返回非 null 委托</p>
+</li>
+<li>
+<p>若两个委托为 null</p>
+<p>返回 Combine 的第二个参数 (当然返回的也是 null)</p>
+</li>
+<li>
+<p>若都不为 null</p>
+<p>进行委托合并</p>
+<ol>
+<li>判断两委托类型是否相同，不同则抛出 ArgumentException</li>
+<li>合并两个委托对象中的委托 (包括委托链中的委托) (Object[] : resultList) (使用 for 遍历实现)</li>
+<li>统计两个委托对象中的委托数 (int: invocationCount) (委托链不为空则统计委托链中的委托)</li>
+<li>根据 resultList 及 invocationCount 构建新的委托对象并返回</li>
+</ol>
+</li>
+</ul>
+<h4 id="Remove">Remove</h4>
+<p>注意，若 Remove 的目标为委托链，则该委托链需为当前操作委托对象委托链的连续子列表。[3]<sup class="footnote-ref"><a href="#fn4" id="fnref4:1">[4:1]</a></sup></p>
+<ul>
+<li>若指定需要去除的委托<strong>为空</strong>，直接返回当前委托</li>
+<li>若指定需要去除的委托<strong>不为空</strong>，在当前委托及其委托链中寻找目标委托或目标委托链，剔除并返回
+<ul>
+<li>结果是委托链则构建新委托并返回</li>
+<li>结果是单一委托则直接返回该委托</li>
+</ul>
+</li>
+</ul>
+<h2 id="不要定义过多的委托">不要定义过多的委托</h2>
+<p>Microsoft 在刚开始开发 .NET Framework 的时候引入了委托的概念。开发人员在 FCL 中添加类时，凡是有回调方法的地方都定义了新的委托类型。随时间的推移，他们定义的委托越来越多。仅在 MSCorLib.dll 中，就有接近 50 个委托类型，例如：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">TryCode</span>(<span class="params">Object userData</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">WaitCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">TimerCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">ContextCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">SendOrPostCallback</span>(<span class="params">Object state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">ParameterizedThreadStart</span>(<span class="params">Object obj</span>)</span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>以上的示例委托，实际上都是一样的：这些委托引用的方法都是获取一个 Object 返回 void。没有必要定义这么多委托，定义一个就够了。</p>
+<p>现在的 .NET Framework 支持泛型 (C# 2.0 版本引入)，只需要几个泛型委托，就能表示多达16个参数的方法：<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<ul>
+<li>
+<p>从无参，到至多16个参数，返回值为 void 的 Action 委托：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">Action</span>()</span>; <span class="comment">// (这个不是泛型委托)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">Action</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;(<span class="params">T obj</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">Action</span>&lt;<span class="keyword">in</span> <span class="title">T1</span>, <span class="keyword">in</span> <span class="title">T2</span>&gt;(<span class="params">T1 arg1, T2 arg2</span>)</span>;</span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">Action</span>&lt;<span class="keyword">in</span> <span class="title">T1</span>, ... , <span class="keyword">in</span> <span class="title">T16</span>&gt;(<span class="params">T1 arg1, ... , T16 arg16</span>)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>从无参，到至多16个参数，返回值为 TResult 的 Func 委托：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> TResult <span class="title">Func</span>&lt;<span class="keyword">out</span> <span class="title">TResult</span>&gt;()</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> TResult <span class="title">Func</span>&lt;<span class="keyword">in</span> <span class="title">T</span>, <span class="keyword">out</span> <span class="title">TResult</span>&gt;(<span class="params">T arg</span>)</span>;</span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> TResult <span class="title">Func</span>&lt;<span class="keyword">in</span> <span class="title">T1</span>, ... , <span class="keyword">in</span> <span class="title">T16</span>, <span class="keyword">out</span> <span class="title">TResult</span>&gt;(<span class="params">T1 arg1, ... , T16 arg16</span>)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>建议尽量使用以上的委托类型，而不是定义更多的委托类型。这样能减少系统中的类型数量，简化代码。</p>
+<p>但若需使用 ref 或 out 关键字以传递引用的方式传递参数，可能不得自定义委托：<sup class="footnote-ref"><a href="#fn5" id="fnref5:1">[5:1]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">Foo</span>(<span class="params"><span class="keyword">ref</span> <span class="built_in">int</span> bar</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="event-关键字">event 关键字</h2>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/event">event</a> 关键字用于在发布类 (publisher class) 中声明事件。这是一种特殊的多播委托，<strong>仅能从声明事件的类或结构（发布类）中对其进行调用</strong>，否则产生编译器：event 的委托仅能作为 += 或 -= 的左值 (除非在其声明的类或结构中)。 如果其他类或结构订阅该事件，则在发布类引发该事件时，将调用其事件处理程序方法。 有关详细信息和代码示例，请参阅<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/events/">事件</a>和<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/delegates/">委托</a>。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">event</span> Action action;</span><br></pre></td></tr></table></figure>
+<h2 id="EventHandler">EventHandler</h2>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler?view=net-5.0">EventHandler</a> 委托是一个预定义的委托，专门表示不生成数据的事件的事件处理程序方法。 <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">EventHandler</span>(<span class="params"><span class="built_in">object</span>? sender, EventArgs e</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>如果事件生成数据，则必须使用泛型 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.eventhandler-1?view=net-5.0">EventHandler<TEventArgs></a> 委托类。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">EventHandler</span>&lt;<span class="title">TEventArgs</span>&gt;(<span class="params"><span class="built_in">object</span>? sender, TEventArgs e</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="委托的简化语法">委托的简化语法</h2>
+<h3 id="Combine-与-Remove-的简化">Combine 与 Remove  的简化</h3>
+<p>C# 为委托重载 += 调用 Combine ，重载 -= 调用 Remove ，简化了委托链的构造。[4]<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">action1 = (Action) Delegate.Combine(action1, action2);</span><br><span class="line">action1 += action2;</span><br><span class="line">Delegate.Remove(action1, action2);</span><br><span class="line">action1 -= action2;</span><br></pre></td></tr></table></figure>
+<h3 id="不需要显式构造委托对象">不需要显式构造委托对象</h3>
+<p>仅仅是为了指定委托地址就构建一个对象显得有些奇怪，实际上构建委托对象是 CLR 的要求，该对象是包装器，可保证被包装的方法只能以类型安全的方式调用。C# 简化了委托的构建过程，不需要用户显示的使用 new 关键字进行委托的构造。</p>
+<ul>
+<li>
+<p>未显式构造委托对象：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Action action = PrintAction;</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PrintAction</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Action&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/%E6%9C%AA%E6%98%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%A7%94%E6%89%98.png" class="" title="未显式构造委托">
+</li>
+<li>
+<p>显式构造委托对象：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Action action = <span class="keyword">new</span> Action(PrintAction);</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PrintAction</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Action&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/%E6%98%BE%E5%BC%8F%E6%9E%84%E9%80%A0%E5%A7%94%E6%89%98.png" class="" title="显式构造委托">
+</li>
+</ul>
+<p>对比显式构造与非显式构造的 IL code，他们都会构造一个 Action 委托实例。</p>
+<h3 id="不需要定义回调方法-使用-lamdba-表达式">不需要定义回调方法 (使用 lamdba 表达式)</h3>
+<p>不需要因构造委托而定义一个方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Action action = PrintAction;</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NOT NEED</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PrintAction</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Action&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以使用 lamdba 表达式简化回调：[5]<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Action action = () =&gt; Console.WriteLine(<span class="string">&quot;Action&quot;</span>);</span><br><span class="line">    action.Invoke();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="局部变量不需要手动包装到类中即可传递给回调方法">局部变量不需要手动包装到类中即可传递给回调方法</h3>
+<p>有时可能希望回调代码引用类中定义的其他成员或方法中的局部参数：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> bar = <span class="number">21</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> foo = <span class="number">21</span>;</span><br><span class="line">        Action action = () =&gt; Console.WriteLine(foo + bar); <span class="comment">// Closure allocation: &#x27;foo&#x27; variable</span></span><br><span class="line">        action.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际上 lamdba 表达式主体的代码在一个单独的方法中 (CLR 的要求)。C# 通过自动辅助类实现闭包 (closure) [6]<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup>。在辅助类中，为需要传递给回调的每个值都定义一个字段。将回调方法定义为其实例方法。</p>
+<p>构建回调方法实际上也构造了辅助类实例，使用方法中的局部变量的值初始化该实例中的字段，最后构造委托对象并绑定到该辅助对象的实例方法。</p>
+<h2 id="委托与反射">委托与反射</h2>
+<p>开发者可以在不知道回调方法的原型时使用回调。使用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.methodinfo.createdelegate?view=net-5.0">MethodInfo.CreateDelegate</a>，可在编译期不知道委托的所有必要信息的情况下创建委托：<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造包含静态方法的委托</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> Delegate <span class="title">CreateDelegate</span> (<span class="params">Type delegateType</span>)</span>;</span><br><span class="line"><span class="comment">// 构造包含实例方法的委托 (target 引用 this 实参)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> Delegate <span class="title">CreateDelegate</span> (<span class="params">Type delegateType, <span class="built_in">object</span>? target</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>创建完成后可用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.delegate.dynamicinvoke?view=net-5.0">Delegate.DynamicInvoke(Object[])</a> 调用它们：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用委托并传递参数</span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">object</span>? DynamicInvoke (<span class="keyword">params</span> <span class="built_in">object</span>?[]? <span class="keyword">args</span>);</span><br></pre></td></tr></table></figure>
+<p>使用反射 API 获取引用了回调方法的 MethodInfo 对象，调用 CreateDelegate 构造委托 (如果是实例方法则需要传递 target 参数，指定其 this 参数)。</p>
+<p>使用 DynamicInvoke 方法对委托对象的回调方法进行调用。DynamicInvoke 可传递一组参数，其在内部保证传递的参数与回调方法期望的参数兼容，兼容则调用回调方法，否则抛出 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.argumentexception?view=net-5.0">ArgumentException</a>。若参数数不匹配，则抛出 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.targetparametercountexception?view=net-5.0">TargetParameterCountException</a>。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+<p>示例：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Foo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">StaticMethod</span>()</span> =&gt; Console.WriteLine(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">NonStaticMethod</span>()</span> =&gt; Console.WriteLine(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">MethodWithPara</span>(<span class="params"><span class="built_in">int</span> num</span>)</span> =&gt; Console.WriteLine(num);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Foo delegateReflectionTest = <span class="keyword">new</span> Foo();</span><br><span class="line">        MethodInfo nonStaticMethodInfo = delegateReflectionTest.GetType().GetMethod(<span class="string">&quot;NonStaticMethod&quot;</span>);</span><br><span class="line">        Delegate delegate1 = nonStaticMethodInfo?.CreateDelegate(<span class="keyword">typeof</span>(Action), delegateReflectionTest);</span><br><span class="line">        delegate1?.DynamicInvoke();</span><br><span class="line">        MethodInfo staticMethodInfo = delegateReflectionTest.GetType().GetMethod(<span class="string">&quot;StaticMethod&quot;</span>);</span><br><span class="line">        Delegate delegate2 = staticMethodInfo?.CreateDelegate(<span class="keyword">typeof</span>(Action));</span><br><span class="line">        delegate2?.DynamicInvoke();</span><br><span class="line">        MethodInfo methodInfoWithPara = delegateReflectionTest.GetType().GetMethod(<span class="string">&quot;MethodWithPara&quot;</span>);</span><br><span class="line">        Delegate delegate3 = methodInfoWithPara?.CreateDelegate(<span class="keyword">typeof</span>(Action&lt;<span class="built_in">int</span>&gt;));</span><br><span class="line">        delegate3?.DynamicInvoke(<span class="number">42</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参阅">参阅</h2>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe(IL 反汇编程序)</a></p>
+<p>一般，该工具位于 NETFX 4.7.2 Tools 中</p>
+<p>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\x64\ildasm.exe</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/delegates/how-to-combine-delegates-multicast-delegates">如何合并委托（多播委托）- C# 编程指南 | Microsoft Docs</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal">- - 和 -= 运算符 - C# 参考 | Microsoft Docs</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/addition-operator#delegate-combination">+ 和 += 运算符 - C# 参考 | Microsoft Docs</a></p>
+<h2 id="注释">注释</h2>
+<p>[1] 因此，可以定义类的地方，就可以定义委托。</p>
+<p>[2] 这里把 Invoke 翻译为调用。但是要清楚 Invoke 和 Call 的区别，执行委托方法不是直接执行目标方法，而是从委托处援引 (Invoke) 目标方法执行。</p>
+<p>[3] 实现细节请参阅 <a target="_blank" rel="noopener" href="https://referencesource.microsoft.com/#mscorlib/system/multicastdelegate.cs,89414467eca8bd75,references">Reference Source Multicastdelegate</a> ，算法为移除目标数组中的连续子序列</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal">- - 和 -= 运算符 - C# 参考 | Microsoft Docs (委托删除)</a> 中的示例：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Action a = () =&gt; Console.Write(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">Action b = () =&gt; Console.Write(<span class="string">&quot;b&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> abbaab = a + b + b + a + a + b;</span><br><span class="line"><span class="keyword">var</span> aba = a + b + a;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> first = abbaab - aba;</span><br><span class="line">first();  <span class="comment">// output: abbaab</span></span><br><span class="line">Console.WriteLine();</span><br><span class="line">Console.WriteLine(<span class="built_in">object</span>.ReferenceEquals(abbaab, first));  <span class="comment">// output: True</span></span><br><span class="line"></span><br><span class="line">Action a2 = () =&gt; Console.Write(<span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> changed = aba - a;</span><br><span class="line">changed();  <span class="comment">// output: ab</span></span><br><span class="line">Console.WriteLine();</span><br><span class="line"><span class="keyword">var</span> unchanged = aba - a2;</span><br><span class="line">unchanged();  <span class="comment">// output: aba</span></span><br><span class="line">Console.WriteLine();</span><br><span class="line">Console.WriteLine(<span class="built_in">object</span>.ReferenceEquals(aba, unchanged));  <span class="comment">// output: True</span></span><br></pre></td></tr></table></figure>
+<p>[4] 可通过查看 IL code 验证这点：</p>
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/code.png" class="" title="code">
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/+=.png" class="" title="+&#x3D;">
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/combine.png" class="" title="combine">
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/-=.png" class="" title="-&#x3D;">
+<img src="/2021/09/02/CSharp-%E5%A7%94%E6%89%98/remove.png" class="" title="remove">
+<p>[5] 请参阅 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/lambda-operator#expression-body-definition">=&gt; 运算符 - C# 参考 | Microsoft Docs (表达式主体定义)</a></p>
+<p>[6] 捕获上下文的外部变量以在回调方法中使用。闭包有对外部变量的引用，所以可能导致外部变量所在的对象声明周期延长。</p>
+<style>
+table th:first-of-type {
+    width: 27.5%;
+}
+table th:nth-of-type(2) {
+    width: 22.5%;
+}
+table th:nth-of-type(3) {
+    width: 50%;
+}
+</style>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/delegates">C# language specification - Delegates</a>。用于支撑委托声明、委托类型派生关系、<code>Invoke</code> 调用语义以及委托实例封装调用列表等语言层事实。 <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Jeffrey Richter, <a target="_blank" rel="noopener" href="https://www.microsoftpressstore.com/store/clr-via-c-sharp-9780735668775"><em>CLR via C#, Fourth Edition</em></a>。用于支撑从 CLR 视角理解委托对象、目标方法、调用列表和运行时包装；具体内部字段仍应视为实现细节。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.combine">Delegate.Combine Method</a>。用于支撑 <code>Delegate.Combine</code> 合并 invocation list、返回新委托以及类型不匹配异常的公开 API 语义。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.remove">Delegate.Remove Method</a>。用于支撑 <code>Delegate.Remove</code> 从 invocation list 中移除最后一个匹配委托或匹配委托链的公开 API 语义。 <a href="#fnref4" class="footnote-backref">↩︎</a> <a href="#fnref4:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.action">Action Delegate</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func<TResult> Delegate</a>。用于支撑 .NET 提供通用 <code>Action</code> / <code>Func</code> 委托族，以及这些通用委托不覆盖 <code>ref</code> / <code>out</code> 签名的边界。 <a href="#fnref5" class="footnote-backref">↩︎</a> <a href="#fnref5:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/events/">Events - C# Programming Guide</a>。用于支撑事件的发布者/订阅者模型、事件触发限制和事件处理程序调用语义。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler">EventHandler Delegate</a>。用于支撑无事件数据时 <code>EventHandler</code> 的预定义事件处理器签名。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler<TEventArgs> Delegate</a>。用于支撑携带事件数据时使用泛型 <code>EventHandler&lt;TEventArgs&gt;</code> 的约定。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/addition-operator#delegate-combination">Addition operators - delegate combination</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/subtraction-operator#delegate-removal">Subtraction operators - delegate removal</a>。用于支撑 <code>+</code> / <code>+=</code> 组合委托和 <code>-</code> / <code>-=</code> 移除委托的语言运算符语义。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions">Lambda expressions and anonymous functions</a>。用于支撑 lambda 表达式可转换为委托并简化回调写法。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/lambda-expressions#capture-of-outer-variables-and-variable-scope-in-lambda-expressions">Lambda expressions - capture of outer variables</a>。用于支撑 lambda 捕获外部变量会延长变量生命周期的说法。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.createdelegate">MethodInfo.CreateDelegate Method</a>。用于支撑从反射获得的方法创建指定委托类型，并在实例方法场景绑定目标对象的公开 API 语义。 <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.delegate.dynamicinvoke">Delegate.DynamicInvoke Method</a>。用于支撑 <code>DynamicInvoke</code> 的后期绑定调用、参数不匹配和目标方法异常包装等公开 API 行为。 <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1407,258 +1849,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/31/Java-CPU-Branch-Prediction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/31/Java-CPU-Branch-Prediction/" class="post-title-link" itemprop="url">Java-CPU-Branch-Prediction</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-31 19:03:00" itemprop="dateCreated datePublished" datetime="2021-07-31T19:03:00+08:00">2021-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 02:36:52" itemprop="dateModified" datetime="2026-07-18T02:36:52+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">计算机组成原理</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>631</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">arraySize</span> <span class="operator">=</span> <span class="number">1</span> &lt;&lt; <span class="number">15</span>;</span><br><span class="line">    <span class="type">int</span>[] data = <span class="keyword">new</span> <span class="title class_">int</span>[arraySize];</span><br><span class="line">    <span class="type">Random</span> <span class="variable">rnd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">0</span>; c &lt; arraySize; ++c)</span><br><span class="line">        data[c] = rnd.nextInt() % <span class="number">256</span>;</span><br><span class="line">    </span><br><span class="line">    sum(data, arraySize); <span class="comment">// 2_506_570_100 ns</span></span><br><span class="line">    <span class="comment">// The next sum runs faster after sort</span></span><br><span class="line">    Arrays.sort(data);</span><br><span class="line">    sum(data, arraySize);<span class="comment">// _768_923_900 ns</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[j] &gt;= <span class="number">128</span>)</span><br><span class="line">                sum += array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上的示例初始化一个数组，以 256 的模数进行填充，后对其中大于等于 128 的元素求和。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>见注释结果，排序后的数组执行求和，比不排序的要快的多。这是在执行 if 语句时，CPU 的分支预测导致的。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>通过分支的历史选择记录进行分支预测，若预测命中，则指令能快速的执行；若未命中，则当前执行分支作废，转而执行另一分支 (未命中的预测会损耗性能)：<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p>T : 分支预测命中</p>
-<p>F : 分支预测未命中</p>
-<ul>
-<li>
-<p>无序数组：</p>
-<p>-248, 7, -14, 241, 15, 112, 88, 246, 152, -200, 31, 180 …</p>
-<p>F F F T F F F T T F F T</p>
-</li>
-<li>
-<p>有序数组：</p>
-<p>127, 127, 127, 127, 127, 127, 128, 128, 128, 128, 128, 128 …</p>
-<p>F F F F F F T T T T T T</p>
-</li>
-</ul>
-<p>无序数组难以保证预测命中率，而有序数组则极好判断。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>也可通过位运算优化，消除分支判断。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * no if statement in this method</span></span><br><span class="line"><span class="comment"> * use shift operators</span></span><br><span class="line"><span class="comment"> * if positive num : num &gt;&gt; 31 == 0</span></span><br><span class="line"><span class="comment"> * if negative num : num &gt;&gt; 31 == -1</span></span><br><span class="line"><span class="comment"> * ~0 = -1 (ffffffff)</span></span><br><span class="line"><span class="comment"> * ~-1 = 0 (0)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sumAvoidBranchPrediction</span><span class="params">(<span class="type">int</span>[] array, <span class="type">int</span> arraySize)</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arraySize; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arraySize; ++j) &#123;</span><br><span class="line">            sum += ~((array[j] - <span class="number">128</span>) &gt;&gt; <span class="number">31</span>) &amp; array[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(System.nanoTime() - start + <span class="string">&quot; ns&quot;</span>); <span class="comment">// _606_267_300 ns</span></span><br><span class="line">    System.out.println(<span class="string">&quot;sum : &quot;</span> + sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>原始地址：</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34056162/article/details/89278427?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.base&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.base">【Java深入学习系列】之CPU的分支预测(Branch Prediction)模型</a></p>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array</a></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.17.3">§15.17.3 Remainder Operator</a>, defines Java <code>%</code> as remainder rather than mathematical modulo; Oracle Java SE 21 <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Random.html#nextInt(int)"><code>Random.nextInt(int bound)</code></a> is the API to generate a bounded <code>[0, bound)</code> integer when that is the intended data range. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>The Stack Overflow example <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array">“Why is processing a sorted array faster than processing an unsorted array?”</a> is the demonstration source; Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> is the primary vendor source for branch-prediction performance behavior. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> describes branch prediction as a processor optimization and treats mispredicted branches as a performance cost in hot code. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Intel’s <a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Optimization Reference Manual</a> supports the general claim that predictable branch behavior is easier for the processor than irregular branch behavior; exact results depend on CPU, JVM, data shape, and benchmark method. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>JLS SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.19">§15.19 Shift Operators</a>, defines signed right-shift behavior; branchless arithmetic or bit tricks should still be verified with <a target="_blank" rel="noopener" href="https://openjdk.org/projects/code-tools/jmh/">JMH</a> or equivalent benchmarking before being treated as an optimization. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/30/CSharp-%E5%8F%98%E4%BD%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/30/CSharp-%E5%8F%98%E4%BD%93/" class="post-title-link" itemprop="url">CSharp-变体</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-30 18:14:55" itemprop="dateCreated datePublished" datetime="2021-07-30T18:14:55+08:00">2021-07-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 13:05:56" itemprop="dateModified" datetime="2026-07-18T13:05:56+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>363</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Show you the code.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Variant type parameters could be declared in interfaces or delegates only!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">ICovariant</span>&lt;<span class="keyword">out</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Covariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">ICovariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IContravariant</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Contravariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">IContravariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IInvariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Invariant</span>&lt;<span class="title">T</span>&gt; : <span class="title">IInvariant</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Covariant</span>(<span class="params"> <span class="comment">/* out */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ICovariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Covariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        ICovariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Covariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can assign &quot;Derived&quot; to &quot;Base&quot;</span></span><br><span class="line">        obj = str;</span><br><span class="line">        str = obj; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Contravariant</span>(<span class="params"> <span class="comment">/* in */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IContravariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Contravariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        IContravariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Contravariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can assign &quot;Base&quot; to &quot;Derived&quot;</span></span><br><span class="line">        str = obj;</span><br><span class="line">        obj = str; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Invariant</span>(<span class="params"> <span class="comment">/* none */</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IInvariant&lt;<span class="built_in">object</span>&gt; obj = <span class="keyword">new</span> Invariant&lt;<span class="built_in">object</span>&gt;();</span><br><span class="line">        IInvariant&lt;<span class="built_in">string</span>&gt; str = <span class="keyword">new</span> Invariant&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You can&#x27;t do any assign </span></span><br><span class="line">        obj = str; <span class="comment">// error</span></span><br><span class="line">        str = obj; <span class="comment">// error</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/generics/covariance-and-contravariance">Covariance and Contravariance in Generics</a> 与 C# language specification <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/interfaces#1923-variant-type-parameter-lists">§19.2.3 Variant type parameter lists</a> 支撑：C# 的变体类型参数只出现在接口和委托类型上，并通过 <code>in</code> / <code>out</code> 标注协变、逆变或不变。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/out-generic-modifier"><code>out</code> generic modifier</a> 说明 <code>out</code> 表示协变类型参数，允许把更派生的类型实参作为更宽泛的泛型接口或委托使用；这对应示例里 <code>ICovariant&lt;string&gt;</code> 可赋值给 <code>ICovariant&lt;object&gt;</code>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-generic-modifier"><code>in</code> generic modifier</a> 说明 <code>in</code> 表示逆变类型参数，允许把更宽泛的类型实参作为更具体的泛型接口或委托使用；这对应示例里 <code>IContravariant&lt;object&gt;</code> 可赋值给 <code>IContravariant&lt;string&gt;</code>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces">Creating Variant Generic Interfaces</a> 与 C# language specification 的 variance conversion 规则共同支撑：未标注 <code>in</code> / <code>out</code> 的类型参数是不变的，变体转换需要满足对应的协变、逆变或恒等转换条件。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1682,13 +1872,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">149k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:38</span>
+    <span title="站点阅读时长">9:04</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

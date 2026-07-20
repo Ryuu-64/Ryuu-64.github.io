@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">87</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,344 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/17/Effective-CSharp-17%E5%AE%9E%E7%8E%B0%E6%A0%87%E5%87%86%E7%9A%84dispose%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">Effective-CSharp-17实现标准的dispose模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-17 10:32:45" itemprop="dateCreated datePublished" datetime="2021-05-17T10:32:45+08:00">2021-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 12:35:20" itemprop="dateModified" datetime="2026-07-18T12:35:20+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>如前文所说的，若对象包含非托管资源，那么一定要正确的清理。对于非托管型资源来说，.NET Framework 会采用一套标准的模式来完成清理工作，如果你所变写的类里也用到了非托管资源，那么该类的使用者就会认为这个类同样遵循这套模式。标准的 dispose (释放/处置) 模式会实现 IDisposable 接口，又会提供 finalizer (终结器/终止化器)，以便在客户端忘记调用 IDisposable.Dispose() 的情况下也可以释放资源。这样做虽然有可能令程序的性能因执行 finalizer 而下降，但毕竟可以保证垃圾回收器能够把资源回收掉。这是处理非托管资源的正确方式，开发者应该透彻地理解该方式。实际上，.NET 中的非托管资源还可以通过System.Runtime.Interop.SafeHandle 的派生类来访问，那个类也正确地实现了这套标准的 dispose 模式。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>在类的继承体系中，位于根部的那个基类应该做到如下几点<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<ul>
+<li>
+<p>实现 IDisposable 接口，以便释放资源。</p>
+</li>
+<li>
+<p>若本身含有非托管资源，添加 finalizer，以防客户端忘记调用 Dispose() 方法。若是没有非托管资源，则不添加 finalizer。</p>
+</li>
+<li>
+<p>Dispose 方法与 finalizer (如果有) 都把释放资源的工作委派给虚方法，使得子类能够重写该方法，以释放它们自己的资源。</p>
+</li>
+</ul>
+<p>继承体系中的子类应该做到以下几点：<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<ul>
+<li>若子类有自己的资源需要释放，那就重写由基类所定义的那个虚方法，若没有，则不重写该方法。</li>
+<li>若子类自身的某个成员字段表示非托管资源，实现 finalizer，若没有这样的字段，则不用实现 finalizer。</li>
+<li>记得调用基类的同名函数。</li>
+</ul>
+<p>若类包含非托管资源，必须提供 finalizer，因为开发者不能保证使用者总是会调用 Dispose()。如果他们忘了，则会造成资源泄漏，尽管这是使用者的错误，但是受责备的是你 (因为你没有提前防范这种情况)。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup><strong>(Ryuu：当然，作为使用者，应使用 Dispose()，而不是全部依赖于 finalizer (特别是在使用外部资源时)。finalizer 仅是保险手段，其确切的执行时间是不可知的 (作者下文有述)。Java 中也是如此。)</strong></p>
+<p>垃圾收集器每次运行时，都会把不带 finalizer 的垃圾对象立刻从内存中移除。而带有 finalizer 的对象则会继续留在内存中，并添加到队列中。GC 会安排线程在这些对象上运行其 finalizer，运行完毕后，通常可以像不带 finalizer 的垃圾对象一样被移除。但与那些对象相比，他们属于老一代的对象，因为只有当其 finalizer 执行过一次后， GC 才会将其视为可以直接释放的对象，他们需要在内存中停留更长的时间。这也是没有办法，因为必须通过 finalizer 来保证非托管资源得到释放。尽管程序的性能可能因此有所下降，但只要客户端记得调用 Dispose()，就不会有此问题。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>如果所编写的类使用了某些必须及时释放的资源，那么应按照广利实现 IDisposable 接口，以提醒此类使用者与运行系统注意。该接口只包含一个方法：<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IDisposable</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Dispose</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现 IDisposable.Dispose() 时需要注意：</p>
+<ol>
+<li>释放所有的非托管资源</li>
+<li>释放所有的托管资源 (其中包括取消事件订阅)</li>
+<li>设定相关状态标志，表示该对象已被清理。若清理后还有对其成员的访问，可通过状态标志得知该情况，令这些操作抛出 ObjectDisposedException。</li>
+<li>阻止垃圾回收器对该对象的重复清除 (可以通过 GC.SuppressFinalize(this) 来完成)。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
+</ol>
+<p>正确实现 IDisposable 接口是一举两得的，因为它既提供了适当的机制使得托管资源能够及时释放，又令客户端可以通过标准的 Dispose() 来释放非托管类型的资源。如果你编写的类实现了 IDisposable 接口，并且客户端又能够记得调用其 Dispose()，那么程序将不必执行 finalizer，其性能也得到了保证，这将使得此类能顺利融入 .NET 环境中。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<p>但此机制依然有漏洞，因为子类在清理自身的资源时必须保证基类的资源也能得到清理。若子类要重写 finalizer 或是想根据自己的需要给 IDisposable.Dispose() 添加新的逻辑，那么必须调用基类的版本。否则，基类的资源无法正确释放。此外，由于 finalizer 和 Dispose() 都有类似的任务。因此，这两个方法几乎总是包含重复的代码。直接重写接口中的函数可能无法达到预期效果，因为这些函数默认的情况下是非虚的。为此，需要再做一点工作来解决问题：把  finalizer 和 Dispose() 中重复的代码提取到 protected 级别的虚函数中，使得子类能够重写该函数，以释放他们分配的资源，而基类则应在接口方法中把核心的逻辑实现好。该辅助函数可以声明为此以供子类重写，使得其能在 Dispose() 方法或 finalizer 得以执行时把相关的资源清理干净：<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br></pre></td></tr></table></figure>
+<p>IDisposable.Dispose() 和 finalizer 都可以调用此方法以清理相关资源。这个方法与 IDisposable.Dispose() 相互重载。由于其是虚方法，子类可以重写该方法，以便用适当的代码来清理自身的资源并调用基类版本。</p>
+<ul>
+<li>
+<p>isDisposing：true</p>
+<p>清理托管资源与非托管资源 (这表明该方法是在 IDisposable.Dispose() 中调用的)</p>
+</li>
+<li>
+<p>isDisposing：false</p>
+<p>仅清理非托管资源 (这表明该方法是在 finalizer 中调用的)<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+</li>
+</ul>
+<p>无论是哪种情况，都要调用基类的 Dispose(bool)，使得基类有机会清除其资源。</p>
+<p>如下示例演示了该模式所用的代码框架，其中，MyResourceHog 实现了 IDisposable 接口，并创建了 Dispose(bool) 的虚方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyResourceHog</span> : <span class="title">IDisposable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Flag for already disposed</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> alreadyDisposed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Implementation of IDisposable</span></span><br><span class="line">    <span class="comment">// Call the virtual Dispose method</span></span><br><span class="line">    <span class="comment">// Suppress Finalization</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispose</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Dispose(<span class="literal">true</span>);</span><br><span class="line">        GC.SuppressFinalize(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t dispose more than once.</span></span><br><span class="line">        <span class="keyword">if</span> (alreadyDisposed) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isDisposing)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// elided: free managed resources here.</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// elided: free managed resources here.</span></span><br><span class="line">        <span class="comment">// Set disposed flag:</span></span><br><span class="line">        alreadyDisposed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ExampleMethod</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (alreadyDisposed)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ObjectDisposedException(<span class="string">&quot;MyResourceHog&quot;</span>, <span class="string">&quot;Called Example Method on Disposed object&quot;</span>);</span><br><span class="line">        <span class="comment">// remainder elided.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>DerivedResourceHog 继承了 MyResourceHog，并重写了基类中的 protected Dispose(bool)：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DerivedResourceHog</span> : <span class="title">MyResourceHog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Have its own disposed flag.</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> disposed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="built_in">bool</span> isDisposing</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t dispose more than once.</span></span><br><span class="line">        <span class="keyword">if</span> (disposed) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (isDisposing)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> free managed resources here.</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> free unmanaged resources here.</span></span><br><span class="line">        <span class="comment">// Let the base class free its resource.</span></span><br><span class="line">        <span class="comment">// Base class is responsible for calling</span></span><br><span class="line">        <span class="comment">// GC.SuppressFinalize()</span></span><br><span class="line">        <span class="keyword">base</span>.Dispose(isDisposing);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Set derived class disposed flag:</span></span><br><span class="line">        disposed = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意，基类和子类对象采用各自的 disposed 标志来表示其资源是否得到释放。若公用一个标志，那么子类可能率先将其设置为 true，而等到基类运行 Dispose(bool) 时，则会误认为其资源已释放。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<p><strong>Dispose(bool) 与 finalizer 需要具备 <em>幂等性 (idempotent)</em></strong>，多次调用 Dispose(bool) 的效果应与调用一次相同。由于各对象的 dispose 操作之间可能没有明确的顺序，因此在执行自身的 Dispose(bool) 时，或许其中某些成员已经被<em><strong>释放 (dispose)</strong></em> 了。这并不表示程序出了问题，因为 Dispose() 本身就可能多次被调用。对于该方法以外的其他 public 方法而言，如果在此对象已被释放后还有人要调用，那么应抛出 ObjectDisposedException ( Dispose() 是个例外)。在对象释放后调用该方法应该没有任何效果。当系统执行某个对象的 finalizer 时，该对象所引用的某些资源可能已经释放过，或是没有得到初始化。对于前者来说，不用检查其是否为 null，因为他所引用的资源还可以继续引用，只是有可能被释放，甚至其 finalizer 有可能已经执行过了。<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+<p>上文示例的两个类都没有 finalizer，示例代码根本不会以 false 为参数调用 Dispose(bool)。只有<strong>当该类型直接包含非托管资源时，才应实现 finalizer</strong>。否则不调用也会给该类带来负担，因为这有着较大的开销。若有，则必须添加 finalizer 才能正确的实现 dispose 模式，此时的 finalizer 应与 Dispose(bool) 相同，都可以适当地将非托管资源释放掉。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+<p>在编写 Dispose 或 finalizer 等资源清理方法时，最重要的一点是：<strong>仅释放资源，不进行其他处理</strong>。否则就会产生一些涉及对象生存期的严重问题。一般的，对象在构造时诞生，在变成垃圾并回收时死亡。若程序不在访问某个对象，可以认为该对象已 <em>昏迷 (comatose)</em>，对象中的方法也不会得到调用，实际上等于已经消亡了，然而如果他包含 finalizer，那么系统在正式宣告其死亡前，会给他机会，使其能够将非托管资源清理。此时，如果 finalizer 令该对象可以重新为程序引用，那么他将复活，但是这种从昏迷中醒来的对象有其问题：<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BadClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Store a reference to a global object:</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> List&lt;BadClass&gt; FinalizedList = <span class="keyword">new</span> List&lt;BadClass&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> msg;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BadClass</span>(<span class="params"><span class="built_in">string</span> msg</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~BadClass()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Add this object to the list.</span></span><br><span class="line">        <span class="comment">// This object is reachable, no longer garbage.</span></span><br><span class="line">        <span class="comment">// It&#x27;s back!</span></span><br><span class="line">        FinalizedList.Add(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>BadClass 对象执行其 finalizer 时，会将指向自身的引用添加到全局变量表中，使得程序能够再度访问该对象，使得此对象复活。这会造成很大问题。由于 finalizer 已经执行过了，因此垃圾回收器不会再执行其 finalizer ，于是这个复活的对象将不会被系统做终结 (finalize)。其次，该对象引用的资源可能无效了。对于那些只通过 finalizer 队列中对象访问的资源来说，GC 将不会把他们从内存中移除，但这些资源的 finalizer 可能已经执行过了，这些资源基本上不能再使用了。请不要采用此写法。</p>
+<p>应该不会有人在终结对象时故意将其复活。但此例说明，若想在 Dispose 和 finalizer 中调用其他的函数以执行一些工作，请仔细考虑，这些操作可能会导致 bug，最好是将其删除，使得 Dispose 和 finalizer 只用来释放资源。</p>
+<p>对于运行在托管环境的程序来说，开发者不需要给自己的每一个类都编写 finalizer。只有当其中包含了非托管资源或是带有实现了 IDisposable 接口的成员，才需要添加 finalizer。注意，在只需 IDisposable 接口但不需要 finalizer 的场合下，还是应该把整套模式写出，使得子类可轻松的实现标准的 dispose 方案。</p>
+<p>(**Ryuu：**作者所述许多要点，文档中都有具体实现，推荐查看 (本书作者也是 dotnet docs 的作者，<a target="_blank" rel="noopener" href="https://github.com/BillWagner">Bill wagner’s github overview</a>)。<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/destructors">终结器 - C# 编程指南</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/unmanaged-types">非托管类型 - C# 参考</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.idisposable?view=net-5.0">IDisposable 接口 (System)</a>、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/standard/garbage-collection/implementing-dispose">实现 Dispose 方法</a>)</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Bill Wagner, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283"><em>Effective C# (Covers C# 6.0), 3rd Edition</em></a> 对本条目讨论的标准 Dispose 模式给出实践语境；Microsoft Learn 的 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.safehandle?view=net-10.0"><code>SafeHandle</code> Class</a> 说明 <code>IDisposable</code>、finalizer 和安全句柄在释放非托管资源中的角色。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 和 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a> 都把可继承 disposable 基类的责任放在公开 <code>Dispose()</code>、受保护 <code>Dispose(bool)</code>、必要时 finalizer 与 <code>GC.SuppressFinalize</code> 这组结构中。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a> 说明派生类应在自身拥有资源时重写 <code>Dispose(bool)</code>，释放自身资源后调用基类释放逻辑。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/finalizers">Finalizers</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 将 finalizer 描述为调用方未显式释放时的兜底机制，同时强调其执行时间不确定。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 说明带 finalizer 的对象需要额外回收步骤并会增加性能成本；<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/finalizers">Finalizers</a> 也说明终结器何时运行不能确定。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable?view=net-10.0"><code>IDisposable</code> Interface</a> 定义 <code>Dispose()</code> 契约；C# <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using"><code>using</code> statement</a> 文档说明调用方可用作用域结束来保证调用 <code>Dispose()</code>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.gc.suppressfinalize?view=net-10.0"><code>GC.SuppressFinalize(Object)</code></a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.objectdisposedexception?view=net-10.0"><code>ObjectDisposedException</code></a> 分别支撑释放资源、抑制终结和释放后访问异常这几项实现责任。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 和 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.gc.suppressfinalize?view=net-10.0"><code>GC.SuppressFinalize(Object)</code></a> 说明显式 <code>Dispose()</code> 完成清理后应抑制 finalizer，从而避免后续终结路径的额外成本。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a> 描述了公开非虚 <code>Dispose()</code> 委派到受保护虚方法 <code>Dispose(bool)</code> 的标准结构，用于让派生类参与释放链。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a> 说明 <code>disposing == true</code> 可以释放托管和非托管资源，而 finalizer 路径不应访问其他托管对象。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 要求 <code>Dispose()</code> 幂等并避免重复释放；Bill Wagner 的 <em>Effective C#</em> 也用基类和派生类各自维护释放状态来说明继承释放链的边界。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 明确要求 <code>Dispose()</code> 可被多次调用且不抛异常；<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.objectdisposedexception?view=net-10.0"><code>ObjectDisposedException</code></a> 支撑对象释放后继续访问不可用公开成员时的异常选择。 <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/finalizers">Finalizers</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.safehandle?view=net-10.0"><code>SafeHandle</code> Class</a> 共同支撑 finalizer 只适合作为直接持有非托管资源时的兜底；现代 .NET 更建议优先用 <code>SafeHandle</code> 包装裸句柄。 <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">Dispose Pattern</a> 和 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</a> 将清理路径限定在资源释放上；<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/finalizers">Finalizers</a> 的不确定性也支持不要在 finalizer 中放复杂业务逻辑或对象复活逻辑。 <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/15/Effective-CSharp-15%E4%B8%8D%E8%A6%81%E5%88%9B%E5%BB%BA%E6%97%A0%E8%B0%93%E7%9A%84%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">Effective-CSharp-15不要创建无谓的对象</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-15 19:07:08" itemprop="dateCreated datePublished" datetime="2021-05-15T19:07:08+08:00">2021-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 03:52:15" itemprop="dateModified" datetime="2026-07-18T03:52:15+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>垃圾回收器可以帮你把内存管理好，并高效地移除那些用不到的对象，但这并不是在鼓励你毫无节制地创建对象，因为创建并摧毁一个基于堆 (heap-based) 的对象无论如何都要比根本不生成这个对象耗费更多的处理器时间。在方法中创建很多局部的引用对象可能会大幅降低程序的性能。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>因此，开发者不应该给垃圾回收器 (GC) 带来太多的负担，而是应该利用一些简单的技巧，尽量降低 GC 的工作量。所有引用类型的对象都需要先分配内存，然后才能使用，即使是局部变量也不例外。如果跟对象与这些对象之间没有路径可通，那么他们就变成了垃圾。具体到局部变量来看，如果声明这些变量的那个方法不再活跃于程序中，那么很可能导致这些变量成为垃圾。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>例如很多人喜欢在窗口的paint handler 里面分配 GDI 对象，这样做容易出现这个问题：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPaint</span>(<span class="params">PaintEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Bad. Created the same font every paint event.</span></span><br><span class="line">    <span class="keyword">using</span> (Font MyFont = <span class="keyword">new</span> Font(<span class="string">&quot;Arial&quot;</span>, <span class="number">10.0f</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        e.Graphics.DrawString(DataTime.Now.ToStirng(), MyFont, Brushes.Black, <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">base</span>.OnPaint(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>系统会频繁调用 OnPaint()，而每次调用时，都会创建新的 Font 对象，但是这并没有必要，因为实际上这些对象都是一样的，因此垃圾回收器总是得回收旧的 Font。GC 的执行时机与程序所分配的内存数量以及分配的频率有关，如果总是分配内存，那么 GC 的工作压力就比较大，这自然会降低程序效率。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>反之，将 Font 对象从局部变量改为成员变量，那么就可以复用同一个 Font：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">readonly</span> Font myFont = <span class="keyword">new</span> Font(<span class="string">&quot;Arial&quot;</span>, <span class="number">10.0f</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPaint</span>(<span class="params">PaintEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    e.Graphics.DrawString(DataTime.Now.ToStirng(), MyFont, Brushes.Black, <span class="keyword">new</span> PointF(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">base</span>.OnPaint(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改版之后就不会进行频繁的垃圾回收了，这将使得程序运行的稍快一点。对于像本例的 Font 这样实现了 IDisposable 接口的类型来说，把该类型的局部变量提升为成员之后，需要在类中实现这个接口(见17条)。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>如果局部变量是引用类型而非值类型，并且出现在需要频繁运行的例程 (routine) 中，那就应该将其提升为成员变量。上文的 OnPaint 例程中的 myFont 就是如此。请注意，只有当例程调用得较为频繁时材质的这样做，如果不太频繁，那么可以不用考虑这个问题。要避免频繁的创建相同的对象，而不是说把每个局部变量都转化为成员变量。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>上文的代码用到了 Brushes。Black 这个静态属性，该属性采用另一种技术来避免频繁创建相似的对象。如果程序中有很多地方都要用到某个引用类型的实例，那么可以把它创建成静态的成员变量。每次用黑色绘制窗口时，都要使用这样的画笔，但如果每次绘制时都去重新分配，那么程序在执行过程中要创建并销毁大量的 Brush 对象。即便按照刚才那条技巧将这个对象从局部提升为成员变量，也无法避免该问题。由于程序会创建很多窗口与控件，而且在绘制时会用到大量的黑色画笔，因此.NET框架的设计者决定，只创建一支黑色的画笔给程序中的各个地方公用。Brushes 类里面有大量的 Brush 对象，每个对象对应于一种颜色，这种颜色的画笔是程序中的每个例程都可以使用的。Brushes 类在其内部采用惰性求值算法 (lazy evaluation algorithm) 来创建画笔，这种算法的逻辑可以表示成下面这样：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Brush blackBrush;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Brush Black</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (blackBrush == <span class="literal">null</span>)</span><br><span class="line">            blackBrush = <span class="keyword">new</span> SolidBrush(Color.Black);</span><br><span class="line">        <span class="keyword">return</span> blackBrush;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首次请求获取黑色画笔时，Brushes 类会创建该画笔，并把指向它的引用保存起来。以后如果还要获取这种颜色的画笔，那么 Brushes 类久把早前保存的引用直接返回给你，而不用再去重新创建。并且还有一个好处，如果某种画笔从始至终根本没有用到，那么 Brushes 类就根本不会创建该画笔。在编程工作中使用该技术会有正反两方面的效果， 正面效果是可以令程序少创建一些对象，而负面效果则是有可能导致对象在内存中待的比较久，这还意味着开发者无法释放非托管资源，因为你不知道什么时候调用 Dispose() 方法才好。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>前面讲的这两项技巧可以令程序在运行过程中尽量少分配一些对象，第一项技巧是把经常使用的局部变量提升为成员变量，第二项技巧是采用依赖注入 (dependency injection) 的办法创建并复用那些经常使用的实例。此外还有一项针对<em>不可变类型 (immutable type)</em> 的技巧，该技巧可以把这种类型对象最终所应具备的取值分步骤地构建好。比方说，System.String 类就是不可变的，这种字符串创建好之后，其内容无法修改。某些代码看上去好像是修改了字符串内容，但其实还是创建了新的string对象，并用它来替换原有的string，从而导致后者变为垃圾。下面这种写法看起来似乎没有问题：<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> msg = <span class="string">&quot;Hello, &quot;</span>;</span><br><span class="line">msg += thisUser.name;</span><br><span class="line">msg += <span class="string">&quot;. Today is &quot;</span>;</span><br><span class="line">msg += System.DateTime.Now.ToString();</span><br></pre></td></tr></table></figure>
+<p>但是这样写很没有效率，因为它相当于：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Not legal, for illustration only:</span></span><br><span class="line"><span class="built_in">string</span> msg = <span class="string">&quot;Hello, &quot;</span>;</span><br><span class="line"><span class="built_in">string</span> msg1 = <span class="keyword">new</span> <span class="built_in">string</span>(msg + thisUser.Name);</span><br><span class="line">msg = msg1; <span class="comment">// &quot;Hello, &quot; is garbage</span></span><br><span class="line"><span class="built_in">string</span> msg2 = <span class="keyword">new</span> <span class="built_in">string</span>(msg + <span class="string">&quot;. Today is &quot;</span>);</span><br><span class="line">msg = msg2; <span class="comment">// &quot;Hello, &lt;user&gt;&quot; is garbage</span></span><br><span class="line"><span class="built_in">string</span> msg3 = <span class="keyword">new</span> <span class="built_in">string</span>(msg + System.DateTime.Now.ToString());</span><br><span class="line">msg = msg3; <span class="comment">// &quot;Hello, &lt;user&gt;. Today is &quot; is garbage</span></span><br></pre></td></tr></table></figure>
+<p>tmp1、tmp2、tmp3 以及最初的 msg 全都成了垃圾，因为在 string 类的对象上面运用 += 运算符会导致程序创建出新的字符串对象，并且指令向原字符串的引用指向这个新的对象。程序并不会把这两个字符串中的字符连接起来并将其保存在原来那个字符串的存储空间中。如果想用效率较高的办法完成刚才那个例子所执行的操作，那么可以考虑内插字符串实现：<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> msg = <span class="built_in">string</span>.Format(<span class="string">&quot;Hello, &#123;0&#125;. Today is &#123;1&#125;&quot;</span>,thisUser.Name, DateTime.Now.ToString());</span><br></pre></td></tr></table></figure>
+<p>相较于 string.Format()，字符串内插避免了因写入太多参数而对错位置的情况：(见第4条)</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> msg = <span class="string">$&quot;Hello, <span class="subst">&#123;thisUser.Name&#125;</span>. Today is <span class="subst">&#123;DateTime.Now.ToString()&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>如果要执行更为复杂的操作，那么可以使用 StringBuilder 类：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder msg = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;Hello, &quot;</span>);</span><br><span class="line">msg.Append(thisUser.Name);</span><br><span class="line">msg.Append(<span class="string">&quot;. Today is &quot;</span>);</span><br><span class="line">msg.Append(DateTime.Now.ToString());</span><br><span class="line"><span class="built_in">string</span> finalMsg = msg.ToString();</span><br></pre></td></tr></table></figure>
+<p>由于这个例子很简单，因此用内插字符串来做就足够了(内插字符串的用法见第4条)。如果最终要构建的字符串很复杂，不方便用内插字符串实现，那么可以考虑改用 StringBuilder 处理，这是一种可变的字符串，提供了修改其内容的机制，使得开发者能够以此来构建不可变 string 对象。与 StringBuilder 类本身的功能相比，更值得学习的是它所体现的设计思路，也就是说，如果要设计不可变的类型，那就应该考虑提供相应的 <em>builder(构建器)</em>，令开发者能够以分阶段的形式来指定不可变的对象最终所应具备的取值。这既可以保证构建出来的对象不会遭到修改，又能够给开发者提供较大的余地，使其可以将整个构建过程划分为多个步骤。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<p>垃圾回收器能够有效地管理应用程序使用的内存，但需注意，在堆上创建并销毁对象需要耗费一定的时间，因此，不要过多地创建对象，不要创建那些根本不用去重新构建的对象。此外，在函数中以局部变量的形式频繁创建引用类型的对象也是不合适的，应该把这些变量提升为成员变量，或是考虑把常用的那几个实例设置成相关类型中的静态对象。最后还有一条技巧，就是要考虑给不可变的类型设计相应的 builder 类，以供用户通过可变 builder 对象来构建不可变的对象。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Bill Wagner 的 <em>Effective C# (Covers C# 6.0), 3rd Edition</em> Item 15 把重点放在“避免无谓对象”，而不是追求零分配；Microsoft 的 GC fundamentals 也说明 .NET GC 管理托管堆，但分配、回收和应用线程暂停仍是运行时成本的一部分：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283">https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals">https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Microsoft GC fundamentals 说明对象在托管堆上分配，GC 通过对象可达性判断存活，并用代际模型优化短命对象；这支撑“局部引用对象在方法结束后常会成为垃圾”的基本机制：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals">https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>.NET GC 文档把 allocation rate、托管堆和 GC 暂停列为理解 GC 行为的核心因素；因此，频繁调用路径中重复创建相同对象才是值得优先审查的场景，而不是所有 <code>new</code> 都该避免：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals">https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Microsoft Dispose Pattern 说明，拥有可释放资源的类型应实现释放协议；把 <code>IDisposable</code> 对象从局部变量提升为字段后，资源所有权也随之提升到包含它的对象生命周期中：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft 的 ObjectPool 文档把对象复用限定在创建 / 初始化成本高且可复用的对象上，并要求能安全重置状态；这与 Effective C# 的边界一致：优化热路径和重复昂贵对象，不把每个局部变量都提升为字段：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool">https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>静态缓存或池化减少分配，但会延长对象生命周期，并可能引入共享状态、释放责任和线程安全问题。这个边界来自 GC fundamentals、Dispose Pattern 和 ObjectPool 文档的组合约束：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals">https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/dispose-pattern</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool">https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Microsoft <code>String</code> API 文档说明 <code>String</code> 对象是不可变的；对字符串“修改”通常会产生新的字符串对象，因此大量分步骤拼接会制造中间对象：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.string">https://learn.microsoft.com/en-us/dotnet/api/system.string</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>C# 字符串插值文档支持把简单模板直接写成插值字符串；但这不是所有字符串构建的性能答案，复杂、多步骤或循环追加仍应考虑可变缓冲：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>Microsoft <code>StringBuilder</code> 文档说明它表示可变字符字符串，适合需要多次修改字符串内容再生成 <code>string</code> 的场景；它体现的边界是“可变构建阶段 + 不可变最终结果”：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.text.stringbuilder">https://learn.microsoft.com/en-us/dotnet/api/system.text.stringbuilder</a>。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>更稳的总结是：先识别热路径、昂贵构造、生命周期和所有权，再决定局部创建、字段复用、静态缓存、对象池或 builder。ObjectPool 文档也提醒，对象池是性能工具，适合高成本、可重用、可重置对象，而不是默认生命周期管理方式：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool">https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1016,139 +1354,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">Effective-CSharp-1优先使用隐式类型的局部变量</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 03:35:13" itemprop="dateModified" datetime="2026-07-18T03:35:13+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>隐式类型的局部变量是为了支持匿名类型而加入C#语言的。</strong><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>如下情况变量类型是显而易见的 (构造函数与工厂方法<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> MyType();</span><br><span class="line"><span class="keyword">var</span> thing = AccountFactory.CreateSavingAccount();</span><br></pre></td></tr></table></figure>
-<p>如下情况变量类型没有清晰的指出<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
-<p>在这种情况下应当在变量声明时指定清晰的名称，尽管方法并没有指出返回类型，但这样就能让开发者推断出变量类型，例如：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> HighestSellingProduct = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
-<p>查看代码的人会根据自己的理解认定该变量类型，可能恰好与变量在运行期的真实类型相符。但编译器不会像人那样思考，而是根据声明判定其在编译期的类型。若用 var 进行声明，编译器会推断其类型，而开发者看不到编译器推断的类型。因此，他们所认定的类型可能不符，这会在代码的维护中导致错误的修改，并产生一些本来可以避免的 Bug。</p>
-<p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em><sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Microsoft Learn 的隐式类型局部变量文档说明，匿名类型没有可在源代码中显式写出的类型名，因此通常必须使用 <code>var</code> 保存匿名类型结果；这也是 <code>var</code> 被引入 C# 后的重要使用场景：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Bill Wagner 的 <em>Effective C# (Covers C# 6.0), 3rd Edition</em> Item 1 建议优先考虑隐式类型局部变量，但目标是提升可读性，而不是单纯少写类型名：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283">https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Microsoft 的 C# coding conventions 建议：当变量类型能从赋值右侧明显看出时使用 <code>var</code>，当方法返回类型或上下文不能清楚表达类型时避免使用 <code>var</code>。这支撑“可以用，但不能滥用”的边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>C# 规范 §13.6.2.2 规定，隐式类型局部变量的类型由初始化表达式的编译期类型决定；Microsoft Learn 也强调 <code>var</code> 声明的变量仍然是强类型。<code>dynamic</code> 则是另一套机制，会把部分绑定推迟到运行期：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/statements#13622-implicitly-typed-local-variable-declarations">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/statements#13622-implicitly-typed-local-variable-declarations</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic">https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Microsoft 的 C# coding conventions 把 <code>var customer = new Customer()</code> 这类右侧类型明显的声明列为适合使用隐式类型的场景，因为显式类型只是在重复右侧信息：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>Microsoft 的 C# coding conventions 也明确提醒：不要仅靠方法名来假设返回类型；当返回类型不能从右侧表达式看清时，显式类型通常能保留更好的阅读线索：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>C# 类型系统文档说明，编译期类型会影响成员访问、重载解析和转换；数值字面量与数值转换场景中，<code>var</code> 推断出的具体类型可能影响精度、范围或重载选择，因此在数值类型承载语义时显式写出类型更稳：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn8" class="footnote-item"><p>Microsoft Learn 的 IDE0007 / IDE0008 规则把 <code>var</code> 与显式类型偏好拆成“内置类型、类型明显场景、其他场景”三类，可通过 <code>.editorconfig</code> 配置。也就是说，<code>var</code> 是可审查的风格偏好与可读性判断，不是语言层面的绝对规则：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008">https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1287,7 +1492,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1305,7 +1510,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/30/Effective-Java-2%E9%81%87%E5%88%B0%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8/" class="post-title-link" itemprop="url">Effective-Java-2遇到多个构造器参数时需要考虑用构建器</a>
+          <a href="/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">Effective-CSharp-1优先使用隐式类型的局部变量</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1316,14 +1521,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-04-30 12:57:23" itemprop="dateCreated datePublished" datetime="2021-04-30T12:57:23+08:00">2021-04-30</time>
+      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 01:25:01" itemprop="dateModified" datetime="2026-07-18T01:25:01+08:00">2026-07-18</time>
+      <time title="修改时间：2026-07-18 03:35:13" itemprop="dateModified" datetime="2026-07-18T03:35:13+08:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1331,7 +1536,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
         </span>
     </span>
 
@@ -1342,7 +1547,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1360,211 +1565,37 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong>静态工厂和构造器有个共同的局限性：都不能很好地扩展大量的可选参数</strong><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>例：</p>
-<p>考虑用一个类表示包装食品外面显示的营养成分标签。这些标签中有几个域是必需的：每份含量，每罐含量，每份卡路里，还有超过20个可选域：总脂肪量，饱和脂肪量，转化脂肪量，胆固醇，钠等等。大多数的产品在某几个可选域中都会有非0的值。</p>
-<p>对于这样的类，应该用哪种构造器或者静态方法来编写呢？</p>
-<h3 id="1-重叠构造器-telescoping-constructor">1. <strong>重叠构造器 (telescoping constructor)</strong></h3>
-<p>提供第一个<strong>只有必要参数</strong>的构造器</p>
-<p>提供第二个<strong>包含必要参数且包含一个可选参数</strong>的构造器</p>
-<p>提供第三个<strong>包含必要参数且包含两个可选参数</strong>的构造器</p>
-<p>以此类推，最后一个构造器包含所有参数</p>
-<p>如下是个简单的示例</p>
-   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servingSize; <span class="comment">//(ml)          required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servings; <span class="comment">//(per container)  required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> calories; <span class="comment">//                 optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> fat;      <span class="comment">//(g)              optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> sodium;   <span class="comment">//(mg)             optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> carbohydrate; <span class="comment">//(g)          optional</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//必须的选项</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, fat, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat, <span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(servingSize, servings, calories, fat, sodium, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//包含所有的选项</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings, <span class="type">int</span> calories, <span class="type">int</span> fat, <span class="type">int</span> sodium, <span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">        <span class="built_in">this</span>.servings = servings;</span><br><span class="line">        <span class="built_in">this</span>.calories = calories;</span><br><span class="line">        <span class="built_in">this</span>.fat = fat;</span><br><span class="line">        <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">        <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>仅仅想创建一个该类对象，使用最短的构造器即可</p>
-<p>但如果想要设置参数表中靠后的参数问题就来了</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>(<span class="number">240</span>,<span class="number">8</span>,<span class="number">100</span>,<span class="number">0</span>,<span class="number">35</span>,<span class="number">27</span>);</span><br></pre></td></tr></table></figure>
-<p>如上初始化中 fat 的值为0，这个参数本是不用初始化的，就6个参数的情况下，还说的过去，随着参数增加，这样就不行了。</p>
-<p><em><strong>重叠构造器是可行的，但当参数增多时，客户端的代码将变得很难编写，阅读性也较差，并且如果初始化时容易填错顺序，导致运行时的错误。</strong></em><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<h3 id="2-JavaBeans模式">2. <strong>JavaBeans模式</strong></h3>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JavaBeans Pattern - allows inconsistency, mandates mutability</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">servingSize</span> <span class="operator">=</span> -<span class="number">1</span>; <span class="comment">//(ml)          required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">servings</span> <span class="operator">=</span> -<span class="number">1</span>; <span class="comment">//(per container)  required</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">calories</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">//                 optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">fat</span> <span class="operator">=</span> <span class="number">0</span>;      <span class="comment">//(g)              optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">sodium</span> <span class="operator">=</span> <span class="number">0</span>;   <span class="comment">//(mg)             optional</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">carbohydrate</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">//(g)          optional</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setServingSize</span><span class="params">(<span class="type">int</span> servingSize)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setServings</span><span class="params">(<span class="type">int</span> servings)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servings = servings;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCalories</span><span class="params">(<span class="type">int</span> calories)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.calories = calories;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setFat</span><span class="params">(<span class="type">int</span> fat)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.fat = fat;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSodium</span><span class="params">(<span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCarbohydrate</span><span class="params">(<span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化</span></span><br><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>();</span><br><span class="line">cocaCola.setServingSize(<span class="number">240</span>);</span><br><span class="line">cocaCola.setServings(<span class="number">8</span>);</span><br><span class="line">cocaCola.setCalories(<span class="number">100</span>);</span><br><span class="line">cocaCola.setSodium(<span class="number">35</span>);</span><br><span class="line">cocaCola.setCarbohydrate(<span class="number">27</span>);</span><br></pre></td></tr></table></figure>
-<p><em><strong>JavaBeans模式创建实例很容易，代码可读性也很强，但其有很严重的缺点:</strong></em><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<ol>
-<li>
-<p>构造的过程包含多个调用，在构造过程中JavaBeans可能处于不一致状态</p>
-<p>例如一个线程正在使用setter初始化值，而另一个线程正用getter取得该对象的字段</p>
-</li>
-<li>
-<p>使用JavaBeans模式则该类不可成为不可变类 (因为有setter访问器)<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-</li>
-</ol>
-<h3 id="3-Builder模式">3. <strong>Builder模式</strong></h3>
-<p>此模式有重叠构造器的<strong>安全性</strong>，也有JavaBeans模式的<strong>高可读性</strong><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>不直接生成需要的对象，而是得到一个builder对象，调用所有的必要的构造器或静态工厂，设置每一个需要设置的参数，最后调用一个无参数的build方法来生成一个不可变对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NutritionFacts</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servingSize;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> servings;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> calories;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> fat;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> sodium;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> carbohydrate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">NutritionFacts</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        servingSize = builder.servingSize;</span><br><span class="line">        servings = builder.servings;</span><br><span class="line">        calories = builder.calories;</span><br><span class="line">        fat = builder.fat;</span><br><span class="line">        sodium = builder.sodium;</span><br><span class="line">        carbohydrate = builder.carbohydrate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="comment">// Required parameters</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> servingSize;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> servings;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> calories;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> fat;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> sodium;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> carbohydrate;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> servingSize, <span class="type">int</span> servings)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.servingSize = servingSize;</span><br><span class="line">            <span class="built_in">this</span>.servings = servings;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// builder的 setter 返回自身实现链接调用</span></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">calories</span><span class="params">(<span class="type">int</span> calories)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.calories = calories;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">fat</span><span class="params">(<span class="type">int</span> fat)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.fat = fat;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">sodium</span><span class="params">(<span class="type">int</span> sodium)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.sodium = sodium;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">carbohydrate</span><span class="params">(<span class="type">int</span> carbohydrate)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.carbohydrate = carbohydrate;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> NutritionFacts <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例化</span></span><br><span class="line"><span class="type">NutritionFacts</span> <span class="variable">cocaCola</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NutritionFacts</span>.Builder(<span class="number">240</span>, <span class="number">8</span>).calories(<span class="number">100</span>).sodium(<span class="number">35</span>).carbohydrate(<span class="number">27</span>).build();</span><br></pre></td></tr></table></figure>
-<p>Builder 模式的可读性提高了很多，代码简易。Builder模式模拟了了<strong>具名可选参数</strong></p>
-<p><em><strong>如果该类包含多个字段，Builder模式就是种不错的选择，特别是当大多数参数都是可选的时候。与重叠构造器与JavaBeans相比要更加安全与易读。</strong></em><sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+          <p><strong>隐式类型的局部变量是为了支持匿名类型而加入C#语言的。</strong><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>用 var 来声明变量而不指明其类型，可以令开发者把注意力更多的集中在名称上，从而更好的了解其含义。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>在很多情况下，完全可以使用 var 来声明隐式类型的局部变量，因为编译器会自动选择合适的类型。但是不能滥用这种方法，这样可能令代码难以阅读，甚至产生微妙的类型转换 BUG。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>局部变量的类型推断机制并不影响 C# 的静态类型检查。类型推断不等于动态类型检查。用 var 来声明的变量是强类型的，他的类型由赋值符号右侧值的类型确定。var 的意义在于，你不用把变量的类型告诉编译器，编译器会替你判断。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>如下情况变量类型是显而易见的 (构造函数与工厂方法<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> MyType();</span><br><span class="line"><span class="keyword">var</span> thing = AccountFactory.CreateSavingAccount();</span><br></pre></td></tr></table></figure>
+<p>如下情况变量类型没有清晰的指出<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
+<p>在这种情况下应当在变量声明时指定清晰的名称，尽管方法并没有指出返回类型，但这样就能让开发者推断出变量类型，例如：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> HighestSellingProduct = someObject.DoSomeWork(anotherParameter);</span><br></pre></td></tr></table></figure>
+<p>查看代码的人会根据自己的理解认定该变量类型，可能恰好与变量在运行期的真实类型相符。但编译器不会像人那样思考，而是根据声明判定其在编译期的类型。若用 var 进行声明，编译器会推断其类型，而开发者看不到编译器推断的类型。因此，他们所认定的类型可能不符，这会在代码的维护中导致错误的修改，并产生一些本来可以避免的 Bug。</p>
+<p>如果隐式变量的局部类型是 C# 的数值类型，那么还会产生一些另外的问题，因为在使用这些数值的时候可能会进行各种形式的转换。有些转换是宽转换 (widening conversion)，这种转换是安全的，例如从 float 到 double，但还有一些转换是窄转换 (narrowing conversion)，这种转化会使精度下降，例如从 long 到 int。如果明确的指出数值变量的类型，那么可以更好的控制，并且编辑器也有可能将窄转换标记出来。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p><em><strong>总之，除非开发者必须看到变量的声明类型之后才能正确的理解代码的含义，否则优先考虑var来声局部变量(此处的开发者当然也包括编写代码的人本身，因为可能有查看早前写过的代码的需求)。注意上文的优先而不是总是，例如上文的转换错误问题，对int, float, double等数值型的变量，就应该指出明确类型。</strong></em><sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 2, frames this problem as considering a builder when a class faces many constructor parameters. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p>Microsoft Learn 的隐式类型局部变量文档说明，匿名类型没有可在源代码中显式写出的类型名，因此通常必须使用 <code>var</code> 保存匿名类型结果；这也是 <code>var</code> 被引入 C# 后的重要使用场景：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn2" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 2, uses the NutritionFacts example to compare telescoping constructors, JavaBeans, and builders for many optional parameters. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+<li id="fn2" class="footnote-item"><p>Bill Wagner 的 <em>Effective C# (Covers C# 6.0), 3rd Edition</em> Item 1 建议优先考虑隐式类型局部变量，但目标是提升可读性，而不是单纯少写类型名：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283">https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn3" class="footnote-item"><p>Oracle, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/javabeans/writing/index.html">Writing JavaBeans Components</a> and <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html">JavaBeans Properties</a>, documents JavaBeans as coding conventions around properties, methods, events, getters, and setters; <em>Effective Java</em> Item 2 discusses the object-consistency tradeoff of using that style for value construction. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+<li id="fn3" class="footnote-item"><p>Microsoft 的 C# coding conventions 建议：当变量类型能从赋值右侧明显看出时使用 <code>var</code>，当方法返回类型或上下文不能清楚表达类型时避免使用 <code>var</code>。这支撑“可以用，但不能滥用”的边界：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn4" class="footnote-item"><p>Oracle, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.2">Java Language Specification §8.3.1.2 final Fields</a>, defines that a blank final instance variable must be definitely assigned by the end of every constructor, which is the language-level basis for constructor-bounded immutable fields. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+<li id="fn4" class="footnote-item"><p>C# 规范 §13.6.2.2 规定，隐式类型局部变量的类型由初始化表达式的编译期类型决定；Microsoft Learn 也强调 <code>var</code> 声明的变量仍然是强类型。<code>dynamic</code> 则是另一套机制，会把部分绑定推迟到运行期：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/statements#13622-implicitly-typed-local-variable-declarations">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/statements#13622-implicitly-typed-local-variable-declarations</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic">https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn5" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 2, presents the builder idiom as combining the safety of telescoping constructors with the readability of JavaBeans. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+<li id="fn5" class="footnote-item"><p>Microsoft 的 C# coding conventions 把 <code>var customer = new Customer()</code> 这类右侧类型明显的声明列为适合使用隐式类型的场景，因为显式类型只是在重复右侧信息：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn6" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 2, supports using builders when optional parameters are numerous; Erich Gamma et al., <a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610"><em>Design Patterns: Elements of Reusable Object-Oriented Software</em></a>, provides the classic Builder pattern background, whose focus is broader than the Effective Java builder idiom. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+<li id="fn6" class="footnote-item"><p>Microsoft 的 C# coding conventions 也明确提醒：不要仅靠方法名来假设返回类型；当返回类型不能从右侧表达式看清时，显式类型通常能保留更好的阅读线索：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
 </li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/30/Effective-Java-1%E8%80%83%E8%99%91%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E4%BB%A3%E6%9B%BF%E6%9E%84%E9%80%A0%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/30/Effective-Java-1%E8%80%83%E8%99%91%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E4%BB%A3%E6%9B%BF%E6%9E%84%E9%80%A0%E5%99%A8/" class="post-title-link" itemprop="url">Effective-Java-1考虑用静态工厂方法代替构造器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-30 11:11:11" itemprop="dateCreated datePublished" datetime="2021-04-30T11:11:11+08:00">2021-04-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 01:28:48" itemprop="dateModified" datetime="2026-07-18T01:28:48+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>772</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>静态工厂方法与构造器不同的优点<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<ol>
-<li>
-<p><strong>它们有名称 (静态方法)</strong></p>
-<p>例：构造器 BigInteger(int, int, Random) 返回的 BigInteger 可能为素数，如果用名为 BigInteger.probablePrime 的静态工厂方法来表示，显然更为清楚 (1.4的发行版本中最终增加了这个方法)<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<li id="fn7" class="footnote-item"><p>C# 类型系统文档说明，编译期类型会影响成员访问、重载解析和转换；数值字面量与数值转换场景中，<code>var</code> 推断出的具体类型可能影响精度、范围或重载选择，因此在数值类型承载语义时显式写出类型更稳：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/">https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
 </li>
-<li>
-<p><strong>不必每次调用时都创建一个新对象</strong> (可以将构建好的实例进行缓存并重复利用)</p>
-<p>Boolean.valueOf(boolean) 从来不创建对象。这种方法类似于 Flyweight模式(享元模式)。如果程序经常创建相同的对象，并且创建对象的代价高，这种技术将会极大的提升性能。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-</li>
-<li>
-<p><strong>可以返回原返回类型的任何子类型对象</strong> (可以返回隐藏类的实例，将实现类隐藏将使得API十分简洁)<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-</li>
-<li>
-<p><strong>创建参数化类型(泛型)实例的时候，使代码变得更加简洁</strong> (类型推导 type inference)<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用参数化构造器时,指明类型</span></span><br><span class="line">Map&lt;String, List&lt;String&gt;&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, List&lt;String&gt;&gt;();</span><br><span class="line"><span class="comment">// 假如在 HashMap 中提供静态工厂</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; HashMap&lt;K, V&gt; <span class="title function_">newInstance</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;K, V&gt;();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建实例将会变简洁</span></span><br><span class="line">Map&lt;String, List&lt;String&gt;&gt; map = HashMap.newInstance();</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>静态工厂方法的缺点</p>
-<ol>
-<li>
-<p><strong>类如果不含公有的或者受保护的构造器，就不能被子类化</strong></p>
-</li>
-<li>
-<p><strong>与其他的静态方法实际上没有任何区别</strong></p>
-<p>在API文档中，静态工厂方法不会像构造器一样被单独列出并标识，对于仅提供静态工厂方法的类而言，想查到如何实例化该类是比较麻烦的。</p>
-<p>静态工厂方法的一些惯用名称如下:</p>
-<ol>
-<li>valueOf</li>
-<li>of</li>
-<li>getInstance</li>
-<li>newInstance</li>
-<li>getType</li>
-<li>newType</li>
-</ol>
-</li>
-</ol>
-<p><strong>静态工厂方法和共有构造器各有用处，一般情况下静态工厂更加合适，优先提供静态工厂，而不是共有构造器</strong><sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<p><strong>个人总结: 静态工厂方法是对获取对象的一种封装(封装为静态方法)，具体实现可隐藏于其中，具有更高的灵活性</strong><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 1, frames static factory methods as an alternative to constructors and organizes their advantages and disadvantages. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigInteger.html#probablePrime(int,java.util.Random)"><code>BigInteger.probablePrime(int, Random)</code></a>, documents a named static factory for returning a positive probable prime with the requested bit length. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html#valueOf(boolean)"><code>Boolean.valueOf(boolean)</code></a>, documents returning <code>Boolean.TRUE</code> or <code>Boolean.FALSE</code>; Erich Gamma et al., <a target="_blank" rel="noopener" href="https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610"><em>Design Patterns: Elements of Reusable Object-Oriented Software</em></a>, describes the Flyweight pattern background for shared objects. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/EnumSet.html"><code>EnumSet</code></a>, is an abstract class whose instances are created through static factory methods, illustrating how callers can depend on an abstract API while implementations remain hidden. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Oracle, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.9">Java Language Specification §15.9 Class Instance Creation Expressions</a>, defines class instance creation and modern diamond inference; this supports the historical type-inference motivation while also bounding it for newer Java versions. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 1, recommends considering static factory methods instead of constructors while preserving the tradeoff that both creation forms have uses. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>Oracle Java SE 21 API, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ServiceLoader.html"><code>ServiceLoader</code></a>, documents service-provider loading through an abstraction, which is one official example of object acquisition being mediated by an API rather than direct construction. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+<li id="fn8" class="footnote-item"><p>Microsoft Learn 的 IDE0007 / IDE0008 规则把 <code>var</code> 与显式类型偏好拆成“内置类型、类型明显场景、其他场景”三类，可通过 <code>.editorconfig</code> 配置。也就是说，<code>var</code> 是可审查的风格偏好与可读性判断，不是语言层面的绝对规则：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008">https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -1609,13 +1640,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">149k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:38</span>
+    <span title="站点阅读时长">9:04</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

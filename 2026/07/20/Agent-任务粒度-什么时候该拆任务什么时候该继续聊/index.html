@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="用 Agent 做事时，最容易产生错觉的一句话是：继续。 继续查、继续改、继续修、继续总结。对话还没爆 token，模型也还在回应，好像就还能往下推进。可很多长任务不是死在上下文窗口不够长，而是死在上下文已经变脏了。 它读过太多中间材料，留下太多旧假设；它跑过几轮失败命令，记住了几条已经废弃的解释；它同时背着研究、规划、实现、验证和发布几个目标。表面上它还在执行，实际上当前判断已经被旧上下文拖住了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 任务粒度：什么时候该拆任务，什么时候该继续聊">
+<meta property="og:url" content="http://example.com/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="用 Agent 做事时，最容易产生错觉的一句话是：继续。 继续查、继续改、继续修、继续总结。对话还没爆 token，模型也还在回应，好像就还能往下推进。可很多长任务不是死在上下文窗口不够长，而是死在上下文已经变脏了。 它读过太多中间材料，留下太多旧假设；它跑过几轮失败命令，记住了几条已经废弃的解释；它同时背着研究、规划、实现、验证和发布几个目标。表面上它还在执行，实际上当前判断已经被旧上下文拖住了">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-20T13:38:57.299Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="软件开发">
+<meta property="article:tag" content="上下文工程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/","path":"2026/07/20/Agent-任务粒度-什么时候该拆任务什么时候该继续聊/","title":"Agent 任务粒度：什么时候该拆任务，什么时候该继续聊"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Agent 任务粒度：什么时候该拆任务，什么时候该继续聊 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%98%AF%E8%B6%8A%E9%95%BF%E8%B6%8A%E8%83%BD%E5%B9%B2"><span class="nav-number">1.</span> <span class="nav-text">不是越长越能干</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%A4%AA%E5%A4%A7%E6%97%B6%EF%BC%8CAgent-%E4%BC%9A%E6%80%8E%E4%B9%88%E6%BC%82"><span class="nav-number">2.</span> <span class="nav-text">任务太大时，Agent 会怎么漂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%9B%9B%E4%B8%AA%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">好任务的四个条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E5%8F%AF%E4%BB%A5%E7%BB%A7%E7%BB%AD%E8%81%8A"><span class="nav-number">4.</span> <span class="nav-text">什么情况下可以继续聊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E5%BA%94%E8%AF%A5%E6%8B%86"><span class="nav-number">5.</span> <span class="nav-text">什么情况下应该拆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%B8%8D%E6%98%AF%E5%88%B6%E9%80%A0%E6%B5%81%E7%A8%8B%E8%B4%9F%E6%8B%85"><span class="nav-number">6.</span> <span class="nav-text">拆任务不是制造流程负担</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%8F%A5%E5%AE%9E%E7%94%A8%E5%88%A4%E6%96%AD"><span class="nav-number">7.</span> <span class="nav-text">一句实用判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">8.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Agent 任务粒度：什么时候该拆任务，什么时候该继续聊 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Agent 任务粒度：什么时候该拆任务，什么时候该继续聊
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-20 00:00:00 / 修改时间：21:38:57" itemprop="dateCreated datePublished" datetime="2026-07-20T00:00:00+08:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>用 Agent 做事时，最容易产生错觉的一句话是：继续。</p>
+<p>继续查、继续改、继续修、继续总结。对话还没爆 token，模型也还在回应，好像就还能往下推进。可很多长任务不是死在上下文窗口不够长，而是死在上下文已经变脏了。</p>
+<p>它读过太多中间材料，留下太多旧假设；它跑过几轮失败命令，记住了几条已经废弃的解释；它同时背着研究、规划、实现、验证和发布几个目标。表面上它还在执行，实际上当前判断已经被旧上下文拖住了。</p>
+<p>所以我现在更愿意把 Agent 任务粒度看成一个工程判断：</p>
+<p><strong>一次 Agent 任务的合适大小，不取决于模型还能装多少 token，而取决于当前对话还能不能保持目标单一、边界清晰、证据新鲜、上下文干净。</strong></p>
+<p>这篇不讨论怎么“压榨” Agent 多干活，而讨论一个更实用的问题：什么时候该继续聊，什么时候该拆任务。</p>
+<h2 id="不是越长越能干">不是越长越能干</h2>
+<p>长上下文确实有用。</p>
+<p>它让模型能读更大的文件、保留更多对话历史、处理更完整的资料包。对于很多任务，这直接提升了体验：不用频繁重复背景，不用把代码切得太碎，也不用每走一步就重新交代上下文。</p>
+<p>但“放得下”不等于“用得稳”。</p>
+<p><code>Lost in the Middle</code> 这类研究已经说明，模型处理长输入时，相关信息的位置会影响使用效果；放在开头和结尾的信息，通常比放在中间的信息更容易被利用。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> RULER 进一步提醒我们，标称上下文长度不等于真实任务里的有效上下文长度；当任务从简单检索变成多针、多跳、聚合时，性能下降会更早暴露。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这些研究不是说长上下文没用，而是提醒我们：上下文窗口不是可靠记忆库。</p>
+<p>真实 Agent 任务比论文里的长文本更乱。它不只是读一篇文章，而是在多轮里不断加入：</p>
+<ul>
+<li>用户补充的新约束</li>
+<li>模型自己写过的旧计划</li>
+<li>文件读取结果</li>
+<li>搜索结果</li>
+<li>测试日志</li>
+<li>报错堆栈</li>
+<li>已经被否定的假设</li>
+<li>尚未验证的总结</li>
+</ul>
+<p>这些东西如果一直留在同一个对话里，问题就不只是 token 多。问题是旧材料会持续参与后续判断。</p>
+<p>这就是我觉得 <code>Context Rot</code> 这个词好用的地方。它说的不是上下文超过硬上限，而是上下文还在窗口里，但质量已经下降：变长、变旧、变杂、互相干扰。Chroma 的技术报告把这个现象放在长输入性能退化里讨论；Anthropic 的上下文工程文章也把 context 当成有限资源，强调要把最小的高信号信息放进窗口。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>所以，长任务里最危险的往往不是模型忘了，而是它记住了太多不该继续起作用的东西。</p>
+<h2 id="任务太大时，Agent-会怎么漂">任务太大时，Agent 会怎么漂</h2>
+<p>一个任务刚开始时，目标通常还算清楚。</p>
+<p>“帮我查这个 bug。”<br>
+“把这个功能做完。”<br>
+“研究一下这个主题，然后写一篇文章。”</p>
+<p>真正的问题发生在中后段。任务一大，Agent 会开始同时背几类工作：研究材料、比较方案、改文件、跑测试、处理失败、总结结论。每一类工作都需要不同的上下文，但它们常常混在同一个窗口里。</p>
+<p>我见过最典型的漂移有几种。</p>
+<p>第一种是沿用旧假设。</p>
+<p>前面为了定位问题，Agent 提出过 A、B、C 三个可能原因。后来证据已经排除了 A，但 A 的解释还留在对话里。再往后写总结或做实现时，它可能又把 A 当成背景条件拿回来。</p>
+<p>第二种是忘记新约束。</p>
+<p>用户中途补了一句“不要动这个模块”“这次只写草稿，不发布”“不要改现有接口”。但窗口里还有更早的宽泛目标，后面的执行就可能被旧目标带跑。</p>
+<p>第三种是把研究、计划和实现混成一团。</p>
+<p>研究阶段本来应该宽一点，多读、多搜、多比较。实现阶段应该窄一点，只保留当前方案、相关文件和验收条件。如果研究材料不压缩，整个实现阶段就会背着一大堆候选路径前进。</p>
+<p>第四种是工具输出堆积。</p>
+<p>一次 <code>rg</code>、一段日志、一篇网页、一串测试失败，在当下都很有用。但定位完成后，完整原文常常不该继续留在 active context 里。Anthropic 的 cookbook 把 compaction、tool-result clearing 和 memory 分成三种不同手段：压缩会话、清理可重新获取的大型工具结果、把稳定事实写到外部记忆。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>这说明一个简单事实：长运行 Agent 需要上下文治理，而不是只靠“继续”。</p>
+<h2 id="好任务的四个条件">好任务的四个条件</h2>
+<p>我现在判断一个任务能不能继续留在同一个 Agent 对话里，会看四个条件。</p>
+<p>第一，目标单一。</p>
+<p>这个任务能不能用一句话说清完成状态？不是“把这个系统优化一下”，而是“给支付回调入口补上事件级幂等，并用现有测试覆盖重复回调”。不是“研究 Agent 任务粒度并写一堆东西”，而是“基于已有来源写一篇面向 AI 编程用户的判断文章”。</p>
+<p>目标越单一，Agent 越容易知道自己现在该服务什么。</p>
+<p>第二，边界清晰。</p>
+<p>哪些文件在范围内？哪些模块不能动？哪些材料只是背景？哪些结论必须有来源？如果边界说不清，Agent 会用自己的默认模式补齐，而默认模式通常是“尽量完成更多”。</p>
+<p>第三，可验证。</p>
+<p>代码任务要有测试、lint、build、截图或人工检查点。研究任务要有来源、claim-to-source 映射和事实边界。写作任务要有读者、论点、结构和证据清单。</p>
+<p>没有验收方式的任务，很容易变成模型写了一段更顺的解释。</p>
+<p>第四，上下文可控。</p>
+<p>完成任务所需的实时材料，不能把大量无关历史长期留在主对话里。旧日志、旧搜索结果、旧方案、已废弃计划，如果只是“曾经出现过”，就不该自动继续拥有影响力。</p>
+<p>这四个条件凑在一起，基本就是一次 Agent 任务的健康边界：</p>
+<p>目标单一，边界清晰，可验证，上下文可控。</p>
+<p>如果这四项都满足，继续聊通常没问题。反过来，如果其中两项开始失控，就应该考虑拆。</p>
+<h2 id="什么情况下可以继续聊">什么情况下可以继续聊</h2>
+<p>不是所有任务都要拆。过度拆分也会制造流程负担。</p>
+<p>我会在这些情况下继续让同一个 Agent 往下做。</p>
+<p>任务范围很小，只涉及一两个文件，或者一篇文章的一个明确章节。</p>
+<p>上下文还短，里面没有很多失败路径、旧假设和互相竞争的方案。</p>
+<p>验收方式明确。比如“跑这个测试”“生成这篇草稿”“检查这几个链接”“把这段内容改得更清楚”。</p>
+<p>下一步需要的不是新判断，而是接着当前状态执行。比如刚刚形成了清晰大纲，下一步就是按大纲写正文；刚刚定位了失败测试，下一步就是做最小修复。</p>
+<p>这类任务继续聊是自然的。拆出去反而会损失刚刚形成的局部上下文。</p>
+<p>一个简单判断是：<strong>下一步需要的是更多历史，还是更干净的判断？</strong></p>
+<p>如果下一步需要更多历史，可以继续。如果下一步需要更干净的判断，就该拆。</p>
+<h2 id="什么情况下应该拆">什么情况下应该拆</h2>
+<p>真正该拆的时候，通常会出现一些很明确的信号。</p>
+<p>第一，同时包含多个阶段。</p>
+<p>如果一个请求里同时有 research、plan、implement、verify、document、publish，而且每个阶段都会产生大量中间材料，就不要期待一个对话从头干到尾还保持清爽。</p>
+<p>更好的方式是分阶段：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Research -&gt; Plan -&gt; Implement -&gt; Verify -&gt; Document</span><br></pre></td></tr></table></figure>
+<p>每一阶段把输出压缩成下一阶段真正需要的内容。Research 阶段的输出不是“所有资料全文”，而是来源、关键结论、争议点、待验证问题。Plan 阶段的输出不是“所有思考过程”，而是目标、范围、步骤、风险和验收。Implement 阶段只需要当前方案和相关文件。</p>
+<p>第二，工具结果太多。</p>
+<p>如果对话里已经堆了大量日志、网页、搜索结果、测试输出、文件全文，继续往下通常会让模型越来越难抓重点。此时要么清理，要么摘要，要么开新上下文，只保留可追溯指针。</p>
+<p>第三，方向多次变化。</p>
+<p>用户中途改过几次目标，Agent 也尝试过几种方案。这种任务继续聊很容易“旧方向诈尸”。更稳的做法是停一下，明确当前方案和废弃方案，再进入下一阶段。</p>
+<p>第四，出现多个互相竞争的假设。</p>
+<p>调试任务尤其常见。A 解释看起来合理，B 解释也合理，C 解释后来被测试推翻。如果这些假设没有被整理成“事实、假设、已排除、待验证”，Agent 后面很容易把它们混用。</p>
+<p>第五，任务跨模块或跨责任边界。</p>
+<p>比如一次修改同时涉及前端、后端、数据库迁移、部署脚本、监控告警和文档。它们不是不能一起做，而是每一块最好有独立验收和独立上下文。</p>
+<p>第六，已经形成稳定结论。</p>
+<p>一旦某个结论变成长期可复用的知识，就不要只留在聊天记录里。项目规则进 <code>AGENTS.md</code> 或文档；领域结论进 wiki；验证方式进脚本或 CI；一次性交接进 handoff。下一阶段读取稳定产物，而不是继承整段杂乱历史。</p>
+<h2 id="拆任务不是制造流程负担">拆任务不是制造流程负担</h2>
+<p>很多人不愿意拆任务，是因为拆听起来像项目管理开销。</p>
+<p>但对 Agent 来说，拆任务的意义不是官僚化，而是给它换一个更干净的工作现场。</p>
+<p>研究阶段需要发散，允许多读、多搜、多比较。</p>
+<p>计划阶段需要收敛，把发现压缩成目标、边界、步骤和验收。</p>
+<p>实现阶段需要局部、稳定、少噪声，只看当前要改的文件和决策。</p>
+<p>验证阶段需要新鲜证据，不需要旧的“应该没问题”。</p>
+<p>沉淀阶段需要把可复用结论写到长期位置，不需要保存所有聊天细节。</p>
+<p>这其实和人工作很像。你不会把会议白板、草稿纸、错误日志、最终设计稿、上线 checklist 全部摊在同一张桌子上，然后指望自己越干越清醒。你会在不同阶段清桌面、换材料、归档结论。</p>
+<p>Agent 也需要这样的工作现场。</p>
+<h2 id="一句实用判断">一句实用判断</h2>
+<p>我最后会把任务粒度压成一句话：</p>
+<p><strong>如果下一步需要的是更多历史，就继续；如果下一步需要的是更干净的判断，就拆。</strong></p>
+<p>继续，适合当前目标还单一、上下文还干净、验收还明确的时候。</p>
+<p>拆，适合任务已经跨阶段、工具输出太多、旧假设太多、方向变化太多，或者下一步需要独立判断的时候。</p>
+<p>这不是为了少用 Agent。恰恰相反，是为了让 Agent 更稳定地做完真正有价值的事。</p>
+<p>好的 Agent 协作，不是把一个巨大任务塞进一个巨大对话里。</p>
+<p>而是让每一次对话都像一个边界清楚的工作单元：知道要做什么，知道不做什么，知道用什么证据判断完成，也知道什么时候该把稳定结论交给下一阶段。</p>
+<p>Agent 任务粒度，本质上不是 token 管理。</p>
+<p>它是上下文卫生。</p>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
+<li>本博客：<a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a></li>
+<li>本博客：<a href="/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/" title="AI 事实性：让模型找到证据，而不是生成答案">AI 事实性：让模型找到证据，而不是生成答案</a></li>
+<li>本博客：<a href="/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/" title="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象">从 Prompt 到 Skill：AI Agent 工作流的下一层抽象</a></li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a></li>
+<li>Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools">Context engineering: memory, compaction, and tool clearing</a></li>
+<li>Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a></li>
+<li>Hsieh et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.06654">RULER</a></li>
+<li>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot">Context Rot</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Nelson F. Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172"><em>Lost in the Middle: How Language Models Use Long Contexts</em></a>。这篇研究说明，相关信息在长上下文中的位置会显著影响模型表现，开头和结尾通常比中间更容易被利用。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Cheng-Ping Hsieh et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.06654"><em>RULER: What’s the Real Context Size of Your Long-Context Language Models?</em></a>。这里引用它来支撑“标称上下文窗口不等于复杂任务中的真实可用上下文长度”。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot"><em>Context Rot: How Increasing Input Tokens Impacts LLM Performance</em></a>。这里引用它对输入变长、干扰项和任务结构导致性能退化的分析。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"><em>Effective context engineering for AI agents</em></a>。文中把 context 视为有限资源，并强调上下文工程是管理推理时可用 token 的策略集合。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools"><em>Context engineering: memory, compaction, and tool clearing</em></a>。这里引用它区分 compaction、tool-result clearing 和 memory 的工程边界。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag"># 软件开发</a>
+              <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B/" rel="tag"># 上下文工程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/" rel="prev" title="AI 事实性：让模型找到证据，而不是生成答案">
+                  <i class="fa fa-angle-left"></i> AI 事实性：让模型找到证据，而不是生成答案
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/20/Context-Rot-%E9%95%BF%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8D%E6%98%AF%E9%95%BF%E6%9C%9F%E8%AE%B0%E5%BF%86/" rel="next" title="Context Rot：长上下文不是长期记忆">
+                  Context Rot：长上下文不是长期记忆 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">149k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9:04</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
