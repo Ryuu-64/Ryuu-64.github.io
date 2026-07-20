@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-count">92</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,135 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/19/Effective-Java-28%E5%88%97%E8%A1%A8%E4%BC%98%E4%BA%8E%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/19/Effective-Java-28%E5%88%97%E8%A1%A8%E4%BC%98%E4%BA%8E%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">Effective-Java-28列表优于数组</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-19 20:10:24" itemprop="dateCreated datePublished" datetime="2021-05-19T20:10:24+08:00">2021-05-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 02:06:48" itemprop="dateModified" datetime="2026-07-18T02:06:48+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>864</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>数组与泛型相比，有两个重要的不同点。首先，数组是协变的(covariant)。这个词听起来有点吓人，其实只是表示，如果Sub为Super的子类型，那么数组类型Sub[]就是Super[]子类型。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>相反，泛型则是可变的(invariant)：对于任意两个不同的类型Type1和Type2，List<Type1>既不是List<Type2>的子类型，也不是List<Type2>的超类型[JLS,4.10; Naftalin07, 2.5]。你可能认为，这意味着泛型是有缺陷的，但实际上可以说数组才是有缺陷的。下面的代码片段是合法的：<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fails at runtime!</span></span><br><span class="line">Object[] objectArray = <span class="keyword">new</span> <span class="title class_">Long</span>[<span class="number">1</span>];</span><br><span class="line">objectArray[<span class="number">0</span>] = <span class="string">&quot;I don&#x27;t fit in&quot;</span>; <span class="comment">// Throws ArrayStoreException</span></span><br><span class="line"><span class="comment">// Ryuu : 这竟然编译期不报错，C# 里编译期肯定报错了</span></span><br></pre></td></tr></table></figure>
+<p>但下面这段代码则不合法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Won&#x27;t compile!</span></span><br><span class="line">List&lt;Object&gt; objectList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Long&gt;(); <span class="comment">// Incompatible types</span></span><br><span class="line">objectList.add(<span class="string">&quot;I don&#x27;t fit in&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>这其中无论哪一种方法，都不能将 String 放进 Long 容器中，但是使用数组，你会在运行时才发现所犯的错误；而使用列表，则可以在编译时就发现错误。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>数组与泛型的第二大区别：数组是具象化的 (reified)[JLS, 4.7]。因此数组会在运行时知道和强化它们的元素类型。如上所述，将 String 保存到 Long 数组中，就会得到一个 ArrayStoreException 异常。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>泛型则是通过擦除(erasure)[JLS, 4.6]来实现的。**泛型只会在编译时强化它们的类型信息，运行时丢弃(或者擦除)它们的元素信息。**擦除就是使泛型可以与没有使用泛型的代码随意进行互用(见26条)，以确保在Java5中平滑过渡到泛型。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>因为以上这些根本的区别，<strong>数组和泛型不能很好地混合使用</strong>。例如，创建泛型、参数化类型或者类型参数的数组是非法的。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>以下数组创建表达式<strong>没有一个是合法的</strong>：</p>
+<p>这些在编译期会产生一个泛型数组创建(generic array creation)错误。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">List</span>&lt;String&gt;[];</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">List</span>&lt;E&gt;[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">E</span>[<span class="number">1</span>];</span><br><span class="line"><span class="comment">// Ryuu : 这竟然编译期报错，C# 里肯定没有错</span></span><br></pre></td></tr></table></figure>
+<p>从技术角度上来说，E、List<E>和List<String>这样的型应称作<strong>不可具体化(nonreifiable)类型[JLS, 4.7]</strong>。不可具体化类型是指其运行时表示法包含的信息比它编译时表示包含的信息比它的编译时表示法包含的信息更少的类型。唯一可具体化的(reifiable)参数化类型是无限制的通配符类型如List<?>和Map<?,?>(见26条)。创建无限制通配类型的数组是合法的。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html#jls-4.10.3">§4.10.3 Subtyping among Array Types</a>, defines array subtyping in terms of component-type subtyping. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Joshua Bloch, <a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-java-9780134686059"><em>Effective Java, 3rd Edition</em></a>, Item 28, uses this contrast between arrays and generic lists to motivate preferring lists in generic APIs. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-10.html#jls-10.5">§10.5 Array Store Exception</a>, specifies the runtime store check that throws <code>ArrayStoreException</code> when a value is not assignment-compatible with the array’s actual component type. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html#jls-4.7">§4.7 Reifiable Types</a>, explains which types are fully available at runtime; arrays are reifiable only when their component type is reifiable. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html#jls-4.6">§4.6 Type Erasure</a>, defines how parameterized types and type variables are erased. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.10.1">§15.10.1 Array Creation Expressions</a>, makes array creation with a non-reifiable component type a compile-time error. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Java Language Specification SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html#jls-4.7">§4.7 Reifiable Types</a>, identifies parameterized types other than unbounded wildcard forms as non-reifiable. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1354,144 +1483,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/01/Effective-CSharp-2%E8%80%83%E8%99%91%E7%94%A8readonly%E4%BB%A3%E6%9B%BFconst/" class="post-title-link" itemprop="url">Effective-CSharp-2考虑用readonly代替const</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-01 23:01:08" itemprop="dateCreated datePublished" datetime="2021-05-01T23:01:08+08:00">2021-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 03:40:00" itemprop="dateModified" datetime="2026-07-18T03:40:00+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>C# 有两种常量，一种是**编译期 (compile-time)<strong>的，另一种是</strong>运行期 (runtime)**的。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Compile-time constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="built_in">int</span> Millennium = <span class="number">2000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Runtime constant:</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ThisYear = <span class="number">2004</span>;</span><br></pre></td></tr></table></figure>
-<p>以上代码展示了如何在 class 或 struct 的范围内声明这两种常量 此外编译期常量还能在方法中声明，而 readyonly 常量则不行。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>编译器的常量取值嵌入目标代码中。例如<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == Millennium)</span><br></pre></td></tr></table></figure>
-<p>编译成 IL 之后，与直接使用字面量2000是一样的</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(myDateTime.Year == <span class="number">2000</span>)</span><br></pre></td></tr></table></figure>
-<p>运行期常量与之不同，如果代码中使用到了运行期常量，那么其生成的 IL 的、也会同样<strong>引用</strong>该变量，而不会直接使用字面量。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>这两种变量支持的值也不一样。编译期的常量只能用来表示内置的 int, float, enum, string。非基本变量不能使用编译期常量声明，需要使用 readonly。在生成 IL 的过程中，只有用来表示这些原始类型的编译期常量才会替换成字面量。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>无法编译，试图使用 new 操作符进行初始化: (Ryuu: 即使是参数是值类型也不行，其对象在编译期不存在)</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DON&#x27;T DO THIS!</span></span><br><span class="line"><span class="comment">// Does not compile ,use readonly instead:</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> DateTime classCreation = <span class="keyword">new</span> DateTime(<span class="number">2000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-<p>**编译期常量只能用数字，字符串或 null 初始化。**readonly 常量在执行完构造函数 (constructor) 之后不可以再修改。(和编译期常量不同，他的值是在执行完构造函数后才初始化的)<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<p>在生成 IL 的时候，代码中的编译期常量会直接以其常量值写入，如果在制作另外的程序集 (assembly) 的时候用到了该程序集中的编译期常量，那么这个常量将会以字面值写入另外的程序集。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<p>有的时候开发者确实想把某个值固定在编译期，比如程序版本记录，如果更新整个项目，那么里面每个版本号都会变为最新，如果仅更新其中某些程序集，那么只有更新的程序集的版本号会变为最新值。</p>
-<p>const 的性能比 readonly 的要好。由于程序集可以直接访问值，而不用查询变量，因此性能稍高。但是，开发者需要考虑是否值得为了这点性能而使得代码变得僵硬。在决定这么做之前，您应该先通过 profile 工具做性能测试。(可以试试 BenchmarkDotNet)<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
-<p>const 关键字用来声明那些必须在编译期得以确定的值，例如 attribute 参数、switch case 语句的标签、enum 的定义等，偶尔用于声明不会随版本而变化的值。除此之外的值考虑用 readonly 常量声明。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Bill Wagner 的 <em>Effective C# (Covers C# 6.0), 3rd Edition</em> Item 2 将 <code>const</code> 与 <code>readonly</code> 的选择放在“编译期常量 vs. 运行期字段”的语义边界下讨论；Microsoft 的 <code>const</code> 与 <code>readonly</code> 文档也分别把二者定义为编译期常量和只读字段约束：<a target="_blank" rel="noopener" href="https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283">https://www.informit.com/store/effective-c-sharp-covers-c-sharp-6.0-50-specific-ways-9780134579283</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Microsoft <code>const</code> 文档说明常量可声明为局部常量或字段；<code>readonly</code> 文档则把 <code>readonly</code> 描述为字段修饰符，赋值位置受字段初始化器和构造函数约束：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>C# 规范 §15.5.3.3 在讨论 constants 与 static readonly fields 的版本差异时说明，常量的值会在编译期取得；这就是跨程序集使用 <code>const</code> 时会出现字面值写入调用方编译产物的根源：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>同一段 C# 规范把 <code>static readonly</code> 字段与 <code>const</code> 对比：字段值在运行期获得，而不是像常量那样在编译期写入使用方：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Microsoft <code>const</code> 文档列出的可用类型比正文示例更完整：内置数值类型、<code>bool</code>、<code>char</code>、<code>string</code>、枚举类型，以及引用类型的 <code>null</code>。这里的关键边界不是这几个例子本身，而是初始化表达式必须能在编译期成为常量表达式：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/const</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#1226-constant-expressions">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#1226-constant-expressions</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>C# 规范 §15.5.3 规定 <code>readonly</code> 字段只能在声明的变量初始化器、实例构造函数、静态构造函数或静态字段初始化器中赋值；但 <code>readonly</code> 不是深度不可变，引用对象内部是否可变仍取决于对象自身设计：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1553-readonly-fields">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1553-readonly-fields</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/readonly</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>C# 规范 §15.5.3.3 专门用 constants 与 static readonly fields 对比说明 binary versioning：常量在编译期取值，静态只读字段在运行期取值；因此公开 <code>const</code> 的变更通常要求依赖方重新编译才能看到新值：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn8" class="footnote-item"><p>Microsoft CA1802 “Use literals where appropriate” 将 <code>static readonly</code> 改为 <code>const</code> 视为可能的性能优化，但规则说明也把适用范围限定在值可在编译期确定且语义上适合常量的场景；公开 API 还要先考虑版本语义：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1802">https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1802</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15533-versioning-of-constants-and-static-readonly-fields</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn9" class="footnote-item"><p>attribute 参数类型受 C# 规范 §23.2.4 限制，常见 attribute 参数、<code>case</code> 标签和枚举值都属于需要编译期常量表达式的语境；这些场景才是 <code>const</code> 的天然职责：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/attributes#2324-attribute-parameter-types">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/attributes#2324-attribute-parameter-types</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#1226-constant-expressions">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#1226-constant-expressions</a>。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/01/Effective-CSharp-1%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1640,13 +1631,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">149k</span>
+    <span title="站点总字数">154k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:04</span>
+    <span title="站点阅读时长">9:19</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="很多人第一次听到 API 幂等，是从“防重复提交”开始的。 用户点了一次提交，页面没反应，又点了一次。前端给按钮加个 loading，提交后禁用三秒，看起来问题就解决了。再高级一点，加个 token，或者在 Redis 里 setnx 一下，同一个请求不要重复处理。 这些做法不是没用。 但如果你把 API 幂等理解成“防用户手快”，就会低估它真正要处理的场景。线上很多重复执行，并不是用户连续点了两">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API 幂等真正解决的，是“结果未知以后怎么办”">
+<meta property="og:url" content="http://example.com/2026/07/20/API-%E5%B9%82%E7%AD%89%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%8C%E6%98%AF%E7%BB%93%E6%9E%9C%E6%9C%AA%E7%9F%A5%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%8A%9E/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="很多人第一次听到 API 幂等，是从“防重复提交”开始的。 用户点了一次提交，页面没反应，又点了一次。前端给按钮加个 loading，提交后禁用三秒，看起来问题就解决了。再高级一点，加个 token，或者在 Redis 里 setnx 一下，同一个请求不要重复处理。 这些做法不是没用。 但如果你把 API 幂等理解成“防用户手快”，就会低估它真正要处理的场景。线上很多重复执行，并不是用户连续点了两">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-20T15:40:00.000Z">
+<meta property="article:modified_time" content="2026-07-20T15:36:13.097Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="API">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="幂等">
+<meta property="article:tag" content="可靠性">
+<meta property="article:tag" content="支付">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/20/API-%E5%B9%82%E7%AD%89%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%8C%E6%98%AF%E7%BB%93%E6%9E%9C%E6%9C%AA%E7%9F%A5%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%8A%9E/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/20/API-%E5%B9%82%E7%AD%89%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%8C%E6%98%AF%E7%BB%93%E6%9E%9C%E6%9C%AA%E7%9F%A5%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%8A%9E/","path":"2026/07/20/API-幂等真正解决的，是结果未知以后怎么办/","title":"API 幂等真正解决的，是“结果未知以后怎么办”"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>API 幂等真正解决的，是“结果未知以后怎么办” | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%82%E7%AD%89%E4%B8%8D%E6%98%AF%E6%8C%89%E9%92%AE%E9%98%B2%E6%8A%96"><span class="nav-number">1.</span> <span class="nav-text">幂等不是按钮防抖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-%E6%96%B9%E6%B3%95%E7%9A%84%E5%B9%82%E7%AD%89%EF%BC%8C%E5%92%8C%E4%B8%9A%E5%8A%A1%E5%86%99%E6%93%8D%E4%BD%9C%E7%9A%84%E5%B9%82%E7%AD%89%EF%BC%8C%E4%B8%8D%E6%98%AF%E4%B8%80%E5%9B%9E%E4%BA%8B"><span class="nav-number">2.</span> <span class="nav-text">HTTP 方法的幂等，和业务写操作的幂等，不是一回事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%95%8C%E4%BA%BA%E6%98%AF%E2%80%9C%E6%9C%AA%E7%9F%A5%E7%BB%93%E6%9E%9C%E2%80%9D"><span class="nav-number">3.</span> <span class="nav-text">真正的敌人是“未知结果”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%82%E7%AD%89%E9%94%AE%E7%BB%91%E5%AE%9A%E7%9A%84%E6%98%AF%E4%B8%9A%E5%8A%A1%E6%84%8F%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">幂等键绑定的是业务意图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AA%E9%9D%A0%E5%B9%82%E7%AD%89%E8%A1%A8%E8%BF%98%E4%B8%8D%E5%A4%9F"><span class="nav-number">5.</span> <span class="nav-text">只靠幂等表还不够</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E4%BB%98%E5%9B%9E%E8%B0%83%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E5%8F%8D%E4%BE%8B"><span class="nav-number">6.</span> <span class="nav-text">支付回调是最好的反例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E9%87%8D%E6%94%BE%E3%80%81%E5%B9%82%E7%AD%89%E3%80%81%E9%94%81%EF%BC%8C%E4%B8%8D%E8%A6%81%E6%B7%B7%E6%88%90%E4%B8%80%E4%BB%B6%E4%BA%8B"><span class="nav-number">7.</span> <span class="nav-text">防重放、幂等、锁，不要混成一件事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%86%99%E4%B8%8D%E5%8F%98%E9%87%8F%EF%BC%8C%E5%86%8D%E5%86%99%E6%8E%A5%E5%8F%A3"><span class="nav-number">8.</span> <span class="nav-text">先写不变量，再写接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%9C%80%E5%B0%8F%E5%8F%AF%E7%94%A8%E6%B8%85%E5%8D%95"><span class="nav-number">9.</span> <span class="nav-text">一个最小可用清单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E5%B0%BE"><span class="nav-number">10.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/API-%E5%B9%82%E7%AD%89%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%8C%E6%98%AF%E7%BB%93%E6%9E%9C%E6%9C%AA%E7%9F%A5%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%8A%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="API 幂等真正解决的，是“结果未知以后怎么办” | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          API 幂等真正解决的，是“结果未知以后怎么办”
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-20 23:40:00 / 修改时间：23:36:13" itemprop="dateCreated datePublished" datetime="2026-07-20T23:40:00+08:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>很多人第一次听到 API 幂等，是从“防重复提交”开始的。</p>
+<p>用户点了一次提交，页面没反应，又点了一次。前端给按钮加个 loading，提交后禁用三秒，看起来问题就解决了。再高级一点，加个 token，或者在 Redis 里 <code>setnx</code> 一下，同一个请求不要重复处理。</p>
+<p>这些做法不是没用。</p>
+<p>但如果你把 API 幂等理解成“防用户手快”，就会低估它真正要处理的场景。线上很多重复执行，并不是用户连续点了两下按钮，而是系统不知道上一件事到底发生到哪一步了。</p>
+<p>请求发出去了，客户端超时了。</p>
+<p>支付渠道扣款成功了，但响应丢了。</p>
+<p>消息队列投递了一次，消费者处理到一半重启了。</p>
+<p>Webhook 已经通知过你，但对方没收到你的 <code>2xx</code>，于是又发了一次。</p>
+<p>后台补偿任务昨晚跑失败，今天人工补跑。</p>
+<p>这些时候，问题不是“前端有没有挡住第二次点击”，而是：</p>
+<p><strong>当结果未知时，调用方一定会想办法再来一次。服务端要保证再来一次不会把业务改坏。</strong></p>
+<p>这才是 API 幂等真正解决的问题。</p>
+<h2 id="幂等不是按钮防抖">幂等不是按钮防抖</h2>
+<p>前端防连点解决的是用户体验层面的重复触发。</p>
+<p>它可以减少无意义请求，也可以让页面状态更清楚。但它挡不住这些情况：</p>
+<ul>
+<li>用户刷新页面后重提</li>
+<li>客户端超时后自动重试</li>
+<li>网关、SDK 或任务框架重试</li>
+<li>MQ 至少一次投递</li>
+<li>第三方 webhook 重复通知</li>
+<li>人工补偿和批量重放</li>
+<li>攻击者拿旧请求重新提交</li>
+</ul>
+<p>前端按钮只活在浏览器当前页面里。服务端面对的是网络、队列、数据库、第三方系统、后台任务和人肉运维。</p>
+<p>所以服务端幂等的第一步，是承认一个事实：</p>
+<p><strong>同一个业务意图可能会从多个入口、在不同时间、以不同姿势再次到达。</strong></p>
+<p>如果这个业务意图是“查一下订单列表”，重复到达通常没什么。如果它是“扣款”“发券”“创建订单”“发货”“记账”“领取奖励”，重复到达就可能产生真实损失。</p>
+<p>按钮禁用只能减少“点了两下”。它不能回答“第一次到底成功了吗”。</p>
+<p>幂等要回答的是这个问题。</p>
+<h2 id="HTTP-方法的幂等，和业务写操作的幂等，不是一回事">HTTP 方法的幂等，和业务写操作的幂等，不是一回事</h2>
+<p>HTTP 规范里确实有幂等方法的概念。RFC 9110 把 <code>PUT</code>、<code>DELETE</code> 和安全方法定义为幂等方法：同一个请求执行多次，对服务端的预期效果应当和执行一次相同。规范还提醒，客户端不应该自动重试非幂等请求，除非它知道这个请求语义本身就是幂等的。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>这很重要，但它只解决一层语义问题。</p>
+<p>很多业务事故发生在 <code>POST</code> 上：</p>
+<ul>
+<li>创建订单</li>
+<li>创建支付单</li>
+<li>发起退款</li>
+<li>发放权益</li>
+<li>提交审批</li>
+<li>创建导入任务</li>
+</ul>
+<p>从 HTTP 方法看，<code>POST</code> 通常不是天然幂等的。因为“创建一个新资源”执行两次，很可能就是两个资源。</p>
+<p>但业务上我们经常希望某些 <code>POST</code> 可以安全重试。</p>
+<p>比如“用这个客户端请求号创建一张订单”。如果客户端超时了，它应该可以带着同一个请求号再问一次：刚才那张订单到底创建出来没有？</p>
+<p>这时候幂等不是 HTTP 方法送你的。</p>
+<p>它是你在业务层设计出来的。</p>
+<h2 id="真正的敌人是“未知结果”">真正的敌人是“未知结果”</h2>
+<p>很多接口设计只考虑两种结果：</p>
+<ul>
+<li>成功</li>
+<li>失败</li>
+</ul>
+<p>但分布式系统里最麻烦的是第三种：</p>
+<ul>
+<li>不知道</li>
+</ul>
+<p>客户端发起支付请求。服务端调用三方支付。三方已经创建了支付对象，但你的服务端在写本地结果前重启了。</p>
+<p>这个时候客户端看到的是超时。</p>
+<p>它不知道该提示用户“失败了”，还是“成功了”，还是“稍后查看”。更现实的是，它会重试。SDK 会重试。业务方会重试。客服可能也会点一次“重新发起”。</p>
+<p>如果服务端没有幂等，重试就可能变成第二次创建、第二次扣款、第二次发券。</p>
+<p>所以幂等设计的核心不是“挡掉重复请求”，而是把未知结果变成可查询、可复用、可恢复的确定结果。</p>
+<p>同一个业务意图再来一次时，服务端最好能回答：</p>
+<ul>
+<li>这件事第一次是否已经开始执行</li>
+<li>第一次使用的参数是什么</li>
+<li>第一次生成的业务对象是什么</li>
+<li>第一次最终成功、失败，还是仍在处理中</li>
+<li>这次重试应该返回旧结果、继续等待，还是拒绝</li>
+</ul>
+<p>如果这些都没有记录，系统就只能靠猜。</p>
+<p>猜，是幂等事故的开端。</p>
+<h2 id="幂等键绑定的是业务意图">幂等键绑定的是业务意图</h2>
+<p>最常见的做法，是让调用方带一个 <code>idempotency key</code>。</p>
+<p>Stripe 的官方 API 文档就是很典型的样板：调用方给 <code>POST</code> 请求带幂等键后，Stripe 会保存第一次请求的状态码和响应体，后续同一个 key 的请求会返回同一个结果；幂等键建议使用足够随机的值，比如 UUID v4；保留窗口至少 24 小时；同一个 key 后续请求的参数如果和第一次不一致，会被识别为误用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这个设计里有几个细节很值得注意。</p>
+<p>第一，幂等键不是“这个字符串用过了就行”。</p>
+<p>它要绑定一次业务意图。</p>
+<p>比如用户点击“购买 A 商品 1 件”，客户端生成了一个请求号。这个请求号可以用于重试同一次购买。但它不能下一次又拿来购买 B 商品 3 件。</p>
+<p>所以服务端只记录：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key = abc 已经用过</span><br></pre></td></tr></table></figure>
+<p>是不够的。</p>
+<p>更稳的记录通常至少包括：</p>
+<ul>
+<li>幂等键</li>
+<li>规范化后的请求参数摘要</li>
+<li>首次请求时间</li>
+<li>当前处理状态</li>
+<li>关联的业务主键</li>
+<li>首次完成后的响应结果</li>
+</ul>
+<p>这样第二次请求进来时，服务端才能判断：</p>
+<ul>
+<li>是同一业务意图的重试</li>
+<li>还是调用方复用了 key</li>
+<li>还是恶意或异常流量在碰撞</li>
+</ul>
+<p>第二，幂等结果不是所有失败都应该永久固化。</p>
+<p>Stripe 文档里还有一个边界：如果参数校验失败，或者请求在并发冲突前还没有真正开始执行，就不会保存幂等结果。<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup></p>
+<p>这个边界很实用。</p>
+<p>字段缺失、格式错误这种请求，本来就没有进入业务执行。调用方修正参数后可以重试。如果你把这种失败也永久绑定到 key 上，调用方反而很难恢复。</p>
+<p>幂等真正要固化的，是“已经开始产生业务效果”的执行。</p>
+<h2 id="只靠幂等表还不够">只靠幂等表还不够</h2>
+<p>很多人做到这里会觉得，建一张 <code>idempotency_record</code> 表就完事了。</p>
+<p>还不够。</p>
+<p>幂等表解决的是请求层的问题：同一个 key 再来时如何处理。</p>
+<p>但业务层仍然要有自己的硬约束。</p>
+<p>因为重复不一定都从同一个 key 来。</p>
+<p>同一个支付回调可能有事件 ID。用户发起支付可能有客户端请求号。后台补偿可能按订单号跑。对账任务可能按渠道交易号修正。人工重放可能从管理后台触发。</p>
+<p>如果这些入口最后都会影响同一张支付单、同一笔账、同一份权益，那么真正保护业务的，不能只有入口处的一张幂等表。</p>
+<p>你还需要：</p>
+<ul>
+<li>业务唯一键</li>
+<li>数据库唯一约束</li>
+<li>条件更新</li>
+<li>状态机 guard</li>
+<li>事务边界</li>
+<li>版本号或乐观锁</li>
+</ul>
+<p>比如支付单只允许从 <code>PENDING</code> 变成 <code>PAID</code>。</p>
+<p>重复的支付成功事件来了，可以忽略。</p>
+<p>旧的支付失败事件晚到了，不能把 <code>PAID</code> 改回 <code>FAILED</code>。</p>
+<p>这不是幂等键一个字段能解决的。</p>
+<p>这是状态机要解决的问题。</p>
+<p>幂等解决“同一个触发重复来了怎么办”。</p>
+<p>状态机解决“这次状态推进在业务上还允不允许”。</p>
+<p>两者不是替代关系。</p>
+<h2 id="支付回调是最好的反例">支付回调是最好的反例</h2>
+<p>支付回调很适合用来理解幂等，因为它天然会打破很多天真的假设。</p>
+<p>天真的写法通常是：</p>
+<ol>
+<li>回调进来</li>
+<li>验签</li>
+<li>查本地订单</li>
+<li>如果未支付，就改成已支付</li>
+<li>发货或发权益</li>
+<li>返回成功</li>
+</ol>
+<p>这段流程看起来很顺。</p>
+<p>但线上现实通常不顺：</p>
+<ul>
+<li>回调可能比本地下单落库更早到</li>
+<li>同一事件可能重复投递</li>
+<li>事件可能乱序</li>
+<li>你的接口返回慢，对方会重试</li>
+<li>你处理成功了，但返回 <code>2xx</code> 之前进程挂了</li>
+<li>你本地状态已经是终态，但旧事件才刚到</li>
+</ul>
+<p>Stripe 的 webhook 文档也明确提醒，事件不保证按生成顺序送达；在 live mode 下，如果 endpoint 没有成功响应，Stripe 会自动重试最长三天，并使用指数退避；文档还建议 webhook handler 尽快返回成功，把复杂逻辑延后异步处理。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>所以更稳的模型不是“回调来了就同步做完整个业务”，而是：</p>
+<ol>
+<li>验签</li>
+<li>原始事件落库</li>
+<li>按事件唯一键去重</li>
+<li>快速返回 <code>2xx</code></li>
+<li>worker 异步消费事件</li>
+<li>按业务主键和状态机更新订单</li>
+<li>副作用通过 outbox、任务或事件继续推进</li>
+<li>失败进入重试、死信、补偿或人工处理</li>
+</ol>
+<p>这里有两层幂等。</p>
+<p>第一层是事件级去重：同一个 webhook event 不要处理两次。</p>
+<p>第二层是业务级幂等：即使两个不同事件都表达“这笔支付已经成功”，也不能重复记账、重复发货、重复发券。</p>
+<p>很多支付事故就发生在只做了第二层的一点点：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if order.status == PAID:</span><br><span class="line">    return success</span><br></pre></td></tr></table></figure>
+<p>这只能挡住一部分重复支付成功回调。</p>
+<p>它挡不住事件审计缺失，挡不住旧状态覆盖新状态，挡不住查不到订单的孤儿回调，挡不住发货逻辑被两个入口同时触发。</p>
+<p>服务端要防的不是“这一行 if 有没有写”。</p>
+<p>服务端要防的是所有入口都不能把核心不变量打破。</p>
+<h2 id="防重放、幂等、锁，不要混成一件事">防重放、幂等、锁，不要混成一件事</h2>
+<p>幂等还经常和两个概念混在一起：防重放、锁。</p>
+<p>它们有关，但不是同一个东西。</p>
+<p>防重放关注的是：一份旧的合法请求，现在还能不能再次被接受。</p>
+<p>比如 webhook payload 和签名被复制后重新提交。如果签名只证明“内容没被改过”，但没有 timestamp、nonce、event id、请求 ID 或时间窗口，那么旧请求可能仍然看起来合法。</p>
+<p>所以高价值入口通常要回答三件事：</p>
+<ol>
+<li>这个请求是谁发的，内容有没有被改</li>
+<li>这是不是一条仍在有效窗口内的新请求</li>
+<li>如果它重复到达，业务副作用是否只发生一次</li>
+</ol>
+<p>第一件事靠鉴权、签名、验签。</p>
+<p>第二件事靠 timestamp、nonce、event id、request id、时间窗口。</p>
+<p>第三件事靠幂等键、唯一约束、状态机和事务。</p>
+<p>幂等不能替代鉴权。</p>
+<p>一个重复请求不重复生效，不代表它来源可信。</p>
+<p>锁解决的是另一类问题：多个执行者如何互斥地修改资源。</p>
+<p>比如两个 worker 同时抢一个任务，或者两个请求同时扣同一份库存。锁、乐观锁、唯一约束、条件更新都可能用上。</p>
+<p>但锁也不是幂等。</p>
+<p>锁能让同一时刻只有一个人进门，却不能告诉你这个人是不是昨天已经办过同一件事，也不能告诉你超时以后再次进门该返回什么结果。</p>
+<p>把这些概念混在一起，最后很容易写出一种“看起来很安全”的代码：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">前端禁用按钮</span><br><span class="line">Redis setnx</span><br><span class="line">查一下状态</span><br><span class="line">没问题就执行</span><br></pre></td></tr></table></figure>
+<p>它能挡住一部分普通重复提交。</p>
+<p>但它没有回答未知结果、参数复用、持久约束、状态回退、补偿重放这些更关键的问题。</p>
+<h2 id="先写不变量，再写接口">先写不变量，再写接口</h2>
+<p>我现在更愿意从不变量开始设计这类接口。</p>
+<p>不要先问：</p>
+<ul>
+<li>用不用 Redis</li>
+<li>幂等表怎么建</li>
+<li>key 放 header 还是 body</li>
+<li>要不要分布式锁</li>
+</ul>
+<p>先问：</p>
+<ul>
+<li>这个业务最不能坏的事实是什么</li>
+<li>哪些副作用绝不能重复</li>
+<li>哪些状态一旦到达就不能回退</li>
+<li>哪些检查必须和写入在同一个事务里完成</li>
+<li>哪些失败可以稍后补偿，哪些失败不能先脏后修</li>
+</ul>
+<p>比如支付场景里，不变量可能是：</p>
+<ul>
+<li>同一支付意图只能生成一张有效支付单</li>
+<li>同一渠道交易只能记账一次</li>
+<li>已支付订单不能被旧失败事件回退</li>
+<li>发货或权益开通只能对同一业务事实生效一次</li>
+</ul>
+<p>有了这些不变量，再决定机制：</p>
+<ul>
+<li>创建支付单用业务请求号唯一约束</li>
+<li>调三方支付带幂等键</li>
+<li>回调事件表按 provider event id 去重</li>
+<li>支付单状态用条件更新</li>
+<li>ledger entry 用 source object + entry type 做唯一键</li>
+<li>发货通过领域事件触发，业务侧自己幂等</li>
+<li>失败事件进入 retry / dead letter / reconciliation</li>
+</ul>
+<p>这时候幂等不再是一张“防重复提交表”。</p>
+<p>它变成一组保护业务不变量的机制。</p>
+<h2 id="一个最小可用清单">一个最小可用清单</h2>
+<p>如果一个写接口重试后可能造成钱、库存、权益、身份、权限或不可逆状态变化，我会至少检查这些问题：</p>
+<ol>
+<li>调用方在什么失败下会重试？</li>
+<li>谁生成幂等键？这个 key 表达哪个业务意图？</li>
+<li>同一个 key 换参数时怎么办？</li>
+<li>首次执行结果保存在哪里？处理中状态怎么返回？</li>
+<li>幂等记录保留多久？过期后业务层是否仍有约束？</li>
+<li>业务主键、外部单号、事件 ID 是否有唯一约束？</li>
+<li>状态是否只能合法前进？终态收到旧事件怎么办？</li>
+<li>状态推进和外部副作用是否拆开？</li>
+<li>后台重试是否有次数上限、退避、死信和人工重放？</li>
+<li>入口是否需要签名、timestamp、nonce 或时间窗口来防重放？</li>
+</ol>
+<p>这里面没有哪一项单独等于“幂等”。</p>
+<p>真正的幂等能力，来自它们组合在一起。</p>
+<h2 id="结尾">结尾</h2>
+<p>“防连点”是一个太小的入口。</p>
+<p>它让人以为重复来自用户手快，以为只要少发一个请求，系统就安全了。</p>
+<p>但服务端面对的重复，更多来自未知结果：不知道上一次有没有执行，不知道执行到哪一步，不知道响应是不是丢了，不知道对方会不会再投递，不知道补偿任务会不会重放。</p>
+<p>API 幂等真正解决的，不是让第二次点击消失。</p>
+<p>而是当第二次、第三次、隔天的一次、后台补偿的一次真的到来时，服务端仍然能说清：</p>
+<p><strong>这是同一件事。它已经发生过。结果在这里。业务不会再被改坏。</strong></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>RFC 9110《HTTP Semantics》在 <a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods">Idempotent Methods</a> 中定义了 HTTP 方法幂等语义，并说明客户端自动重试非幂等方法需要知道请求语义本身是幂等的。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Stripe 官方文档 <a target="_blank" rel="noopener" href="https://docs.stripe.com/api/idempotent_requests">Idempotent requests</a> 说明了幂等键、首次响应复用、参数一致性校验、建议 UUID v4、至少 24 小时清理窗口，以及未开始执行时不保存幂等结果等边界。 <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Stripe 官方文档 <a target="_blank" rel="noopener" href="https://docs.stripe.com/webhooks">Receive Stripe events in your webhook endpoint</a> 说明了 webhook handler 应快速返回成功、失败会自动重试、事件可能重复且不保证顺序等处理边界。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/API/" rel="tag"># API</a>
+              <a href="/tags/%E5%90%8E%E7%AB%AF/" rel="tag"># 后端</a>
+              <a href="/tags/%E5%B9%82%E7%AD%89/" rel="tag"># 幂等</a>
+              <a href="/tags/%E5%8F%AF%E9%9D%A0%E6%80%A7/" rel="tag"># 可靠性</a>
+              <a href="/tags/%E6%94%AF%E4%BB%98/" rel="tag"># 支付</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/20/Context-Rot-%E9%95%BF%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8D%E6%98%AF%E9%95%BF%E6%9C%9F%E8%AE%B0%E5%BF%86/" rel="prev" title="Context Rot：长上下文不是长期记忆">
+                  <i class="fa fa-angle-left"></i> Context Rot：长上下文不是长期记忆
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">154k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9:19</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

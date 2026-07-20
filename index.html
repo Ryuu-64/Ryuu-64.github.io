@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-count">92</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,362 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/API-%E5%B9%82%E7%AD%89%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%8C%E6%98%AF%E7%BB%93%E6%9E%9C%E6%9C%AA%E7%9F%A5%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%8A%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/20/API-%E5%B9%82%E7%AD%89%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%8C%E6%98%AF%E7%BB%93%E6%9E%9C%E6%9C%AA%E7%9F%A5%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%8A%9E/" class="post-title-link" itemprop="url">API 幂等真正解决的，是“结果未知以后怎么办”</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-20 23:40:00 / 修改时间：23:36:13" itemprop="dateCreated datePublished" datetime="2026-07-20T23:40:00+08:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>很多人第一次听到 API 幂等，是从“防重复提交”开始的。</p>
+<p>用户点了一次提交，页面没反应，又点了一次。前端给按钮加个 loading，提交后禁用三秒，看起来问题就解决了。再高级一点，加个 token，或者在 Redis 里 <code>setnx</code> 一下，同一个请求不要重复处理。</p>
+<p>这些做法不是没用。</p>
+<p>但如果你把 API 幂等理解成“防用户手快”，就会低估它真正要处理的场景。线上很多重复执行，并不是用户连续点了两下按钮，而是系统不知道上一件事到底发生到哪一步了。</p>
+<p>请求发出去了，客户端超时了。</p>
+<p>支付渠道扣款成功了，但响应丢了。</p>
+<p>消息队列投递了一次，消费者处理到一半重启了。</p>
+<p>Webhook 已经通知过你，但对方没收到你的 <code>2xx</code>，于是又发了一次。</p>
+<p>后台补偿任务昨晚跑失败，今天人工补跑。</p>
+<p>这些时候，问题不是“前端有没有挡住第二次点击”，而是：</p>
+<p><strong>当结果未知时，调用方一定会想办法再来一次。服务端要保证再来一次不会把业务改坏。</strong></p>
+<p>这才是 API 幂等真正解决的问题。</p>
+<h2 id="幂等不是按钮防抖">幂等不是按钮防抖</h2>
+<p>前端防连点解决的是用户体验层面的重复触发。</p>
+<p>它可以减少无意义请求，也可以让页面状态更清楚。但它挡不住这些情况：</p>
+<ul>
+<li>用户刷新页面后重提</li>
+<li>客户端超时后自动重试</li>
+<li>网关、SDK 或任务框架重试</li>
+<li>MQ 至少一次投递</li>
+<li>第三方 webhook 重复通知</li>
+<li>人工补偿和批量重放</li>
+<li>攻击者拿旧请求重新提交</li>
+</ul>
+<p>前端按钮只活在浏览器当前页面里。服务端面对的是网络、队列、数据库、第三方系统、后台任务和人肉运维。</p>
+<p>所以服务端幂等的第一步，是承认一个事实：</p>
+<p><strong>同一个业务意图可能会从多个入口、在不同时间、以不同姿势再次到达。</strong></p>
+<p>如果这个业务意图是“查一下订单列表”，重复到达通常没什么。如果它是“扣款”“发券”“创建订单”“发货”“记账”“领取奖励”，重复到达就可能产生真实损失。</p>
+<p>按钮禁用只能减少“点了两下”。它不能回答“第一次到底成功了吗”。</p>
+<p>幂等要回答的是这个问题。</p>
+<h2 id="HTTP-方法的幂等，和业务写操作的幂等，不是一回事">HTTP 方法的幂等，和业务写操作的幂等，不是一回事</h2>
+<p>HTTP 规范里确实有幂等方法的概念。RFC 9110 把 <code>PUT</code>、<code>DELETE</code> 和安全方法定义为幂等方法：同一个请求执行多次，对服务端的预期效果应当和执行一次相同。规范还提醒，客户端不应该自动重试非幂等请求，除非它知道这个请求语义本身就是幂等的。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>这很重要，但它只解决一层语义问题。</p>
+<p>很多业务事故发生在 <code>POST</code> 上：</p>
+<ul>
+<li>创建订单</li>
+<li>创建支付单</li>
+<li>发起退款</li>
+<li>发放权益</li>
+<li>提交审批</li>
+<li>创建导入任务</li>
+</ul>
+<p>从 HTTP 方法看，<code>POST</code> 通常不是天然幂等的。因为“创建一个新资源”执行两次，很可能就是两个资源。</p>
+<p>但业务上我们经常希望某些 <code>POST</code> 可以安全重试。</p>
+<p>比如“用这个客户端请求号创建一张订单”。如果客户端超时了，它应该可以带着同一个请求号再问一次：刚才那张订单到底创建出来没有？</p>
+<p>这时候幂等不是 HTTP 方法送你的。</p>
+<p>它是你在业务层设计出来的。</p>
+<h2 id="真正的敌人是“未知结果”">真正的敌人是“未知结果”</h2>
+<p>很多接口设计只考虑两种结果：</p>
+<ul>
+<li>成功</li>
+<li>失败</li>
+</ul>
+<p>但分布式系统里最麻烦的是第三种：</p>
+<ul>
+<li>不知道</li>
+</ul>
+<p>客户端发起支付请求。服务端调用三方支付。三方已经创建了支付对象，但你的服务端在写本地结果前重启了。</p>
+<p>这个时候客户端看到的是超时。</p>
+<p>它不知道该提示用户“失败了”，还是“成功了”，还是“稍后查看”。更现实的是，它会重试。SDK 会重试。业务方会重试。客服可能也会点一次“重新发起”。</p>
+<p>如果服务端没有幂等，重试就可能变成第二次创建、第二次扣款、第二次发券。</p>
+<p>所以幂等设计的核心不是“挡掉重复请求”，而是把未知结果变成可查询、可复用、可恢复的确定结果。</p>
+<p>同一个业务意图再来一次时，服务端最好能回答：</p>
+<ul>
+<li>这件事第一次是否已经开始执行</li>
+<li>第一次使用的参数是什么</li>
+<li>第一次生成的业务对象是什么</li>
+<li>第一次最终成功、失败，还是仍在处理中</li>
+<li>这次重试应该返回旧结果、继续等待，还是拒绝</li>
+</ul>
+<p>如果这些都没有记录，系统就只能靠猜。</p>
+<p>猜，是幂等事故的开端。</p>
+<h2 id="幂等键绑定的是业务意图">幂等键绑定的是业务意图</h2>
+<p>最常见的做法，是让调用方带一个 <code>idempotency key</code>。</p>
+<p>Stripe 的官方 API 文档就是很典型的样板：调用方给 <code>POST</code> 请求带幂等键后，Stripe 会保存第一次请求的状态码和响应体，后续同一个 key 的请求会返回同一个结果；幂等键建议使用足够随机的值，比如 UUID v4；保留窗口至少 24 小时；同一个 key 后续请求的参数如果和第一次不一致，会被识别为误用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这个设计里有几个细节很值得注意。</p>
+<p>第一，幂等键不是“这个字符串用过了就行”。</p>
+<p>它要绑定一次业务意图。</p>
+<p>比如用户点击“购买 A 商品 1 件”，客户端生成了一个请求号。这个请求号可以用于重试同一次购买。但它不能下一次又拿来购买 B 商品 3 件。</p>
+<p>所以服务端只记录：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key = abc 已经用过</span><br></pre></td></tr></table></figure>
+<p>是不够的。</p>
+<p>更稳的记录通常至少包括：</p>
+<ul>
+<li>幂等键</li>
+<li>规范化后的请求参数摘要</li>
+<li>首次请求时间</li>
+<li>当前处理状态</li>
+<li>关联的业务主键</li>
+<li>首次完成后的响应结果</li>
+</ul>
+<p>这样第二次请求进来时，服务端才能判断：</p>
+<ul>
+<li>是同一业务意图的重试</li>
+<li>还是调用方复用了 key</li>
+<li>还是恶意或异常流量在碰撞</li>
+</ul>
+<p>第二，幂等结果不是所有失败都应该永久固化。</p>
+<p>Stripe 文档里还有一个边界：如果参数校验失败，或者请求在并发冲突前还没有真正开始执行，就不会保存幂等结果。<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup></p>
+<p>这个边界很实用。</p>
+<p>字段缺失、格式错误这种请求，本来就没有进入业务执行。调用方修正参数后可以重试。如果你把这种失败也永久绑定到 key 上，调用方反而很难恢复。</p>
+<p>幂等真正要固化的，是“已经开始产生业务效果”的执行。</p>
+<h2 id="只靠幂等表还不够">只靠幂等表还不够</h2>
+<p>很多人做到这里会觉得，建一张 <code>idempotency_record</code> 表就完事了。</p>
+<p>还不够。</p>
+<p>幂等表解决的是请求层的问题：同一个 key 再来时如何处理。</p>
+<p>但业务层仍然要有自己的硬约束。</p>
+<p>因为重复不一定都从同一个 key 来。</p>
+<p>同一个支付回调可能有事件 ID。用户发起支付可能有客户端请求号。后台补偿可能按订单号跑。对账任务可能按渠道交易号修正。人工重放可能从管理后台触发。</p>
+<p>如果这些入口最后都会影响同一张支付单、同一笔账、同一份权益，那么真正保护业务的，不能只有入口处的一张幂等表。</p>
+<p>你还需要：</p>
+<ul>
+<li>业务唯一键</li>
+<li>数据库唯一约束</li>
+<li>条件更新</li>
+<li>状态机 guard</li>
+<li>事务边界</li>
+<li>版本号或乐观锁</li>
+</ul>
+<p>比如支付单只允许从 <code>PENDING</code> 变成 <code>PAID</code>。</p>
+<p>重复的支付成功事件来了，可以忽略。</p>
+<p>旧的支付失败事件晚到了，不能把 <code>PAID</code> 改回 <code>FAILED</code>。</p>
+<p>这不是幂等键一个字段能解决的。</p>
+<p>这是状态机要解决的问题。</p>
+<p>幂等解决“同一个触发重复来了怎么办”。</p>
+<p>状态机解决“这次状态推进在业务上还允不允许”。</p>
+<p>两者不是替代关系。</p>
+<h2 id="支付回调是最好的反例">支付回调是最好的反例</h2>
+<p>支付回调很适合用来理解幂等，因为它天然会打破很多天真的假设。</p>
+<p>天真的写法通常是：</p>
+<ol>
+<li>回调进来</li>
+<li>验签</li>
+<li>查本地订单</li>
+<li>如果未支付，就改成已支付</li>
+<li>发货或发权益</li>
+<li>返回成功</li>
+</ol>
+<p>这段流程看起来很顺。</p>
+<p>但线上现实通常不顺：</p>
+<ul>
+<li>回调可能比本地下单落库更早到</li>
+<li>同一事件可能重复投递</li>
+<li>事件可能乱序</li>
+<li>你的接口返回慢，对方会重试</li>
+<li>你处理成功了，但返回 <code>2xx</code> 之前进程挂了</li>
+<li>你本地状态已经是终态，但旧事件才刚到</li>
+</ul>
+<p>Stripe 的 webhook 文档也明确提醒，事件不保证按生成顺序送达；在 live mode 下，如果 endpoint 没有成功响应，Stripe 会自动重试最长三天，并使用指数退避；文档还建议 webhook handler 尽快返回成功，把复杂逻辑延后异步处理。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>所以更稳的模型不是“回调来了就同步做完整个业务”，而是：</p>
+<ol>
+<li>验签</li>
+<li>原始事件落库</li>
+<li>按事件唯一键去重</li>
+<li>快速返回 <code>2xx</code></li>
+<li>worker 异步消费事件</li>
+<li>按业务主键和状态机更新订单</li>
+<li>副作用通过 outbox、任务或事件继续推进</li>
+<li>失败进入重试、死信、补偿或人工处理</li>
+</ol>
+<p>这里有两层幂等。</p>
+<p>第一层是事件级去重：同一个 webhook event 不要处理两次。</p>
+<p>第二层是业务级幂等：即使两个不同事件都表达“这笔支付已经成功”，也不能重复记账、重复发货、重复发券。</p>
+<p>很多支付事故就发生在只做了第二层的一点点：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if order.status == PAID:</span><br><span class="line">    return success</span><br></pre></td></tr></table></figure>
+<p>这只能挡住一部分重复支付成功回调。</p>
+<p>它挡不住事件审计缺失，挡不住旧状态覆盖新状态，挡不住查不到订单的孤儿回调，挡不住发货逻辑被两个入口同时触发。</p>
+<p>服务端要防的不是“这一行 if 有没有写”。</p>
+<p>服务端要防的是所有入口都不能把核心不变量打破。</p>
+<h2 id="防重放、幂等、锁，不要混成一件事">防重放、幂等、锁，不要混成一件事</h2>
+<p>幂等还经常和两个概念混在一起：防重放、锁。</p>
+<p>它们有关，但不是同一个东西。</p>
+<p>防重放关注的是：一份旧的合法请求，现在还能不能再次被接受。</p>
+<p>比如 webhook payload 和签名被复制后重新提交。如果签名只证明“内容没被改过”，但没有 timestamp、nonce、event id、请求 ID 或时间窗口，那么旧请求可能仍然看起来合法。</p>
+<p>所以高价值入口通常要回答三件事：</p>
+<ol>
+<li>这个请求是谁发的，内容有没有被改</li>
+<li>这是不是一条仍在有效窗口内的新请求</li>
+<li>如果它重复到达，业务副作用是否只发生一次</li>
+</ol>
+<p>第一件事靠鉴权、签名、验签。</p>
+<p>第二件事靠 timestamp、nonce、event id、request id、时间窗口。</p>
+<p>第三件事靠幂等键、唯一约束、状态机和事务。</p>
+<p>幂等不能替代鉴权。</p>
+<p>一个重复请求不重复生效，不代表它来源可信。</p>
+<p>锁解决的是另一类问题：多个执行者如何互斥地修改资源。</p>
+<p>比如两个 worker 同时抢一个任务，或者两个请求同时扣同一份库存。锁、乐观锁、唯一约束、条件更新都可能用上。</p>
+<p>但锁也不是幂等。</p>
+<p>锁能让同一时刻只有一个人进门，却不能告诉你这个人是不是昨天已经办过同一件事，也不能告诉你超时以后再次进门该返回什么结果。</p>
+<p>把这些概念混在一起，最后很容易写出一种“看起来很安全”的代码：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">前端禁用按钮</span><br><span class="line">Redis setnx</span><br><span class="line">查一下状态</span><br><span class="line">没问题就执行</span><br></pre></td></tr></table></figure>
+<p>它能挡住一部分普通重复提交。</p>
+<p>但它没有回答未知结果、参数复用、持久约束、状态回退、补偿重放这些更关键的问题。</p>
+<h2 id="先写不变量，再写接口">先写不变量，再写接口</h2>
+<p>我现在更愿意从不变量开始设计这类接口。</p>
+<p>不要先问：</p>
+<ul>
+<li>用不用 Redis</li>
+<li>幂等表怎么建</li>
+<li>key 放 header 还是 body</li>
+<li>要不要分布式锁</li>
+</ul>
+<p>先问：</p>
+<ul>
+<li>这个业务最不能坏的事实是什么</li>
+<li>哪些副作用绝不能重复</li>
+<li>哪些状态一旦到达就不能回退</li>
+<li>哪些检查必须和写入在同一个事务里完成</li>
+<li>哪些失败可以稍后补偿，哪些失败不能先脏后修</li>
+</ul>
+<p>比如支付场景里，不变量可能是：</p>
+<ul>
+<li>同一支付意图只能生成一张有效支付单</li>
+<li>同一渠道交易只能记账一次</li>
+<li>已支付订单不能被旧失败事件回退</li>
+<li>发货或权益开通只能对同一业务事实生效一次</li>
+</ul>
+<p>有了这些不变量，再决定机制：</p>
+<ul>
+<li>创建支付单用业务请求号唯一约束</li>
+<li>调三方支付带幂等键</li>
+<li>回调事件表按 provider event id 去重</li>
+<li>支付单状态用条件更新</li>
+<li>ledger entry 用 source object + entry type 做唯一键</li>
+<li>发货通过领域事件触发，业务侧自己幂等</li>
+<li>失败事件进入 retry / dead letter / reconciliation</li>
+</ul>
+<p>这时候幂等不再是一张“防重复提交表”。</p>
+<p>它变成一组保护业务不变量的机制。</p>
+<h2 id="一个最小可用清单">一个最小可用清单</h2>
+<p>如果一个写接口重试后可能造成钱、库存、权益、身份、权限或不可逆状态变化，我会至少检查这些问题：</p>
+<ol>
+<li>调用方在什么失败下会重试？</li>
+<li>谁生成幂等键？这个 key 表达哪个业务意图？</li>
+<li>同一个 key 换参数时怎么办？</li>
+<li>首次执行结果保存在哪里？处理中状态怎么返回？</li>
+<li>幂等记录保留多久？过期后业务层是否仍有约束？</li>
+<li>业务主键、外部单号、事件 ID 是否有唯一约束？</li>
+<li>状态是否只能合法前进？终态收到旧事件怎么办？</li>
+<li>状态推进和外部副作用是否拆开？</li>
+<li>后台重试是否有次数上限、退避、死信和人工重放？</li>
+<li>入口是否需要签名、timestamp、nonce 或时间窗口来防重放？</li>
+</ol>
+<p>这里面没有哪一项单独等于“幂等”。</p>
+<p>真正的幂等能力，来自它们组合在一起。</p>
+<h2 id="结尾">结尾</h2>
+<p>“防连点”是一个太小的入口。</p>
+<p>它让人以为重复来自用户手快，以为只要少发一个请求，系统就安全了。</p>
+<p>但服务端面对的重复，更多来自未知结果：不知道上一次有没有执行，不知道执行到哪一步，不知道响应是不是丢了，不知道对方会不会再投递，不知道补偿任务会不会重放。</p>
+<p>API 幂等真正解决的，不是让第二次点击消失。</p>
+<p>而是当第二次、第三次、隔天的一次、后台补偿的一次真的到来时，服务端仍然能说清：</p>
+<p><strong>这是同一件事。它已经发生过。结果在这里。业务不会再被改坏。</strong></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>RFC 9110《HTTP Semantics》在 <a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods">Idempotent Methods</a> 中定义了 HTTP 方法幂等语义，并说明客户端自动重试非幂等方法需要知道请求语义本身是幂等的。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Stripe 官方文档 <a target="_blank" rel="noopener" href="https://docs.stripe.com/api/idempotent_requests">Idempotent requests</a> 说明了幂等键、首次响应复用、参数一致性校验、建议 UUID v4、至少 24 小时清理窗口，以及未开始执行时不保存幂等结果等边界。 <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Stripe 官方文档 <a target="_blank" rel="noopener" href="https://docs.stripe.com/webhooks">Receive Stripe events in your webhook endpoint</a> 说明了 webhook handler 应快速返回成功、失败会自动重试、事件可能重复且不保证顺序等处理边界。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -391,229 +747,6 @@
 <li id="fn4" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"><em>Effective context engineering for AI agents</em></a>，以及 Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools"><em>Context engineering: memory, compaction, and tool clearing</em></a>。这里引用它们对 active context、compaction、tool-result clearing、external memory 和上下文隔离的工程实践。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
 </li>
 <li id="fn5" class="footnote-item"><p>OpenAI, <a target="_blank" rel="noopener" href="https://developers.openai.com/codex/learn/best-practices"><em>Codex best practices</em></a>。这里引用的是任务目标、项目上下文、<code>AGENTS.md</code>、验证命令和 review 对 Coding Agent 工作质量的影响。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/" class="post-title-link" itemprop="url">Agent 任务粒度：什么时候该拆任务，什么时候该继续聊</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-07-20 00:00:00 / 修改时间：21:38:57" itemprop="dateCreated datePublished" datetime="2026-07-20T00:00:00+08:00">2026-07-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>用 Agent 做事时，最容易产生错觉的一句话是：继续。</p>
-<p>继续查、继续改、继续修、继续总结。对话还没爆 token，模型也还在回应，好像就还能往下推进。可很多长任务不是死在上下文窗口不够长，而是死在上下文已经变脏了。</p>
-<p>它读过太多中间材料，留下太多旧假设；它跑过几轮失败命令，记住了几条已经废弃的解释；它同时背着研究、规划、实现、验证和发布几个目标。表面上它还在执行，实际上当前判断已经被旧上下文拖住了。</p>
-<p>所以我现在更愿意把 Agent 任务粒度看成一个工程判断：</p>
-<p><strong>一次 Agent 任务的合适大小，不取决于模型还能装多少 token，而取决于当前对话还能不能保持目标单一、边界清晰、证据新鲜、上下文干净。</strong></p>
-<p>这篇不讨论怎么“压榨” Agent 多干活，而讨论一个更实用的问题：什么时候该继续聊，什么时候该拆任务。</p>
-<h2 id="不是越长越能干">不是越长越能干</h2>
-<p>长上下文确实有用。</p>
-<p>它让模型能读更大的文件、保留更多对话历史、处理更完整的资料包。对于很多任务，这直接提升了体验：不用频繁重复背景，不用把代码切得太碎，也不用每走一步就重新交代上下文。</p>
-<p>但“放得下”不等于“用得稳”。</p>
-<p><code>Lost in the Middle</code> 这类研究已经说明，模型处理长输入时，相关信息的位置会影响使用效果；放在开头和结尾的信息，通常比放在中间的信息更容易被利用。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> RULER 进一步提醒我们，标称上下文长度不等于真实任务里的有效上下文长度；当任务从简单检索变成多针、多跳、聚合时，性能下降会更早暴露。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>这些研究不是说长上下文没用，而是提醒我们：上下文窗口不是可靠记忆库。</p>
-<p>真实 Agent 任务比论文里的长文本更乱。它不只是读一篇文章，而是在多轮里不断加入：</p>
-<ul>
-<li>用户补充的新约束</li>
-<li>模型自己写过的旧计划</li>
-<li>文件读取结果</li>
-<li>搜索结果</li>
-<li>测试日志</li>
-<li>报错堆栈</li>
-<li>已经被否定的假设</li>
-<li>尚未验证的总结</li>
-</ul>
-<p>这些东西如果一直留在同一个对话里，问题就不只是 token 多。问题是旧材料会持续参与后续判断。</p>
-<p>这就是我觉得 <code>Context Rot</code> 这个词好用的地方。它说的不是上下文超过硬上限，而是上下文还在窗口里，但质量已经下降：变长、变旧、变杂、互相干扰。Chroma 的技术报告把这个现象放在长输入性能退化里讨论；Anthropic 的上下文工程文章也把 context 当成有限资源，强调要把最小的高信号信息放进窗口。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>所以，长任务里最危险的往往不是模型忘了，而是它记住了太多不该继续起作用的东西。</p>
-<h2 id="任务太大时，Agent-会怎么漂">任务太大时，Agent 会怎么漂</h2>
-<p>一个任务刚开始时，目标通常还算清楚。</p>
-<p>“帮我查这个 bug。”<br>
-“把这个功能做完。”<br>
-“研究一下这个主题，然后写一篇文章。”</p>
-<p>真正的问题发生在中后段。任务一大，Agent 会开始同时背几类工作：研究材料、比较方案、改文件、跑测试、处理失败、总结结论。每一类工作都需要不同的上下文，但它们常常混在同一个窗口里。</p>
-<p>我见过最典型的漂移有几种。</p>
-<p>第一种是沿用旧假设。</p>
-<p>前面为了定位问题，Agent 提出过 A、B、C 三个可能原因。后来证据已经排除了 A，但 A 的解释还留在对话里。再往后写总结或做实现时，它可能又把 A 当成背景条件拿回来。</p>
-<p>第二种是忘记新约束。</p>
-<p>用户中途补了一句“不要动这个模块”“这次只写草稿，不发布”“不要改现有接口”。但窗口里还有更早的宽泛目标，后面的执行就可能被旧目标带跑。</p>
-<p>第三种是把研究、计划和实现混成一团。</p>
-<p>研究阶段本来应该宽一点，多读、多搜、多比较。实现阶段应该窄一点，只保留当前方案、相关文件和验收条件。如果研究材料不压缩，整个实现阶段就会背着一大堆候选路径前进。</p>
-<p>第四种是工具输出堆积。</p>
-<p>一次 <code>rg</code>、一段日志、一篇网页、一串测试失败，在当下都很有用。但定位完成后，完整原文常常不该继续留在 active context 里。Anthropic 的 cookbook 把 compaction、tool-result clearing 和 memory 分成三种不同手段：压缩会话、清理可重新获取的大型工具结果、把稳定事实写到外部记忆。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>这说明一个简单事实：长运行 Agent 需要上下文治理，而不是只靠“继续”。</p>
-<h2 id="好任务的四个条件">好任务的四个条件</h2>
-<p>我现在判断一个任务能不能继续留在同一个 Agent 对话里，会看四个条件。</p>
-<p>第一，目标单一。</p>
-<p>这个任务能不能用一句话说清完成状态？不是“把这个系统优化一下”，而是“给支付回调入口补上事件级幂等，并用现有测试覆盖重复回调”。不是“研究 Agent 任务粒度并写一堆东西”，而是“基于已有来源写一篇面向 AI 编程用户的判断文章”。</p>
-<p>目标越单一，Agent 越容易知道自己现在该服务什么。</p>
-<p>第二，边界清晰。</p>
-<p>哪些文件在范围内？哪些模块不能动？哪些材料只是背景？哪些结论必须有来源？如果边界说不清，Agent 会用自己的默认模式补齐，而默认模式通常是“尽量完成更多”。</p>
-<p>第三，可验证。</p>
-<p>代码任务要有测试、lint、build、截图或人工检查点。研究任务要有来源、claim-to-source 映射和事实边界。写作任务要有读者、论点、结构和证据清单。</p>
-<p>没有验收方式的任务，很容易变成模型写了一段更顺的解释。</p>
-<p>第四，上下文可控。</p>
-<p>完成任务所需的实时材料，不能把大量无关历史长期留在主对话里。旧日志、旧搜索结果、旧方案、已废弃计划，如果只是“曾经出现过”，就不该自动继续拥有影响力。</p>
-<p>这四个条件凑在一起，基本就是一次 Agent 任务的健康边界：</p>
-<p>目标单一，边界清晰，可验证，上下文可控。</p>
-<p>如果这四项都满足，继续聊通常没问题。反过来，如果其中两项开始失控，就应该考虑拆。</p>
-<h2 id="什么情况下可以继续聊">什么情况下可以继续聊</h2>
-<p>不是所有任务都要拆。过度拆分也会制造流程负担。</p>
-<p>我会在这些情况下继续让同一个 Agent 往下做。</p>
-<p>任务范围很小，只涉及一两个文件，或者一篇文章的一个明确章节。</p>
-<p>上下文还短，里面没有很多失败路径、旧假设和互相竞争的方案。</p>
-<p>验收方式明确。比如“跑这个测试”“生成这篇草稿”“检查这几个链接”“把这段内容改得更清楚”。</p>
-<p>下一步需要的不是新判断，而是接着当前状态执行。比如刚刚形成了清晰大纲，下一步就是按大纲写正文；刚刚定位了失败测试，下一步就是做最小修复。</p>
-<p>这类任务继续聊是自然的。拆出去反而会损失刚刚形成的局部上下文。</p>
-<p>一个简单判断是：<strong>下一步需要的是更多历史，还是更干净的判断？</strong></p>
-<p>如果下一步需要更多历史，可以继续。如果下一步需要更干净的判断，就该拆。</p>
-<h2 id="什么情况下应该拆">什么情况下应该拆</h2>
-<p>真正该拆的时候，通常会出现一些很明确的信号。</p>
-<p>第一，同时包含多个阶段。</p>
-<p>如果一个请求里同时有 research、plan、implement、verify、document、publish，而且每个阶段都会产生大量中间材料，就不要期待一个对话从头干到尾还保持清爽。</p>
-<p>更好的方式是分阶段：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Research -&gt; Plan -&gt; Implement -&gt; Verify -&gt; Document</span><br></pre></td></tr></table></figure>
-<p>每一阶段把输出压缩成下一阶段真正需要的内容。Research 阶段的输出不是“所有资料全文”，而是来源、关键结论、争议点、待验证问题。Plan 阶段的输出不是“所有思考过程”，而是目标、范围、步骤、风险和验收。Implement 阶段只需要当前方案和相关文件。</p>
-<p>第二，工具结果太多。</p>
-<p>如果对话里已经堆了大量日志、网页、搜索结果、测试输出、文件全文，继续往下通常会让模型越来越难抓重点。此时要么清理，要么摘要，要么开新上下文，只保留可追溯指针。</p>
-<p>第三，方向多次变化。</p>
-<p>用户中途改过几次目标，Agent 也尝试过几种方案。这种任务继续聊很容易“旧方向诈尸”。更稳的做法是停一下，明确当前方案和废弃方案，再进入下一阶段。</p>
-<p>第四，出现多个互相竞争的假设。</p>
-<p>调试任务尤其常见。A 解释看起来合理，B 解释也合理，C 解释后来被测试推翻。如果这些假设没有被整理成“事实、假设、已排除、待验证”，Agent 后面很容易把它们混用。</p>
-<p>第五，任务跨模块或跨责任边界。</p>
-<p>比如一次修改同时涉及前端、后端、数据库迁移、部署脚本、监控告警和文档。它们不是不能一起做，而是每一块最好有独立验收和独立上下文。</p>
-<p>第六，已经形成稳定结论。</p>
-<p>一旦某个结论变成长期可复用的知识，就不要只留在聊天记录里。项目规则进 <code>AGENTS.md</code> 或文档；领域结论进 wiki；验证方式进脚本或 CI；一次性交接进 handoff。下一阶段读取稳定产物，而不是继承整段杂乱历史。</p>
-<h2 id="拆任务不是制造流程负担">拆任务不是制造流程负担</h2>
-<p>很多人不愿意拆任务，是因为拆听起来像项目管理开销。</p>
-<p>但对 Agent 来说，拆任务的意义不是官僚化，而是给它换一个更干净的工作现场。</p>
-<p>研究阶段需要发散，允许多读、多搜、多比较。</p>
-<p>计划阶段需要收敛，把发现压缩成目标、边界、步骤和验收。</p>
-<p>实现阶段需要局部、稳定、少噪声，只看当前要改的文件和决策。</p>
-<p>验证阶段需要新鲜证据，不需要旧的“应该没问题”。</p>
-<p>沉淀阶段需要把可复用结论写到长期位置，不需要保存所有聊天细节。</p>
-<p>这其实和人工作很像。你不会把会议白板、草稿纸、错误日志、最终设计稿、上线 checklist 全部摊在同一张桌子上，然后指望自己越干越清醒。你会在不同阶段清桌面、换材料、归档结论。</p>
-<p>Agent 也需要这样的工作现场。</p>
-<h2 id="一句实用判断">一句实用判断</h2>
-<p>我最后会把任务粒度压成一句话：</p>
-<p><strong>如果下一步需要的是更多历史，就继续；如果下一步需要的是更干净的判断，就拆。</strong></p>
-<p>继续，适合当前目标还单一、上下文还干净、验收还明确的时候。</p>
-<p>拆，适合任务已经跨阶段、工具输出太多、旧假设太多、方向变化太多，或者下一步需要独立判断的时候。</p>
-<p>这不是为了少用 Agent。恰恰相反，是为了让 Agent 更稳定地做完真正有价值的事。</p>
-<p>好的 Agent 协作，不是把一个巨大任务塞进一个巨大对话里。</p>
-<p>而是让每一次对话都像一个边界清楚的工作单元：知道要做什么，知道不做什么，知道用什么证据判断完成，也知道什么时候该把稳定结论交给下一阶段。</p>
-<p>Agent 任务粒度，本质上不是 token 管理。</p>
-<p>它是上下文卫生。</p>
-<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
-<ul>
-<li>本博客：<a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a></li>
-<li>本博客：<a href="/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/" title="AI 事实性：让模型找到证据，而不是生成答案">AI 事实性：让模型找到证据，而不是生成答案</a></li>
-<li>本博客：<a href="/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/" title="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象">从 Prompt 到 Skill：AI Agent 工作流的下一层抽象</a></li>
-<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a></li>
-<li>Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools">Context engineering: memory, compaction, and tool clearing</a></li>
-<li>Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a></li>
-<li>Hsieh et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.06654">RULER</a></li>
-<li>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot">Context Rot</a></li>
-</ul>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Nelson F. Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172"><em>Lost in the Middle: How Language Models Use Long Contexts</em></a>。这篇研究说明，相关信息在长上下文中的位置会显著影响模型表现，开头和结尾通常比中间更容易被利用。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Cheng-Ping Hsieh et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.06654"><em>RULER: What’s the Real Context Size of Your Long-Context Language Models?</em></a>。这里引用它来支撑“标称上下文窗口不等于复杂任务中的真实可用上下文长度”。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot"><em>Context Rot: How Increasing Input Tokens Impacts LLM Performance</em></a>。这里引用它对输入变长、干扰项和任务结构导致性能退化的分析。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"><em>Effective context engineering for AI agents</em></a>。文中把 context 视为有限资源，并强调上下文工程是管理推理时可用 token 的策略集合。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools"><em>Context engineering: memory, compaction, and tool clearing</em></a>。这里引用它区分 compaction、tool-result clearing 和 memory 的工程边界。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -874,6 +1007,229 @@
 <li id="fn6" class="footnote-item"><p>Alex Min et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.14251"><em>FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation</em></a>。这里引用的是把长答案拆成原子事实进行评估的思路。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
 </li>
 <li id="fn7" class="footnote-item"><p>Google Research, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.18802"><em>Long-form factuality in large language models</em></a>。这里引用 SAFE 使用搜索增强方式评估长文本事实性的思路。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/20/Agent-%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8B%86%E4%BB%BB%E5%8A%A1%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E7%BB%A7%E7%BB%AD%E8%81%8A/" class="post-title-link" itemprop="url">Agent 任务粒度：什么时候该拆任务，什么时候该继续聊</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-20 00:00:00 / 修改时间：21:38:57" itemprop="dateCreated datePublished" datetime="2026-07-20T00:00:00+08:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>用 Agent 做事时，最容易产生错觉的一句话是：继续。</p>
+<p>继续查、继续改、继续修、继续总结。对话还没爆 token，模型也还在回应，好像就还能往下推进。可很多长任务不是死在上下文窗口不够长，而是死在上下文已经变脏了。</p>
+<p>它读过太多中间材料，留下太多旧假设；它跑过几轮失败命令，记住了几条已经废弃的解释；它同时背着研究、规划、实现、验证和发布几个目标。表面上它还在执行，实际上当前判断已经被旧上下文拖住了。</p>
+<p>所以我现在更愿意把 Agent 任务粒度看成一个工程判断：</p>
+<p><strong>一次 Agent 任务的合适大小，不取决于模型还能装多少 token，而取决于当前对话还能不能保持目标单一、边界清晰、证据新鲜、上下文干净。</strong></p>
+<p>这篇不讨论怎么“压榨” Agent 多干活，而讨论一个更实用的问题：什么时候该继续聊，什么时候该拆任务。</p>
+<h2 id="不是越长越能干">不是越长越能干</h2>
+<p>长上下文确实有用。</p>
+<p>它让模型能读更大的文件、保留更多对话历史、处理更完整的资料包。对于很多任务，这直接提升了体验：不用频繁重复背景，不用把代码切得太碎，也不用每走一步就重新交代上下文。</p>
+<p>但“放得下”不等于“用得稳”。</p>
+<p><code>Lost in the Middle</code> 这类研究已经说明，模型处理长输入时，相关信息的位置会影响使用效果；放在开头和结尾的信息，通常比放在中间的信息更容易被利用。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> RULER 进一步提醒我们，标称上下文长度不等于真实任务里的有效上下文长度；当任务从简单检索变成多针、多跳、聚合时，性能下降会更早暴露。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这些研究不是说长上下文没用，而是提醒我们：上下文窗口不是可靠记忆库。</p>
+<p>真实 Agent 任务比论文里的长文本更乱。它不只是读一篇文章，而是在多轮里不断加入：</p>
+<ul>
+<li>用户补充的新约束</li>
+<li>模型自己写过的旧计划</li>
+<li>文件读取结果</li>
+<li>搜索结果</li>
+<li>测试日志</li>
+<li>报错堆栈</li>
+<li>已经被否定的假设</li>
+<li>尚未验证的总结</li>
+</ul>
+<p>这些东西如果一直留在同一个对话里，问题就不只是 token 多。问题是旧材料会持续参与后续判断。</p>
+<p>这就是我觉得 <code>Context Rot</code> 这个词好用的地方。它说的不是上下文超过硬上限，而是上下文还在窗口里，但质量已经下降：变长、变旧、变杂、互相干扰。Chroma 的技术报告把这个现象放在长输入性能退化里讨论；Anthropic 的上下文工程文章也把 context 当成有限资源，强调要把最小的高信号信息放进窗口。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>所以，长任务里最危险的往往不是模型忘了，而是它记住了太多不该继续起作用的东西。</p>
+<h2 id="任务太大时，Agent-会怎么漂">任务太大时，Agent 会怎么漂</h2>
+<p>一个任务刚开始时，目标通常还算清楚。</p>
+<p>“帮我查这个 bug。”<br>
+“把这个功能做完。”<br>
+“研究一下这个主题，然后写一篇文章。”</p>
+<p>真正的问题发生在中后段。任务一大，Agent 会开始同时背几类工作：研究材料、比较方案、改文件、跑测试、处理失败、总结结论。每一类工作都需要不同的上下文，但它们常常混在同一个窗口里。</p>
+<p>我见过最典型的漂移有几种。</p>
+<p>第一种是沿用旧假设。</p>
+<p>前面为了定位问题，Agent 提出过 A、B、C 三个可能原因。后来证据已经排除了 A，但 A 的解释还留在对话里。再往后写总结或做实现时，它可能又把 A 当成背景条件拿回来。</p>
+<p>第二种是忘记新约束。</p>
+<p>用户中途补了一句“不要动这个模块”“这次只写草稿，不发布”“不要改现有接口”。但窗口里还有更早的宽泛目标，后面的执行就可能被旧目标带跑。</p>
+<p>第三种是把研究、计划和实现混成一团。</p>
+<p>研究阶段本来应该宽一点，多读、多搜、多比较。实现阶段应该窄一点，只保留当前方案、相关文件和验收条件。如果研究材料不压缩，整个实现阶段就会背着一大堆候选路径前进。</p>
+<p>第四种是工具输出堆积。</p>
+<p>一次 <code>rg</code>、一段日志、一篇网页、一串测试失败，在当下都很有用。但定位完成后，完整原文常常不该继续留在 active context 里。Anthropic 的 cookbook 把 compaction、tool-result clearing 和 memory 分成三种不同手段：压缩会话、清理可重新获取的大型工具结果、把稳定事实写到外部记忆。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>这说明一个简单事实：长运行 Agent 需要上下文治理，而不是只靠“继续”。</p>
+<h2 id="好任务的四个条件">好任务的四个条件</h2>
+<p>我现在判断一个任务能不能继续留在同一个 Agent 对话里，会看四个条件。</p>
+<p>第一，目标单一。</p>
+<p>这个任务能不能用一句话说清完成状态？不是“把这个系统优化一下”，而是“给支付回调入口补上事件级幂等，并用现有测试覆盖重复回调”。不是“研究 Agent 任务粒度并写一堆东西”，而是“基于已有来源写一篇面向 AI 编程用户的判断文章”。</p>
+<p>目标越单一，Agent 越容易知道自己现在该服务什么。</p>
+<p>第二，边界清晰。</p>
+<p>哪些文件在范围内？哪些模块不能动？哪些材料只是背景？哪些结论必须有来源？如果边界说不清，Agent 会用自己的默认模式补齐，而默认模式通常是“尽量完成更多”。</p>
+<p>第三，可验证。</p>
+<p>代码任务要有测试、lint、build、截图或人工检查点。研究任务要有来源、claim-to-source 映射和事实边界。写作任务要有读者、论点、结构和证据清单。</p>
+<p>没有验收方式的任务，很容易变成模型写了一段更顺的解释。</p>
+<p>第四，上下文可控。</p>
+<p>完成任务所需的实时材料，不能把大量无关历史长期留在主对话里。旧日志、旧搜索结果、旧方案、已废弃计划，如果只是“曾经出现过”，就不该自动继续拥有影响力。</p>
+<p>这四个条件凑在一起，基本就是一次 Agent 任务的健康边界：</p>
+<p>目标单一，边界清晰，可验证，上下文可控。</p>
+<p>如果这四项都满足，继续聊通常没问题。反过来，如果其中两项开始失控，就应该考虑拆。</p>
+<h2 id="什么情况下可以继续聊">什么情况下可以继续聊</h2>
+<p>不是所有任务都要拆。过度拆分也会制造流程负担。</p>
+<p>我会在这些情况下继续让同一个 Agent 往下做。</p>
+<p>任务范围很小，只涉及一两个文件，或者一篇文章的一个明确章节。</p>
+<p>上下文还短，里面没有很多失败路径、旧假设和互相竞争的方案。</p>
+<p>验收方式明确。比如“跑这个测试”“生成这篇草稿”“检查这几个链接”“把这段内容改得更清楚”。</p>
+<p>下一步需要的不是新判断，而是接着当前状态执行。比如刚刚形成了清晰大纲，下一步就是按大纲写正文；刚刚定位了失败测试，下一步就是做最小修复。</p>
+<p>这类任务继续聊是自然的。拆出去反而会损失刚刚形成的局部上下文。</p>
+<p>一个简单判断是：<strong>下一步需要的是更多历史，还是更干净的判断？</strong></p>
+<p>如果下一步需要更多历史，可以继续。如果下一步需要更干净的判断，就该拆。</p>
+<h2 id="什么情况下应该拆">什么情况下应该拆</h2>
+<p>真正该拆的时候，通常会出现一些很明确的信号。</p>
+<p>第一，同时包含多个阶段。</p>
+<p>如果一个请求里同时有 research、plan、implement、verify、document、publish，而且每个阶段都会产生大量中间材料，就不要期待一个对话从头干到尾还保持清爽。</p>
+<p>更好的方式是分阶段：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Research -&gt; Plan -&gt; Implement -&gt; Verify -&gt; Document</span><br></pre></td></tr></table></figure>
+<p>每一阶段把输出压缩成下一阶段真正需要的内容。Research 阶段的输出不是“所有资料全文”，而是来源、关键结论、争议点、待验证问题。Plan 阶段的输出不是“所有思考过程”，而是目标、范围、步骤、风险和验收。Implement 阶段只需要当前方案和相关文件。</p>
+<p>第二，工具结果太多。</p>
+<p>如果对话里已经堆了大量日志、网页、搜索结果、测试输出、文件全文，继续往下通常会让模型越来越难抓重点。此时要么清理，要么摘要，要么开新上下文，只保留可追溯指针。</p>
+<p>第三，方向多次变化。</p>
+<p>用户中途改过几次目标，Agent 也尝试过几种方案。这种任务继续聊很容易“旧方向诈尸”。更稳的做法是停一下，明确当前方案和废弃方案，再进入下一阶段。</p>
+<p>第四，出现多个互相竞争的假设。</p>
+<p>调试任务尤其常见。A 解释看起来合理，B 解释也合理，C 解释后来被测试推翻。如果这些假设没有被整理成“事实、假设、已排除、待验证”，Agent 后面很容易把它们混用。</p>
+<p>第五，任务跨模块或跨责任边界。</p>
+<p>比如一次修改同时涉及前端、后端、数据库迁移、部署脚本、监控告警和文档。它们不是不能一起做，而是每一块最好有独立验收和独立上下文。</p>
+<p>第六，已经形成稳定结论。</p>
+<p>一旦某个结论变成长期可复用的知识，就不要只留在聊天记录里。项目规则进 <code>AGENTS.md</code> 或文档；领域结论进 wiki；验证方式进脚本或 CI；一次性交接进 handoff。下一阶段读取稳定产物，而不是继承整段杂乱历史。</p>
+<h2 id="拆任务不是制造流程负担">拆任务不是制造流程负担</h2>
+<p>很多人不愿意拆任务，是因为拆听起来像项目管理开销。</p>
+<p>但对 Agent 来说，拆任务的意义不是官僚化，而是给它换一个更干净的工作现场。</p>
+<p>研究阶段需要发散，允许多读、多搜、多比较。</p>
+<p>计划阶段需要收敛，把发现压缩成目标、边界、步骤和验收。</p>
+<p>实现阶段需要局部、稳定、少噪声，只看当前要改的文件和决策。</p>
+<p>验证阶段需要新鲜证据，不需要旧的“应该没问题”。</p>
+<p>沉淀阶段需要把可复用结论写到长期位置，不需要保存所有聊天细节。</p>
+<p>这其实和人工作很像。你不会把会议白板、草稿纸、错误日志、最终设计稿、上线 checklist 全部摊在同一张桌子上，然后指望自己越干越清醒。你会在不同阶段清桌面、换材料、归档结论。</p>
+<p>Agent 也需要这样的工作现场。</p>
+<h2 id="一句实用判断">一句实用判断</h2>
+<p>我最后会把任务粒度压成一句话：</p>
+<p><strong>如果下一步需要的是更多历史，就继续；如果下一步需要的是更干净的判断，就拆。</strong></p>
+<p>继续，适合当前目标还单一、上下文还干净、验收还明确的时候。</p>
+<p>拆，适合任务已经跨阶段、工具输出太多、旧假设太多、方向变化太多，或者下一步需要独立判断的时候。</p>
+<p>这不是为了少用 Agent。恰恰相反，是为了让 Agent 更稳定地做完真正有价值的事。</p>
+<p>好的 Agent 协作，不是把一个巨大任务塞进一个巨大对话里。</p>
+<p>而是让每一次对话都像一个边界清楚的工作单元：知道要做什么，知道不做什么，知道用什么证据判断完成，也知道什么时候该把稳定结论交给下一阶段。</p>
+<p>Agent 任务粒度，本质上不是 token 管理。</p>
+<p>它是上下文卫生。</p>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
+<li>本博客：<a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a></li>
+<li>本博客：<a href="/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/" title="AI 事实性：让模型找到证据，而不是生成答案">AI 事实性：让模型找到证据，而不是生成答案</a></li>
+<li>本博客：<a href="/2026/07/17/%E4%BB%8E-Prompt-%E5%88%B0-Skill%EF%BC%9AAI-Agent-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E4%B8%8B%E4%B8%80%E5%B1%82%E6%8A%BD%E8%B1%A1/" title="从 Prompt 到 Skill：AI Agent 工作流的下一层抽象">从 Prompt 到 Skill：AI Agent 工作流的下一层抽象</a></li>
+<li>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a></li>
+<li>Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools">Context engineering: memory, compaction, and tool clearing</a></li>
+<li>Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a></li>
+<li>Hsieh et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.06654">RULER</a></li>
+<li>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot">Context Rot</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Nelson F. Liu et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172"><em>Lost in the Middle: How Language Models Use Long Contexts</em></a>。这篇研究说明，相关信息在长上下文中的位置会显著影响模型表现，开头和结尾通常比中间更容易被利用。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Cheng-Ping Hsieh et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.06654"><em>RULER: What’s the Real Context Size of Your Long-Context Language Models?</em></a>。这里引用它来支撑“标称上下文窗口不等于复杂任务中的真实可用上下文长度”。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Chroma, <a target="_blank" rel="noopener" href="https://www.trychroma.com/research/context-rot"><em>Context Rot: How Increasing Input Tokens Impacts LLM Performance</em></a>。这里引用它对输入变长、干扰项和任务结构导致性能退化的分析。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Anthropic, <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"><em>Effective context engineering for AI agents</em></a>。文中把 context 视为有限资源，并强调上下文工程是管理推理时可用 token 的策略集合。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Anthropic Cookbook, <a target="_blank" rel="noopener" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools"><em>Context engineering: memory, compaction, and tool clearing</em></a>。这里引用它区分 compaction、tool-result clearing 和 memory 的工程边界。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -2577,185 +2933,6 @@ flowchart TD
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" class="post-title-link" itemprop="url">GPT 有智能，但不是责任主体</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-07-09 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-09T00:00:00+08:00">2026-07-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 03:14:56" itemprop="dateModified" datetime="2026-07-18T03:14:56+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>14 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>讨论 GPT 这样的 AI 时，我们很容易陷入两个极端。</p>
-<p>一种说法是：它只是概率接龙，根本不理解，也没有智能。另一种说法是：它已经表现得像一个人，所以它当然理解，也当然能判断。</p>
-<p>我觉得这两种说法都太快了。GPT 确实不是传统意义上的“查表机器”，它能在语言、代码、概念和任务之间建立复杂关系，也能解决许多过去需要人类经验才能处理的问题。但它的理解不是人的理解，它的判断也不是责任主体的判断。</p>
-<p>这个判断不只是使用体验。关于大语言模型是否“理解”，学界本来就有持续争论。Mitchell 和 Krakauer 在关于 LLM 理解能力的综述中，把问题放在“不同理解模式”的层面讨论；Bender 和 Koller 则提醒我们区分语言形式和语言意义，不能因为模型能处理形式，就直接推断它拥有人的意义理解。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 另一边，GPT-3、GPT-4 相关研究又确实显示，规模化语言模型能在许多任务上表现出强大的迁移和问题求解能力。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>所以，真正值得问的不是“GPT 到底有没有理解”，而是：我们说一个东西理解了某件事时，到底在说什么？</p>
-<h2 id="什么叫理解">什么叫理解</h2>
-<p>理解不是一个单层概念。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p>如果把理解定义得很窄，等同于“能不能在文本中建立结构关系并给出有效解释”，那 GPT 显然有某种理解能力。如果把理解定义得更接近人，要求它把语言和现实经验、行动后果、社会责任连接起来，那它又明显不具备人的理解。这也是为什么我更愿意把问题拆开，而不是直接回答“有”或“没有”。</p>
-<p>最低限度的理解，是能建立关系。比如看到一个错误日志，知道它可能和某个配置、某个 API 用法、某个版本变化有关；看到一段代码，知道变量、函数、调用链之间大致是什么关系。GPT 在这个层面上很强，它能从大量文本和代码中学到模式，并在新的上下文里组合这些模式。</p>
-<p>更进一步的理解，是能放进上下文里解释。不是只知道“这段代码是什么”，而是知道它为什么在这里，受什么约束，和系统里其他部分有什么关系。如果给 GPT 足够上下文，它也能在这个层面表现得不错。它可以解释一段业务逻辑，可以比较几个方案，可以指出某个实现可能不符合当前架构。</p>
-<p>但人的理解还不止这些。</p>
-<p>人理解一件事，往往还意味着知道它在现实中的位置。这个需求为什么存在，谁会使用它，错了会造成什么后果，哪些事实已经成立，哪些还只是计划，哪些判断需要承担责任。这些东西不只是文本关系，也不只是概念关系，它们和现实经验、组织规则、项目状态、责任分配有关。</p>
-<p>GPT 可以在文本里模拟这些关系，也可以根据你给出的规则做出候选判断。但它并不生活在这个项目里，不承担这个系统上线后的后果，也不会因为一次错误分类让团队文档长期混乱。它可以说“这看起来像架构决策”，但它不能替你确认这是否已经成为项目事实。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>这就是我说的：GPT 有理解能力，但它的理解不是人的理解。</p>
-<h2 id="什么叫判断">什么叫判断</h2>
-<p>判断也要分层看。</p>
-<p>有些判断是规则型的。比如这段代码有没有语法错误，某个测试是否通过，一个接口返回值是否符合约定。只要规则足够明确，GPT 可以很好地辅助这些判断，甚至可以帮你生成验证方式。</p>
-<p>但“能给出判断”不等于“能稳定知道自己判断是否正确”。TruthfulQA 这类研究说明，模型可能会复述训练语料中的常见错误；关于模型校准的研究也显示，模型在特定格式下能估计自己答案的可信度，但这种能力会随任务和格式变化而漂移。OpenAI 关于幻觉的研究也指出，很多训练和评测方式会奖励猜测，而不是奖励承认不确定。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>有些判断是基于事实状态的。比如一段文档应该放到 <code>docs/features</code>、<code>docs/architecture</code> 还是 <code>docs/plan</code>。这表面上像是分类问题，实际上是在判断这段内容到底是什么：它是已经实现的功能事实，还是尚未执行的计划？是已经被系统采纳的架构约束，还是一次讨论中的候选方案？</p>
-<p>GPT 容易在这里出错。它可能会根据语义相关性做选择：这段话和功能有关，就放到 features；这段话和架构有关，就放到 architecture。但对项目来说，真正重要的不是“相关”，而是“身份正确”。一个计划即使和架构有关，也仍然只是计划；一个候选方案即使描述得很完整，也还不是系统事实。</p>
-<p>这类判断需要事实依据，也需要责任主体。GPT 可以提出候选结论，但不能替程序员确认事实状态。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<p>还有一类判断是价值取舍。比如为了可维护性牺牲一点性能是否值得，为了交付速度临时接受一个技术债是否合适，一个设计是否符合团队长期方向。这些判断并不只是事实题，也不只是偏好题，而是事实、约束、目标和责任放在一起之后的选择。</p>
-<p>这类判断在 AI 研究里也很微妙。关于 ChatGPT 道德判断的实验显示，它的回答可能和人类判断不一致，也会受到提示方式、选项呈现和模型差异影响。也就是说，AI 可以生成看起来像价值判断的文本，但这不等于它成为了一个能稳定承担判断后果的价值主体。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<p>GPT 可以参与讨论，可以列选项，可以指出代价。但最后做判断的人，仍然必须是人。<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
-<h2 id="什么叫智能">什么叫智能</h2>
-<p>如果把智能理解为解决问题的能力，那么 GPT 显然表现出了某种真实的机器智能。</p>
-<p>它能写代码、解释代码、翻译文本、总结资料、生成测试、提出方案、辅助排障。它不是简单地复制训练材料，而是在新上下文里组合已有模式，形成有用输出。把这些能力说成“完全没有智能”，并不符合我们的实际体验。</p>
-<p>这也能从研究脉络里看到。GPT-3 论文展示了大模型在少样本设置下的跨任务能力；“Sparks of AGI” 一文则记录了早期 GPT-4 在数学、代码、视觉、医学、法律等多种任务上的能力跃迁。无论是否接受作者关于 AGI 的判断，至少可以说明：把 GPT 只说成“完全没有智能的文字拼接器”，已经很难解释它在许多任务上的表现。<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup></p>
-<p>但如果把智能理解为人的完整智能，那 GPT 又明显不够。</p>
-<p>人类智能包含目标、经验、行动、反馈、责任、价值感和现实处境。人不是只在文本里做下一步预测，而是在世界里行动，并承受行动带来的后果。程序员写错代码会面对故障、用户、团队、维护成本和长期演进；GPT 不会。</p>
-<p>这也是许多治理和出版规则强调人的原因。比如 Springer Nature 的 AI 政策明确不把 LLM 列为作者，理由不是它不能生成文字，而是作者身份意味着对作品负责，而这种责任不能有效适用于 LLM。NIST 的 AI 风险管理框架也把 AI 风险放在组织治理、度量、管理和责任结构中，而不是把责任交给模型本身。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
-<p>所以，更准确的说法是：GPT 有机器智能，但它不是完整的人类智能。它能在很多任务上表现得聪明，却不是一个能替你承担责任的主体。</p>
-<h2 id="为什么这对程序员重要">为什么这对程序员重要</h2>
-<p>这个区分不只是哲学问题，它会直接影响我们怎么使用 AI。</p>
-<p>如果你觉得 GPT 完全不理解，你可能会低估它，把它只当成补全工具，错过它在信息整理、方案推演、代码理解和排障辅助上的价值。</p>
-<p>如果你觉得 GPT 像人一样理解，你又可能会高估它，把事实确认、架构判断、业务取舍和完成断言交给它。这样做的风险更大，因为 GPT 的输出常常很流畅，很像知道自己在干什么。</p>
-<p>更稳妥的位置是：承认它有能力，但不把责任交给它。<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
-<p>GPT 可以帮我们更快建立问题地图，更快生成草稿，更快提出候选方案，更快组织信息。但程序员仍然要负责确认事实、判断边界、验证结果，并承担系统后果。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
-<p>AI 时代的程序员，不应该把自己退化成“审稿的人”，也不应该假装 AI 只是一个高级自动补全。更好的关系是：让 AI 参与思考过程，但由人保留判断权；让 AI 加速表达和试探，但由人确认什么可以成为事实。</p>
-<p>所以我更愿意这样总结：</p>
-<p>GPT 有智能，但不是责任主体。它可以帮助我们理解问题，却不能替我们成为那个必须负责的人。</p>
-<p>这也是为什么我更倾向于 <a href="/2026/07/11/%E6%8A%8A-AI-%E6%94%BE%E8%BF%9B%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="把 AI 放进工作流">把 AI 放进工作流</a>，而不是把判断权交给它。</p>
-<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.pnas.org/doi/10.1073/pnas.2215907120">The Debate Over Understanding in AI’s Large Language Models</a>：关于 LLM 是否“理解”的综述，适合支撑“理解不是单层概念”。</li>
-<li><a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/">Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data</a>：区分语言形式和意义，适合支撑“文本关系不等于人的现实理解”。</li>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners</a>：GPT-3 少样本能力研究，适合支撑“LLM 的能力不能被简单贬低”。</li>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12712">Sparks of Artificial General Intelligence</a>：早期 GPT-4 能力研究，适合支撑“机器智能”的讨论，同时要注意它本身也有争议。</li>
-<li><a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/">TruthfulQA</a> 和 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221">Language Models (Mostly) Know What They Know</a>：适合支撑“会回答”和“知道自己是否正确”不是同一件事。</li>
-<li><a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">Why language models hallucinate</a>：适合支撑“模型会被训练和评测激励推向猜测”的说法。</li>
-<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6">ChatGPT does not replicate human moral judgments</a>：适合支撑“AI 可以给出道德/价值判断文本，但不等于稳定复制人类判断”。</li>
-<li><a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai">Springer Nature AI policy</a> 和 <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a>：适合支撑“责任主体仍然必须是人或组织”。</li>
-</ul>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Melanie Mitchell and David C. Krakauer, <a target="_blank" rel="noopener" href="https://www.pnas.org/doi/10.1073/pnas.2215907120"><em>The debate over understanding in AI’s large language models</em></a>；Emily M. Bender and Alexander Koller, <a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/"><em>Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data</em></a>。这里引用它们来支撑“LLM 是否理解不是单层问题，语言形式和人的意义理解需要区分”。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Tom B. Brown et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.14165"><em>Language Models are Few-Shot Learners</em></a>；Sébastien Bubeck et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12712"><em>Sparks of Artificial General Intelligence: Early experiments with GPT-4</em></a>。这里引用它们来支撑“规模化语言模型确实展现出跨任务能力”，但不把这些能力直接等同于人的完整智能。 <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Mitchell 和 Krakauer 将 LLM 理解争论放在多种理解模式中讨论；Bender 和 Koller 则从语言形式与意义的区分出发，提醒不要把形式操作直接等同于人的意义理解。这共同支撑“理解需要分层讨论，而不是简单回答有或没有”：<a target="_blank" rel="noopener" href="https://www.pnas.org/doi/10.1073/pnas.2215907120">https://www.pnas.org/doi/10.1073/pnas.2215907120</a>、<a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/">https://aclanthology.org/2020.acl-main.463/</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Bender 和 Koller 的形式 / 意义区分说明，文本形式能力不能直接推出现实处境中的意义承担；NIST AI RMF 也把 AI 风险管理放在产品、服务、系统和组织的治理结构中，而不是放在模型自身。这支持“模型可以模拟上下文关系，但不能替人确认项目事实”：<a target="_blank" rel="noopener" href="https://aclanthology.org/2020.acl-main.463/">https://aclanthology.org/2020.acl-main.463/</a>、<a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">https://www.nist.gov/itl/ai-risk-management-framework</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Stephanie Lin, Jacob Hilton, Owain Evans, <a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/"><em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em></a>；Saurav Kadavath et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221"><em>Language Models (Mostly) Know What They Know</em></a>；OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用它们来支撑“会回答、回答真实、知道自己是否可靠，是不同层次的能力”。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>TruthfulQA、模型校准和 OpenAI 关于 hallucination 的研究共同说明，流畅回答、事实可靠性和知道自己是否可靠是不同能力；因此，项目事实状态仍需要来源、工具、测试或人工确认：<a target="_blank" rel="noopener" href="https://aclanthology.org/2022.acl-long.229/">https://aclanthology.org/2022.acl-long.229/</a>、<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.05221">https://arxiv.org/abs/2207.05221</a>、<a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">https://openai.com/index/why-language-models-hallucinate/</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6"><em>ChatGPT does not replicate human moral judgments</em></a>。这里引用它来支撑“AI 可以生成道德/价值判断文本，但不等于稳定复制人类判断或成为价值责任主体”。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn8" class="footnote-item"><p>关于 ChatGPT 道德判断的实证研究显示，模型价值判断输出会受提示、选项呈现和模型差异影响；Springer Nature 的 AI policy 也把 authorship 与 accountability 绑定，并说明这种责任不能有效适用于 LLM。这支撑“AI 可参与讨论，但最终价值取舍仍要由人承担”：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-025-24700-6">https://www.nature.com/articles/s41598-025-24700-6</a>、<a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai">https://www.nature.com/nature-portfolio/editorial-policies/ai</a>。 <a href="#fnref8" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn9" class="footnote-item"><p>Springer Nature, <a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai"><em>AI policy</em></a>；NIST, <a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework"><em>AI Risk Management Framework</em></a>。这里引用它们来支撑“AI 输出能力和责任主体资格需要区分，责任应落在可治理的人或组织结构上”。 <a href="#fnref9" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn10" class="footnote-item"><p>NIST AI RMF 的目标是帮助组织管理 AI 对个人、组织和社会造成的风险，并把风险治理放进设计、开发、使用和评估过程；Springer Nature AI policy 也强调最终文本需要有人类 accountability。这支撑“承认 AI 能力，但把责任放进工作流和组织结构”：<a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">https://www.nist.gov/itl/ai-risk-management-framework</a>、<a target="_blank" rel="noopener" href="https://www.nature.com/nature-portfolio/editorial-policies/ai">https://www.nature.com/nature-portfolio/editorial-policies/ai</a>。 <a href="#fnref10" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn11" class="footnote-item"><p>OpenAI 关于 hallucination 的研究提醒，模型输出会受到训练和评测激励影响，不能只凭流畅性确认事实；NIST AI RMF 则把 AI 风险管理落实到组织的治理、度量和管理实践中。对软件工程而言，这支撑程序员仍需负责事实确认、边界判断、验证和系统后果：<a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">https://openai.com/index/why-language-models-hallucinate/</a>、<a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">https://www.nist.gov/itl/ai-risk-management-framework</a>。 <a href="#fnref11" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2779,13 +2956,13 @@ flowchart TD
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">149k</span>
+    <span title="站点总字数">154k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:04</span>
+    <span title="站点阅读时长">9:19</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
