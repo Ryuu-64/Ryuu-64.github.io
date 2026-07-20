@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-count">85</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,266 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/" class="post-title-link" itemprop="url">AI 事实性：让模型找到证据，而不是生成答案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-20 00:00:00 / 修改时间：00:25:43" itemprop="dateCreated datePublished" datetime="2026-07-20T00:00:00+08:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>这两年用 AI，最容易让人产生错觉的一件事，是它太会把答案写得像答案。</p>
+<p>你问一个库的参数，它能列出名字、类型、默认值和示例。你问一篇论文，它能说出作者、年份、方法和结论。你问一个报错，它能给出原因、修复步骤和注意事项。很多时候这些确实有用。问题在于，只要它的语气足够完整，我们就很容易跳过一个最朴素的问题：</p>
+<p><strong>这些东西是它找到的，还是它生成的？</strong></p>
+<p>这两个动作完全不同。</p>
+<p>生成，是模型根据上下文和语言模式补出一个最可能的回答。找到，是它从文件、日志、数据库、官方文档、论文、搜索结果或测试输出里拿到证据。前者可以很快，后者才接近事实。</p>
+<p>所以这篇想接着 <a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a> 往下谈一个更窄的问题：AI 为什么会一本正经地胡说，日常使用里又该怎样让它找到真实的东西，而不是生成一个像真的答案。</p>
+<h2 id="流畅不等于真实">流畅不等于真实</h2>
+<p>AI 的危险不总是来自明显的错误。</p>
+<p>明显的错误反而容易处理。代码跑不起来，链接打不开，数字离谱，概念混乱，人一眼就能发现。真正麻烦的是那些“刚好像对”的回答：结构完整，术语准确，语气稳定，还附带几个看起来很专业的解释。</p>
+<p>比如它说某个 API 有一个参数。这个参数名很像这个库的命名风格，示例也很自然，甚至连异常情况都写出来了。读的人如果没有打开官方文档，就很容易把它当成事实。</p>
+<p>这不是因为模型“故意骗你”。更常见的情况是，它在做自己最擅长的事：根据上下文补全一个合理的文本。</p>
+<p>问题在于，合理文本不等于真实世界。</p>
+<p>软件开发里尤其如此。一个字段应该在订单创建时确定，还是在支付成功时确定；一个缓存能不能写；一个数据库事务边界在哪里；一个 API 参数是否真的存在。这些都不是“语言上合理”就能决定的事实。它们要么来自业务规则，要么来自代码现状，要么来自文档、测试和运行结果。</p>
+<p>AI 可以帮助我们解释这些事实，但不能凭语气让事实成立。</p>
+<h2 id="AI-为什么会自信地错">AI 为什么会自信地错</h2>
+<p>大语言模型的基础训练目标，通常不是判断一个命题是真还是假，而是在给定上下文后预测后续 token。它从大量文本里学到语言模式、概念关系、格式习惯和一部分世界知识，但这不等于它内置了一个稳定的事实裁判。Kalai 等人在关于语言模型幻觉的研究里，也把预训练目标和评测激励视为幻觉持续存在的重要原因之一。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这能解释很多现象。</p>
+<p>语法、常见概念、经典算法、热门框架的基本用法，因为在训练文本里重复很多，模型往往能说得不错。可具体版本、冷门参数、最新价格、某个仓库当前状态、某个团队内部约定，就没有这么稳定。它可能见过相似文本，于是生成一个“像那类事实”的答案。</p>
+<p>还有一种更微妙的错误，是模仿人类错误。</p>
+<p>TruthfulQA 这类研究专门测试模型是否会复述常见误解。它提醒我们：训练语料里不只有事实，也有误解、过时说法、谣言、玩笑、转述错误和大量自信但错误的人类文本。模型越会模仿人类表达，就越可能学到这些表达方式。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>所以“模型更大”不自动等于“更真实”。规模通常会带来更强的语言能力、推理能力和知识覆盖，但事实性还需要另外的东西：证据、检索、工具、校准、评测和允许它停下来的机制。</p>
+<h2 id="“不要幻觉”不是一句-Prompt-能解决的">“不要幻觉”不是一句 Prompt 能解决的</h2>
+<p>很多人会在提示词里写：不要编造，不知道就说不知道，必须真实。</p>
+<p>这当然比什么都不写要好。但它只能解决一小部分问题。</p>
+<p>如果模型没有看到正确资料，它仍然只能在已有上下文和参数知识里猜。如果搜索结果本身错了，它会基于错误材料总结。如果 RAG 检索拿到了相似但不相关的 chunk，它会把噪声包装成答案。如果引用没有被打开验证，它甚至可能给你一个存在但不支持结论的链接。</p>
+<p>提示词能改变回答风格，却不能凭空创造事实。</p>
+<p>这也是为什么我现在越来越不把“减少幻觉”理解成一个模型问题，而是理解成一个工作流问题。我们真正要设计的，不是让 AI 在没有证据时说得更保守一点，而是让它在需要事实时走向证据。</p>
+<p>有些事实要查官方文档，有些要读本地代码，有些要跑测试，有些要查数据库，有些要搜索最新来源，有些要直接问人。把这些通道区分开，比在 prompt 里重复“请真实”更有用。</p>
+<h2 id="事实要先有真源">事实要先有真源</h2>
+<p>让 AI 找真实东西，第一步不是搜索，而是判断真源在哪里。</p>
+<p>不同事实的真源不一样。</p>
+<p>如果问题是“RAG 是什么”，可以先看论文、教材、已有知识页和权威解释。如果问题是“某个 API 现在支持什么参数”，默认应该看官方文档、release note 或源码。如果问题是“这个项目为什么测试失败”，真源就在当前仓库、日志、测试输出和复现步骤里。如果问题是“这个价格、政策、版本是不是最新”，就必须查当前页面或 API。</p>
+<p>我现在会先把事实分成几类：</p>
+<table>
+<thead>
+<tr>
+<th>事实类型</th>
+<th>更可靠的来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>稳定概念</td>
+<td>论文、教材、权威文档、已审知识库</td>
+</tr>
+<tr>
+<td>实时信息</td>
+<td>官方页面、API、公告、原始新闻</td>
+</tr>
+<tr>
+<td>项目事实</td>
+<td>源码、测试、日志、配置、数据库记录</td>
+</tr>
+<tr>
+<td>可计算结果</td>
+<td>脚本、计算器、测试、解析器</td>
+</tr>
+<tr>
+<td>规范要求</td>
+<td>标准、法条、官方文档、源码</td>
+</tr>
+<tr>
+<td>社区经验</td>
+<td>多个独立案例，且只能标注为观察</td>
+</tr>
+</tbody>
+</table>
+<p>这张表看起来很朴素，但它能挡住很多幻觉。</p>
+<p>因为它把问题从“AI 知不知道”换成了“这个事实应该去哪里确认”。这一步一换，AI 的角色也变了。它不再是一个凭空回答的专家，而是一个检索、整理、核验和表达证据的助手。</p>
+<h2 id="搜索、RAG-和工具各自解决什么问题">搜索、RAG 和工具各自解决什么问题</h2>
+<p>很多人谈 AI 事实性时，会很快跳到 RAG。</p>
+<p>RAG 确实重要。它的基本思路是把外部资料检索出来，再让模型基于这些资料回答。RAG 原始论文把这种方式描述成参数化记忆和非参数化外部记忆的结合，用来改善知识密集任务中的事实性和可追溯性。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>但 RAG 不是真理机器。</p>
+<p>它解决的是“模型没看到资料”的问题，不自动解决“检索资料是否正确”“chunk 是否完整”“排序是否合理”“模型是否忠实使用资料”的问题。RAGAS 之所以会把 RAG 评估拆成 context precision、context recall、faithfulness 等指标，就是因为检索和生成都有可能出错。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>搜索也一样。</p>
+<p>搜索能帮 AI 找到候选来源，但搜索结果第一条不是事实。SEO 页面、转引文章、AI 摘要、旧教程、营销材料，都可能排在前面。搜索只能扩大候选范围，不能替代来源判断。</p>
+<p>工具调用又是另一类东西。</p>
+<p>如果问题能被执行工具回答，就不要让模型猜。代码能不能跑，跑测试。文件是否存在，读文件系统。JSON 是否合法，用解析器。SQL 是否返回某条记录，查数据库。算术是否正确，用计算器或脚本。</p>
+<p>我更愿意把它们分成三层：</p>
+<ul>
+<li>搜索和 RAG：帮 AI 找候选证据。</li>
+<li>工具和 API：帮 AI 获取可执行事实。</li>
+<li>人和规则：决定高风险场景里什么算足够证据。</li>
+</ul>
+<p>这三层不能互相替代。尤其是生产变更、财务、医疗、法律、安全这类场景，AI 的证据整理不能替代责任主体。</p>
+<h2 id="引用不是装饰，引用要支撑结论">引用不是装饰，引用要支撑结论</h2>
+<p>我以前也会被“带引用的回答”安抚。</p>
+<p>有链接，看起来就靠谱一点。可后来发现，引用本身也会幻觉。</p>
+<p>有时链接根本不存在。有时链接存在，但文章里没有支持那个结论。有时来源支持的是一个更窄的说法，AI 把它扩成了普遍结论。有时来源已经过时，只适用于旧版本。还有时几个页面互相转引，看似很多来源，其实只有一条没有追到原文的引用链。</p>
+<p>所以引用不能只看有没有。</p>
+<p>要看它是否直接支撑 claim。</p>
+<p>一个更稳的做法，是把答案拆成几条关键断言，然后逐条问：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这个 claim 是什么？</span><br><span class="line">证据在哪里？</span><br><span class="line">来源是一手还是二手？</span><br><span class="line">适用日期、版本、地区是什么？</span><br><span class="line">来源是否直接支持这个结论？</span><br><span class="line">有没有冲突来源？</span><br></pre></td></tr></table></figure>
+<p>FActScore 和 SAFE 这类长文本事实性评估方法，也是在把长答案拆成更细的原子事实，再逐条检查。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p>日常不一定要做得这么正式。但思路很有价值：不要让一整段流畅文字整体通过。把它拆开，逐条看证据。</p>
+<h2 id="什么时候应该让-AI-说不知道">什么时候应该让 AI 说不知道</h2>
+<p>好的 AI 系统不应该只会回答。</p>
+<p>它还应该会停下来。</p>
+<p>这句话听起来像产品体验问题，其实是事实性问题。如果评测和使用习惯只奖励“给出答案”，不奖励合理的“不知道”，模型就会被推向猜测。Kalai 等人的研究里就指出，很多 accuracy-only 评测会让猜测比 abstain 更有收益。<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup></p>
+<p>在日常使用里，我会把这些情况视为应该停下来的信号：</p>
+<ul>
+<li>没有找到一手来源。</li>
+<li>来源之间冲突，还没判断哪个更新或更权威。</li>
+<li>问题里带着未经确认的前提。</li>
+<li>事实依赖当前时间、地区、版本或账号权限。</li>
+<li>AI 给出了引用，但引用没有直接支撑结论。</li>
+<li>输出会影响钱、健康、法律、安全、生产系统或对外发布。</li>
+</ul>
+<p>这时好的回答不是“我猜一个最可能的”。而是：</p>
+<p>我现在只能确认到哪里。</p>
+<p>还缺什么证据。</p>
+<p>下一步应该查哪里。</p>
+<p>这个结论暂时不能写成事实。</p>
+<p>能说不知道，是事实工作的一部分。</p>
+<h2 id="一个更稳的事实获取流程">一个更稳的事实获取流程</h2>
+<p>把前面的东西合起来，日常可以用一个不太重的流程。</p>
+<p>第一，判断事实类型。</p>
+<p>这是稳定概念、实时信息、项目事实、可计算结果、规范要求，还是社区经验？不同类型对应不同真源。</p>
+<p>第二，选择证据通道。</p>
+<p>能用文件、日志、测试、数据库、API 解决的，优先用工具。资料规模很大、需要找少量证据时，再用搜索、RAG、rerank。稳定概念可以先用已有知识解释，但关键结论最好仍然能回到来源。</p>
+<p>第三，抽取关键 claim。</p>
+<p>不要把一整段答案整体看成“对”或“错”。拆出关键断言：版本、原因、规则、步骤、限制、风险、结论。</p>
+<p>第四，做来源核验。</p>
+<p>来源是否一手？是否过时？是否直接支持 claim？是否存在冲突？如果只是社区经验，就不要写成普遍事实。</p>
+<p>第五，决定输出方式。</p>
+<p>证据足够，就回答并标出边界。证据不足，就澄清、补检索或说不知道。高风险场景，要把人工审核放在流程里，而不是最后让人扫一眼。</p>
+<p>这个流程不复杂，但会明显改变 AI 的使用方式。</p>
+<p>以前是：我问，AI 答。</p>
+<p>更稳的是：我问，AI 找证据，AI 解释证据，我检查关键 claim，最后才形成答案。</p>
+<h2 id="管理-AI-的事实性，就是管理证据链">管理 AI 的事实性，就是管理证据链</h2>
+<p>我现在越来越觉得，AI 不是不能参与事实判断。</p>
+<p>恰恰相反，它很适合参与。它能帮我们列搜索词、读文档、比较来源、整理冲突、抽取 claim、生成检查清单、把零散证据写成清楚的解释。</p>
+<p>但它不应该凭空拥有事实最终裁决权。</p>
+<p>事实不是从模型嘴里自然长出来的。事实来自世界里的某个位置：文件、日志、数据库、论文、标准、官方文档、用户确认、测试结果、实际运行状态。AI 的工作，是把我们带到这些位置，再帮我们理解它们。</p>
+<p>如果说 <a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a> 讲的是“让 AI 在正确的信息现场工作”，那这篇想补上的就是：事实性要求这个现场里必须有证据链。</p>
+<p>不要只问 AI 知不知道。</p>
+<p>要问它证据在哪里。</p>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
+<li>本博客：<a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a></li>
+<li>本博客：<a href="/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/" title="AI 编程工作流的反模式">AI 编程工作流的反模式</a></li>
+<li>本博客：<a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a></li>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">Why language models hallucinate</a></li>
+<li>Kalai et al., <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-026-10549-w">Why Language Models Hallucinate</a></li>
+<li>Lin et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.07958">TruthfulQA</a></li>
+<li>Lewis et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li>
+<li>Ragas, <a target="_blank" rel="noopener" href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/">Available Metrics</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Adam Tauman Kalai et al., <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-026-10549-w"><em>Why Language Models Hallucinate</em></a>, Nature, 2026。这里引用的是论文对语言模型幻觉、预训练目标和评测激励的分析。 <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用的是 OpenAI 对幻觉成因和 accuracy-only 评测激励的解释。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Stephanie Lin, Jacob Hilton, Owain Evans, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.07958"><em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em></a>。这里引用它来支撑“模型可能复述训练语料中的常见误解，规模本身不保证 truthfulness”的判断。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Patrick Lewis et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.11401"><em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</em></a>。这里引用 RAG 的原始问题定位：把参数化模型与外部非参数记忆结合，以支持知识密集任务。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Ragas 文档，<a target="_blank" rel="noopener" href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/">Available Metrics</a>。这里引用 context precision、context recall、faithfulness 等指标，说明 RAG 需要同时评估检索上下文和生成忠实度。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Alex Min et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.14251"><em>FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation</em></a>。这里引用的是把长答案拆成原子事实进行评估的思路。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Google Research, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.18802"><em>Long-form factuality in large language models</em></a>。这里引用 SAFE 使用搜索增强方式评估长文本事实性的思路。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2424,195 +2684,6 @@ flowchart TD
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/" class="post-title-link" itemprop="url">不要在 API 命名中使用 check</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-02-04 15:58:28" itemprop="dateCreated datePublished" datetime="2026-02-04T15:58:28+08:00">2026-02-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 03:01:06" itemprop="dateModified" datetime="2026-07-18T03:01:06+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E5%91%BD%E5%90%8D/" itemprop="url" rel="index"><span itemprop="name">编程命名</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。</p>
-<h2 id="check-的定位">check 的定位</h2>
-<p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><br>
-在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<ol>
-<li>返回类型<strong>是</strong> <code>void</code> 而<strong>不是</strong> <code>boolean</code>。</li>
-<li>失败时抛出异常。</li>
-<li>成功时什么都不发生。</li>
-</ol>
-<p>例如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkStatus</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkPermission</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkConfig</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="check-的滥用">check 的滥用</h2>
-<p>对 check 的最严重最常见的滥用出现在命名 API 时。</p>
-<p>命名 API 时，我们的目标是<strong>消除惊讶</strong>，而 check 在 API 语境下是语义不稳定的命名。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> 对外的 API 一旦叫 <code>checkXxxx</code>，使用者就会在多种猜测中不知所措：<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<ol>
-<li>成功时返回的是一个 <code>boolean</code>还是一个结果？</li>
-<li>失败时是一个 <code>false</code> 异常 还是结果？</li>
-<li>我调用这个 API 会不会修改一些状态？</li>
-</ol>
-<p>举一个更具体的例子，当一个方法叫 <code>checkOrder()</code> 时：</p>
-<p>如果想知道订单是否有效，我们会期待它叫 <code>isValid()</code>。</p>
-<p>如果想触发校验流程并拿到错误列表，我们会期待它叫 <code>validateOrder()</code>。</p>
-<p>如果想在订单无效时阻止程序运行，我们会期待它叫 <code>ensureOrderValid()</code>。</p>
-<p>check 就像一个黑色盲盒，不看实现永远不知道它会静默失败还是原地爆炸。 因此，它只适合作为类内部的辅助方法（Helper methods）。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<p>正确命名 API 的方式是这样的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">validateXxx()    <span class="comment">// 有结果</span></span><br><span class="line">verifyXxx()      <span class="comment">// 鉴权 / 第三方</span></span><br><span class="line">ensureXxx()      <span class="comment">// 业务保障（失败抛异常）</span></span><br></pre></td></tr></table></figure>
-<h2 id="总结">总结</h2>
-<p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>用 check 吗</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>返回 boolean</td>
-<td>❌</td>
-</tr>
-<tr>
-<td>返回 Result / Error</td>
-<td>❌</td>
-</tr>
-<tr>
-<td>Controller / API</td>
-<td>❌</td>
-</tr>
-<tr>
-<td>有业务副作用</td>
-<td>❌</td>
-</tr>
-<tr>
-<td>失败直接抛异常</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>内部前置校验</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>private / protected</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Domain 规则校验</td>
-<td>✅</td>
-</tr>
-</tbody>
-</table>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Guava <code>Preconditions</code> 使用 <code>checkArgument</code>、<code>checkState</code>、<code>checkNotNull</code> 表示前置条件检查；JDK <code>Objects.checkIndex</code> 也把 <code>check</code> 用于边界检查并在失败时抛异常。这说明 <code>check</code> 在主流库中常见的核心语义是“检查前置条件或边界”，不是任意业务动作：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>Guava <code>Preconditions</code> 文档把 <code>checkArgument</code>、<code>checkState</code>、<code>checkNotNull</code> 分别对应参数、状态和非空前置条件；这些方法的失败语义是抛异常，支撑了“check 可用但语义很窄”的边界：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p><code>Preconditions.checkArgument</code> 在表达式为 false 时抛 <code>IllegalArgumentException</code>，<code>checkState</code> 在状态条件不满足时抛 <code>IllegalStateException</code>，JDK <code>Objects.checkIndex</code> 在越界时抛 <code>IndexOutOfBoundsException</code>；这些例子都不是返回业务结果或推进业务流程的公开动作：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Swift API Design Guidelines 强调名字应在调用点清晰，因为声明只出现一次而使用会出现很多次；Microsoft .NET 成员命名指南也建议方法名使用动词或动词短语，布尔属性使用肯定式短语并可用 <code>Can</code>、<code>Is</code>、<code>Has</code> 增强语义：<a target="_blank" rel="noopener" href="https://www.swift.org/documentation/api-design-guidelines/#naming">https://www.swift.org/documentation/api-design-guidelines/#naming</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>OpenAPI 3.1 规定 <code>operationId</code> 在 API 内应唯一且可被工具和库用于识别 operation；Google AIP-136 要求自定义方法用明确动词命名。公开 API 名字会进入文档、代码生成和客户端心智，因此 <code>checkXxx</code> 这类语义不稳定动词风险更高：<a target="_blank" rel="noopener" href="https://spec.openapis.org/oas/v3.1.0.html#operation-object">https://spec.openapis.org/oas/v3.1.0.html#operation-object</a>、<a target="_blank" rel="noopener" href="https://google.aip.dev/136">https://google.aip.dev/136</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p><code>check</code> 在 Guava / JDK 中常见于前置条件或边界检查工具方法；这支持把 <code>checkXxx</code> 保留在内部 helper 或模块内约定中，而不是泛化为公开业务 API 名称：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>Google AIP-136 要求自定义方法名使用动词，AIP-190 把命名视为跨资源、字段和方法的一致性契约；.NET 成员命名指南也要求方法使用动词或动词短语。这些指南共同支撑“对外 API 用结果或行为导向动词”的建议：<a target="_blank" rel="noopener" href="https://google.aip.dev/136">https://google.aip.dev/136</a>、<a target="_blank" rel="noopener" href="https://google.aip.dev/190">https://google.aip.dev/190</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2636,13 +2707,13 @@ flowchart TD
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">139k</span>
+    <span title="站点总字数">142k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:24</span>
+    <span title="站点阅读时长">8:38</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

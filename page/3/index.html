@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-count">85</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,132 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/31/CSharp-%E4%B8%8D%E8%A6%81%E4%B8%BAfor%E5%BB%BA%E7%AB%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/31/CSharp-%E4%B8%8D%E8%A6%81%E4%B8%BAfor%E5%BB%BA%E7%AB%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-31 14:46:33" itemprop="dateCreated datePublished" datetime="2021-08-31T14:46:33+08:00">2021-08-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 13:00:13" itemprop="dateModified" datetime="2026-07-18T13:00:13+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>可能有人认为相比于 ForTest1，ForTest2 存储了数组的 Length，少了对于数组属性的频繁调用，会有更好的性能表现。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">JITPropertyAccessInFor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ForTest1</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; a.Length; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(a[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ForTest2</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">            <span class="built_in">int</span> len = a.Length;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(a[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下 是 上段代码编译出的 IL code：(以下所述栈均为<strong>操作数栈 (Operand stack)</strong>)<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.<span class="function">method <span class="keyword">private</span> hidebysig <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">ForTest1</span>() cil managed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Code size       30 (0x1e)</span></span><br><span class="line">  .maxstack  <span class="number">2</span> <span class="comment">// 栈最大深度</span></span><br><span class="line">  .<span class="function">locals <span class="title">init</span> (<span class="params">[<span class="number">0</span>] int32[] a, // 变量声明 (局部变量表</span>)</span></span><br><span class="line"><span class="function">           [1] int32 i)</span></span><br><span class="line"><span class="function">  IL_0000:  ldc.i4.5 <span class="comment">// int32 5 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_0001:  newarr     [mscorlib]System.Int32 <span class="comment">// 创建0基一维数组的对象引用入栈</span></span></span><br><span class="line"><span class="function">  IL_0006:  stloc.0 <span class="comment">// 出栈 置于局部变量表0位置 (初始化数组完毕)</span></span></span><br><span class="line"><span class="function">  IL_0007:  ldc.i4.0 <span class="comment">// int32 0 入栈 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_0008:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_0009:  br.s       IL_0017 <span class="comment">// 无条件地将控制转移到目标指令(短格式)(至 for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_000b:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (数组元素入栈)</span></span></span><br><span class="line"><span class="function">  IL_000c:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (i 入栈)</span></span></span><br><span class="line"><span class="function">  IL_000d:  ldelem.i4 <span class="comment">// 按指令指定类型(i4)，将指定数组索引中的元素入栈</span></span></span><br><span class="line"><span class="function">  IL_000e:  call       <span class="keyword">void</span> [mscorlib]System.Console::<span class="title">WriteLine</span>(<span class="params">int32</span>) <span class="comment">// 调用由传递的方法说明符指示的方法 (打印a[i])</span></span></span><br><span class="line"><span class="function">  IL_0013:  ldloc.1 <span class="comment">// 局部变量表1位置变量入计算栈 (i 入栈) (i++ 开始)</span></span></span><br><span class="line"><span class="function">  IL_0014:  ldc.i4.1 <span class="comment">// int32 1 入栈</span></span></span><br><span class="line"><span class="function">  IL_0015:  <span class="keyword">add</span> <span class="comment">// 出栈两次,出栈值相加，结果入栈</span></span></span><br><span class="line"><span class="function">  IL_0016:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (i++ 结束)</span></span></span><br><span class="line"><span class="function">  IL_0017:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (i 入栈) (for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_0018:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (a 入栈,准备获取数组长)</span></span></span><br><span class="line"><span class="function">  IL_0019:  ldlen <span class="comment">// 将0基一维数组的元素数目推送到计算栈上。(数组长入栈)</span></span></span><br><span class="line"><span class="function">  IL_001a:  conv.i4 <span class="comment">// 将栈顶元素转换为 int32 类型</span></span></span><br><span class="line"><span class="function">  IL_001b:  blt.s      IL_000b <span class="comment">// 判断计算栈顶两值大小(计算栈出栈两次，后出栈的是第一个值)。若第一个值小于第二个值，将控制转移到目标指令 (短格式)。</span></span></span><br><span class="line"><span class="function">  IL_001d:  ret <span class="comment">// 从当前方法返回</span></span></span><br><span class="line"><span class="function">&#125; <span class="comment">// end of method Program::ForTest1</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">.<span class="function">method <span class="keyword">private</span> hidebysig <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">ForTest2</span>() cil managed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Code size       32 (0x20)</span></span><br><span class="line">  .maxstack  <span class="number">2</span> <span class="comment">// 栈最大深度</span></span><br><span class="line">  .<span class="function">locals <span class="title">init</span> (<span class="params">[<span class="number">0</span>] int32[] a, // 变量声明 (局部变量表</span>)</span></span><br><span class="line"><span class="function">           [1] int32 len,</span></span><br><span class="line"><span class="function">           [2] int32 i)</span></span><br><span class="line"><span class="function">  IL_0000:  ldc.i4.5 <span class="comment">// int32 5 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_0001:  newarr     [mscorlib]System.Int32 <span class="comment">// 创建0基一维数组的对象引用入栈</span></span></span><br><span class="line"><span class="function">  IL_0006:  stloc.0 <span class="comment">// 出栈 置于局部变量表0位置 (初始化数组完毕)</span></span></span><br><span class="line"><span class="function">  IL_0007:  ldloc.0 <span class="comment">// 局部变量表1位置变量入栈 (a 入栈,准备获取数组长)</span></span></span><br><span class="line"><span class="function">  IL_0008:  ldlen <span class="comment">// 将0基一维数组的元素数目推送到计算栈上。(数组长入栈)</span></span></span><br><span class="line"><span class="function">  IL_0009:  conv.i4 <span class="comment">// 将栈顶元素转换为 int32 类型</span></span></span><br><span class="line"><span class="function">  IL_000a:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (len = a.Length)</span></span></span><br><span class="line"><span class="function">  IL_000b:  ldc.i4.0 <span class="comment">// int32 0 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_000c:  stloc.2 <span class="comment">// 出栈 置于局部变量表2位置 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_000d:  br.s       IL_001b <span class="comment">// 无条件地将控制转移到目标指令(短格式)(至 for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_000f:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (a 入栈)</span></span></span><br><span class="line"><span class="function">  IL_0010:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈)</span></span></span><br><span class="line"><span class="function">  IL_0011:  ldelem.i4 <span class="comment">// 按指令指定类型(i4)，将指定数组索引中的元素入栈</span></span></span><br><span class="line"><span class="function">  IL_0012:  call       <span class="keyword">void</span> [mscorlib]System.Console::<span class="title">WriteLine</span>(<span class="params">int32</span>) <span class="comment">// 调用由传递的方法说明符指示的方法 (打印a[i])</span></span></span><br><span class="line"><span class="function">  IL_0017:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈) (i++ 开始)</span></span></span><br><span class="line"><span class="function">  IL_0018:  ldc.i4.1 <span class="comment">// int32 1 入栈</span></span></span><br><span class="line"><span class="function">  IL_0019:  <span class="keyword">add</span> <span class="comment">// 出栈两次,出栈值相加，结果入栈</span></span></span><br><span class="line"><span class="function">  IL_001a:  stloc.2 <span class="comment">// 出栈 置于局部变量表2位置 (i++ 结束)</span></span></span><br><span class="line"><span class="function">  IL_001b:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈) (for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_001c:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (len 入栈)</span></span></span><br><span class="line"><span class="function">  IL_001d:  blt.s      IL_000f <span class="comment">// 判断计算栈顶两值大小(计算栈出栈两次，后出栈的是第一个值)。若第一个值小于第二个值，将控制转移到目标指令 (短格式)。</span></span></span><br><span class="line"><span class="function">  IL_001f:  ret <span class="comment">// 从当前方法返回</span></span></span><br><span class="line"><span class="function">&#125; <span class="comment">// end of method Program::ForTest2</span></span></span><br></pre></td></tr></table></figure>
+<p>对比上述的 IL code，确实临时存储数组长，能够少在 for 的比较进行中少进行一定的操作，无需将数组从局部变量表(Local Variable Table)入操作数栈 (Operand stack)，并执行 ldlen 获取数组长。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> 但要注意， JIT 编译器知道 Length 是 Array 类的属性，生成的代码中只会调用该属性一次，结果会存储到临时变量中，此后的检查中调用的都是此临时变量。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup><strong>不需要自己用局部变量做缓存，这样既没有性能提升，还可能造成可读性下降</strong>。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<h2 id="参阅">参阅</h2>
+<p><em>CLR</em> <em>via</em> C# (第四版) 16.7 数组的内部工作原理</p>
+<h2 id="注释">注释</h2>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe(IL 反汇编程序)</a></p>
+<p>一般，该工具位于 NETFX 4.7.2 Tools 中</p>
+<p>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\x64\ildasm.exe</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/arrays">C# arrays</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.array.length">Array.Length Property</a> 支撑数组实例长度是数组自身的稳定事实；因此这里的性能直觉应落在 JIT 是否识别数组循环形状，而不是把 <code>Length</code> 当普通可变属性。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>ECMA-335 <a target="_blank" rel="noopener" href="https://ecma-international.org/publications-and-standards/standards/ecma-335/">Common Language Infrastructure</a> 定义 CIL 指令与运行时模型；Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe</a> 支撑用 ILDASM 查看程序集 IL。IL 能说明编译器输出，但不能直接等同最终机器码性能。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>ECMA-335 定义 <code>ldlen</code> 为读取数组长度的 CIL 指令；这支撑文中从 IL 层面对 <code>ForTest1</code> 与 <code>ForTest2</code> 的比较。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Jeffrey Richter, <a target="_blank" rel="noopener" href="https://www.microsoftpressstore.com/store/clr-via-c-sharp-9780735668775"><em>CLR via C#, Fourth Edition</em></a> 用数组内部工作原理解释数组长度和运行时模型；Microsoft <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/">.NET 5 performance post</a> 也明确讨论 <code>for (int i = 0; i &lt; arr.Length; i++)</code> 这类循环中 JIT 可证明索引不会越界并消除 bounds check。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Microsoft <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/">.NET 5</a>、<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/">.NET 8</a>、<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-9/">.NET 9</a> 与 <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-10/">.NET 10</a> performance posts 对 bounds check elimination、range analysis、PGO 和 loop 优化的持续讨论说明：这类微优化依赖目标运行时、Release 构建、JIT 机器码和测量数据。普通数组循环默认保持 <code>i &lt; array.Length</code> 的清晰形状；只有上界昂贵、有副作用、需要快照语义或有测量证据时，才应手动缓存。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1533,192 +1659,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/27/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/27/Java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">Java-垃圾收集算法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-27 22:15:08" itemprop="dateCreated datePublished" datetime="2021-07-27T22:15:08+08:00">2021-07-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 02:33:51" itemprop="dateModified" datetime="2026-07-18T02:33:51+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>14 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>垃圾收集算法的实现设计大量的程序细节，且各个平台虚拟机操作内存的方法都有差异，本节仅重点介绍分代收集理论，几种算法思想，及其发展过程。若对其中细节感兴趣，推荐阅读 Richard Jones 《垃圾回收算法手册》 第 2 ~ 4 章。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>从如何判定对象消亡的角度出发，垃圾收集算法可划分为 “引用记数式垃圾收集” (Reference Counting GC) 和 “追踪式垃圾收集” (Tracing GC) 两大类，这两大类也被称作 “直接垃圾收集” 和 “间接垃圾收集”。由于引用记数式垃圾收集在主流的 Java 虚拟机中均未涉及，故本节主要介绍所有算法属于追踪式垃圾收集的范畴。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<h3 id="分代收集理论">分代收集理论</h3>
-<p>当前商业虚拟机的垃圾收集器，大多遵循了 “分代收集理论” (Generational Collection) 的理论进行设计。其建立在两个分代假说之上<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>：</p>
-<ol>
-<li><strong>弱分代假说 (Weak Generational Hypothesis)</strong>：绝大多数对象朝生夕灭。</li>
-<li><strong>强分代假说 (Strong Generational Hypothesis)</strong>：熬过越多次 GC 的对象就越难死亡。</li>
-</ol>
-<p>这两个分代假说共同奠定了多款常用垃圾收集器的一致设计原则：收集器应将 Java 堆划分出不同的区域，然后将回收对象依据其年龄 (即熬过 GC 的次数) 分配到不同的区域之中存储。如果一个区域中大多数对象都是朝生夕灭，将其集中存储，每次 GC 只关注如何保留存活对象，而不是标记大量要被回收的对象，就能以较低代价回收大量空间；如果一个区域中大多数对象都是难死亡的对象，将其集中存储，虚拟机可以以较低的频率进行回收，这就同时兼顾了垃圾收集的时间开销和内存空间的有效利用。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
-<p>在 Java 划分出不同的区域后，垃圾收集器才可以每次只回收其中某一个，或者某部分区域 —— 才有了 “Minor GC”、“Major GC”、“Full GC” 这样的回收类型划分；才能针对不用的区域，安排与其存储对象存亡特征相匹配的垃圾收集算法 —— 发展出了 “标记 - 复制算法”、“标记 - 清除算法”、“标记 - 整理算法” 等针对性的垃圾收集算法 (稍后会提到)。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<p>把分代收集理论放到现在的商用 Java 虚拟机中，设计者一般会至少把 Java 划分为新生代 (Young Generation) 和老年代 (Old Generation) 两个区域 (HotSpot 虚拟机的命名，IBM J9 虚拟机对应称其为 婴儿区 (Nursery) 和长存区 (Tenured))。在新生代中，每次都有大量对象死去，而回收后活下来的少量对象会逐步转移至老年代存放。实际上分代收集理论并不是简单的分划内存区域那么简单，存在一个明显的问题：<strong>对象间可能存在跨代引用</strong>。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
-<p>假如要对新生代区域的 GC (Minor GC)，但新生代中的对象完全有可能被老年代引用，为了确定该区域中存活的对象，不得不在固定的 GC Roots 之外，在遍历整个老年代中的对象，以确保可达性分析的准确性，反之同理。这虽然在理论上可行，但是会为内存回收带来很大的性能负担，为解决此问题，引入第三个假说：</p>
-<ol start="3">
-<li><strong>跨代引用假说 (Intergenerational Reference Hypothesis)</strong>：跨代引用相对于同代引用来说占极少数。</li>
-</ol>
-<p>其实这可以通过前两个假说推出：存在互相引用关系的两个对象，应是倾向于同生共死的。若某个新生代的对象被老年代对象引用，由于老年代对象很难死亡，该引用将使得新生代中的对象同样得以存活，进而在年龄增长后晋升到老年代，此时跨代引用也随之解除了。</p>
-<p>依据此假说，不应为少量的跨代引用而扫描整个老年代，也不必浪费空间专门记录每一个对象是否存在，及存在哪些跨代引用，仅在新生代上建立一个全局数据结构 (“记忆集” Remember Set)，此结构将老年代划分为若干小块，表示出哪一块会存在跨代引用。当发生 Minor GC 时，只有包含了跨代引用的小块内存中的对象被加入 GC Roots 进行扫描。虽然此方法需要在改变对象引用时更新记忆集记录，将会增加一些执行时的开销，但比起收集器扫描整个老年代来说，仍然是划算的。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
-<hr>
-<ul>
-<li>部分收集 (Partial GC)：不是完整收集整个 Java 堆的垃圾，其中包括：<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
-<ul>
-<li>新生代收集 (Minor / Young GC)：仅回收新生代的垃圾。</li>
-<li>老年代收集 (Major / Old GC)：仅回收老年代的垃圾。目前只有 CMS 收集器有此行为。注意，“Major GC” 的说法存在混淆，不同的资料所指不同，可能指老年代收集，也可能指整堆收集。</li>
-<li>混合收集 (Mixed GC)：回收新生代的垃圾，及<strong>部分</strong>老年代的垃圾。目前只有 G1 收集器有此行为。</li>
-</ul>
-</li>
-<li>整堆收集 (Full GC)：回收整个 Java 堆和方法去的垃圾</li>
-</ul>
-<hr>
-<h3 id="标记-清除算法">标记 - 清除算法</h3>
-<p>最早出现，也是最基础的垃圾收集算法是 “标记 - 清除” (Mark - Sweep) 算法，在 1960 年由 Lisp 之父 John McCarthy 提出。算法分为 “标记” 和 “清除” 两个阶段：首先标记出所有需要回收的对象，标记后，统一回收被标记的对象，也可以反过来，标记存活的对象，回收未被标记的对象。<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
-<p>之所以称其为最基础的收集方法，是因为后续的收集算法大都是以标记 - 清除算法为基础，对其缺点进行改进。它主要有两个缺点：</p>
-<ol>
-<li>执行效率不稳定。若有大量的对象需要回收，这需要进行大量的标记清除工作。</li>
-<li>内存碎片化问题，回收对象后，内存中会产生大量不连续的内存碎片，可能导致在需要为大对象分配空间时，没有足够大的连续内存。因此可能提前触发一次 GC。</li>
-</ol>
-<h3 id="标记-复制算法">标记 - 复制算法</h3>
-<p>也可简称为复制算法。为解决标记 - 清除算法面对大量可回收对象时执行效率的问题，1969 年 Fenichel 提出了一种称为 “半区复制” (Semispace Copying) 的垃圾收集算法。将内存容量均分两块，每次只使用其中的一块。当一块用完，就把还存活的对象复制到另一块，再将当前的块清理一次。如果内存中大多都是存活的对象，此算法将带来极大的内存复制时间开销，但若大多对象都是可回收的，算法仅需复制极少数对象即可。复制时移动堆指针，按顺序分配即可，这样内存碎片化的问题也解决了。实现简单，运行高效。缺点也是显而易见的，这种算法直接将可利用的内存缩小为了原来的一半，空间的浪费太多了。(Ryuu：相信已经有同志想到了新生代的 GC 了，也确实如此。)<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
-<p>现在的商用 Java 虚拟机大多都优先采用了此算法回收新生代，IBM 公司曾有一项专门研究，对新生代 “朝生夕灭” 的特点做了更量化的诠释 —— 新生代中的对象有 98% 熬不过第一轮收集，因此并不需要按 1：1 的比例划分新生代的内存空间(Ryuu：调优时根据具体情况，这仅是较泛化的诠释)。<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
-<p>在 1989 年，Andrew Appel 针对具备 “朝生夕灭” 特点的对象，提出了以重更优化的半区复制分带策略，现被称为 “Appel 式回收”。HotSpot 虚拟机的 Serial、ParNew 等新生代收集器均采用了这种策略来设计新生代的内存布局。Appel 的具体做法是把新生代分为一块较大的 Eden 空间和两块较小的 Survivor 空间，每次分配内存只使用 Eden 和其中一块 Survivor，发生 GC 时，将 Eden 和 Survivor 中存活的对象复制到另一个 Survivor，然后直接清空 Eden 和上次利用过的 Survivor (Ryuu：这两块 Survivor 也因此被称为 From 和 To，From from-survivor to to-survivor，存活对象从 From 移至 To 后，From 和 To 两者身份互换)。HotSpot 虚拟机默认 Eden 和 Survivor 的比例是 8：1，即每次新生代中可用的内存空间为整个新生代的 90 % (Eden 的 80% 加一个 Survivor 的 10%)，仅有10% 的空间是不能直接使用的。当然，98% 的对象被回收不是一定的，所以 Appel 式回收有一个安全设计：当 Survivor 不能一次容纳所有 GC 后存活的对象时，依赖其他内存区域 (大多情况下是老年代) 进行分配担保 (Handle Promotion)。<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
-<h3 id="标记-整理算法">标记 - 整理算法</h3>
-<p>标记 - 复制算法在对象存活率较高时需进行较多的复制操作，效率将会降低。更关键的是，如果不想浪费空间，就需要有额外的空间进行分配担保，以便应对使用的内存中存活的对象过多的问题，所以在老年代一般不直接使用这种算法。<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
-<p>针对老年代的存亡特征，1974 年 Edward Lueders 提出了一种有针对性的 “标记 - 整理” (Mark - Compact) 算法，标记过程与 “标记 - 清除” 法相同，但后续步骤是将存活的对象都向内存空间的一端一移动，然后直接清理掉边界外的空间。<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup></p>
-<p>标记 - 清除 和 标记 - 整理算法的本质是，前者是非移动式的回收算法，而后者是移动式的。是否移动存活对象是一项优缺点并存的风险决策：</p>
-<p>如果移动存活对象，尤其是在老年代这种每次都有大量对象存活的区域，移动这些对象并更新所有引用这些对象的地方负担极大，这种对于对象的移动操作必须暂停用户应用程序才能进行 (最新的 ZGC 和 Shenandoah 收集器使用读屏障 (Read Barrier) 技术实现了整理过程与用户线程的并发执行)，这就更加让使用者不得权衡其弊端了，这样的停顿被虚拟机的设计者形象的称为 “Stop The World” (通常标记 - 清除算法也是需要停顿用户线程来标记、清理可回收对象的，只是停顿时间相对而言要短)。<sup class="footnote-ref"><a href="#fn15" id="fnref15">[15]</a></sup></p>
-<p>但像标记 - 清除算法那样完全不考虑移动和整理存活对象，散在内存中的存活对象导致的空间碎片化问题就只能依赖于更复杂的内存分配器和内存访问器解决。如通过 “分区空闲分配链表” 解决内存分配问题 (计算机硬盘存储大文件就不要求物理连续的磁盘空间，在碎片化的磁盘上存储和访问是通过硬盘分区表实现的)。内存的访问是用户程序最频繁的操作，若在此环节增加额外的负担，势必会直接影响程序的吞吐量。</p>
-<p>基于以上两点，是否移动对象都各有其弊端，移动则回收复杂，不移动则分配复杂。从 GC 所需时间看，不移动对象停顿时间更短，甚至不需要停顿，但是从整个程序的吞吐量看，移动对象是正确的选择。此语境中，吞吐量的实质是赋值器 (Mutator，可以理解为使用垃圾收集的用户程序，为便于理解，多数地方用 “用户程序” 或 “用户线程” 代替) 与收集器的效率总和。即使不移动对象使得收集器的效率提升，但因内存分配和访问相比垃圾收集的频率要高得多，这部分的耗时会导致总吞吐量下降。HotSpot 虚拟机中关注吞吐量的 Parallel Old 收集器是基于标记 - 整理算法的，而关注延迟的 CMS 收集器是基于标记 - 清除算法的，这也侧面印证了这点。<sup class="footnote-ref"><a href="#fn16" id="fnref16">[16]</a></sup></p>
-<p>另外还有一种解决方案，那就是让虚拟机平时采用标记 - 清除算法，直到内存空间碎片化的程度大到影响对象分配时，采用标记 - 整理算法进行一次 GC，以获得规整的内存空间。这也是前文提及的 CMS 收集器面临碎片过多时的解决方案。<sup class="footnote-ref"><a href="#fn17" id="fnref17">[17]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Richard Jones, Antony Hosking, and Eliot Moss, <a target="_blank" rel="noopener" href="https://gchandbook.org/"><em>The Garbage Collection Handbook: The Art of Automatic Memory Management</em></a>, is a specialist reference for tracing, copying, mark-sweep, compaction, generational, incremental, and concurrent collection algorithms. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://gchandbook.org/"><em>The Garbage Collection Handbook</em></a> uses reference counting and tracing as major families of automatic memory-management techniques; Oracle Java GC tuning describes HotSpot collectors in tracing/heap terms rather than as reference-counting collectors. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>Andrew W. Appel, <a target="_blank" rel="noopener" href="https://www.cs.princeton.edu/~appel/papers/143.pdf"><em>Simple Generational Garbage Collection and Fast Allocation</em></a>, and <a target="_blank" rel="noopener" href="https://gchandbook.org/"><em>The Garbage Collection Handbook</em></a> explain the object-lifetime observation behind generational collection. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Oracle Java SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/gctuning/introduction-garbage-collection-tuning.html">Introduction to Garbage Collection Tuning</a>, frames GC tuning around throughput, pauses, footprint, and the collector’s heap organization choices. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Oracle Java SE 21 GC tuning docs define young, mixed, and full collection behavior in collector-specific terms; the article’s note that Major GC terminology is ambiguous is important because naming is not a Java-language specification contract. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>Oracle Java SE 21 GC tuning, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/gctuning/introduction-garbage-collection-tuning.html">Introduction to Garbage Collection Tuning</a>, describes young-generation collection and promotion into older regions as core HotSpot GC concepts. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>Oracle Java SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html">Garbage-First Garbage Collector</a>, documents G1’s remembered sets as metadata that tracks references into a region to support regional collection. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn8" class="footnote-item"><p>Oracle Java SE 21, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html">Garbage-First Garbage Collector</a>, distinguishes young-only, mixed, and full GC behavior for G1; exact event names vary by collector and logging era. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn9" class="footnote-item"><p>Paul R. Wilson, <a target="_blank" rel="noopener" href="https://link.springer.com/chapter/10.1007/BFb0017182"><em>Uniprocessor Garbage Collection Techniques</em></a>, surveys mark-sweep among foundational tracing collection techniques and traces the historical lineage of classic GC algorithms. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn10" class="footnote-item"><p>Robert R. Fenichel and Jerome C. Yochelson, <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/363269.363280"><em>A LISP garbage-collector for virtual-memory computer systems</em></a>, is the classic semispace copying collector reference. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn11" class="footnote-item"><p>Oracle and HotSpot documentation support the generational premise that many young objects die quickly; the “98%” number is best treated as a historical heuristic, not a Java specification guarantee. <a href="#fnref11" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn12" class="footnote-item"><p>Andrew W. Appel, <a target="_blank" rel="noopener" href="https://www.cs.princeton.edu/~appel/papers/143.pdf"><em>Simple Generational Garbage Collection and Fast Allocation</em></a>, presents a generational copying strategy optimized for fast allocation and young-object collection. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn13" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://gchandbook.org/"><em>The Garbage Collection Handbook</em></a> describes the copying collector tradeoff: it compacts allocation space naturally but pays in target-space requirements and live-object copy cost. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn14" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://gchandbook.org/"><em>The Garbage Collection Handbook</em></a> and Wilson’s survey cover mark-compact as the tracing-family strategy that moves live objects to reduce fragmentation. <a href="#fnref14" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn15" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://openjdk.org/jeps/333">JEP 333</a> and <a target="_blank" rel="noopener" href="https://openjdk.org/jeps/189">JEP 189</a> describe ZGC and Shenandoah as low-pause collectors that perform much of the marking/relocation work concurrently with application threads. <a href="#fnref15" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn16" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://gchandbook.org/"><em>The Garbage Collection Handbook</em></a> frames the moving versus non-moving choice as a tradeoff among fragmentation, allocation cost, reference update cost, pause time, and throughput. <a href="#fnref16" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn17" class="footnote-item"><p>Oracle Java SE 21 GC tuning materials and classic GC literature describe fragmentation as the central cost of non-moving mark-sweep collection; CMS is the traditional HotSpot example of a mostly concurrent mark-sweep collector with fragmentation concerns. <a href="#fnref17" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1742,13 +1682,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">139k</span>
+    <span title="站点总字数">142k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:24</span>
+    <span title="站点阅读时长">8:38</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

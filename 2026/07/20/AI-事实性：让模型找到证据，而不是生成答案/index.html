@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="这两年用 AI，最容易让人产生错觉的一件事，是它太会把答案写得像答案。 你问一个库的参数，它能列出名字、类型、默认值和示例。你问一篇论文，它能说出作者、年份、方法和结论。你问一个报错，它能给出原因、修复步骤和注意事项。很多时候这些确实有用。问题在于，只要它的语气足够完整，我们就很容易跳过一个最朴素的问题： 这些东西是它找到的，还是它生成的？ 这两个动作完全不同。 生成，是模型根据上下文和语言模式补">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 事实性：让模型找到证据，而不是生成答案">
+<meta property="og:url" content="http://example.com/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/index.html">
+<meta property="og:site_name" content="Ryuu 的个人博客">
+<meta property="og:description" content="这两年用 AI，最容易让人产生错觉的一件事，是它太会把答案写得像答案。 你问一个库的参数，它能列出名字、类型、默认值和示例。你问一篇论文，它能说出作者、年份、方法和结论。你问一个报错，它能给出原因、修复步骤和注意事项。很多时候这些确实有用。问题在于，只要它的语气足够完整，我们就很容易跳过一个最朴素的问题： 这些东西是它找到的，还是它生成的？ 这两个动作完全不同。 生成，是模型根据上下文和语言模式补">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-19T16:25:43.998Z">
+<meta property="article:author" content="Ryuu">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="事实核查">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="软件开发">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/","path":"2026/07/20/AI-事实性：让模型找到证据，而不是生成答案/","title":"AI 事实性：让模型找到证据，而不是生成答案"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AI 事实性：让模型找到证据，而不是生成答案 | Ryuu 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.9.0/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ryuu 的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个计算机初学者</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%95%85%E4%B8%8D%E7%AD%89%E4%BA%8E%E7%9C%9F%E5%AE%9E"><span class="nav-number">1.</span> <span class="nav-text">流畅不等于真实</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E8%87%AA%E4%BF%A1%E5%9C%B0%E9%94%99"><span class="nav-number">2.</span> <span class="nav-text">AI 为什么会自信地错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9C%E4%B8%8D%E8%A6%81%E5%B9%BB%E8%A7%89%E2%80%9D%E4%B8%8D%E6%98%AF%E4%B8%80%E5%8F%A5-Prompt-%E8%83%BD%E8%A7%A3%E5%86%B3%E7%9A%84"><span class="nav-number">3.</span> <span class="nav-text">“不要幻觉”不是一句 Prompt 能解决的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%AE%9E%E8%A6%81%E5%85%88%E6%9C%89%E7%9C%9F%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">事实要先有真源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E3%80%81RAG-%E5%92%8C%E5%B7%A5%E5%85%B7%E5%90%84%E8%87%AA%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">搜索、RAG 和工具各自解决什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E4%B8%8D%E6%98%AF%E8%A3%85%E9%A5%B0%EF%BC%8C%E5%BC%95%E7%94%A8%E8%A6%81%E6%94%AF%E6%92%91%E7%BB%93%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text">引用不是装饰，引用要支撑结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%BA%94%E8%AF%A5%E8%AE%A9-AI-%E8%AF%B4%E4%B8%8D%E7%9F%A5%E9%81%93"><span class="nav-number">7.</span> <span class="nav-text">什么时候应该让 AI 说不知道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%9B%B4%E7%A8%B3%E7%9A%84%E4%BA%8B%E5%AE%9E%E8%8E%B7%E5%8F%96%E6%B5%81%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">一个更稳的事实获取流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86-AI-%E7%9A%84%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%8C%E5%B0%B1%E6%98%AF%E7%AE%A1%E7%90%86%E8%AF%81%E6%8D%AE%E9%93%BE"><span class="nav-number">9.</span> <span class="nav-text">管理 AI 的事实性，就是管理证据链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">10.</span> <span class="nav-text">参考与延伸阅读</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ryuu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ryuu-64" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ryuu-64" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://tomoto.top/" title="https:&#x2F;&#x2F;tomoto.top&#x2F;" rel="noopener" target="_blank">小龙宫</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://m-studio-m.github.io/" title="https:&#x2F;&#x2F;m-studio-m.github.io&#x2F;" rel="noopener" target="_blank">Michael</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://zerg73.github.io/" title="https:&#x2F;&#x2F;zerg73.github.io&#x2F;" rel="noopener" target="_blank">白白可乐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/20/AI-%E4%BA%8B%E5%AE%9E%E6%80%A7%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%89%BE%E5%88%B0%E8%AF%81%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%94%9F%E6%88%90%E7%AD%94%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AI 事实性：让模型找到证据，而不是生成答案 | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AI 事实性：让模型找到证据，而不是生成答案
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-20 00:00:00 / 修改时间：00:25:43" itemprop="dateCreated datePublished" datetime="2026-07-20T00:00:00+08:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">编程思考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这两年用 AI，最容易让人产生错觉的一件事，是它太会把答案写得像答案。</p>
+<p>你问一个库的参数，它能列出名字、类型、默认值和示例。你问一篇论文，它能说出作者、年份、方法和结论。你问一个报错，它能给出原因、修复步骤和注意事项。很多时候这些确实有用。问题在于，只要它的语气足够完整，我们就很容易跳过一个最朴素的问题：</p>
+<p><strong>这些东西是它找到的，还是它生成的？</strong></p>
+<p>这两个动作完全不同。</p>
+<p>生成，是模型根据上下文和语言模式补出一个最可能的回答。找到，是它从文件、日志、数据库、官方文档、论文、搜索结果或测试输出里拿到证据。前者可以很快，后者才接近事实。</p>
+<p>所以这篇想接着 <a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a> 往下谈一个更窄的问题：AI 为什么会一本正经地胡说，日常使用里又该怎样让它找到真实的东西，而不是生成一个像真的答案。</p>
+<h2 id="流畅不等于真实">流畅不等于真实</h2>
+<p>AI 的危险不总是来自明显的错误。</p>
+<p>明显的错误反而容易处理。代码跑不起来，链接打不开，数字离谱，概念混乱，人一眼就能发现。真正麻烦的是那些“刚好像对”的回答：结构完整，术语准确，语气稳定，还附带几个看起来很专业的解释。</p>
+<p>比如它说某个 API 有一个参数。这个参数名很像这个库的命名风格，示例也很自然，甚至连异常情况都写出来了。读的人如果没有打开官方文档，就很容易把它当成事实。</p>
+<p>这不是因为模型“故意骗你”。更常见的情况是，它在做自己最擅长的事：根据上下文补全一个合理的文本。</p>
+<p>问题在于，合理文本不等于真实世界。</p>
+<p>软件开发里尤其如此。一个字段应该在订单创建时确定，还是在支付成功时确定；一个缓存能不能写；一个数据库事务边界在哪里；一个 API 参数是否真的存在。这些都不是“语言上合理”就能决定的事实。它们要么来自业务规则，要么来自代码现状，要么来自文档、测试和运行结果。</p>
+<p>AI 可以帮助我们解释这些事实，但不能凭语气让事实成立。</p>
+<h2 id="AI-为什么会自信地错">AI 为什么会自信地错</h2>
+<p>大语言模型的基础训练目标，通常不是判断一个命题是真还是假，而是在给定上下文后预测后续 token。它从大量文本里学到语言模式、概念关系、格式习惯和一部分世界知识，但这不等于它内置了一个稳定的事实裁判。Kalai 等人在关于语言模型幻觉的研究里，也把预训练目标和评测激励视为幻觉持续存在的重要原因之一。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>这能解释很多现象。</p>
+<p>语法、常见概念、经典算法、热门框架的基本用法，因为在训练文本里重复很多，模型往往能说得不错。可具体版本、冷门参数、最新价格、某个仓库当前状态、某个团队内部约定，就没有这么稳定。它可能见过相似文本，于是生成一个“像那类事实”的答案。</p>
+<p>还有一种更微妙的错误，是模仿人类错误。</p>
+<p>TruthfulQA 这类研究专门测试模型是否会复述常见误解。它提醒我们：训练语料里不只有事实，也有误解、过时说法、谣言、玩笑、转述错误和大量自信但错误的人类文本。模型越会模仿人类表达，就越可能学到这些表达方式。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>所以“模型更大”不自动等于“更真实”。规模通常会带来更强的语言能力、推理能力和知识覆盖，但事实性还需要另外的东西：证据、检索、工具、校准、评测和允许它停下来的机制。</p>
+<h2 id="“不要幻觉”不是一句-Prompt-能解决的">“不要幻觉”不是一句 Prompt 能解决的</h2>
+<p>很多人会在提示词里写：不要编造，不知道就说不知道，必须真实。</p>
+<p>这当然比什么都不写要好。但它只能解决一小部分问题。</p>
+<p>如果模型没有看到正确资料，它仍然只能在已有上下文和参数知识里猜。如果搜索结果本身错了，它会基于错误材料总结。如果 RAG 检索拿到了相似但不相关的 chunk，它会把噪声包装成答案。如果引用没有被打开验证，它甚至可能给你一个存在但不支持结论的链接。</p>
+<p>提示词能改变回答风格，却不能凭空创造事实。</p>
+<p>这也是为什么我现在越来越不把“减少幻觉”理解成一个模型问题，而是理解成一个工作流问题。我们真正要设计的，不是让 AI 在没有证据时说得更保守一点，而是让它在需要事实时走向证据。</p>
+<p>有些事实要查官方文档，有些要读本地代码，有些要跑测试，有些要查数据库，有些要搜索最新来源，有些要直接问人。把这些通道区分开，比在 prompt 里重复“请真实”更有用。</p>
+<h2 id="事实要先有真源">事实要先有真源</h2>
+<p>让 AI 找真实东西，第一步不是搜索，而是判断真源在哪里。</p>
+<p>不同事实的真源不一样。</p>
+<p>如果问题是“RAG 是什么”，可以先看论文、教材、已有知识页和权威解释。如果问题是“某个 API 现在支持什么参数”，默认应该看官方文档、release note 或源码。如果问题是“这个项目为什么测试失败”，真源就在当前仓库、日志、测试输出和复现步骤里。如果问题是“这个价格、政策、版本是不是最新”，就必须查当前页面或 API。</p>
+<p>我现在会先把事实分成几类：</p>
+<table>
+<thead>
+<tr>
+<th>事实类型</th>
+<th>更可靠的来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>稳定概念</td>
+<td>论文、教材、权威文档、已审知识库</td>
+</tr>
+<tr>
+<td>实时信息</td>
+<td>官方页面、API、公告、原始新闻</td>
+</tr>
+<tr>
+<td>项目事实</td>
+<td>源码、测试、日志、配置、数据库记录</td>
+</tr>
+<tr>
+<td>可计算结果</td>
+<td>脚本、计算器、测试、解析器</td>
+</tr>
+<tr>
+<td>规范要求</td>
+<td>标准、法条、官方文档、源码</td>
+</tr>
+<tr>
+<td>社区经验</td>
+<td>多个独立案例，且只能标注为观察</td>
+</tr>
+</tbody>
+</table>
+<p>这张表看起来很朴素，但它能挡住很多幻觉。</p>
+<p>因为它把问题从“AI 知不知道”换成了“这个事实应该去哪里确认”。这一步一换，AI 的角色也变了。它不再是一个凭空回答的专家，而是一个检索、整理、核验和表达证据的助手。</p>
+<h2 id="搜索、RAG-和工具各自解决什么问题">搜索、RAG 和工具各自解决什么问题</h2>
+<p>很多人谈 AI 事实性时，会很快跳到 RAG。</p>
+<p>RAG 确实重要。它的基本思路是把外部资料检索出来，再让模型基于这些资料回答。RAG 原始论文把这种方式描述成参数化记忆和非参数化外部记忆的结合，用来改善知识密集任务中的事实性和可追溯性。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>但 RAG 不是真理机器。</p>
+<p>它解决的是“模型没看到资料”的问题，不自动解决“检索资料是否正确”“chunk 是否完整”“排序是否合理”“模型是否忠实使用资料”的问题。RAGAS 之所以会把 RAG 评估拆成 context precision、context recall、faithfulness 等指标，就是因为检索和生成都有可能出错。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>搜索也一样。</p>
+<p>搜索能帮 AI 找到候选来源，但搜索结果第一条不是事实。SEO 页面、转引文章、AI 摘要、旧教程、营销材料，都可能排在前面。搜索只能扩大候选范围，不能替代来源判断。</p>
+<p>工具调用又是另一类东西。</p>
+<p>如果问题能被执行工具回答，就不要让模型猜。代码能不能跑，跑测试。文件是否存在，读文件系统。JSON 是否合法，用解析器。SQL 是否返回某条记录，查数据库。算术是否正确，用计算器或脚本。</p>
+<p>我更愿意把它们分成三层：</p>
+<ul>
+<li>搜索和 RAG：帮 AI 找候选证据。</li>
+<li>工具和 API：帮 AI 获取可执行事实。</li>
+<li>人和规则：决定高风险场景里什么算足够证据。</li>
+</ul>
+<p>这三层不能互相替代。尤其是生产变更、财务、医疗、法律、安全这类场景，AI 的证据整理不能替代责任主体。</p>
+<h2 id="引用不是装饰，引用要支撑结论">引用不是装饰，引用要支撑结论</h2>
+<p>我以前也会被“带引用的回答”安抚。</p>
+<p>有链接，看起来就靠谱一点。可后来发现，引用本身也会幻觉。</p>
+<p>有时链接根本不存在。有时链接存在，但文章里没有支持那个结论。有时来源支持的是一个更窄的说法，AI 把它扩成了普遍结论。有时来源已经过时，只适用于旧版本。还有时几个页面互相转引，看似很多来源，其实只有一条没有追到原文的引用链。</p>
+<p>所以引用不能只看有没有。</p>
+<p>要看它是否直接支撑 claim。</p>
+<p>一个更稳的做法，是把答案拆成几条关键断言，然后逐条问：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这个 claim 是什么？</span><br><span class="line">证据在哪里？</span><br><span class="line">来源是一手还是二手？</span><br><span class="line">适用日期、版本、地区是什么？</span><br><span class="line">来源是否直接支持这个结论？</span><br><span class="line">有没有冲突来源？</span><br></pre></td></tr></table></figure>
+<p>FActScore 和 SAFE 这类长文本事实性评估方法，也是在把长答案拆成更细的原子事实，再逐条检查。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<p>日常不一定要做得这么正式。但思路很有价值：不要让一整段流畅文字整体通过。把它拆开，逐条看证据。</p>
+<h2 id="什么时候应该让-AI-说不知道">什么时候应该让 AI 说不知道</h2>
+<p>好的 AI 系统不应该只会回答。</p>
+<p>它还应该会停下来。</p>
+<p>这句话听起来像产品体验问题，其实是事实性问题。如果评测和使用习惯只奖励“给出答案”，不奖励合理的“不知道”，模型就会被推向猜测。Kalai 等人的研究里就指出，很多 accuracy-only 评测会让猜测比 abstain 更有收益。<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup></p>
+<p>在日常使用里，我会把这些情况视为应该停下来的信号：</p>
+<ul>
+<li>没有找到一手来源。</li>
+<li>来源之间冲突，还没判断哪个更新或更权威。</li>
+<li>问题里带着未经确认的前提。</li>
+<li>事实依赖当前时间、地区、版本或账号权限。</li>
+<li>AI 给出了引用，但引用没有直接支撑结论。</li>
+<li>输出会影响钱、健康、法律、安全、生产系统或对外发布。</li>
+</ul>
+<p>这时好的回答不是“我猜一个最可能的”。而是：</p>
+<p>我现在只能确认到哪里。</p>
+<p>还缺什么证据。</p>
+<p>下一步应该查哪里。</p>
+<p>这个结论暂时不能写成事实。</p>
+<p>能说不知道，是事实工作的一部分。</p>
+<h2 id="一个更稳的事实获取流程">一个更稳的事实获取流程</h2>
+<p>把前面的东西合起来，日常可以用一个不太重的流程。</p>
+<p>第一，判断事实类型。</p>
+<p>这是稳定概念、实时信息、项目事实、可计算结果、规范要求，还是社区经验？不同类型对应不同真源。</p>
+<p>第二，选择证据通道。</p>
+<p>能用文件、日志、测试、数据库、API 解决的，优先用工具。资料规模很大、需要找少量证据时，再用搜索、RAG、rerank。稳定概念可以先用已有知识解释，但关键结论最好仍然能回到来源。</p>
+<p>第三，抽取关键 claim。</p>
+<p>不要把一整段答案整体看成“对”或“错”。拆出关键断言：版本、原因、规则、步骤、限制、风险、结论。</p>
+<p>第四，做来源核验。</p>
+<p>来源是否一手？是否过时？是否直接支持 claim？是否存在冲突？如果只是社区经验，就不要写成普遍事实。</p>
+<p>第五，决定输出方式。</p>
+<p>证据足够，就回答并标出边界。证据不足，就澄清、补检索或说不知道。高风险场景，要把人工审核放在流程里，而不是最后让人扫一眼。</p>
+<p>这个流程不复杂，但会明显改变 AI 的使用方式。</p>
+<p>以前是：我问，AI 答。</p>
+<p>更稳的是：我问，AI 找证据，AI 解释证据，我检查关键 claim，最后才形成答案。</p>
+<h2 id="管理-AI-的事实性，就是管理证据链">管理 AI 的事实性，就是管理证据链</h2>
+<p>我现在越来越觉得，AI 不是不能参与事实判断。</p>
+<p>恰恰相反，它很适合参与。它能帮我们列搜索词、读文档、比较来源、整理冲突、抽取 claim、生成检查清单、把零散证据写成清楚的解释。</p>
+<p>但它不应该凭空拥有事实最终裁决权。</p>
+<p>事实不是从模型嘴里自然长出来的。事实来自世界里的某个位置：文件、日志、数据库、论文、标准、官方文档、用户确认、测试结果、实际运行状态。AI 的工作，是把我们带到这些位置，再帮我们理解它们。</p>
+<p>如果说 <a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a> 讲的是“让 AI 在正确的信息现场工作”，那这篇想补上的就是：事实性要求这个现场里必须有证据链。</p>
+<p>不要只问 AI 知不知道。</p>
+<p>要问它证据在哪里。</p>
+<h2 id="参考与延伸阅读">参考与延伸阅读</h2>
+<ul>
+<li>本博客：<a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="AI 上下文工程：把正确的信息放到正确的位置">AI 上下文工程：把正确的信息放到正确的位置</a></li>
+<li>本博客：<a href="/2026/07/17/AI-%E7%BC%96%E7%A8%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%8F%8D%E6%A8%A1%E5%BC%8F/" title="AI 编程工作流的反模式">AI 编程工作流的反模式</a></li>
+<li>本博客：<a href="/2026/07/09/GPT-%E6%9C%89%E6%99%BA%E8%83%BD%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E8%B4%A3%E4%BB%BB%E4%B8%BB%E4%BD%93/" title="GPT 有智能，但不是责任主体">GPT 有智能，但不是责任主体</a></li>
+<li>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/">Why language models hallucinate</a></li>
+<li>Kalai et al., <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-026-10549-w">Why Language Models Hallucinate</a></li>
+<li>Lin et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.07958">TruthfulQA</a></li>
+<li>Lewis et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li>
+<li>Ragas, <a target="_blank" rel="noopener" href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/">Available Metrics</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Adam Tauman Kalai et al., <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-026-10549-w"><em>Why Language Models Hallucinate</em></a>, Nature, 2026。这里引用的是论文对语言模型幻觉、预训练目标和评测激励的分析。 <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>OpenAI, <a target="_blank" rel="noopener" href="https://openai.com/index/why-language-models-hallucinate/"><em>Why language models hallucinate</em></a>。这里引用的是 OpenAI 对幻觉成因和 accuracy-only 评测激励的解释。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Stephanie Lin, Jacob Hilton, Owain Evans, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.07958"><em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em></a>。这里引用它来支撑“模型可能复述训练语料中的常见误解，规模本身不保证 truthfulness”的判断。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Patrick Lewis et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.11401"><em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</em></a>。这里引用 RAG 的原始问题定位：把参数化模型与外部非参数记忆结合，以支持知识密集任务。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Ragas 文档，<a target="_blank" rel="noopener" href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/">Available Metrics</a>。这里引用 context precision、context recall、faithfulness 等指标，说明 RAG 需要同时评估检索上下文和生成忠实度。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Alex Min et al., <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.14251"><em>FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation</em></a>。这里引用的是把长答案拆成原子事实进行评估的思路。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Google Research, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.18802"><em>Long-form factuality in large language models</em></a>。这里引用 SAFE 使用搜索增强方式评估长文本事实性的思路。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/%E4%BA%8B%E5%AE%9E%E6%A0%B8%E6%9F%A5/" rel="tag"># 事实核查</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="tag"># 工作流</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag"># 软件开发</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/18/AI-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" rel="prev" title="AI 上下文工程：把正确的信息放到正确的位置">
+                  <i class="fa fa-angle-left"></i> AI 上下文工程：把正确的信息放到正确的位置
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ryuu</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">142k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:38</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

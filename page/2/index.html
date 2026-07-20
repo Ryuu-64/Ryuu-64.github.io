@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-count">85</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,6 +190,195 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ryuu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Ryuu 的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/02/04/%E4%B8%8D%E8%A6%81%E5%9C%A8%20API%20%E5%91%BD%E5%90%8D%E4%B8%AD%E4%BD%BF%E7%94%A8%20check/" class="post-title-link" itemprop="url">不要在 API 命名中使用 check</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-04 15:58:28" itemprop="dateCreated datePublished" datetime="2026-02-04T15:58:28+08:00">2026-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-18 03:01:06" itemprop="dateModified" datetime="2026-07-18T03:01:06+08:00">2026-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E5%91%BD%E5%90%8D/" itemprop="url" rel="index"><span itemprop="name">编程命名</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本文讨论的是 check 命名在业界的默认语义约定，而不是个人风格偏好。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>在很多项目中，checkXxx 被滥用于 API、Service 甚至业务逻辑中，导致调用语义混乱。</p>
+<h2 id="check-的定位">check 的定位</h2>
+<p>check 是可以用的，但是它只能在一个非常窄的语义里使用。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup><br>
+在大多数项目里， <code>checkXxx()</code> 是一个前置条件检查，不满足时抛出异常且没有业务副作用。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<ol>
+<li>返回类型<strong>是</strong> <code>void</code> 而<strong>不是</strong> <code>boolean</code>。</li>
+<li>失败时抛出异常。</li>
+<li>成功时什么都不发生。</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkStatus</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkPermission</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">checkConfig</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="check-的滥用">check 的滥用</h2>
+<p>对 check 的最严重最常见的滥用出现在命名 API 时。</p>
+<p>命名 API 时，我们的目标是<strong>消除惊讶</strong>，而 check 在 API 语境下是语义不稳定的命名。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> 对外的 API 一旦叫 <code>checkXxxx</code>，使用者就会在多种猜测中不知所措：<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<ol>
+<li>成功时返回的是一个 <code>boolean</code>还是一个结果？</li>
+<li>失败时是一个 <code>false</code> 异常 还是结果？</li>
+<li>我调用这个 API 会不会修改一些状态？</li>
+</ol>
+<p>举一个更具体的例子，当一个方法叫 <code>checkOrder()</code> 时：</p>
+<p>如果想知道订单是否有效，我们会期待它叫 <code>isValid()</code>。</p>
+<p>如果想触发校验流程并拿到错误列表，我们会期待它叫 <code>validateOrder()</code>。</p>
+<p>如果想在订单无效时阻止程序运行，我们会期待它叫 <code>ensureOrderValid()</code>。</p>
+<p>check 就像一个黑色盲盒，不看实现永远不知道它会静默失败还是原地爆炸。 因此，它只适合作为类内部的辅助方法（Helper methods）。<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>正确命名 API 的方式是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">validateXxx()    <span class="comment">// 有结果</span></span><br><span class="line">verifyXxx()      <span class="comment">// 鉴权 / 第三方</span></span><br><span class="line">ensureXxx()      <span class="comment">// 业务保障（失败抛异常）</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2>
+<p>团队中可以将 check 约定为仅用于内部前置校验的方法命名，对外 API 必须使用结果或行为导向的动词。<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>用 check 吗</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>返回 boolean</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>返回 Result / Error</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Controller / API</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>有业务副作用</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>失败直接抛异常</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>内部前置校验</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>private / protected</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Domain 规则校验</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Guava <code>Preconditions</code> 使用 <code>checkArgument</code>、<code>checkState</code>、<code>checkNotNull</code> 表示前置条件检查；JDK <code>Objects.checkIndex</code> 也把 <code>check</code> 用于边界检查并在失败时抛异常。这说明 <code>check</code> 在主流库中常见的核心语义是“检查前置条件或边界”，不是任意业务动作：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Guava <code>Preconditions</code> 文档把 <code>checkArgument</code>、<code>checkState</code>、<code>checkNotNull</code> 分别对应参数、状态和非空前置条件；这些方法的失败语义是抛异常，支撑了“check 可用但语义很窄”的边界：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><code>Preconditions.checkArgument</code> 在表达式为 false 时抛 <code>IllegalArgumentException</code>，<code>checkState</code> 在状态条件不满足时抛 <code>IllegalStateException</code>，JDK <code>Objects.checkIndex</code> 在越界时抛 <code>IndexOutOfBoundsException</code>；这些例子都不是返回业务结果或推进业务流程的公开动作：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>、<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)">https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html#checkIndex(int,int)</a>。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Swift API Design Guidelines 强调名字应在调用点清晰，因为声明只出现一次而使用会出现很多次；Microsoft .NET 成员命名指南也建议方法名使用动词或动词短语，布尔属性使用肯定式短语并可用 <code>Can</code>、<code>Is</code>、<code>Has</code> 增强语义：<a target="_blank" rel="noopener" href="https://www.swift.org/documentation/api-design-guidelines/#naming">https://www.swift.org/documentation/api-design-guidelines/#naming</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members</a>。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>OpenAPI 3.1 规定 <code>operationId</code> 在 API 内应唯一且可被工具和库用于识别 operation；Google AIP-136 要求自定义方法用明确动词命名。公开 API 名字会进入文档、代码生成和客户端心智，因此 <code>checkXxx</code> 这类语义不稳定动词风险更高：<a target="_blank" rel="noopener" href="https://spec.openapis.org/oas/v3.1.0.html#operation-object">https://spec.openapis.org/oas/v3.1.0.html#operation-object</a>、<a target="_blank" rel="noopener" href="https://google.aip.dev/136">https://google.aip.dev/136</a>。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p><code>check</code> 在 Guava / JDK 中常见于前置条件或边界检查工具方法；这支持把 <code>checkXxx</code> 保留在内部 helper 或模块内约定中，而不是泛化为公开业务 API 名称：<a target="_blank" rel="noopener" href="https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html">https://guava.dev/releases/33.4.8-jre/api/docs/com/google/common/base/Preconditions.html</a>。 <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Google AIP-136 要求自定义方法名使用动词，AIP-190 把命名视为跨资源、字段和方法的一致性契约；.NET 成员命名指南也要求方法使用动词或动词短语。这些指南共同支撑“对外 API 用结果或行为导向动词”的建议：<a target="_blank" rel="noopener" href="https://google.aip.dev/136">https://google.aip.dev/136</a>、<a target="_blank" rel="noopener" href="https://google.aip.dev/190">https://google.aip.dev/190</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members">https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members</a>。 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2442,132 +2631,6 @@ table th:nth-of-type(3) {
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/31/CSharp-%E4%B8%8D%E8%A6%81%E4%B8%BAfor%E5%BB%BA%E7%AB%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ryuu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Ryuu 的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/31/CSharp-%E4%B8%8D%E8%A6%81%E4%B8%BAfor%E5%BB%BA%E7%AB%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-31 14:46:33" itemprop="dateCreated datePublished" datetime="2021-08-31T14:46:33+08:00">2021-08-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-18 13:00:13" itemprop="dateModified" datetime="2026-07-18T13:00:13+08:00">2026-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>可能有人认为相比于 ForTest1，ForTest2 存储了数组的 Length，少了对于数组属性的频繁调用，会有更好的性能表现。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">JITPropertyAccessInFor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Test1</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ForTest1</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; a.Length; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(a[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ForTest2</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">int</span>[<span class="number">5</span>];</span><br><span class="line">            <span class="built_in">int</span> len = a.Length;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(a[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以下 是 上段代码编译出的 IL code：(以下所述栈均为<strong>操作数栈 (Operand stack)</strong>)<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.<span class="function">method <span class="keyword">private</span> hidebysig <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">ForTest1</span>() cil managed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Code size       30 (0x1e)</span></span><br><span class="line">  .maxstack  <span class="number">2</span> <span class="comment">// 栈最大深度</span></span><br><span class="line">  .<span class="function">locals <span class="title">init</span> (<span class="params">[<span class="number">0</span>] int32[] a, // 变量声明 (局部变量表</span>)</span></span><br><span class="line"><span class="function">           [1] int32 i)</span></span><br><span class="line"><span class="function">  IL_0000:  ldc.i4.5 <span class="comment">// int32 5 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_0001:  newarr     [mscorlib]System.Int32 <span class="comment">// 创建0基一维数组的对象引用入栈</span></span></span><br><span class="line"><span class="function">  IL_0006:  stloc.0 <span class="comment">// 出栈 置于局部变量表0位置 (初始化数组完毕)</span></span></span><br><span class="line"><span class="function">  IL_0007:  ldc.i4.0 <span class="comment">// int32 0 入栈 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_0008:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_0009:  br.s       IL_0017 <span class="comment">// 无条件地将控制转移到目标指令(短格式)(至 for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_000b:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (数组元素入栈)</span></span></span><br><span class="line"><span class="function">  IL_000c:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (i 入栈)</span></span></span><br><span class="line"><span class="function">  IL_000d:  ldelem.i4 <span class="comment">// 按指令指定类型(i4)，将指定数组索引中的元素入栈</span></span></span><br><span class="line"><span class="function">  IL_000e:  call       <span class="keyword">void</span> [mscorlib]System.Console::<span class="title">WriteLine</span>(<span class="params">int32</span>) <span class="comment">// 调用由传递的方法说明符指示的方法 (打印a[i])</span></span></span><br><span class="line"><span class="function">  IL_0013:  ldloc.1 <span class="comment">// 局部变量表1位置变量入计算栈 (i 入栈) (i++ 开始)</span></span></span><br><span class="line"><span class="function">  IL_0014:  ldc.i4.1 <span class="comment">// int32 1 入栈</span></span></span><br><span class="line"><span class="function">  IL_0015:  <span class="keyword">add</span> <span class="comment">// 出栈两次,出栈值相加，结果入栈</span></span></span><br><span class="line"><span class="function">  IL_0016:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (i++ 结束)</span></span></span><br><span class="line"><span class="function">  IL_0017:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (i 入栈) (for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_0018:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (a 入栈,准备获取数组长)</span></span></span><br><span class="line"><span class="function">  IL_0019:  ldlen <span class="comment">// 将0基一维数组的元素数目推送到计算栈上。(数组长入栈)</span></span></span><br><span class="line"><span class="function">  IL_001a:  conv.i4 <span class="comment">// 将栈顶元素转换为 int32 类型</span></span></span><br><span class="line"><span class="function">  IL_001b:  blt.s      IL_000b <span class="comment">// 判断计算栈顶两值大小(计算栈出栈两次，后出栈的是第一个值)。若第一个值小于第二个值，将控制转移到目标指令 (短格式)。</span></span></span><br><span class="line"><span class="function">  IL_001d:  ret <span class="comment">// 从当前方法返回</span></span></span><br><span class="line"><span class="function">&#125; <span class="comment">// end of method Program::ForTest1</span></span></span><br></pre></td></tr></table></figure>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">.<span class="function">method <span class="keyword">private</span> hidebysig <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">ForTest2</span>() cil managed</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Code size       32 (0x20)</span></span><br><span class="line">  .maxstack  <span class="number">2</span> <span class="comment">// 栈最大深度</span></span><br><span class="line">  .<span class="function">locals <span class="title">init</span> (<span class="params">[<span class="number">0</span>] int32[] a, // 变量声明 (局部变量表</span>)</span></span><br><span class="line"><span class="function">           [1] int32 len,</span></span><br><span class="line"><span class="function">           [2] int32 i)</span></span><br><span class="line"><span class="function">  IL_0000:  ldc.i4.5 <span class="comment">// int32 5 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_0001:  newarr     [mscorlib]System.Int32 <span class="comment">// 创建0基一维数组的对象引用入栈</span></span></span><br><span class="line"><span class="function">  IL_0006:  stloc.0 <span class="comment">// 出栈 置于局部变量表0位置 (初始化数组完毕)</span></span></span><br><span class="line"><span class="function">  IL_0007:  ldloc.0 <span class="comment">// 局部变量表1位置变量入栈 (a 入栈,准备获取数组长)</span></span></span><br><span class="line"><span class="function">  IL_0008:  ldlen <span class="comment">// 将0基一维数组的元素数目推送到计算栈上。(数组长入栈)</span></span></span><br><span class="line"><span class="function">  IL_0009:  conv.i4 <span class="comment">// 将栈顶元素转换为 int32 类型</span></span></span><br><span class="line"><span class="function">  IL_000a:  stloc.1 <span class="comment">// 出栈 置于局部变量表1位置 (len = a.Length)</span></span></span><br><span class="line"><span class="function">  IL_000b:  ldc.i4.0 <span class="comment">// int32 0 入栈 (声明的数组大小)</span></span></span><br><span class="line"><span class="function">  IL_000c:  stloc.2 <span class="comment">// 出栈 置于局部变量表2位置 (i = 0)</span></span></span><br><span class="line"><span class="function">  IL_000d:  br.s       IL_001b <span class="comment">// 无条件地将控制转移到目标指令(短格式)(至 for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_000f:  ldloc.0 <span class="comment">// 局部变量表0位置变量入栈 (a 入栈)</span></span></span><br><span class="line"><span class="function">  IL_0010:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈)</span></span></span><br><span class="line"><span class="function">  IL_0011:  ldelem.i4 <span class="comment">// 按指令指定类型(i4)，将指定数组索引中的元素入栈</span></span></span><br><span class="line"><span class="function">  IL_0012:  call       <span class="keyword">void</span> [mscorlib]System.Console::<span class="title">WriteLine</span>(<span class="params">int32</span>) <span class="comment">// 调用由传递的方法说明符指示的方法 (打印a[i])</span></span></span><br><span class="line"><span class="function">  IL_0017:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈) (i++ 开始)</span></span></span><br><span class="line"><span class="function">  IL_0018:  ldc.i4.1 <span class="comment">// int32 1 入栈</span></span></span><br><span class="line"><span class="function">  IL_0019:  <span class="keyword">add</span> <span class="comment">// 出栈两次,出栈值相加，结果入栈</span></span></span><br><span class="line"><span class="function">  IL_001a:  stloc.2 <span class="comment">// 出栈 置于局部变量表2位置 (i++ 结束)</span></span></span><br><span class="line"><span class="function">  IL_001b:  ldloc.2 <span class="comment">// 局部变量表2位置变量入栈 (i 入栈) (for 中判断开始位置)</span></span></span><br><span class="line"><span class="function">  IL_001c:  ldloc.1 <span class="comment">// 局部变量表1位置变量入栈 (len 入栈)</span></span></span><br><span class="line"><span class="function">  IL_001d:  blt.s      IL_000f <span class="comment">// 判断计算栈顶两值大小(计算栈出栈两次，后出栈的是第一个值)。若第一个值小于第二个值，将控制转移到目标指令 (短格式)。</span></span></span><br><span class="line"><span class="function">  IL_001f:  ret <span class="comment">// 从当前方法返回</span></span></span><br><span class="line"><span class="function">&#125; <span class="comment">// end of method Program::ForTest2</span></span></span><br></pre></td></tr></table></figure>
-<p>对比上述的 IL code，确实临时存储数组长，能够少在 for 的比较进行中少进行一定的操作，无需将数组从局部变量表(Local Variable Table)入操作数栈 (Operand stack)，并执行 ldlen 获取数组长。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> 但要注意， JIT 编译器知道 Length 是 Array 类的属性，生成的代码中只会调用该属性一次，结果会存储到临时变量中，此后的检查中调用的都是此临时变量。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup><strong>不需要自己用局部变量做缓存，这样既没有性能提升，还可能造成可读性下降</strong>。<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
-<h2 id="参阅">参阅</h2>
-<p><em>CLR</em> <em>via</em> C# (第四版) 16.7 数组的内部工作原理</p>
-<h2 id="注释">注释</h2>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe(IL 反汇编程序)</a></p>
-<p>一般，该工具位于 NETFX 4.7.2 Tools 中</p>
-<p>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\x64\ildasm.exe</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>Microsoft Learn, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/arrays">C# arrays</a> 与 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.array.length">Array.Length Property</a> 支撑数组实例长度是数组自身的稳定事实；因此这里的性能直觉应落在 JIT 是否识别数组循环形状，而不是把 <code>Length</code> 当普通可变属性。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>ECMA-335 <a target="_blank" rel="noopener" href="https://ecma-international.org/publications-and-standards/standards/ecma-335/">Common Language Infrastructure</a> 定义 CIL 指令与运行时模型；Microsoft Learn <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/framework/tools/ildasm-exe-il-disassembler">Ildasm.exe</a> 支撑用 ILDASM 查看程序集 IL。IL 能说明编译器输出，但不能直接等同最终机器码性能。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>ECMA-335 定义 <code>ldlen</code> 为读取数组长度的 CIL 指令；这支撑文中从 IL 层面对 <code>ForTest1</code> 与 <code>ForTest2</code> 的比较。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Jeffrey Richter, <a target="_blank" rel="noopener" href="https://www.microsoftpressstore.com/store/clr-via-c-sharp-9780735668775"><em>CLR via C#, Fourth Edition</em></a> 用数组内部工作原理解释数组长度和运行时模型；Microsoft <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/">.NET 5 performance post</a> 也明确讨论 <code>for (int i = 0; i &lt; arr.Length; i++)</code> 这类循环中 JIT 可证明索引不会越界并消除 bounds check。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Microsoft <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/">.NET 5</a>、<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/">.NET 8</a>、<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-9/">.NET 9</a> 与 <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-10/">.NET 10</a> performance posts 对 bounds check elimination、range analysis、PGO 和 loop 优化的持续讨论说明：这类微优化依赖目标运行时、Release 构建、JIT 机器码和测量数据。普通数组循环默认保持 <code>i &lt; array.Length</code> 的清晰形状；只有上界昂贵、有副作用、需要快照语义或有测量证据时，才应手动缓存。 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -2591,13 +2654,13 @@ table th:nth-of-type(3) {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">139k</span>
+    <span title="站点总字数">142k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:24</span>
+    <span title="站点阅读时长">8:38</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
